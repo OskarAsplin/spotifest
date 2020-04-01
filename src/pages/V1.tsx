@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		verticalSpace: {
 			display: 'flex',
-			padding: theme.spacing(4, 0, 4, 0),
+			padding: theme.spacing(2, 0, 2, 0),
 			justifyContent: 'center',
 			alignItems: 'center',
 			width: '100%'

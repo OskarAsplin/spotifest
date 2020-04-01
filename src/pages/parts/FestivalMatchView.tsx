@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {AppState, DispatchProps, FestivalMatch} from "../../redux/types";
 import {connect} from "react-redux";
 import {createStyles, MuiThemeProvider, Theme} from "@material-ui/core";
@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
+import Switch from '@material-ui/core/Switch';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -23,6 +25,13 @@ const useStyles = makeStyles((theme: Theme) =>
 			padding: theme.spacing(2, 4, 1, 4),
 			width: '100%',
 			alignItems: 'center',
+		},
+		alignCenter: {
+			display: 'flex',
+			width: '100%',
+			alignItems: 'center',
+			justifyContent: 'center',
+			marginBottom: theme.spacing(2)
 		},
 		circleSize: {
 			width: '60px'
@@ -47,6 +56,8 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 
 	// const smallScreen = useMediaQuery('(max-width:610px)');
 
+	const [genreArtistChecked, setGenreArtistChecked] = useState<boolean>(false);
+
 	const lightBluePinkMuiTheme = createMuiTheme({
         palette: {
             primary: {
@@ -65,12 +76,38 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 
 	const classes = useStyles();
 
+	const handleGenreArtistChange = (event: any) => {
+		setGenreArtistChecked(event.target.checked);
+	};
+
 	return (
 		<Box className={classes.box}>
+			<Box className={classes.alignCenter}>
+				Genre
+				<Switch checked={genreArtistChecked} color="default" onChange={handleGenreArtistChange} name="checkedC" />
+				Artist
+			</Box>
 			{props.model.festivalMatches
-				.sort((a, b) => (a.matching_percent_genres < b.matching_percent_genres) ? 1 : -1)
+				.sort((a, b) => (genreArtistChecked ? 
+					(a.matching_percent_artists < b.matching_percent_artists) : 
+					(a.matching_percent_genres < b.matching_percent_genres) ) ? 1 : -1)
 				.map((festival: FestivalMatch, idx) => {
-					const matching_percent_genres = Math.ceil(festival.matching_percent_genres);
+					let matching_percent:number = 0;
+					let matching_text: string = '';
+					if (genreArtistChecked) {
+						matching_percent = Math.ceil(festival.matching_percent_artists);
+						matching_text = festival.matching_artists.length > 0 ?
+						'Matching artists: ' + festival.matching_artists.slice(0, 5).join(", ")
+						: 'No artists match with this festival';
+					} else {
+						matching_percent = Math.ceil(festival.matching_percent_genres);
+						matching_text = festival.matching_genres.length > 0 ?
+						'Matching genres: ' + festival.matching_genres.slice(0, 5).join(", ")
+						: 'No genres match with this festival';
+					}
+					const pathColor = props.model.thememode === 'light' ? '#3FBF3F' : '#3de53d';
+					const textColor = props.model.thememode === 'light' ? '#3FBF3F' : '#3de53d';
+					const trailColor = props.model.thememode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
 					return (
 						<div className={classes.root} key={festival.name}>
 							<MuiThemeProvider theme={lightBluePinkMuiTheme}>
@@ -78,48 +115,24 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 									<Typography variant="h6">
 				                        {festival.name}
 				                    </Typography>
-				                    {festival.matching_genres.length > 0 ? 
-				                    	<Typography className={classes.text} variant="body1" color='primary' >
-					                        Matching genres: {festival.matching_genres.slice(0, 5).join(", ")}
-					                    </Typography>
-					                    : <Typography className={classes.text} variant="body1" color='primary' >
-					                        No genres match with this festival
-					                    </Typography>
-				                    }
+			                    	<Typography className={classes.text} variant="body1" color='primary' >
+				                        {matching_text}
+				                    </Typography>
 								</div>
 							</MuiThemeProvider>
 							<MuiThemeProvider theme={lightBluePinkMuiTheme}>
 								<div>
 				                    <div className={classes.circleSize}>
-				                    { props.model.thememode === 'light' ? 
-				                    <CircularProgressbar value={matching_percent_genres} text={`${matching_percent_genres}%`}
+				                    <CircularProgressbar value={matching_percent} text={`${matching_percent}%`}
 					                    styles={buildStyles({								    
 										    textSize: '22px',
-										 
-										    // How long animation takes to go from one percentage to another, in seconds
 										    pathTransitionDuration: 0.5,
-										 
-										    // Colors
-										    pathColor: '#3FBF3F',
-										    textColor: '#3FBF3F',
-										    trailColor: '#d6d6d6',
+										    pathColor: pathColor,
+										    textColor: textColor,
+										    trailColor: trailColor,
 										    //backgroundColor: '#3e98c7',
 										  })}
-										/> : 
-									<CircularProgressbar value={matching_percent_genres} text={`${matching_percent_genres}%`}
-					                    styles={buildStyles({								    
-										    textSize: '22px',
-										 
-										    // How long animation takes to go from one percentage to another, in seconds
-										    pathTransitionDuration: 0.5,
-										 
-										    // Colors
-										    pathColor: '#3de53d', //'#3FBF3F',
-										    textColor: '#3de53d', //'#3FBF3F',
-										    trailColor: 'rgba(104, 104, 104)', //'#a6a6a6',
-										    //backgroundColor: '#3e98c7',
-										  })}
-										/>}
+										/>
 									</div>
 									
 								</div>
