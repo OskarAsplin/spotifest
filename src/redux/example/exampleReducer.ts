@@ -3,7 +3,7 @@ import {Reducer} from "redux";
 
 
 export const initialExampleModel: ExampleModel = {
-    appname: "Digisos Sosialhjelp Fagsystem Mock Example Redux",
+    appname: "Ontour Example Redux",
 };
 
 const exampleReducer: Reducer<ExampleModel, ExampleAction> = (

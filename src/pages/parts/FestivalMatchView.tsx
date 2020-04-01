@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme: Theme) =>
 		circleSize: {
 			width: '60px'
 		},
+		text: {
+			paddingRight: '40px'
+		},
 		box: {
 			width: '80%',
 			maxWidth: '700px'
@@ -65,63 +68,64 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 	return (
 		<Box className={classes.box}>
 			{props.model.festivalMatches
-				.sort((a, b) => (a.matching_percent < b.matching_percent) ? 1 : -1)
+				.sort((a, b) => (a.matching_percent_genres < b.matching_percent_genres) ? 1 : -1)
 				.map((festival: FestivalMatch, idx) => {
-				return (
-					<div className={classes.root} key={festival.name}>
-						<MuiThemeProvider theme={lightBluePinkMuiTheme}>
-							<div>
-								<Typography variant="h6">
-			                        {festival.name}
-			                    </Typography>
-			                    {festival.matching_artists.length > 0 ? 
-			                    	<Typography variant="body1" color='primary' >
-				                        Because you listened to {festival.matching_artists.join(", ")}
+					const matching_percent_genres = Math.ceil(festival.matching_percent_genres);
+					return (
+						<div className={classes.root} key={festival.name}>
+							<MuiThemeProvider theme={lightBluePinkMuiTheme}>
+								<div>
+									<Typography variant="h6">
+				                        {festival.name}
 				                    </Typography>
-				                    : <Typography variant="body1" color='primary' >
-				                        No artist matches with this festival
-				                    </Typography>
-			                    }
-							</div>
-						</MuiThemeProvider>
-						<MuiThemeProvider theme={lightBluePinkMuiTheme}>
-							<div>
-			                    <div className={classes.circleSize}>
-			                    { props.model.thememode === 'light' ? 
-			                    <CircularProgressbar value={festival.matching_percent} text={`${festival.matching_percent}%`}
-				                    styles={buildStyles({								    
-									    textSize: '22px',
-									 
-									    // How long animation takes to go from one percentage to another, in seconds
-									    pathTransitionDuration: 0.5,
-									 
-									    // Colors
-									    pathColor: '#3FBF3F',
-									    textColor: '#3FBF3F',
-									    trailColor: '#d6d6d6',
-									    //backgroundColor: '#3e98c7',
-									  })}
-									/> : 
-								<CircularProgressbar value={festival.matching_percent} text={`${festival.matching_percent}%`}
-				                    styles={buildStyles({								    
-									    textSize: '22px',
-									 
-									    // How long animation takes to go from one percentage to another, in seconds
-									    pathTransitionDuration: 0.5,
-									 
-									    // Colors
-									    pathColor: '#3de53d', //'#3FBF3F',
-									    textColor: '#3de53d', //'#3FBF3F',
-									    trailColor: 'rgba(104, 104, 104)', //'#a6a6a6',
-									    //backgroundColor: '#3e98c7',
-									  })}
-									/>}
+				                    {festival.matching_genres.length > 0 ? 
+				                    	<Typography className={classes.text} variant="body1" color='primary' >
+					                        Matching genres: {festival.matching_genres.slice(0, 5).join(", ")}
+					                    </Typography>
+					                    : <Typography className={classes.text} variant="body1" color='primary' >
+					                        No genres match with this festival
+					                    </Typography>
+				                    }
 								</div>
-								
-							</div>
-						</MuiThemeProvider>
-					</div>
-					)
+							</MuiThemeProvider>
+							<MuiThemeProvider theme={lightBluePinkMuiTheme}>
+								<div>
+				                    <div className={classes.circleSize}>
+				                    { props.model.thememode === 'light' ? 
+				                    <CircularProgressbar value={matching_percent_genres} text={`${matching_percent_genres}%`}
+					                    styles={buildStyles({								    
+										    textSize: '22px',
+										 
+										    // How long animation takes to go from one percentage to another, in seconds
+										    pathTransitionDuration: 0.5,
+										 
+										    // Colors
+										    pathColor: '#3FBF3F',
+										    textColor: '#3FBF3F',
+										    trailColor: '#d6d6d6',
+										    //backgroundColor: '#3e98c7',
+										  })}
+										/> : 
+									<CircularProgressbar value={matching_percent_genres} text={`${matching_percent_genres}%`}
+					                    styles={buildStyles({								    
+										    textSize: '22px',
+										 
+										    // How long animation takes to go from one percentage to another, in seconds
+										    pathTransitionDuration: 0.5,
+										 
+										    // Colors
+										    pathColor: '#3de53d', //'#3FBF3F',
+										    textColor: '#3de53d', //'#3FBF3F',
+										    trailColor: 'rgba(104, 104, 104)', //'#a6a6a6',
+										    //backgroundColor: '#3e98c7',
+										  })}
+										/>}
+									</div>
+									
+								</div>
+							</MuiThemeProvider>
+						</div>
+						)
 			})}
 		</Box>
 	);

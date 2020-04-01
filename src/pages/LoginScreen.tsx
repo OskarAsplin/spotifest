@@ -1,6 +1,5 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {AppState, DispatchProps} from "../redux/types";
-import {setLoggedOff} from "../redux/actions";
 import {connect} from "react-redux";
 import {createStyles, CssBaseline, MuiThemeProvider, Theme} from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -10,12 +9,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import indigo from "@material-ui/core/colors/indigo";
 import {Model} from "../redux/types";
-//import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
-//import SplashScreen from "../components/splashScreen";
-
-import SpotifyWebApi from 'spotify-web-api-js';
-const spotifyApi = new SpotifyWebApi();
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -43,13 +37,6 @@ interface StoreProps {
 type Props = DispatchProps & StoreProps;
 
 const LoginScreen: React.FC<Props> = (props: Props) => {
-
-	useEffect(() => {
-		props.dispatch(setLoggedOff());
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-	//const smallScreen = useMediaQuery('(max-width:610px)');
 
 	const loaderOn = props.model.loaderOn;
 	const muiTheme = createMuiTheme({

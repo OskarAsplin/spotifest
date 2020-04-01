@@ -103,16 +103,22 @@ export interface SetRockWerchterMatch {
 
 export interface Artist {
     name: string;
+    spotifyId: string;
     picture: string;
+    genres: string[];
 }
 
-export interface MatchingResponse {
-    "matching_percent": number, 
-    "matching_artists": string[]
+export interface Lineup {
+    festival: string;
+    country: string;
+    year: number;
+    artists: Artist[];
 }
 
 export interface FestivalMatch {
-    "name": string,
-    "matching_percent": number, 
-    "matching_artists": string[]
+    name: string,
+    matching_percent_artists: number,
+    matching_artists: string[],
+    matching_percent_genres: number,
+    matching_genres: string[]
 }

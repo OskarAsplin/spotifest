@@ -45,8 +45,8 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                         color="inherit"
                         onClick={() => {
                             props.model.thememode === 'light'
-                                ? props.dispatch(switchToDarkMode())
-                                : props.dispatch(switchToLightMode());
+                                ? dispatch(switchToDarkMode())
+                                : dispatch(switchToLightMode());
                         }}
                     >
                         { props.model.thememode === 'light' ? <Brightness2/> : <Brightness4/>}

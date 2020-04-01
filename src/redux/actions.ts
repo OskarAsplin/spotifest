@@ -1,4 +1,4 @@
-import {Action, ActionTypeKeys, Dispatch, Artist, MatchingResponse, FestivalMatch} from "./types";
+import {Action, ActionTypeKeys, Dispatch, Artist, FestivalMatch, Lineup} from "./types";
 
 export const turnOnLoader = (): Action => {
     return {
@@ -71,43 +71,6 @@ export const setRockWerchterMatch = (matching_percent: number): Action => {
     }
 };
 
-export const testCoachellaMatch = (
-    artists: Artist[],
-    dispatch: Dispatch
-    ) => {
-    dispatch(turnOnLoader());
-    const backendUrl = 'http://127.0.0.1:8000/onTour/coachellaMatch';
-    /*(async () => {
-        const rawResponse = await fetch('http://127.0.0.1:8000/onTour/coachellaMatch', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(artists)
-        });
-        const content = await rawResponse.json();
-
-        console.log(content);
-    })();*/
-    fetch('http://127.0.0.1:8000/onTour/coachellaMatch', {
-        method: 'POST',
-        headers: {
-            "Accept": "application/json",
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(artists)
-    }).then((response: Response) => {
-        response.text().then((id: string) => {
-            const matching: MatchingResponse = JSON.parse(id)
-            dispatch(setCoachellaMatch(matching.matching_percent));
-            dispatch(setCoachellaMatchingArtists(matching.matching_artists));
-        });
-    }).catch((reason) => {
-        console.log(reason);
-    }).finally(() => dispatch(turnOffLoader()));;
-};
-
 export const testFestivalMatches = (
     artists: Artist[],
     dispatch: Dispatch
@@ -128,6 +91,24 @@ export const testFestivalMatches = (
                 dispatch(addFestivalMatch(match));
             }
         });
+    }).catch((reason) => {
+        console.log(reason);
+    }).finally(() => dispatch(turnOffLoader()));;
+};
+
+export const registerLineup = (
+    lineup: Lineup,
+    dispatch: Dispatch
+    ) => {
+    dispatch(turnOnLoader());
+    const backendUrl = 'http://127.0.0.1:8000/onTour/' + lineup.festival + '/register';
+    fetch(backendUrl, {
+        method: 'POST',
+        headers: {
+            "Accept": "application/json",
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(lineup)
     }).catch((reason) => {
         console.log(reason);
     }).finally(() => dispatch(turnOffLoader()));;

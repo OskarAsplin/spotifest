@@ -5,7 +5,7 @@ import {Reducer} from "redux";
 export const initialModel: Model = {
     loaderOn: false,
 
-    loggedIn: false,
+    loggedIn: true,
 
     // Visnings
     thememode: 'light',
@@ -42,10 +42,8 @@ const reducer: Reducer<Model, Action> = (
             })}
             if (is_new_festival) {
                 return {...state, festivalMatches: [...state.festivalMatches, festival]}
-            } else {
-                return s0
             }
-            return {...state, festivalMatches: [...state.festivalMatches, festival]}
+            return s0
         }
         case ActionTypeKeys.SET_COACHELLA_MATCH: {
             const {matching_percent} = action;

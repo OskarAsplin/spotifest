@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {AppState, DispatchProps, Artist} from "../redux/types";
-import {testFestivalMatches, setLoggedIn} from "../redux/actions";
+import {testFestivalMatches, setLoggedOff} from "../redux/actions";
 import {connect} from "react-redux";
 import {createStyles, CssBaseline, MuiThemeProvider, Theme} from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -57,7 +57,6 @@ const V1: React.FC<Props> = (props: Props) => {
 	useEffect(() => {
 		const token = getAccessTokenFromHashParams();
 		if (token) {
-			props.dispatch(setLoggedIn());
 			spotifyApi.setAccessToken(token);
 		    getTopArtistsAndTestMatches();
 		}
@@ -111,15 +110,17 @@ const V1: React.FC<Props> = (props: Props) => {
 			var newTopArtists: Artist[] = [];
 
 			if (Array.isArray(response.items)) {
-				response.items.forEach(artist => newTopArtists.push({name: artist.name, picture: artist.images[0].url}));
+				response.items.forEach(artist => newTopArtists.push({name: artist.name, spotifyId: artist.id, picture: artist.images[0].url, genres: artist.genres}));
 			}
 			testFestivalMatches(newTopArtists, props.dispatch);
 		})
+		.catch((error) => {
+			console.log(error);
+			props.dispatch(setLoggedOff());
+		})
 	}
 
-	if (!props.model.loggedIn && !token) {
-		console.log('V1 redirecting to login');
-		console.log(props.model.loggedIn);
+	if (!props.model.loggedIn || !token) {
 		return <Redirect to='/login' />
 	}
 	return (

@@ -1,17 +1,18 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './App.css';
 
 import {ConnectedRouter} from "connected-react-router";
 import configureStore, {history} from "./configureStore";
 import {Provider} from "react-redux";
 import {Route, Switch} from "react-router";
-//import {IntlProvider} from "react-intl";
-//import {tekster} from "./tekster/tekster";
+import {IntlProvider} from "react-intl";
+import {texts} from "./texts/texts";
 //import './App.less';
 //import UserGuide from "./pages/UserGuide";
 //import NotFound from "./components/notFound";
 //import Example from "./pages/Example";
 import V1 from "./pages/V1";
+import RegisterToDjango from "./pages/RegisterToDjango";
 import LoginScreen from "./pages/LoginScreen";
 
 
@@ -19,17 +20,22 @@ import LoginScreen from "./pages/LoginScreen";
 const store = configureStore();
 
 const App: React.FC = () => {
+  const language = "nb";
 
   return (
     <Provider store={store}>
-      <div className="informasjon-side">
-        <ConnectedRouter history={history}>
-          <Switch>
-            <Route exact path="/" component={V1}/>
-            <Route exact path="/login" component={LoginScreen}/>
-          </Switch>
-        </ConnectedRouter>
-      </div>
+      <IntlProvider defaultLocale={language} locale={language} messages={texts[language]}>
+        <div className="informasjon-side">
+          <ConnectedRouter history={history}>
+            <Switch>
+              <Route exact path="/" component={V1}/>
+              <Route exact path="/login" component={LoginScreen}/>
+              <Route exact path="/register" component={RegisterToDjango}/>
+              <Route component={RegisterToDjango}/>
+            </Switch>
+          </ConnectedRouter>
+        </div>
+      </IntlProvider>
     </Provider>
   );
 };
