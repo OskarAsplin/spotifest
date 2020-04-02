@@ -27,10 +27,6 @@ export type Action
     | SwitchToDarkMode
     | SwitchToLightMode
     | AddFestivalMatch
-    | SetCoachellaMatchingArtists
-    | SetCoachellaMatch
-    | SetRoskildeMatch
-    | SetRockWerchterMatch
 
 export enum ActionTypeKeys {
     TURN_ON_LOADER = "TURN_ON_LOADER",
@@ -92,9 +88,4 @@ export interface FestivalMatch {
     matching_artists: string[],
     matching_percent_genres: number,
     matching_genres: string[]
-}
-
-export enum MatchingMethod {
-    Genre,
-    Artist
 }
