@@ -1,4 +1,4 @@
-import {Action, ActionTypeKeys, Dispatch, Artist, FestivalMatch, Lineup, MatchingMethod} from "./types";
+import {Action, ActionTypeKeys, Dispatch, Artist, FestivalMatch, Lineup, MatchingMethod, UserInfo} from "./types";
 
 export const turnOnLoader = (): Action => {
     return {
@@ -33,6 +33,13 @@ export const switchToDarkMode = (): Action => {
 export const switchToLightMode = (): Action => {
     return {
         type: ActionTypeKeys.SWITCH_TO_LIGHT_MODE,
+    }
+};
+
+export const setUserInfo = (info: UserInfo): Action => {
+    return {
+        type: ActionTypeKeys.SET_USER_INFO,
+        info: info
     }
 };
 

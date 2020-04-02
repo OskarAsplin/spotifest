@@ -11,6 +11,7 @@ export interface Model {
     loaderOn: boolean;
     loggedIn: boolean;
     thememode: PaletteType;
+    userInfo?: UserInfo;
     festivalMatches: FestivalMatch[];
     matchingMethod: MatchingMethod;
 }
@@ -27,6 +28,7 @@ export type Action
     | SetLoggedOff
     | SwitchToDarkMode
     | SwitchToLightMode
+    | SetUserInfo
     | AddFestivalMatch
     | SetMatchingMethod
 
@@ -37,6 +39,7 @@ export enum ActionTypeKeys {
     SET_LOGGED_OFF = "SET_LOGGED_OFF",
     SWITCH_TO_DARK_MODE = "SWITCH_TO_DARK_MODE",
     SWITCH_TO_LIGHT_MODE = "SWITCH_TO_LIGHT_MODE",
+    SET_USER_INFO = "SET_USER_INFO",
     ADD_FESTIVAL_MATCH = "ADD_FESTIVAL_MATCH",
     SET_MATCHING_METHOD = "SET_MATCHING_METHOD",
 }
@@ -65,6 +68,11 @@ export interface SwitchToLightMode {
     type: ActionTypeKeys.SWITCH_TO_LIGHT_MODE;
 }
 
+export interface SetUserInfo {
+    type: ActionTypeKeys.SET_USER_INFO;
+    info: UserInfo
+}
+
 export interface AddFestivalMatch {
     type: ActionTypeKeys.ADD_FESTIVAL_MATCH;
     festival: FestivalMatch;
@@ -75,6 +83,14 @@ export interface SetMatchingMethod {
     method: MatchingMethod;
 }
 
+
+export interface UserInfo {
+    country: string;
+    displayName?: string;
+    profilePictureUrl?: string;
+    spotifyUrl: string;
+    id: string;
+}
 
 export interface Artist {
     name: string;

@@ -1,10 +1,8 @@
 import React from 'react';
 import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
+import { IconButton, Typography, Toolbar, AppBar } from '@material-ui/core';
 import {Brightness2, Brightness4} from "@material-ui/icons";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import {Model, AppState, DispatchProps} from "../../redux/types";
 import {connect} from "react-redux";
 import {switchToDarkMode, switchToLightMode} from "../../redux/actions";
@@ -19,7 +17,12 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         customizeToolbar: {
             minHeight: 36
-        }
+        },
+        profileImg: {
+            height: 26,
+            width: 26,
+            borderRadius: 13,
+        },
     }),
 );
 
@@ -44,6 +47,21 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                     <Typography variant="h6" className={classes.title}>
                         OnTour
                     </Typography>
+                    { props.model.userInfo?.displayName ?
+                        <Typography variant="body1">
+                            {props.model.userInfo.displayName}
+                        </Typography>
+                        : <div/>
+                    }
+                    <IconButton
+                        color="inherit"
+                        target={props.model.userInfo?.spotifyUrl ? "_blank" : undefined }
+                        href={props.model.userInfo?.spotifyUrl ? props.model.userInfo.spotifyUrl : ""}
+                    >
+                        { props.model.userInfo?.profilePictureUrl ? 
+                        <img src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
+                         : <AccountCircleIcon/>}
+                    </IconButton>
                     <IconButton
                         color="inherit"
                         onClick={() => {

@@ -4,13 +4,13 @@ import {Reducer} from "redux";
 
 export const initialModel: Model = {
     loaderOn: false,
-
     loggedIn: true,
 
     // Visnings
     thememode: 'light',
 
     //Logikk
+    userInfo: undefined,
     festivalMatches: [],
     matchingMethod: MatchingMethod.Genre,
 };
@@ -26,6 +26,10 @@ const reducer: Reducer<Model, Action> = (
         case ActionTypeKeys.SET_LOGGED_OFF: return {...state, loggedIn: false};
         case ActionTypeKeys.SWITCH_TO_LIGHT_MODE: {return {...state, thememode: 'light'}}
         case ActionTypeKeys.SWITCH_TO_DARK_MODE: {return {...state, thememode: 'dark'}}
+        case ActionTypeKeys.SET_USER_INFO: {
+            const {info} = action;
+            return {...state, userInfo: info}
+        }
         case ActionTypeKeys.ADD_FESTIVAL_MATCH: {
             const {festival} = action;
             let is_new_festival = true
