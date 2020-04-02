@@ -1,4 +1,4 @@
-import {Action, ActionTypeKeys, Model, FestivalMatch} from "./types";
+import {Action, ActionTypeKeys, Model, FestivalMatch, MatchingMethod} from "./types";
 import {Reducer} from "redux";
 
 
@@ -11,7 +11,8 @@ export const initialModel: Model = {
     thememode: 'light',
 
     //Logikk
-    festivalMatches: []
+    festivalMatches: [],
+    matchingMethod: MatchingMethod.Genre,
 };
 
 const reducer: Reducer<Model, Action> = (
@@ -40,6 +41,10 @@ const reducer: Reducer<Model, Action> = (
                 return {...state, festivalMatches: [...state.festivalMatches, festival]}
             }
             return s0
+        }
+        case ActionTypeKeys.SET_MATCHING_METHOD: {
+            const {method} = action;
+            return {...state, matchingMethod: method}
         }
         default:
             return state;

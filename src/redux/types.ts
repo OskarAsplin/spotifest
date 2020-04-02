@@ -12,6 +12,7 @@ export interface Model {
     loggedIn: boolean;
     thememode: PaletteType;
     festivalMatches: FestivalMatch[];
+    matchingMethod: MatchingMethod;
 }
 
 export interface AppState {
@@ -27,6 +28,7 @@ export type Action
     | SwitchToDarkMode
     | SwitchToLightMode
     | AddFestivalMatch
+    | SetMatchingMethod
 
 export enum ActionTypeKeys {
     TURN_ON_LOADER = "TURN_ON_LOADER",
@@ -36,6 +38,7 @@ export enum ActionTypeKeys {
     SWITCH_TO_DARK_MODE = "SWITCH_TO_DARK_MODE",
     SWITCH_TO_LIGHT_MODE = "SWITCH_TO_LIGHT_MODE",
     ADD_FESTIVAL_MATCH = "ADD_FESTIVAL_MATCH",
+    SET_MATCHING_METHOD = "SET_MATCHING_METHOD",
 }
 
 export interface TurnOnLoader {
@@ -67,6 +70,11 @@ export interface AddFestivalMatch {
     festival: FestivalMatch;
 }
 
+export interface SetMatchingMethod {
+    type: ActionTypeKeys.SET_MATCHING_METHOD;
+    method: MatchingMethod;
+}
+
 
 export interface Artist {
     name: string;
@@ -88,4 +96,9 @@ export interface FestivalMatch {
     matching_artists: string[],
     matching_percent_genres: number,
     matching_genres: string[]
+}
+
+export enum MatchingMethod {
+    Genre,
+    Artist
 }

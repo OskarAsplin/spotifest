@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme: Theme) =>
         title: {
             flexGrow: 1,
         },
+        customizeToolbar: {
+            minHeight: 36
+        }
     }),
 );
 
@@ -37,9 +40,9 @@ const AppBarView: React.FC<Props> = (props: Props) => {
     return (
         <div className={classes.root}>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar className={classes.customizeToolbar}>
                     <Typography variant="h6" className={classes.title}>
-                        OnTour™
+                        OnTour
                     </Typography>
                     <IconButton
                         color="inherit"

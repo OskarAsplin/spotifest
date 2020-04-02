@@ -1,4 +1,4 @@
-import {Action, ActionTypeKeys, Dispatch, Artist, FestivalMatch, Lineup} from "./types";
+import {Action, ActionTypeKeys, Dispatch, Artist, FestivalMatch, Lineup, MatchingMethod} from "./types";
 
 export const turnOnLoader = (): Action => {
     return {
@@ -40,6 +40,13 @@ export const addFestivalMatch = (festival: FestivalMatch): Action => {
     return {
         type: ActionTypeKeys.ADD_FESTIVAL_MATCH,
         festival: festival
+    }
+};
+
+export const setMatchingMethod = (method: MatchingMethod): Action => {
+    return {
+        type: ActionTypeKeys.SET_MATCHING_METHOD,
+        method: method
     }
 };
 

@@ -6,6 +6,7 @@ import {createStyles, CssBaseline, MuiThemeProvider, Theme} from "@material-ui/c
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import FestivalMatchView from "./parts/FestivalMatchView";
+import FestivalMatchSettingsBar from "./parts/FestivalMatchSettingsBar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import deepOrange from "@material-ui/core/colors/deepOrange";
@@ -24,6 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		root: {
 			display: 'flex',
+			flexDirection: 'column',
 			padding: theme.spacing(0, 4, 0, 4),
 			justifyContent: 'center',
 			alignItems: 'center',
@@ -130,6 +132,7 @@ const V1: React.FC<Props> = (props: Props) => {
 				<AppBarView />
 				<div className={classes.verticalSpace} />
 				<div className={classes.root}>
+					<FestivalMatchSettingsBar />
 					<FestivalMatchView />
 				</div>
 
