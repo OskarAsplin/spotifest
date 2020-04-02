@@ -43,34 +43,6 @@ export const addFestivalMatch = (festival: FestivalMatch): Action => {
     }
 };
 
-export const setCoachellaMatch = (matching_percent: number): Action => {
-    return {
-        type: ActionTypeKeys.SET_COACHELLA_MATCH,
-        matching_percent: matching_percent
-    }
-};
-
-export const setCoachellaMatchingArtists = (matching_artists: string[]): Action => {
-    return {
-        type: ActionTypeKeys.SET_COACHELLA_MATCHING_ARTISTS,
-        matching_artists: matching_artists
-    }
-};
-
-export const setRoskildeMatch = (matching_percent: number): Action => {
-    return {
-        type: ActionTypeKeys.SET_ROSKILDE_MATCH,
-        matching_percent: matching_percent
-    }
-};
-
-export const setRockWerchterMatch = (matching_percent: number): Action => {
-    return {
-        type: ActionTypeKeys.SET_ROCK_WERCHTER_MATCH,
-        matching_percent: matching_percent
-    }
-};
-
 export const testFestivalMatches = (
     artists: Artist[],
     dispatch: Dispatch

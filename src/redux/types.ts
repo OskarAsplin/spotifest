@@ -12,10 +12,6 @@ export interface Model {
     loggedIn: boolean;
     thememode: PaletteType;
     festivalMatches: FestivalMatch[];
-    coachellaMatch: number;
-    coachellaMatchingArtists: string[];
-    roskildeMatch: number;
-    rockWerchterMatch: number;
 }
 
 export interface AppState {
@@ -44,10 +40,6 @@ export enum ActionTypeKeys {
     SWITCH_TO_DARK_MODE = "SWITCH_TO_DARK_MODE",
     SWITCH_TO_LIGHT_MODE = "SWITCH_TO_LIGHT_MODE",
     ADD_FESTIVAL_MATCH = "ADD_FESTIVAL_MATCH",
-    SET_COACHELLA_MATCH = "SET_COACHELLA_MATCH",
-    SET_COACHELLA_MATCHING_ARTISTS = "SET_COACHELLA_MATCHING_ARTISTS",
-    SET_ROSKILDE_MATCH = "SET_ROSKILDE_MATCH",
-    SET_ROCK_WERCHTER_MATCH = "SET_ROCK_WERCHTER_MATCH",
 }
 
 export interface TurnOnLoader {
@@ -79,27 +71,6 @@ export interface AddFestivalMatch {
     festival: FestivalMatch;
 }
 
-export interface SetCoachellaMatch {
-    type: ActionTypeKeys.SET_COACHELLA_MATCH;
-    matching_percent: number;
-}
-
-export interface SetCoachellaMatchingArtists {
-    type: ActionTypeKeys.SET_COACHELLA_MATCHING_ARTISTS;
-    matching_artists: string[];
-}
-
-export interface SetRoskildeMatch {
-    type: ActionTypeKeys.SET_ROSKILDE_MATCH;
-    matching_percent: number;
-}
-
-export interface SetRockWerchterMatch {
-    type: ActionTypeKeys.SET_ROCK_WERCHTER_MATCH;
-    matching_percent: number;
-}
-
-
 
 export interface Artist {
     name: string;
@@ -121,4 +92,9 @@ export interface FestivalMatch {
     matching_artists: string[],
     matching_percent_genres: number,
     matching_genres: string[]
+}
+
+export enum MatchingMethod {
+    Genre,
+    Artist
 }

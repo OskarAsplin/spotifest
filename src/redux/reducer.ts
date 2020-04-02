@@ -11,11 +11,7 @@ export const initialModel: Model = {
     thememode: 'light',
 
     //Logikk
-    festivalMatches: [],
-    coachellaMatch: 0,
-    coachellaMatchingArtists: [],
-    roskildeMatch: 0,
-    rockWerchterMatch: 0
+    festivalMatches: []
 };
 
 const reducer: Reducer<Model, Action> = (
@@ -44,22 +40,6 @@ const reducer: Reducer<Model, Action> = (
                 return {...state, festivalMatches: [...state.festivalMatches, festival]}
             }
             return s0
-        }
-        case ActionTypeKeys.SET_COACHELLA_MATCH: {
-            const {matching_percent} = action;
-            return {...state, coachellaMatch: matching_percent}
-        }
-        case ActionTypeKeys.SET_COACHELLA_MATCHING_ARTISTS: {
-            const {matching_artists} = action;
-            return {...state, coachellaMatchingArtists: matching_artists}
-        }
-        case ActionTypeKeys.SET_ROSKILDE_MATCH: {
-            const {matching_percent} = action;
-            return {...state, roskildeMatch: matching_percent}
-        }
-        case ActionTypeKeys.SET_ROCK_WERCHTER_MATCH: {
-            const {matching_percent} = action;
-            return {...state, rockWerchterMatch: matching_percent}
         }
         default:
             return state;
