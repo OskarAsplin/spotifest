@@ -1,4 +1,4 @@
-import {Action, ActionTypeKeys, Dispatch, Artist, FestivalMatch, Lineup, MatchingMethod, UserInfo} from "./types";
+import {Action, ActionTypeKeys, Dispatch, Artist, FestivalMatch, Lineup, MatchingMethod, UserInfo, Playlist} from "./types";
 
 export const turnOnLoader = (): Action => {
     return {
@@ -40,6 +40,20 @@ export const setUserInfo = (info: UserInfo): Action => {
     return {
         type: ActionTypeKeys.SET_USER_INFO,
         info: info
+    }
+};
+
+export const setTopArtists = (artists: Artist[]): Action => {
+    return {
+        type: ActionTypeKeys.SET_TOP_ARTISTS,
+        artists: artists
+    }
+};
+
+export const setPlaylists = (playlists: Playlist[]): Action => {
+    return {
+        type: ActionTypeKeys.SET_PLAYLISTS,
+        playlists: playlists
     }
 };
 

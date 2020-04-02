@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import {AppState, DispatchProps, Artist, UserInfo} from "../redux/types";
-import {testFestivalMatches, setLoggedOff, setUserInfo} from "../redux/actions";
+import {AppState, DispatchProps, Artist, UserInfo, Playlist} from "../redux/types";
+import {testFestivalMatches, setLoggedOff, setUserInfo, setTopArtists, setPlaylists} from "../redux/actions";
 import {connect} from "react-redux";
 import {createStyles, CssBaseline, MuiThemeProvider, Theme} from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -125,10 +125,18 @@ const V1: React.FC<Props> = (props: Props) => {
 			.then((response: SpotifyApi.UsersTopArtistsResponse) => {
 				console.log('getTopArtists response: ');
 				console.log(response);
-				var newTopArtists: Artist[] = [];
-
-				response.items.forEach(artist => newTopArtists.push({name: artist.name, spotifyId: artist.id, picture: artist.images[0].url, genres: artist.genres}));
-				testFestivalMatches(newTopArtists, props.dispatch);
+				const topArtists: Artist[] = response.items.map((artist) => {
+					const topArtist: Artist = {
+						name: artist.name,
+						spotifyId: artist.id,
+						picture: artist.images[0].url,
+						genres: artist.genres
+					};
+					return topArtist;
+				});
+				
+				props.dispatch(setTopArtists(topArtists));
+				testFestivalMatches(topArtists, props.dispatch);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -136,9 +144,22 @@ const V1: React.FC<Props> = (props: Props) => {
 			})
 
 			spotifyApi.getUserPlaylists(responseGetMe.id ,{limit: 50})
-			.then((response) => {
+			.then((response: SpotifyApi.ListOfUsersPlaylistsResponse) => {
 				console.log('getUserPlaylists response: ');
 				console.log(response);
+
+				const playlists: Playlist[] = response.items.map((playlist) => {
+					const formattedPlaylist: Playlist = {
+						name: playlist.name,
+						id: playlist.id,
+						images: playlist.images.map((image) => {return image.url;}),
+						ownerId: playlist.owner.id,
+						numTracks: playlist.tracks.total
+					};
+					return formattedPlaylist;
+				});
+
+				props.dispatch(setPlaylists(playlists));
 			})
 			.catch((error) => {
 				console.log(error);

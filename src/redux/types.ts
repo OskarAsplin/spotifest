@@ -12,6 +12,8 @@ export interface Model {
     loggedIn: boolean;
     thememode: PaletteType;
     userInfo?: UserInfo;
+    topArtists: Artist[];
+    playlists: Playlist[];
     festivalMatches: FestivalMatch[];
     matchingMethod: MatchingMethod;
 }
@@ -29,6 +31,8 @@ export type Action
     | SwitchToDarkMode
     | SwitchToLightMode
     | SetUserInfo
+    | SetTopArtists
+    | SetPlaylists
     | AddFestivalMatch
     | SetMatchingMethod
 
@@ -40,6 +44,8 @@ export enum ActionTypeKeys {
     SWITCH_TO_DARK_MODE = "SWITCH_TO_DARK_MODE",
     SWITCH_TO_LIGHT_MODE = "SWITCH_TO_LIGHT_MODE",
     SET_USER_INFO = "SET_USER_INFO",
+    SET_TOP_ARTISTS = "SET_TOP_ARTISTS",
+    SET_PLAYLISTS = "SET_PLAYLISTS",
     ADD_FESTIVAL_MATCH = "ADD_FESTIVAL_MATCH",
     SET_MATCHING_METHOD = "SET_MATCHING_METHOD",
 }
@@ -70,7 +76,17 @@ export interface SwitchToLightMode {
 
 export interface SetUserInfo {
     type: ActionTypeKeys.SET_USER_INFO;
-    info: UserInfo
+    info: UserInfo;
+}
+
+export interface SetTopArtists {
+    type: ActionTypeKeys.SET_TOP_ARTISTS;
+    artists: Artist[];
+}
+
+export interface SetPlaylists {
+    type: ActionTypeKeys.SET_PLAYLISTS;
+    playlists: Playlist[];
 }
 
 export interface AddFestivalMatch {
@@ -90,6 +106,14 @@ export interface UserInfo {
     profilePictureUrl?: string;
     spotifyUrl: string;
     id: string;
+}
+
+export interface Playlist {
+    name: string;
+    id: string;
+    images: string[];
+    ownerId: string;
+    numTracks: number;
 }
 
 export interface Artist {

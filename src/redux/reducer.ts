@@ -11,6 +11,8 @@ export const initialModel: Model = {
 
     //Logikk
     userInfo: undefined,
+    topArtists: [],
+    playlists: [],
     festivalMatches: [],
     matchingMethod: MatchingMethod.Genre,
 };
@@ -29,6 +31,14 @@ const reducer: Reducer<Model, Action> = (
         case ActionTypeKeys.SET_USER_INFO: {
             const {info} = action;
             return {...state, userInfo: info}
+        }
+        case ActionTypeKeys.SET_TOP_ARTISTS: {
+            const {artists} = action;
+            return {...state, topArtists: artists}
+        }
+        case ActionTypeKeys.SET_PLAYLISTS: {
+            const {playlists} = action;
+            return {...state, playlists: playlists}
         }
         case ActionTypeKeys.ADD_FESTIVAL_MATCH: {
             const {festival} = action;
