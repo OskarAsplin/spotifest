@@ -38,7 +38,12 @@ const reducer: Reducer<Model, Action> = (
         }
         case ActionTypeKeys.SET_PLAYLISTS: {
             const {playlists} = action;
-            return {...state, playlists: playlists}
+            const sortedPlaylists = playlists.sort((a, b) => {
+                let aName = a.name.toUpperCase();
+                let bName = b.name.toUpperCase();
+                return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
+            });
+            return {...state, playlists: sortedPlaylists}
         }
         case ActionTypeKeys.ADD_FESTIVAL_MATCH: {
             const {festival} = action;

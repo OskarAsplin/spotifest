@@ -1,6 +1,6 @@
 import React from 'react';
-import {AppState, DispatchProps, MatchingMethod} from "../../redux/types";
-import {setMatchingMethod} from "../../redux/actions";
+import {AppState, DispatchProps, MatchingMethod, Playlist, Artist} from "../../redux/types";
+import {setMatchingMethod, setLoggedOff, testFestivalMatches, turnOnLoader} from "../../redux/actions";
 import {connect} from "react-redux";
 import {createStyles, MuiThemeProvider, Theme} from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -18,6 +18,13 @@ import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
 import Button from '@material-ui/core/Button';
 import {PaletteType} from "@material-ui/core";
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+import SpotifyWebApi from 'spotify-web-api-js';
+const spotifyApi = new SpotifyWebApi();
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -57,14 +64,26 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		invisibleButton: {
 			display: 'none'
-		}
+		},
+		formControl: {
+			margin: theme.spacing(1),
+			minWidth: 120,
+			maxWidth: 300,
+		},
+		toolTip: {
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'flex-end',
+			margin: '10px',
+		},
 	}),
 );
 
 interface StoreProps {
 	model: Model;
 	thememode: PaletteType,
-	matchingMethod: MatchingMethod
+	matchingMethod: MatchingMethod,
+	playlists: Playlist[]
 }
 
 type Props = DispatchProps & StoreProps;
@@ -83,7 +102,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	// const smallScreen = useMediaQuery('(max-width:610px)');
 
-	const {thememode, matchingMethod, dispatch} = props;
+	const {thememode, matchingMethod, playlists, dispatch} = props;
 
 	const lightBluePinkMuiTheme = createMuiTheme({
         palette: {
@@ -101,6 +120,71 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
         }
     });
 
+    const [playlistName, setPlaylistName] = React.useState('');
+
+	const handleChange = async (event: React.ChangeEvent<{ value: unknown }>) => {
+
+		const name = event.target.value as string;
+		setPlaylistName(name);
+
+		const chosenPlaylist = playlists.find(playlist => {
+			return playlist.name === name;
+		})
+
+		if (chosenPlaylist) {
+			props.dispatch(turnOnLoader());
+			// TODO: Check if its necessary to get more than the 100 first tracks.
+			// The playlist object already has number of tracks available
+
+			let playlistArtists: Artist[] = [];
+			let allArtistIdsRaw: string[] = [];
+
+			for (let offset = 0; offset < chosenPlaylist.numTracks; offset += 100) {
+				const artistIdsRaw: string[] = await spotifyApi.getPlaylistTracks(chosenPlaylist.ownerId, chosenPlaylist.id, {offset: offset})
+				.then((playlistResponse: SpotifyApi.PlaylistTrackResponse) => {
+					console.log('getPlaylistTracks response: ');
+					console.log(playlistResponse);
+
+					const artistIdsRaw: string[] = playlistResponse.items.flatMap((trackItem) => {
+						return trackItem.track.artists.map((trackArtist) => {
+							return trackArtist.id;
+						});
+					});
+					console.log(artistIdsRaw);
+					return artistIdsRaw;
+				})
+				.catch((error) => {
+					console.log(error);
+					props.dispatch(setLoggedOff());
+					return [];
+				});
+				allArtistIdsRaw = allArtistIdsRaw.concat(artistIdsRaw);
+			}
+
+			const artistIds: string[] = [...new Set(allArtistIdsRaw)];
+
+			for (let index = 0; index < artistIds.length; index += 50) {
+				await spotifyApi.getArtists(artistIds.slice(index, index + 50))
+				.then((artistsResponse: SpotifyApi.MultipleArtistsResponse) => {
+					artistsResponse.artists.map((artistResponse: SpotifyApi.ArtistObjectFull) => {
+						return playlistArtists.push({
+							name: artistResponse.name,
+							spotifyId: artistResponse.id,
+							picture: artistResponse.images[0]?.url ? artistResponse.images[0].url : undefined,
+							genres: artistResponse.genres
+						} as Artist);
+					})
+				});
+			}
+
+			console.log(playlistArtists);
+			testFestivalMatches(playlistArtists, props.dispatch);
+		} else {
+			console.log('Could not find playlist: ' + name);
+		}
+
+	};
+
 	const classes = useStyles();
 
 	const handleGenreArtistChange = (event: any) => {
@@ -114,8 +198,25 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	return (
 		<Box className={classes.box}>
 			<Grid component="label" container alignItems="center" spacing={1}>
-				<Grid item xs={1}/>
-				<Grid item xs={10}>
+				<Grid item xs={3}>
+					<FormControl className={classes.formControl} variant="outlined" size="small">
+						<InputLabel id="choose-playlist-label">Playlist</InputLabel>
+						<Select
+							labelId="choose-playlist-label"
+							id="choose-playlist"
+							value={playlistName}
+							onChange={handleChange}
+							label="Playlist"
+						>
+							{playlists.map((playlist) => (
+								<MenuItem key={playlist.name} value={playlist.name}>
+									{playlist.name}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
+				</Grid>
+				<Grid item xs={6}>
 					<div className={classes.alignCenter}>
 						<MuiThemeProvider theme={lightBluePinkMuiTheme}>
 							{/* The invisible button is a quick fix for click event propagation from the grid item */}
@@ -134,7 +235,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 						</MuiThemeProvider>
 					</div>
 				</Grid>
-				<Grid item xs={1}>
+				<Grid item xs={2} className={classes.toolTip}>
 					<HtmlTooltip placement="right-start" interactive
 						title={
 							<React.Fragment>
@@ -157,7 +258,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 const mapStateToProps = (state: AppState) => ({
 	model: state.model,
 	thememode: state.model.thememode,
-	matchingMethod: state.model.matchingMethod
+	matchingMethod: state.model.matchingMethod,
+	playlists: state.model.playlists
 });
 
 const mapDispatchToProps = (dispatch: any) => {

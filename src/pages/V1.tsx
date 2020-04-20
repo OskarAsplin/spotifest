@@ -126,13 +126,12 @@ const V1: React.FC<Props> = (props: Props) => {
 				console.log('getTopArtists response: ');
 				console.log(response);
 				const topArtists: Artist[] = response.items.map((artist) => {
-					const topArtist: Artist = {
+					return {
 						name: artist.name,
 						spotifyId: artist.id,
-						picture: artist.images[0].url,
+						picture: artist.images[0]?.url ? artist.images[0].url : undefined,
 						genres: artist.genres
-					};
-					return topArtist;
+					} as Artist;
 				});
 				
 				props.dispatch(setTopArtists(topArtists));

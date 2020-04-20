@@ -14,6 +14,7 @@ import {Model} from "../redux/types";
 import 'react-circular-progressbar/dist/styles.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import {mapLimit} from 'async';
 
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
@@ -57,6 +58,81 @@ const initialLineup: Lineup = {
 	artists: []
 }
 
+function editDistance(s1: string, s2: string) {
+  s1 = s1.toLowerCase();
+  s2 = s2.toLowerCase();
+
+  let costs = [];
+  for (let i = 0; i <= s1.length; i++) {
+    let lastValue = i;
+    for (let j = 0; j <= s2.length; j++) {
+      if (i === 0)
+        costs[j] = j;
+      else {
+        if (j > 0) {
+          let newValue = costs[j - 1];
+          if (s1.charAt(i - 1) !== s2.charAt(j - 1))
+            newValue = Math.min(Math.min(newValue, lastValue),
+              costs[j]) + 1;
+          costs[j - 1] = lastValue;
+          lastValue = newValue;
+        }
+      }
+    }
+    if (i > 0)
+      costs[s2.length] = lastValue;
+  }
+  return costs[s2.length];
+}
+
+
+function similarity(s1: string, s2: string) {
+  let longer = s1;
+  let shorter = s2;
+  if (s1.length < s2.length) {
+    longer = s2;
+    shorter = s1;
+  }
+  let longerLength = longer.length;
+  if (longerLength === 0) {
+    return 1.0;
+  }
+  return (longerLength - editDistance(longer, shorter)) / longerLength;
+}
+
+const handleSearchArray = async (item: string, removeFromSearch: string[], artists: Artist[], threshold: number): Promise<any> => {
+	// To avoid 429 error code
+	await new Promise(r => setTimeout(r, 200));
+
+	let artistName: string = item.trim().toLowerCase();
+	return await spotifyApi.searchArtists(artistName)
+	.then((response) => {
+		for (const result of response.artists.items) {
+			if (!result.name) {
+				console.log('search result for ' + artistName + ' is undefined');
+			}
+			const resultName = result.name.toLowerCase();
+			const sim: number = similarity(resultName.replace(/’s|'s|`s|´s/i, 's'), artistName.replace(/’s|'s|`s|´s/i, 's'));
+			if (resultName === artistName || resultName.replace(/’s|'s|`s|´s/i, 's') === artistName.replace(/’s|'s|`s|´s/i, 's')
+				|| sim > threshold) {
+				const artistMatch: Artist = {
+					name: result.name,
+					spotifyId: result.id,
+					picture: result.images.length > 0 ? result.images[0].url : '',
+					genres: result.genres
+				} as Artist;
+				artists.push(artistMatch);
+				removeFromSearch.push(item);
+				return artistMatch;
+			}
+		}
+	}).catch((error) => {
+		console.log(artistName, ' caused an error:');
+		console.log(error);
+		return undefined;
+	}).finally(() => {return undefined});
+}
+
 const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 	useEffect(() => {
@@ -69,7 +145,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 	const [lineup, setLineup] = useState<Lineup>(initialLineup);
 	const [ready, setReady] = useState<boolean>(false);
-	
+
 
 	//const smallScreen = useMediaQuery('(max-width:610px)');
 
@@ -104,6 +180,64 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 		return '';
 	};
 
+	const fetchArtistsFromSpotifyAndAddToLineup = async (evt: any) => {
+		if (evt.target.value.length > 0){
+			let artists: Artist[] = [];
+			let inputArtists: string[] = evt.target.value.split(/[,]+/i); //.split(/[,&]+|\band\b/i);
+			let removeFromSearch: string[] = [];
+
+			// First go through pairs of two if there is an artist with a comma in the name
+			let firstInputArray: string[] = inputArtists.map((el, index) => {
+				if (index + 1 !== inputArtists.length) {
+					return el + ',' + inputArtists[index + 1];
+				} else {
+					return undefined;
+				}
+			}).filter(Boolean) as string[];
+
+			mapLimit(firstInputArray, 3, async (item) => {
+				return await handleSearchArray(item, removeFromSearch, artists, 0.9);
+			}, (err, results: (Artist|undefined)[]|undefined) => {
+				if (err) throw err
+				removeFromSearch = removeFromSearch.join(',').split(/[,]+/i);
+				inputArtists = inputArtists.filter((el) => !removeFromSearch.includes(el));
+				removeFromSearch = [];
+
+				// Then go through remaining seperated by: ,
+				mapLimit(inputArtists, 3, async (item) => {
+					return await handleSearchArray(item, removeFromSearch, artists, 0.9);
+				}, (err, results: (Artist|undefined)[]|undefined) => {
+					if (err) throw err
+					inputArtists = inputArtists.filter((el) => !removeFromSearch.includes(el));
+					removeFromSearch = [];
+
+					// Replace any parentheses, then go through remaining seperated by: , & and ft ft. feat feat.
+					let inputArtistsString = inputArtists.join(',');
+					inputArtistsString = inputArtistsString.replace('(', ',');
+					inputArtistsString = inputArtistsString.replace(')', '');
+					inputArtists = inputArtistsString.split(/[,&+]|\band\b|\bft\b\.|\bft\b|\bfeat\b\.|\bfeat\b/i);
+
+					mapLimit(inputArtists, 3, async (item) => {
+						return await handleSearchArray(item, removeFromSearch, artists, 0.8);
+					}, (err, results: (Artist|undefined)[]|undefined) => {
+						if (err) throw err
+						inputArtists = inputArtists.filter((el) => !removeFromSearch.includes(el));
+						for (const noResultArtist of inputArtists) {
+							artists.push({
+								name: noResultArtist.trim(),
+								spotifyId: '',
+								picture: undefined,
+								genres: []
+							} as Artist);
+						}
+						setLineup({...lineup, 'artists': artists})
+						setReady(true);
+					});
+				});
+			});
+		}
+	}
+
 	return (
 		<MuiThemeProvider theme={muiTheme}>
 			<CssBaseline />
@@ -116,39 +250,11 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 				<TextField id="festivalCountry-input" label="Country" variant="outlined" onBlur={(evt) => {
 					setLineup({...lineup, 'country': evt.target.value})
 				}} />
-				<TextField id="festivalYear-input" label="Year" variant="outlined" type={'number'} 
+				<TextField id="festivalYear-input" label="Year" variant="outlined" type={'number'}
 				onBlur={(evt) => {
 					setLineup({...lineup, 'year': +evt.target.value})
 				}} />
-				<TextField id="festivalArtists-input" label="Artists" variant="outlined" onChange={(evt) => {
-					if (evt.target.value.length > 0){
-						var artists: Artist[] = [];
-						Promise.all(evt.target.value.split(/[,&]+|\band\b/i).map((item) => {
-							var artistName = item.trim();
-							return spotifyApi.searchArtists(artistName, {limit: 50})
-							.then((response) => {
-								var searchResults: Artist[] = [];
-
-								if (Array.isArray(response.artists.items)) {
-									response.artists.items.forEach(artist => {
-										// TODO: check that the artist name matches. Example: Lil Way, first result is Lil Wayne
-										searchResults.push({name: artist.name, spotifyId: artist.id, picture: artist.images.length > 0 ? artist.images[0].url : '', genres: artist.genres});
-									});
-								}
-								if (searchResults.length > 0) {
-									return artists.push(searchResults[0]);
-								} else {
-									// TODO: Log these to file
-									console.log('No search results for : ' + artistName);
-									return artists.push({name: artistName, spotifyId: '', picture: '', genres: []});
-								}
-							});
-						})).then(() => {
-							setLineup({...lineup, 'artists': artists})
-							setReady(true);
-						});
-					}
-				}} />
+				<TextField id="festivalArtists-input" label="Artists" variant="outlined" onChange={fetchArtistsFromSpotifyAndAddToLineup} />
 				<Button color={'primary'} variant="contained" disabled={!ready} onClick={() => {
 					setReady(false);
 					registerLineup(lineup, props.dispatch);

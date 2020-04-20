@@ -118,8 +118,8 @@ export interface Playlist {
 
 export interface Artist {
     name: string;
-    spotifyId: string;
-    picture: string;
+    spotifyId?: string;
+    picture?: string;
     genres: string[];
 }
 
