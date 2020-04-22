@@ -1,4 +1,4 @@
-import {Action, ActionTypeKeys, Dispatch, Artist, FestivalMatch, Lineup, MatchingMethod, UserInfo, Playlist} from "./types";
+import { Action, ActionTypeKeys, Dispatch, Artist, MatchRequest, FestivalMatch, Lineup, MatchingMethod, UserInfo, Playlist } from "./types";
 
 export const turnOnLoader = (): Action => {
     return {
@@ -73,9 +73,14 @@ export const setMatchingMethod = (method: MatchingMethod): Action => {
 
 export const testFestivalMatches = (
     artists: Artist[],
+    isTopArtists: Boolean,
     dispatch: Dispatch
-    ) => {
+) => {
     dispatch(turnOnLoader());
+    const matchRequest: MatchRequest = {
+        artists: artists,
+        isTopArtists: isTopArtists
+    }
     const backendUrl = 'http://127.0.0.1:8000/onTour/festivalMatches';
     fetch(backendUrl, {
         method: 'POST',
@@ -83,7 +88,7 @@ export const testFestivalMatches = (
             "Accept": "application/json",
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(artists)
+        body: JSON.stringify(matchRequest)
     }).then((response: Response) => {
         response.text().then((id: string) => {
             const matching_festivals: FestivalMatch[] = JSON.parse(id)
@@ -99,7 +104,7 @@ export const testFestivalMatches = (
 export const registerLineup = (
     lineup: Lineup,
     dispatch: Dispatch
-    ) => {
+) => {
     dispatch(turnOnLoader());
     const backendUrl = 'http://127.0.0.1:8000/onTour/' + lineup.festival + '/register';
     fetch(backendUrl, {

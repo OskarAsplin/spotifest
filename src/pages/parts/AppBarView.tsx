@@ -1,11 +1,11 @@
 import React from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { IconButton, Typography, Toolbar, AppBar } from '@material-ui/core';
-import {Brightness2, Brightness4} from "@material-ui/icons";
+import { Brightness2, Brightness4 } from "@material-ui/icons";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import {Model, AppState, DispatchProps} from "../../redux/types";
-import {connect} from "react-redux";
-import {switchToDarkMode, switchToLightMode} from "../../redux/actions";
+import { Model, AppState, DispatchProps } from "../../redux/types";
+import { connect } from "react-redux";
+import { switchToDarkMode, switchToLightMode } from "../../redux/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -38,7 +38,7 @@ type Props = OwnProps & StoreProps & DispatchProps;
 
 const AppBarView: React.FC<Props> = (props: Props) => {
     const classes = useStyles();
-    const {dispatch} = props;
+    const { dispatch } = props;
 
     return (
         <div className={classes.root}>
@@ -47,20 +47,20 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                     <Typography variant="h6" className={classes.title}>
                         OnTour
                     </Typography>
-                    { props.model.userInfo?.displayName ?
+                    {props.model.userInfo?.displayName ?
                         <Typography variant="body1">
                             {props.model.userInfo.displayName}
                         </Typography>
-                        : <div/>
+                        : <div />
                     }
                     <IconButton
                         color="inherit"
-                        target={props.model.userInfo?.spotifyUrl ? "_blank" : undefined }
+                        target={props.model.userInfo?.spotifyUrl ? "_blank" : undefined}
                         href={props.model.userInfo?.spotifyUrl ? props.model.userInfo.spotifyUrl : ""}
                     >
-                        { props.model.userInfo?.profilePictureUrl ? 
-                        <img src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
-                         : <AccountCircleIcon/>}
+                        {props.model.userInfo?.profilePictureUrl ?
+                            <img src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
+                            : <AccountCircleIcon />}
                     </IconButton>
                     <IconButton
                         color="inherit"
@@ -70,7 +70,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                 : dispatch(switchToLightMode());
                         }}
                     >
-                        { props.model.thememode === 'light' ? <Brightness2/> : <Brightness4/>}
+                        {props.model.thememode === 'light' ? <Brightness2 /> : <Brightness4 />}
                     </IconButton>
                 </Toolbar>
             </AppBar>

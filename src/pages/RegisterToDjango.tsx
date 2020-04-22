@@ -1,20 +1,20 @@
-import React, {useEffect, useState} from 'react';
-import {AppState, DispatchProps, Artist, Lineup} from "../redux/types";
-import {registerLineup} from "../redux/actions";
-import {connect} from "react-redux";
-import {createStyles, CssBaseline, MuiThemeProvider, Theme} from "@material-ui/core";
+import React, { useEffect, useState } from 'react';
+import { AppState, DispatchProps, Artist, Lineup } from "../redux/types";
+import { registerLineup } from "../redux/actions";
+import { connect } from "react-redux";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import indigo from "@material-ui/core/colors/indigo";
-import {Model} from "../redux/types";
+import { Model } from "../redux/types";
 //import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import {mapLimit} from 'async';
+import { mapLimit } from 'async';
 
 import SpotifyWebApi from 'spotify-web-api-js';
 const spotifyApi = new SpotifyWebApi();
@@ -59,45 +59,45 @@ const initialLineup: Lineup = {
 }
 
 function editDistance(s1: string, s2: string) {
-  s1 = s1.toLowerCase();
-  s2 = s2.toLowerCase();
+	s1 = s1.toLowerCase();
+	s2 = s2.toLowerCase();
 
-  let costs = [];
-  for (let i = 0; i <= s1.length; i++) {
-    let lastValue = i;
-    for (let j = 0; j <= s2.length; j++) {
-      if (i === 0)
-        costs[j] = j;
-      else {
-        if (j > 0) {
-          let newValue = costs[j - 1];
-          if (s1.charAt(i - 1) !== s2.charAt(j - 1))
-            newValue = Math.min(Math.min(newValue, lastValue),
-              costs[j]) + 1;
-          costs[j - 1] = lastValue;
-          lastValue = newValue;
-        }
-      }
-    }
-    if (i > 0)
-      costs[s2.length] = lastValue;
-  }
-  return costs[s2.length];
+	let costs = [];
+	for (let i = 0; i <= s1.length; i++) {
+		let lastValue = i;
+		for (let j = 0; j <= s2.length; j++) {
+			if (i === 0)
+				costs[j] = j;
+			else {
+				if (j > 0) {
+					let newValue = costs[j - 1];
+					if (s1.charAt(i - 1) !== s2.charAt(j - 1))
+						newValue = Math.min(Math.min(newValue, lastValue),
+							costs[j]) + 1;
+					costs[j - 1] = lastValue;
+					lastValue = newValue;
+				}
+			}
+		}
+		if (i > 0)
+			costs[s2.length] = lastValue;
+	}
+	return costs[s2.length];
 }
 
 
 function similarity(s1: string, s2: string) {
-  let longer = s1;
-  let shorter = s2;
-  if (s1.length < s2.length) {
-    longer = s2;
-    shorter = s1;
-  }
-  let longerLength = longer.length;
-  if (longerLength === 0) {
-    return 1.0;
-  }
-  return (longerLength - editDistance(longer, shorter)) / longerLength;
+	let longer = s1;
+	let shorter = s2;
+	if (s1.length < s2.length) {
+		longer = s2;
+		shorter = s1;
+	}
+	let longerLength = longer.length;
+	if (longerLength === 0) {
+		return 1.0;
+	}
+	return (longerLength - editDistance(longer, shorter)) / longerLength;
 }
 
 const handleSearchArray = async (item: string, removeFromSearch: string[], artists: Artist[], threshold: number): Promise<any> => {
@@ -106,31 +106,31 @@ const handleSearchArray = async (item: string, removeFromSearch: string[], artis
 
 	let artistName: string = item.trim().toLowerCase();
 	return await spotifyApi.searchArtists(artistName)
-	.then((response) => {
-		for (const result of response.artists.items) {
-			if (!result.name) {
-				console.log('search result for ' + artistName + ' is undefined');
+		.then((response) => {
+			for (const result of response.artists.items) {
+				if (!result.name) {
+					console.log('search result for ' + artistName + ' is undefined');
+				}
+				const resultName = result.name.toLowerCase();
+				const sim: number = similarity(resultName.replace(/’s|'s|`s|´s/i, 's'), artistName.replace(/’s|'s|`s|´s/i, 's'));
+				if (resultName === artistName || resultName.replace(/’s|'s|`s|´s/i, 's') === artistName.replace(/’s|'s|`s|´s/i, 's')
+					|| sim > threshold) {
+					const artistMatch: Artist = {
+						name: result.name,
+						spotifyId: result.id,
+						picture: result.images.length > 0 ? result.images[0].url : '',
+						genres: result.genres
+					} as Artist;
+					artists.push(artistMatch);
+					removeFromSearch.push(item);
+					return artistMatch;
+				}
 			}
-			const resultName = result.name.toLowerCase();
-			const sim: number = similarity(resultName.replace(/’s|'s|`s|´s/i, 's'), artistName.replace(/’s|'s|`s|´s/i, 's'));
-			if (resultName === artistName || resultName.replace(/’s|'s|`s|´s/i, 's') === artistName.replace(/’s|'s|`s|´s/i, 's')
-				|| sim > threshold) {
-				const artistMatch: Artist = {
-					name: result.name,
-					spotifyId: result.id,
-					picture: result.images.length > 0 ? result.images[0].url : '',
-					genres: result.genres
-				} as Artist;
-				artists.push(artistMatch);
-				removeFromSearch.push(item);
-				return artistMatch;
-			}
-		}
-	}).catch((error) => {
-		console.log(artistName, ' caused an error:');
-		console.log(error);
-		return undefined;
-	}).finally(() => {return undefined});
+		}).catch((error) => {
+			console.log(artistName, ' caused an error:');
+			console.log(error);
+			return undefined;
+		}).finally(() => { return undefined });
 }
 
 const RegisterToDjango: React.FC<Props> = (props: Props) => {
@@ -170,7 +170,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 	const getAccessTokenFromHashParams = () => {
 		var e, r = /([^&;=]+)=?([^&;]*)/g,
-		q = window.location.hash.substring(1);
+			q = window.location.hash.substring(1);
 		e = r.exec(q);
 		while (e) {
 			if (e[1] === 'access_token') {
@@ -181,7 +181,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 	};
 
 	const fetchArtistsFromSpotifyAndAddToLineup = async (evt: any) => {
-		if (evt.target.value.length > 0){
+		if (evt.target.value.length > 0) {
 			let artists: Artist[] = [];
 			let inputArtists: string[] = evt.target.value.split(/[,]+/i); //.split(/[,&]+|\band\b/i);
 			let removeFromSearch: string[] = [];
@@ -197,7 +197,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 			mapLimit(firstInputArray, 3, async (item) => {
 				return await handleSearchArray(item, removeFromSearch, artists, 0.9);
-			}, (err, results: (Artist|undefined)[]|undefined) => {
+			}, (err, results: (Artist | undefined)[] | undefined) => {
 				if (err) throw err
 				removeFromSearch = removeFromSearch.join(',').split(/[,]+/i);
 				inputArtists = inputArtists.filter((el) => !removeFromSearch.includes(el));
@@ -206,7 +206,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 				// Then go through remaining seperated by: ,
 				mapLimit(inputArtists, 3, async (item) => {
 					return await handleSearchArray(item, removeFromSearch, artists, 0.9);
-				}, (err, results: (Artist|undefined)[]|undefined) => {
+				}, (err, results: (Artist | undefined)[] | undefined) => {
 					if (err) throw err
 					inputArtists = inputArtists.filter((el) => !removeFromSearch.includes(el));
 					removeFromSearch = [];
@@ -219,7 +219,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 					mapLimit(inputArtists, 3, async (item) => {
 						return await handleSearchArray(item, removeFromSearch, artists, 0.8);
-					}, (err, results: (Artist|undefined)[]|undefined) => {
+					}, (err, results: (Artist | undefined)[] | undefined) => {
 						if (err) throw err
 						inputArtists = inputArtists.filter((el) => !removeFromSearch.includes(el));
 						for (const noResultArtist of inputArtists) {
@@ -230,7 +230,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 								genres: []
 							} as Artist);
 						}
-						setLineup({...lineup, 'artists': artists})
+						setLineup({ ...lineup, 'artists': artists })
 						setReady(true);
 					});
 				});
@@ -245,15 +245,15 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 			<div className={classes.verticalSpace} />
 			<form className={classes.root} noValidate autoComplete="off">
 				<TextField id="festivalName-input" label="Festival" variant="outlined" onBlur={(evt) => {
-					setLineup({...lineup, 'festival': evt.target.value})
+					setLineup({ ...lineup, 'festival': evt.target.value })
 				}} />
 				<TextField id="festivalCountry-input" label="Country" variant="outlined" onBlur={(evt) => {
-					setLineup({...lineup, 'country': evt.target.value})
+					setLineup({ ...lineup, 'country': evt.target.value })
 				}} />
 				<TextField id="festivalYear-input" label="Year" variant="outlined" type={'number'}
-				onBlur={(evt) => {
-					setLineup({...lineup, 'year': +evt.target.value})
-				}} />
+					onBlur={(evt) => {
+						setLineup({ ...lineup, 'year': +evt.target.value })
+					}} />
 				<TextField id="festivalArtists-input" label="Artists" variant="outlined" onChange={fetchArtistsFromSpotifyAndAddToLineup} />
 				<Button color={'primary'} variant="contained" disabled={!ready} onClick={() => {
 					setReady(false);

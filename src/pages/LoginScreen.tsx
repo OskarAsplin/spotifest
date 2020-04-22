@@ -1,14 +1,14 @@
 import React from 'react';
-import {AppState, DispatchProps} from "../redux/types";
-import {connect} from "react-redux";
-import {createStyles, CssBaseline, MuiThemeProvider, Theme} from "@material-ui/core";
+import { AppState, DispatchProps } from "../redux/types";
+import { connect } from "react-redux";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import indigo from "@material-ui/core/colors/indigo";
-import {Model} from "../redux/types";
+import { Model } from "../redux/types";
 import 'react-circular-progressbar/dist/styles.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -59,18 +59,18 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
 
 	return (
 		//<SplashScreen>
-			<MuiThemeProvider theme={muiTheme}>
-				<CssBaseline />
-				<AppBarView />
-				<div className={classes.root}>
-					<a href='http://localhost:8888' > Login to Spotify to check your recommended festivals!!! </a>
-				</div>
+		<MuiThemeProvider theme={muiTheme}>
+			<CssBaseline />
+			<AppBarView />
+			<div className={classes.root}>
+				<a href='http://localhost:8888' > Login to Spotify to check your recommended festivals!!! </a>
+			</div>
 
-				<div hidden={!loaderOn} className={classes.progressBar}>
-					<CircularProgress size={100} thickness={3} disableShrink color={'secondary'} />
-				</div>
+			<div hidden={!loaderOn} className={classes.progressBar}>
+				<CircularProgress size={100} thickness={3} disableShrink color={'secondary'} />
+			</div>
 
-			</MuiThemeProvider>
+		</MuiThemeProvider>
 		//</SplashScreen>
 	);
 };

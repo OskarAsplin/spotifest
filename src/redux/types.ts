@@ -1,5 +1,5 @@
-import {ExampleModel} from "./example/exampleTypes";
-import {PaletteType} from "@material-ui/core";
+import { ExampleModel } from "./example/exampleTypes";
+import { PaletteType } from "@material-ui/core";
 
 export type Dispatch = (action: any) => Promise<any>;
 
@@ -128,6 +128,11 @@ export interface Lineup {
     country: string;
     year: number;
     artists: Artist[];
+}
+
+export interface MatchRequest {
+    artists: Artist[],
+    isTopArtists: Boolean
 }
 
 export interface FestivalMatch {
