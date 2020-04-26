@@ -17,6 +17,7 @@
     "@types/react-router": "^5.1.4",
     "@types/react-router-dom": "^5.1.3",
     "connected-react-router": "^6.5.2",
+    "countries-list": "^2.5.4",
     "react": "^16.12.0",
     "react-circular-progressbar": "^2.0.3",
     "react-dom": "^16.12.0",

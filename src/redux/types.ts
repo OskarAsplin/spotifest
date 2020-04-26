@@ -16,6 +16,9 @@ export interface Model {
     playlists: Playlist[];
     festivalMatches: FestivalMatch[];
     matchingMethod: MatchingMethod;
+    countries: Area[];
+    continents: Area[];
+    chosenArea: Area;
 }
 
 export interface AppState {
@@ -34,7 +37,11 @@ export type Action
     | SetTopArtists
     | SetPlaylists
     | AddFestivalMatch
+    | AddFestivalMatches
+    | AddCountries
+    | AddContinents
     | SetMatchingMethod
+    | SetChosenArea
 
 export enum ActionTypeKeys {
     TURN_ON_LOADER = "TURN_ON_LOADER",
@@ -47,7 +54,11 @@ export enum ActionTypeKeys {
     SET_TOP_ARTISTS = "SET_TOP_ARTISTS",
     SET_PLAYLISTS = "SET_PLAYLISTS",
     ADD_FESTIVAL_MATCH = "ADD_FESTIVAL_MATCH",
+    ADD_FESTIVAL_MATCHES = "ADD_FESTIVAL_MATCHES",
+    ADD_COUNTRIES = "ADD_COUNTRIES",
+    ADD_CONTINENTS = "ADD_CONTINENTS",
     SET_MATCHING_METHOD = "SET_MATCHING_METHOD",
+    SET_CHOSEN_AREA = "SET_CHOSEN_AREA",
 }
 
 export interface TurnOnLoader {
@@ -94,9 +105,29 @@ export interface AddFestivalMatch {
     festival: FestivalMatch;
 }
 
+export interface AddFestivalMatches {
+    type: ActionTypeKeys.ADD_FESTIVAL_MATCHES;
+    festivals: FestivalMatch[];
+}
+
+export interface AddCountries {
+    type: ActionTypeKeys.ADD_COUNTRIES;
+    countries: Area[];
+}
+
+export interface AddContinents {
+    type: ActionTypeKeys.ADD_CONTINENTS;
+    continents: Area[];
+}
+
 export interface SetMatchingMethod {
     type: ActionTypeKeys.SET_MATCHING_METHOD;
     method: MatchingMethod;
+}
+
+export interface SetChosenArea {
+    type: ActionTypeKeys.SET_CHOSEN_AREA;
+    area: Area;
 }
 
 
@@ -132,7 +163,9 @@ export interface Lineup {
 
 export interface MatchRequest {
     artists: Artist[],
-    isTopArtists: Boolean
+    isTopArtists: Boolean,
+    continents: string[],
+    countries: string[]
 }
 
 export interface FestivalMatch {
@@ -141,6 +174,11 @@ export interface FestivalMatch {
     matching_artists: string[],
     matching_percent_genres: number,
     matching_genres: string[]
+}
+
+export interface Area {
+    name: string,
+    isoCode: string
 }
 
 export enum MatchingMethod {

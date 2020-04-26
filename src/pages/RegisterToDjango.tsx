@@ -133,6 +133,8 @@ const handleSearchArray = async (item: string, removeFromSearch: string[], artis
 		}).finally(() => { return undefined });
 }
 
+const allTrueChecker = (arr: boolean[]) => arr.every(Boolean);
+
 const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 	useEffect(() => {
@@ -145,6 +147,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 	const [lineup, setLineup] = useState<Lineup>(initialLineup);
 	const [ready, setReady] = useState<boolean>(false);
+	const [readyArr, setReadyArr] = useState<[boolean, boolean, boolean, boolean]>([false, false, false, false]);
 
 
 	//const smallScreen = useMediaQuery('(max-width:610px)');
@@ -179,6 +182,12 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 		}
 		return '';
 	};
+
+	const setInputFieldReady = (num: number, ready: boolean) => {
+		readyArr[num] = ready;
+		setReadyArr(readyArr);
+		allTrueChecker(readyArr) ? setReady(true) : setReady(false);
+	}
 
 	const fetchArtistsFromSpotifyAndAddToLineup = async (evt: any) => {
 		if (evt.target.value.length > 0) {
@@ -231,7 +240,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 							} as Artist);
 						}
 						setLineup({ ...lineup, 'artists': artists })
-						setReady(true);
+						setInputFieldReady(3, true);
 					});
 				});
 			});
@@ -244,17 +253,23 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 			<AppBarView />
 			<div className={classes.verticalSpace} />
 			<form className={classes.root} noValidate autoComplete="off">
-				<TextField id="festivalName-input" label="Festival" variant="outlined" onBlur={(evt) => {
-					setLineup({ ...lineup, 'festival': evt.target.value })
-				}} />
-				<TextField id="festivalCountry-input" label="Country" variant="outlined" onBlur={(evt) => {
-					setLineup({ ...lineup, 'country': evt.target.value })
-				}} />
-				<TextField id="festivalYear-input" label="Year" variant="outlined" type={'number'}
-					onBlur={(evt) => {
-						setLineup({ ...lineup, 'year': +evt.target.value })
+				<TextField id="festivalName-input" label="Festival" variant="outlined"
+					required onBlur={(evt) => {
+						setLineup({ ...lineup, 'festival': evt.target.value });
+						setInputFieldReady(0, evt.target.value.length > 0);
 					}} />
-				<TextField id="festivalArtists-input" label="Artists" variant="outlined" onChange={fetchArtistsFromSpotifyAndAddToLineup} />
+				<TextField id="festivalCountry-input" label="Country" variant="outlined"
+					inputProps={{ maxLength: 2 }} required onBlur={(evt) => {
+						setLineup({ ...lineup, 'country': evt.target.value });
+						setInputFieldReady(1, evt.target.value.length === 2);
+					}} />
+				<TextField id="festivalYear-input" label="Year" variant="outlined" type={'number'}
+					required onBlur={(evt) => {
+						setLineup({ ...lineup, 'year': +evt.target.value });
+						setInputFieldReady(2, +evt.target.value > 2016 && +evt.target.value < 2021);
+					}} />
+				<TextField id="festivalArtists-input" label="Artists" variant="outlined"
+					required onChange={fetchArtistsFromSpotifyAndAddToLineup} />
 				<Button color={'primary'} variant="contained" disabled={!ready} onClick={() => {
 					setReady(false);
 					registerLineup(lineup, props.dispatch);

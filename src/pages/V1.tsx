@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { AppState, DispatchProps, Artist, UserInfo, Playlist } from "../redux/types";
-import { testFestivalMatches, setLoggedOff, setUserInfo, setTopArtists, setPlaylists } from "../redux/actions";
+import { AppState, DispatchProps } from "../redux/types";
+import { initializeSite } from "../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, CssBaseline, MuiThemeProvider, Theme } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -14,12 +14,8 @@ import indigo from "@material-ui/core/colors/indigo";
 import { Model } from "../redux/types";
 //import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
-//import Button from '@material-ui/core/Button';
 import { Redirect } from 'react-router-dom';
 //import SplashScreen from "../components/splashScreen";
-
-import SpotifyWebApi from 'spotify-web-api-js';
-const spotifyApi = new SpotifyWebApi();
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -59,8 +55,7 @@ const V1: React.FC<Props> = (props: Props) => {
     useEffect(() => {
         const token = getAccessTokenFromHashParams();
         if (token) {
-            spotifyApi.setAccessToken(token);
-            collectUserDataAndTestMatches();
+            initializeSite(token, props.dispatch);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -100,76 +95,6 @@ const V1: React.FC<Props> = (props: Props) => {
     };
 
     const token = getAccessTokenFromHashParams();
-
-    const collectUserDataAndTestMatches = () => {
-        if (token) {
-            spotifyApi.setAccessToken(token);
-        }
-
-        spotifyApi.getMe().then((responseGetMe: SpotifyApi.CurrentUsersProfileResponse) => {
-            console.log('getMe response: ');
-            console.log(responseGetMe)
-
-            const userInfo: UserInfo = {
-                country: responseGetMe.country,
-                displayName: responseGetMe.display_name ? responseGetMe.display_name : undefined,
-                profilePictureUrl: responseGetMe.images ? responseGetMe.images[0].url : undefined,
-                spotifyUrl: responseGetMe.external_urls.spotify,
-                id: responseGetMe.id
-            }
-
-            props.dispatch(setUserInfo(userInfo));
-
-
-            spotifyApi.getMyTopArtists({ limit: 50 })
-                .then((response: SpotifyApi.UsersTopArtistsResponse) => {
-                    console.log('getTopArtists response: ');
-                    console.log(response);
-                    const topArtists: Artist[] = response.items.map((artist) => {
-                        return {
-                            name: artist.name,
-                            spotifyId: artist.id,
-                            picture: artist.images[0]?.url ? artist.images[0].url : undefined,
-                            genres: artist.genres
-                        } as Artist;
-                    });
-
-                    props.dispatch(setTopArtists(topArtists));
-                    testFestivalMatches(topArtists, true, props.dispatch);
-                })
-                .catch((error) => {
-                    console.log(error);
-                    props.dispatch(setLoggedOff());
-                })
-
-            spotifyApi.getUserPlaylists(responseGetMe.id, { limit: 50 })
-                .then((response: SpotifyApi.ListOfUsersPlaylistsResponse) => {
-                    console.log('getUserPlaylists response: ');
-                    console.log(response);
-
-                    const playlists: Playlist[] = response.items.map((playlist) => {
-                        const formattedPlaylist: Playlist = {
-                            name: playlist.name,
-                            id: playlist.id,
-                            images: playlist.images.map((image) => { return image.url; }),
-                            ownerId: playlist.owner.id,
-                            numTracks: playlist.tracks.total
-                        };
-                        return formattedPlaylist;
-                    });
-
-                    props.dispatch(setPlaylists(playlists));
-                })
-                .catch((error) => {
-                    console.log(error);
-                    props.dispatch(setLoggedOff());
-                })
-        }).catch((error) => {
-            console.log(error);
-            props.dispatch(setLoggedOff());
-        })
-
-    }
 
     if (!props.model.loggedIn || !token) {
         return <Redirect to='/login' />

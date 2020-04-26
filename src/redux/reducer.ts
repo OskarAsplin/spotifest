@@ -1,4 +1,4 @@
-import { Action, ActionTypeKeys, Model, FestivalMatch, MatchingMethod } from "./types";
+import { Action, ActionTypeKeys, Model, FestivalMatch, MatchingMethod, Area } from "./types";
 import { Reducer } from "redux";
 
 
@@ -15,6 +15,9 @@ export const initialModel: Model = {
     playlists: [],
     festivalMatches: [],
     matchingMethod: MatchingMethod.Genre,
+    countries: [],
+    continents: [],
+    chosenArea: { name: 'Everywhere', isoCode: 'everywhere' } as Area
 };
 
 const reducer: Reducer<Model, Action> = (
@@ -63,9 +66,25 @@ const reducer: Reducer<Model, Action> = (
             }
             return s0
         }
+        case ActionTypeKeys.ADD_FESTIVAL_MATCHES: {
+            const { festivals } = action;
+            return { ...state, festivalMatches: festivals }
+        }
+        case ActionTypeKeys.ADD_COUNTRIES: {
+            const { countries } = action;
+            return { ...state, countries: countries }
+        }
+        case ActionTypeKeys.ADD_CONTINENTS: {
+            const { continents } = action;
+            return { ...state, continents: continents }
+        }
         case ActionTypeKeys.SET_MATCHING_METHOD: {
             const { method } = action;
             return { ...state, matchingMethod: method }
+        }
+        case ActionTypeKeys.SET_CHOSEN_AREA: {
+            const { area } = action;
+            return { ...state, chosenArea: area }
         }
         default:
             return state;
