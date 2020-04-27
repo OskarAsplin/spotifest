@@ -1,12 +1,13 @@
 import React from 'react';
 import './App.css';
 
-import {ConnectedRouter} from "connected-react-router";
-import configureStore, {history} from "./configureStore";
-import {Provider} from "react-redux";
-import {Route, Switch} from "react-router";
-import {IntlProvider} from "react-intl";
-import {texts} from "./texts/texts";
+import { ConnectedRouter } from "connected-react-router";
+import configureStore, { history } from "./configureStore";
+import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from "react-redux";
+import { Route, Switch } from "react-router";
+import { IntlProvider } from "react-intl";
+import { texts } from "./texts/texts";
 //import './App.less';
 //import UserGuide from "./pages/UserGuide";
 //import NotFound from "./components/notFound";
@@ -16,26 +17,27 @@ import RegisterToDjango from "./pages/RegisterToDjango";
 import LoginScreen from "./pages/LoginScreen";
 
 
-
-const store = configureStore();
+const { store, persistor } = configureStore();
 
 const App: React.FC = () => {
   const language = "nb";
 
   return (
     <Provider store={store}>
-      <IntlProvider defaultLocale={language} locale={language} messages={texts[language]}>
-        <div className="informasjon-side">
-          <ConnectedRouter history={history}>
-            <Switch>
-              <Route exact path="/" component={V1}/>
-              <Route exact path="/login" component={LoginScreen}/>
-              <Route exact path="/register" component={RegisterToDjango}/>
-              <Route component={RegisterToDjango}/>
-            </Switch>
-          </ConnectedRouter>
-        </div>
-      </IntlProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <IntlProvider defaultLocale={language} locale={language} messages={texts[language]}>
+          <div className="informasjon-side">
+            <ConnectedRouter history={history}>
+              <Switch>
+                <Route exact path="/" component={V1} />
+                <Route exact path="/login" component={LoginScreen} />
+                <Route exact path="/register" component={RegisterToDjango} />
+                <Route component={RegisterToDjango} />
+              </Switch>
+            </ConnectedRouter>
+          </div>
+        </IntlProvider>
+      </PersistGate>
     </Provider>
   );
 };

@@ -36,6 +36,18 @@ interface StoreProps {
 
 type Props = DispatchProps & StoreProps;
 
+export const authEndpoint = 'https://accounts.spotify.com/authorize';
+
+const clientId = '***REMOVED***';
+const redirectUri = 'http://localhost:3000';
+const scopes = [
+	'user-read-private',
+	'user-top-read',
+	'user-read-email',
+	'user-read-playback-state'
+];
+
+
 const LoginScreen: React.FC<Props> = (props: Props) => {
 
 	const loaderOn = props.model.loaderOn;
@@ -63,7 +75,9 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
 			<CssBaseline />
 			<AppBarView />
 			<div className={classes.root}>
-				<a href='http://localhost:8888' > Login to Spotify to check your recommended festivals!!! </a>
+				<a href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`} >
+					Login to Spotify to check your recommended festivals!!!
+				</a>
 			</div>
 
 			<div hidden={!loaderOn} className={classes.progressBar}>

@@ -1,9 +1,11 @@
 import { createBrowserHistory } from 'history'
 import { applyMiddleware, compose, createStore } from 'redux'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
 import { routerMiddleware } from 'connected-react-router'
 import reducers from './rootReducer'
 import thunkMiddleware from 'redux-thunk'
-import {erDev} from "./utils/restUtils";
+import { erDev } from "./utils/restUtils";
 
 /**
  * Resolves basename in a pathname independent way
@@ -18,19 +20,26 @@ export const history = createBrowserHistory({
 	basename: getAbsoluteBasename()
 });
 
-export default function configureStore() {
-	const w : any = window as any;
-	const devtools: any = w.__REDUX_DEVTOOLS_EXTENSION__ ? w.__REDUX_DEVTOOLS_EXTENSION__() : (f:any)=>f;
+const persistConfig = {
+	key: 'root',
+	storage,
+}
 
-	const store = createStore(
-		reducers(history),
+const persistedReducer = persistReducer(persistConfig, reducers(history))
+
+export default () => {
+	const w: any = window as any;
+	const devtools: any = w.__REDUX_DEVTOOLS_EXTENSION__ ? w.__REDUX_DEVTOOLS_EXTENSION__() : (f: any) => f;
+
+	let store = createStore(
+		persistedReducer,
 		compose(
 			applyMiddleware(
 				routerMiddleware(history),
 				thunkMiddleware
 			),
 			devtools
-		)
-	);
-	return store;
-};
+		))
+	let persistor = persistStore(store)
+	return { store, persistor }
+}

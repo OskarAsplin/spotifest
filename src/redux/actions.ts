@@ -41,6 +41,13 @@ export const switchToLightMode = (): Action => {
     }
 };
 
+export const setAccessToken = (accessToken: string): Action => {
+    return {
+        type: ActionTypeKeys.SET_ACCESS_TOKEN,
+        accessToken: accessToken
+    }
+};
+
 export const setUserInfo = (info: UserInfo): Action => {
     return {
         type: ActionTypeKeys.SET_USER_INFO,

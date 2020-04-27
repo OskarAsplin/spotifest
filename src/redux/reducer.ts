@@ -10,6 +10,7 @@ export const initialModel: Model = {
     thememode: 'light',
 
     //Logikk
+    accessToken: '',
     userInfo: undefined,
     topArtists: [],
     playlists: [],
@@ -31,6 +32,10 @@ const reducer: Reducer<Model, Action> = (
         case ActionTypeKeys.SET_LOGGED_OFF: return { ...state, loggedIn: false };
         case ActionTypeKeys.SWITCH_TO_LIGHT_MODE: { return { ...state, thememode: 'light' } }
         case ActionTypeKeys.SWITCH_TO_DARK_MODE: { return { ...state, thememode: 'dark' } }
+        case ActionTypeKeys.SET_ACCESS_TOKEN: {
+            const { accessToken } = action;
+            return { ...state, accessToken: accessToken }
+        }
         case ActionTypeKeys.SET_USER_INFO: {
             const { info } = action;
             return { ...state, userInfo: info }

@@ -11,6 +11,7 @@ export interface Model {
     loaderOn: boolean;
     loggedIn: boolean;
     thememode: PaletteType;
+    accessToken: string;
     userInfo?: UserInfo;
     topArtists: Artist[];
     playlists: Playlist[];
@@ -33,6 +34,7 @@ export type Action
     | SetLoggedOff
     | SwitchToDarkMode
     | SwitchToLightMode
+    | SetAccessToken
     | SetUserInfo
     | SetTopArtists
     | SetPlaylists
@@ -50,6 +52,7 @@ export enum ActionTypeKeys {
     SET_LOGGED_OFF = "SET_LOGGED_OFF",
     SWITCH_TO_DARK_MODE = "SWITCH_TO_DARK_MODE",
     SWITCH_TO_LIGHT_MODE = "SWITCH_TO_LIGHT_MODE",
+    SET_ACCESS_TOKEN = "SET_ACCESS_TOKEN",
     SET_USER_INFO = "SET_USER_INFO",
     SET_TOP_ARTISTS = "SET_TOP_ARTISTS",
     SET_PLAYLISTS = "SET_PLAYLISTS",
@@ -83,6 +86,11 @@ export interface SwitchToDarkMode {
 
 export interface SwitchToLightMode {
     type: ActionTypeKeys.SWITCH_TO_LIGHT_MODE;
+}
+
+export interface SetAccessToken {
+    type: ActionTypeKeys.SET_ACCESS_TOKEN;
+    accessToken: string;
 }
 
 export interface SetUserInfo {

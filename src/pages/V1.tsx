@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps } from "../redux/types";
-import { initializeSite } from "../redux/actions";
+import { initializeSite, setAccessToken } from "../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, CssBaseline, MuiThemeProvider, Theme } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -50,12 +50,29 @@ interface StoreProps {
 
 type Props = DispatchProps & StoreProps;
 
+// Get the hash of the url
+const getAccessTokenFromHashParams = () => {
+    var e, r = /([^&;=]+)=?([^&;]*)/g,
+        q = window.location.hash.substring(1);
+    e = r.exec(q);
+    while (e) {
+        if (e[1] === 'access_token') {
+            return decodeURIComponent(e[2]);
+        }
+    }
+    return '';
+};
+
+const token = getAccessTokenFromHashParams();
+
+window.history.pushState("", document.title, window.location.pathname + window.location.search);
+
 const V1: React.FC<Props> = (props: Props) => {
 
     useEffect(() => {
-        const token = getAccessTokenFromHashParams();
         if (token) {
             initializeSite(token, props.dispatch);
+            props.dispatch(setAccessToken(token));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -82,21 +99,7 @@ const V1: React.FC<Props> = (props: Props) => {
 
     const classes = useStyles();
 
-    const getAccessTokenFromHashParams = () => {
-        var e, r = /([^&;=]+)=?([^&;]*)/g,
-            q = window.location.hash.substring(1);
-        e = r.exec(q);
-        while (e) {
-            if (e[1] === 'access_token') {
-                return decodeURIComponent(e[2]);
-            }
-        }
-        return '';
-    };
-
-    const token = getAccessTokenFromHashParams();
-
-    if (!props.model.loggedIn || !token) {
+    if (!props.model.loggedIn || (!token && !props.model.accessToken)) {
         return <Redirect to='/login' />
     }
     return (
