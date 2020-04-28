@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps } from "../redux/types";
-import { initializeSite, setAccessToken } from "../redux/actions";
+import { initializeSite, setAccessToken, spotifyApi } from "../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, CssBaseline, MuiThemeProvider, Theme } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -73,6 +73,8 @@ const V1: React.FC<Props> = (props: Props) => {
         if (token) {
             initializeSite(token, props.dispatch);
             props.dispatch(setAccessToken(token));
+        } else if (props.model.accessToken) {
+            spotifyApi.setAccessToken(props.model.accessToken);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

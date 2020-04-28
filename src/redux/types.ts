@@ -159,6 +159,7 @@ export interface Artist {
     name: string;
     spotifyId?: string;
     picture?: string;
+    popularity: number;
     genres: string[];
 }
 
@@ -179,7 +180,8 @@ export interface MatchRequest {
 export interface FestivalMatch {
     name: string,
     matching_percent_artists: number,
-    matching_artists: string[],
+    matching_artists: Artist[],
+    popular_artists: Artist[],
     matching_percent_genres: number,
     matching_genres: string[]
 }

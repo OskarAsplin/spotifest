@@ -15,9 +15,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { mapLimit } from 'async';
-
-import SpotifyWebApi from 'spotify-web-api-js';
-const spotifyApi = new SpotifyWebApi();
+import { spotifyApi } from "../redux/actions";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -115,10 +113,23 @@ const handleSearchArray = async (item: string, removeFromSearch: string[], artis
 				const sim: number = similarity(resultName.replace(/’s|'s|`s|´s/i, 's'), artistName.replace(/’s|'s|`s|´s/i, 's'));
 				if (resultName === artistName || resultName.replace(/’s|'s|`s|´s/i, 's') === artistName.replace(/’s|'s|`s|´s/i, 's')
 					|| sim > threshold) {
+					let picture = '';
+					if (result.images.length > 0) {
+						result.images.slice().reverse().forEach((image) => {
+							if (picture === '' && image.height && image.height > 159 && image.width && image.width > 159) {
+								picture = image.url;
+							}
+						});
+						if (picture === '') {
+							picture = result.images[0].url;
+						}
+					}
+					//const picture = result.images.filter((image) => image.height && image.height > 159 && image.width && image.width > 159)
 					const artistMatch: Artist = {
 						name: result.name,
 						spotifyId: result.id,
-						picture: result.images.length > 0 ? result.images[0].url : '',
+						picture: picture,
+						popularity: result.popularity,
 						genres: result.genres
 					} as Artist;
 					artists.push(artistMatch);
@@ -138,9 +149,8 @@ const allTrueChecker = (arr: boolean[]) => arr.every(Boolean);
 const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 	useEffect(() => {
-		const token = getAccessTokenFromHashParams();
-		if (token) {
-			spotifyApi.setAccessToken(token);
+		if (props.model.accessToken) {
+			spotifyApi.setAccessToken(props.model.accessToken);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -170,18 +180,6 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 	});
 
 	const classes = useStyles();
-
-	const getAccessTokenFromHashParams = () => {
-		var e, r = /([^&;=]+)=?([^&;]*)/g,
-			q = window.location.hash.substring(1);
-		e = r.exec(q);
-		while (e) {
-			if (e[1] === 'access_token') {
-				return decodeURIComponent(e[2]);
-			}
-		}
-		return '';
-	};
 
 	const setInputFieldReady = (num: number, ready: boolean) => {
 		readyArr[num] = ready;
@@ -236,6 +234,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 								name: noResultArtist.trim(),
 								spotifyId: '',
 								picture: undefined,
+								popularity: 0,
 								genres: []
 							} as Artist);
 						}

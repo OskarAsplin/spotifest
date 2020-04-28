@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area } from "../../redux/types";
-import { setMatchingMethod, setLoggedOff, testFestivalMatches, turnOnLoader, setChosenArea } from "../../redux/actions";
+import { spotifyApi, setMatchingMethod, setLoggedOff, testFestivalMatches, turnOnLoader, setChosenArea } from "../../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, MuiThemeProvider, Theme } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -24,9 +24,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import ListSubheader from '@material-ui/core/ListSubheader';
-
-import SpotifyWebApi from 'spotify-web-api-js';
-const spotifyApi = new SpotifyWebApi();
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -203,6 +200,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								name: artistResponse.name,
 								spotifyId: artistResponse.id,
 								picture: artistResponse.images[0]?.url ? artistResponse.images[0].url : undefined,
+								popularity: artistResponse.popularity,
 								genres: artistResponse.genres
 							} as Artist);
 						})
@@ -255,7 +253,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								label="Match with"
 							>
 								<MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
-									Your top 50 artists
+									Your top artists
 								</MenuItem>
 								<ListSubheader>or choose a playlist below</ListSubheader>
 								{playlists.map((playlist) => (

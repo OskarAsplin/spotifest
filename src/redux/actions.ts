@@ -3,7 +3,7 @@ import { fetchToJson } from "../utils/restUtils";
 import countries_list from 'countries-list/dist/data.json';
 
 import SpotifyWebApi from 'spotify-web-api-js';
-const spotifyApi = new SpotifyWebApi();
+export const spotifyApi = new SpotifyWebApi();
 
 export const turnOnLoader = (): Action => {
     return {
@@ -200,6 +200,7 @@ export const initializeSite = async (
                             name: artist.name,
                             spotifyId: artist.id,
                             picture: artist.images[0]?.url ? artist.images[0].url : undefined,
+                            popularity: artist.popularity,
                             genres: artist.genres
                         } as Artist;
                     });
