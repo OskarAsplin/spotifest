@@ -29,7 +29,7 @@ const reducer: Reducer<Model, Action> = (
         case ActionTypeKeys.TURN_ON_LOADER: return { ...state, loaderOn: true };
         case ActionTypeKeys.TURN_OFF_LOADER: return { ...state, loaderOn: false };
         case ActionTypeKeys.SET_LOGGED_IN: return { ...state, loggedIn: true };
-        case ActionTypeKeys.SET_LOGGED_OFF: return { ...state, loggedIn: false };
+        case ActionTypeKeys.SET_LOGGED_OFF: return { ...initialModel, loggedIn: false, thememode: state.thememode };
         case ActionTypeKeys.SWITCH_TO_LIGHT_MODE: { return { ...state, thememode: 'light' } }
         case ActionTypeKeys.SWITCH_TO_DARK_MODE: { return { ...state, thememode: 'dark' } }
         case ActionTypeKeys.SET_ACCESS_TOKEN: {

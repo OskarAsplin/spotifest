@@ -1,5 +1,5 @@
-import React from 'react';
-import { AppState, DispatchProps } from "../redux/types";
+import React, { useEffect } from 'react';
+import { Model, AppState, DispatchProps } from "../redux/types";
 import { connect } from "react-redux";
 import { createStyles, CssBaseline, MuiThemeProvider, Theme } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -8,7 +8,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import indigo from "@material-ui/core/colors/indigo";
-import { Model } from "../redux/types";
+import { setLoggedIn, setLoggedOff } from "../redux/actions";
 import 'react-circular-progressbar/dist/styles.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -50,6 +50,11 @@ const scopes = [
 
 const LoginScreen: React.FC<Props> = (props: Props) => {
 
+	useEffect(() => {
+		props.dispatch(setLoggedOff());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
 	const loaderOn = props.model.loaderOn;
 	const muiTheme = createMuiTheme({
 		palette: {
@@ -75,7 +80,8 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
 			<CssBaseline />
 			<AppBarView />
 			<div className={classes.root}>
-				<a href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`} >
+				<a href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token`}
+					onClick={() => props.dispatch(setLoggedIn())}>
 					Login to Spotify to check your recommended festivals!!!
 				</a>
 			</div>
