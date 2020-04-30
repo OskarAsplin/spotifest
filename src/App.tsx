@@ -15,6 +15,8 @@ import { texts } from "./texts/texts";
 import V1 from "./pages/V1";
 import RegisterToDjango from "./pages/RegisterToDjango";
 import LoginScreen from "./pages/LoginScreen";
+import ArtistPage from "./pages/ArtistPage";
+import FestivalPage from "./pages/FestivalPage";
 
 
 const { store, persistor } = configureStore();
@@ -32,7 +34,8 @@ const App: React.FC = () => {
                 <Route exact path="/" component={V1} />
                 <Route exact path="/login" component={LoginScreen} />
                 <Route exact path="/register" component={RegisterToDjango} />
-                <Route component={RegisterToDjango} />
+                <Route exact path="/artist" component={ArtistPage} />
+                <Route exact path="/festival" component={FestivalPage} />
               </Switch>
             </ConnectedRouter>
           </div>

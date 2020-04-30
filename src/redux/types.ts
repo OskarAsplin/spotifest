@@ -183,7 +183,8 @@ export interface FestivalMatch {
     matching_artists: Artist[],
     popular_artists: Artist[],
     matching_percent_genres: number,
-    matching_genres: string[]
+    matching_genres: string[],
+    lineupImg: string
 }
 
 export interface Area {

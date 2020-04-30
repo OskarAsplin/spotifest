@@ -157,7 +157,8 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 	const [lineup, setLineup] = useState<Lineup>(initialLineup);
 	const [ready, setReady] = useState<boolean>(false);
-	const [readyArr, setReadyArr] = useState<[boolean, boolean, boolean, boolean]>([false, false, false, false]);
+	//const [readyArr, setReadyArr] = useState<[boolean, boolean, boolean, boolean]>([false, false, false, false]);
+	const [readyArr, setReadyArr] = useState<boolean[]>(new Array(4).fill(false) as boolean[]);
 
 
 	//const smallScreen = useMediaQuery('(max-width:610px)');
