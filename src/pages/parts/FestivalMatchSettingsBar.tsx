@@ -257,7 +257,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								</MenuItem>
 								<ListSubheader>or choose a playlist below</ListSubheader>
 								{playlists.map((playlist) => (
-									<MenuItem key={playlist.name} value={playlist.name}>
+									<MenuItem key={playlist.name} value={playlist.name} style={{ maxWidth: 400 }}>
 										{playlist.name}
 									</MenuItem>
 								))}

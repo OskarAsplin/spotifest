@@ -43,8 +43,8 @@ const redirectUri = 'http://localhost:3000';
 const scopes = [
 	'user-read-private',
 	'user-top-read',
-	'user-read-email',
-	'user-read-playback-state'
+	'playlist-read-private',
+	'playlist-read-collaborative',
 ];
 
 
