@@ -1,6 +1,7 @@
-import { Action, ActionTypeKeys, Dispatch, Artist, MatchRequest, FestivalMatch, Area, Lineup, MatchingMethod, UserInfo, Playlist } from "./types";
+import { Action, ActionTypeKeys, Dispatch, Artist, FestivalMetadata, MatchRequest, FestivalMatch, Area, Lineup, MatchingMethod, UserInfo, Playlist } from "./types";
 import { fetchToJson } from "../utils/restUtils";
 import countries_list from 'countries-list/dist/data.json';
+
 
 import SpotifyWebApi from 'spotify-web-api-js';
 export const spotifyApi = new SpotifyWebApi();
@@ -148,7 +149,7 @@ export const registerLineup = (
     dispatch: Dispatch
 ) => {
     dispatch(turnOnLoader());
-    const backendUrl = 'http://127.0.0.1:8000/onTour/' + lineup.festival + '/register';
+    const backendUrl = 'http://127.0.0.1:8000/onTour/registerLineup';
     fetch(backendUrl, {
         method: 'POST',
         headers: {
@@ -156,6 +157,24 @@ export const registerLineup = (
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(lineup)
+    }).catch((reason) => {
+        console.log(reason);
+    }).finally(() => dispatch(turnOffLoader()));;
+};
+
+export const registerFestivalsMetadata = (
+    festivalMetadatas: FestivalMetadata[],
+    dispatch: Dispatch
+) => {
+    dispatch(turnOnLoader());
+    const backendUrl = 'http://127.0.0.1:8000/onTour/registerFestivalsMetadata';
+    fetch(backendUrl, {
+        method: 'POST',
+        headers: {
+            "Accept": "application/json",
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(festivalMetadatas)
     }).catch((reason) => {
         console.log(reason);
     }).finally(() => dispatch(turnOffLoader()));;

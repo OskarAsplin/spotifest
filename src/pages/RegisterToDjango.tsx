@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { AppState, DispatchProps, Artist, Lineup } from "../redux/types";
-import { registerLineup } from "../redux/actions";
+import { AppState, DispatchProps, Artist, Lineup, RegisterFestival, FestivalMetadata, YearLineup, RegisterYearLineup } from "../redux/types";
+import { registerLineup, registerFestivalsMetadata } from "../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, CssBaseline, MuiThemeProvider, Theme } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { mapLimit } from 'async';
 import { spotifyApi } from "../redux/actions";
+import * as festivalDataCountryJson from '../festivalDataNorway.json';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -51,7 +52,6 @@ type Props = DispatchProps & StoreProps;
 
 const initialLineup: Lineup = {
 	festival: '',
-	country: '',
 	year: 0,
 	artists: []
 }
@@ -103,6 +103,9 @@ const handleSearchArray = async (item: string, removeFromSearch: string[], artis
 	await new Promise(r => setTimeout(r, 200));
 
 	let artistName: string = item.trim().toLowerCase();
+	if (artistName === '') {
+		return undefined;
+	}
 	return await spotifyApi.searchArtists(artistName)
 		.then((response) => {
 			for (const result of response.artists.items) {
@@ -124,7 +127,6 @@ const handleSearchArray = async (item: string, removeFromSearch: string[], artis
 							picture = result.images[0].url;
 						}
 					}
-					//const picture = result.images.filter((image) => image.height && image.height > 159 && image.width && image.width > 159)
 					const artistMatch: Artist = {
 						name: result.name,
 						spotifyId: result.id,
@@ -157,11 +159,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 	const [lineup, setLineup] = useState<Lineup>(initialLineup);
 	const [ready, setReady] = useState<boolean>(false);
-	//const [readyArr, setReadyArr] = useState<[boolean, boolean, boolean, boolean]>([false, false, false, false]);
 	const [readyArr, setReadyArr] = useState<boolean[]>(new Array(4).fill(false) as boolean[]);
-
-
-	//const smallScreen = useMediaQuery('(max-width:610px)');
 
 	const loaderOn = props.model.loaderOn;
 	const muiTheme = createMuiTheme({
@@ -188,10 +186,45 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 		allTrueChecker(readyArr) ? setReady(true) : setReady(false);
 	}
 
-	const fetchArtistsFromSpotifyAndAddToLineup = async (evt: any) => {
-		if (evt.target.value.length > 0) {
+	const getSportifyArtistsForAllLineups = async () => {
+		console.log('getSportifyArtistsForAllLineups');
+		let festivalMetadatas: FestivalMetadata[] = [];
+		let lineupQueue: RegisterYearLineup[] = [];
+		for (let key in (festivalDataCountryJson as any)['default']) {
+			let value: RegisterFestival = (festivalDataCountryJson as any)['default'][key] as RegisterFestival;
+			let festivalMetadata: FestivalMetadata = {
+				name: value.name,
+				date: value.date,
+				month: value.month,
+				month2: value.month2,
+				cancelled: value.cancelled,
+				year: +value.year,
+				location: value.location,
+				country: value.country,
+				video: value.video,
+				poster: value.poster,
+				official_website: value.official_website,
+				tickets_website: value.tickets_website,
+				photos: value.photos
+			}
+			festivalMetadatas.push(festivalMetadata);
+			value.lineups.forEach((yearLineup: YearLineup) => {
+				lineupQueue.push({ festival: value.name, yearLineup: yearLineup });
+			});
+		}
+		let first = lineupQueue.pop();
+		console.log(lineupQueue);
+		console.log(festivalMetadatas);
+		registerFestivalsMetadata(festivalMetadatas, props.dispatch);
+		if (first) {
+			fetchArtistsFromSpotifyAndAddToLineup(first.yearLineup.lineup, first, lineupQueue);
+		}
+	}
+
+	const fetchArtistsFromSpotifyAndAddToLineup = async (artistsString: string, registerYearLineup?: RegisterYearLineup, lineupQueue?: RegisterYearLineup[]) => {
+		if (artistsString.length > 0) {
 			let artists: Artist[] = [];
-			let inputArtists: string[] = evt.target.value.split(/[,]+/i); //.split(/[,&]+|\band\b/i);
+			let inputArtists: string[] = artistsString.split(/[,]+/i); //.split(/[,&]+|\band\b/i);
 			let removeFromSearch: string[] = [];
 
 			// First go through pairs of two if there is an artist with a comma in the name
@@ -227,7 +260,7 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 
 					mapLimit(inputArtists, 3, async (item) => {
 						return await handleSearchArray(item, removeFromSearch, artists, 0.8);
-					}, (err, results: (Artist | undefined)[] | undefined) => {
+					}, async (err, results: (Artist | undefined)[] | undefined) => {
 						if (err) throw err
 						inputArtists = inputArtists.filter((el) => !removeFromSearch.includes(el));
 						for (const noResultArtist of inputArtists) {
@@ -239,8 +272,27 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 								genres: []
 							} as Artist);
 						}
-						setLineup({ ...lineup, 'artists': artists })
-						setInputFieldReady(3, true);
+
+						if (registerYearLineup && lineupQueue) {
+							registerLineup({
+								festival: registerYearLineup.festival,
+								year: +registerYearLineup.yearLineup.year,
+								artists: artists
+							}, props.dispatch);
+							let first: RegisterYearLineup | undefined;
+							first = lineupQueue.pop();
+							while (first && first.yearLineup.lineup === '' && lineupQueue.length !== 0) {
+								first = lineupQueue.pop();
+							}
+							console.log(first);
+							if (first && first.yearLineup.lineup) {
+								console.log(lineupQueue);
+								fetchArtistsFromSpotifyAndAddToLineup(first.yearLineup.lineup, first, lineupQueue);
+							}
+						} else {
+							setLineup({ ...lineup, 'artists': artists });
+							setInputFieldReady(3, true);
+						}
 					});
 				});
 			});
@@ -258,23 +310,26 @@ const RegisterToDjango: React.FC<Props> = (props: Props) => {
 						setLineup({ ...lineup, 'festival': evt.target.value });
 						setInputFieldReady(0, evt.target.value.length > 0);
 					}} />
-				<TextField id="festivalCountry-input" label="Country" variant="outlined"
-					inputProps={{ maxLength: 2 }} required onBlur={(evt) => {
-						setLineup({ ...lineup, 'country': evt.target.value });
-						setInputFieldReady(1, evt.target.value.length === 2);
-					}} />
 				<TextField id="festivalYear-input" label="Year" variant="outlined" type={'number'}
 					required onBlur={(evt) => {
 						setLineup({ ...lineup, 'year': +evt.target.value });
 						setInputFieldReady(2, +evt.target.value > 2016 && +evt.target.value < 2021);
 					}} />
 				<TextField id="festivalArtists-input" label="Artists" variant="outlined"
-					required onChange={fetchArtistsFromSpotifyAndAddToLineup} />
+					required onChange={(evt: any) => fetchArtistsFromSpotifyAndAddToLineup(evt.target.value)} />
 				<Button color={'primary'} variant="contained" disabled={!ready} onClick={() => {
 					setReady(false);
 					registerLineup(lineup, props.dispatch);
 				}}>
 					Registrer lineup
+				</Button>
+			</form>
+
+			<form className={classes.root} noValidate autoComplete="off">
+				<Button color={'primary'} variant="contained" onClick={() => {
+					getSportifyArtistsForAllLineups();
+				}}>
+					Registrer festivals
 				</Button>
 			</form>
 

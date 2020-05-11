@@ -58,7 +58,14 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
             display: 'flex',
             flexDirection: 'row',
-            flexWrap: 'wrap',
+            flexWrap: 'nowrap',
+            minHeight: '48px'
+        },
+        matchingPopularBox: {
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'nowrap',
             alignItems: 'center',
             minHeight: '48px'
         },
@@ -98,6 +105,8 @@ const useStyles = makeStyles((theme: Theme) =>
             marginLeft: -theme.spacing(1.3),
             paddingBottom: theme.spacing(0),
             paddingTop: theme.spacing(0),
+            textAlign: 'left',
+            maxWidth: '85%'
         },
         grow: {
             flexGrow: 1,
@@ -231,16 +240,20 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                 <div className={classes.root2}>
                     <div id={'details_and_matching_artists_and_lineup'} className={classes.flexRow}>
                         <div id={'details_and_matching_artists'} className={classes.grow}>
+                            {festival.cancelled ?
+                                <Typography variant="subtitle1" color='secondary'>
+                                    {'CANCELLED' + (festival.date ? ' (' + festival.date.split(' ')[0] + ' ' + festival.year + ')' : '')}
+                                </Typography> :
+                                <Typography variant="subtitle1">
+                                    {festival.date + ' ' + festival.year}
+                                </Typography>}
                             <Typography variant="subtitle1">
-                                January 22-25, 2020
-                            </Typography>
-                            <Typography variant="subtitle1">
-                                Location, location, country
+                                {festival.locationText}
                             </Typography>
                             <Typography variant="subtitle1">
                                 {'Genres: ' + festival.matching_genres.slice(0, 3).join(", ")}
                             </Typography>
-                            <div className={classes.titleAndMatchBox}>
+                            <div className={classes.matchingPopularBox}>
                                 <Typography variant="body1" color='primary' component="div" >
                                     <Box fontWeight="fontWeightBold">
                                         {festival.matching_artists.length > 0 ? 'Matching artists' : 'No matching artists'}
@@ -274,8 +287,13 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                 <img className={classes.lineup} src={festival.lineupImg} alt="" />
                             </Button>
                         </div>}
+                        {!festival.lineupImg && festival.festivalImg && <div className={classes.lineupBox}>
+                            <Button onClick={() => window.open(festival.festivalImg, '_blank')}>
+                                <img className={classes.lineup} src={festival.festivalImg} alt="" />
+                            </Button>
+                        </div>}
                     </div>
-                    <div className={classes.titleAndMatchBox}>
+                    <div className={classes.matchingPopularBox}>
                         <Typography variant="body1" color='primary' component="div" >
                             <Box fontWeight="fontWeightBold">
                                 Popular artists at this festival
