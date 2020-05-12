@@ -112,7 +112,8 @@ const useStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
         },
         lineupBox: {
-            marginTop: theme.spacing(2)
+            display: 'flex',
+            alignItems: 'center'
         },
         lineup: {
             maxHeight: 230,
@@ -242,10 +243,10 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                         <div id={'details_and_matching_artists'} className={classes.grow}>
                             {festival.cancelled ?
                                 <Typography variant="subtitle1" color='secondary'>
-                                    {'CANCELLED' + (festival.date ? ' (' + festival.date.split(' ')[0] + ' ' + festival.year + ')' : '')}
+                                    {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
                                 </Typography> :
                                 <Typography variant="subtitle1">
-                                    {festival.date + ' ' + festival.year}
+                                    {festival.date + ', ' + festival.year}
                                 </Typography>}
                             <Typography variant="subtitle1">
                                 {festival.locationText}

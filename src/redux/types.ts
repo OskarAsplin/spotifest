@@ -163,12 +163,6 @@ export interface Artist {
     genres: string[];
 }
 
-export interface Lineup {
-    festival: string;
-    year: number;
-    artists: Artist[];
-}
-
 export interface MatchRequest {
     artists: Artist[],
     isTopArtists: Boolean,
@@ -202,52 +196,4 @@ export interface Area {
 export enum MatchingMethod {
     Genre,
     Artist
-}
-
-export interface YearLineup {
-    year: string,
-    lineup: string
-}
-
-export interface RegisterYearLineup {
-    festival: string,
-    yearLineup: YearLineup
-}
-
-export interface RegisterFestival {
-    name: string,
-    date: string,
-    month: string,
-    month2: string,
-    cancelled: boolean,
-    year: string,
-    location: string,
-    country: string,
-    video: string,
-    poster: string,
-    official_website: string,
-    tickets_website: string,
-    photos: string[],
-    lineups: YearLineup[]
-}
-
-export interface YearLineupFormatted {
-    year: number
-    lineup: Artist[]
-}
-
-export interface FestivalMetadata {
-    name: string,
-    date: string,
-    month: string,
-    month2: string,
-    cancelled: boolean,
-    year: number,
-    location: string,
-    country: string,
-    video: string,
-    poster: string,
-    official_website: string,
-    tickets_website: string,
-    photos: string[]
 }

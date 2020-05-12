@@ -1,4 +1,4 @@
-import { Action, ActionTypeKeys, Dispatch, Artist, FestivalMetadata, MatchRequest, FestivalMatch, Area, Lineup, MatchingMethod, UserInfo, Playlist } from "./types";
+import { Action, ActionTypeKeys, Dispatch, Artist, MatchRequest, FestivalMatch, Area, MatchingMethod, UserInfo, Playlist } from "./types";
 import { fetchToJson } from "../utils/restUtils";
 import countries_list from 'countries-list/dist/data.json';
 
@@ -139,42 +139,6 @@ export const testFestivalMatches = (
             const matching_festivals: FestivalMatch[] = JSON.parse(id);
             dispatch(addFestivalMatches(matching_festivals));
         });
-    }).catch((reason) => {
-        console.log(reason);
-    }).finally(() => dispatch(turnOffLoader()));;
-};
-
-export const registerLineup = (
-    lineup: Lineup,
-    dispatch: Dispatch
-) => {
-    dispatch(turnOnLoader());
-    const backendUrl = 'http://127.0.0.1:8000/onTour/registerLineup';
-    fetch(backendUrl, {
-        method: 'POST',
-        headers: {
-            "Accept": "application/json",
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(lineup)
-    }).catch((reason) => {
-        console.log(reason);
-    }).finally(() => dispatch(turnOffLoader()));;
-};
-
-export const registerFestivalsMetadata = (
-    festivalMetadatas: FestivalMetadata[],
-    dispatch: Dispatch
-) => {
-    dispatch(turnOnLoader());
-    const backendUrl = 'http://127.0.0.1:8000/onTour/registerFestivalsMetadata';
-    fetch(backendUrl, {
-        method: 'POST',
-        headers: {
-            "Accept": "application/json",
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(festivalMetadatas)
     }).catch((reason) => {
         console.log(reason);
     }).finally(() => dispatch(turnOffLoader()));;

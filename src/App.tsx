@@ -13,7 +13,6 @@ import { texts } from "./texts/texts";
 //import NotFound from "./components/notFound";
 //import Example from "./pages/Example";
 import V1 from "./pages/V1";
-import RegisterToDjango from "./pages/RegisterToDjango";
 import LoginScreen from "./pages/LoginScreen";
 import ArtistPage from "./pages/ArtistPage";
 import FestivalPage from "./pages/FestivalPage";
@@ -33,7 +32,6 @@ const App: React.FC = () => {
               <Switch>
                 <Route exact path="/" component={V1} />
                 <Route exact path="/login" component={LoginScreen} />
-                <Route exact path="/register" component={RegisterToDjango} />
                 <Route exact path="/artist" component={ArtistPage} />
                 <Route exact path="/festival" component={FestivalPage} />
               </Switch>
