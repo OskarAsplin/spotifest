@@ -33,7 +33,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 	return (
 		<Box className={classes.box}>
 			{festivalMatches.sort((a, b) => (matchingMethod === MatchingMethod.Genre ?
-				(a.matching_percent_genres < b.matching_percent_genres) :
+				(a.matching_percent_combined < b.matching_percent_combined) :
 				(a.matching_percent_artists < b.matching_percent_artists)) ? 1 : -1)
 				.map((festival: FestivalMatch, idx) => {
 					return (

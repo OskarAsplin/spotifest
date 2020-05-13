@@ -1,12 +1,9 @@
 import React from 'react';
 import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area } from "../../redux/types";
-import { spotifyApi, setMatchingMethod, setLoggedOff, testFestivalMatches, turnOnLoader, setChosenArea } from "../../redux/actions";
+import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setChosenArea } from "../../redux/actions";
 import { connect } from "react-redux";
-import { createStyles, MuiThemeProvider, Theme } from "@material-ui/core";
+import { createStyles, Theme } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import lightBlue from "@material-ui/core/colors/lightBlue";
-import pink from "@material-ui/core/colors/pink";
 import indigo from "@material-ui/core/colors/indigo";
 import { Model } from "../../redux/types";
 //import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
@@ -14,10 +11,8 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import Switch from '@material-ui/core/Switch';
 import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
-import Button from '@material-ui/core/Button';
 import { PaletteType } from "@material-ui/core";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -36,38 +31,15 @@ const useStyles = makeStyles((theme: Theme) =>
 			width: '100%',
 			alignItems: 'center',
 		},
-		alignCenter: {
-			display: 'flex',
-			width: '100%',
-			alignItems: 'center',
-			justifyContent: 'center',
-		},
 		alignItems: {
 			display: 'flex',
 			width: '100%',
 			alignItems: 'center',
 		},
-		circleSize: {
-			width: '60px'
-		},
-		text: {
-			paddingRight: '40px'
-		},
 		box: {
 			width: '100%',
 			maxWidth: '1000px',
 			marginBottom: theme.spacing(2)
-		},
-		button: {
-			textTransform: 'none',
-			padding: theme.spacing(0),
-			fontSize: '18px',
-			"&:hover": {
-				backgroundColor: "transparent",
-			}
-		},
-		invisibleButton: {
-			display: 'none'
 		},
 		formControl: {
 			margin: theme.spacing(1),
@@ -79,9 +51,6 @@ const useStyles = makeStyles((theme: Theme) =>
 			flexDirection: 'column',
 			alignItems: 'center',
 			//paddingRight: '10px',
-		},
-		greenLabel: {
-			color: '#0f0',
 		},
 	}),
 );
@@ -113,23 +82,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	// const smallScreen = useMediaQuery('(max-width:610px)');
 
-	const { thememode, matchingMethod, playlists, topArtists, countries, continents, dispatch, chosenArea } = props;
-
-	const lightBluePinkMuiTheme = createMuiTheme({
-		palette: {
-			primary: {
-				light: lightBlue[300],
-				main: lightBlue[500],
-				dark: lightBlue[700]
-			},
-			secondary: {
-				light: pink[300],
-				main: pink[500],
-				dark: pink[700]
-			},
-			type: thememode
-		}
-	});
+	const { thememode, playlists, topArtists, countries, continents, dispatch, chosenArea } = props;
 
 	const [useTopArtists, setUseTopArtists] = React.useState(true);
 	const [playlistArtists, setPlaylistArtists] = React.useState<Artist[]>([]);
@@ -293,33 +246,13 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 						</FormControl>
 					</Grid>
 					<Grid item xs={4} className={classes.alignItems}>
-						<MuiThemeProvider theme={lightBluePinkMuiTheme}>
-							{/* The invisible button is a quick fix for click event propagation from the grid item */}
-							<Button hidden className={classes.invisibleButton}>.</Button>
-							<Button disableRipple disableElevation className={classes.button}
-								color={matchingMethod === MatchingMethod.Genre ? 'primary' : 'default'}
-								onClick={() => dispatch(setMatchingMethod(MatchingMethod.Genre))}>
-								Genre
-							</Button>
-							<Switch checked={matchingMethod === MatchingMethod.Artist} color="default" onChange={(evt) => {
-								dispatch(setMatchingMethod(evt.target.checked ? MatchingMethod.Artist : MatchingMethod.Genre));
-							}} name="checkedArtistGenre" />
-							<Button disableRipple disableElevation className={classes.button}
-								color={matchingMethod === MatchingMethod.Artist ? 'primary' : 'default'}
-								onClick={() => dispatch(setMatchingMethod(MatchingMethod.Artist))}>
-								Artist
-							</Button>
-						</MuiThemeProvider>
 					</Grid>
 					<Grid item xs={1} className={classes.toolTip}>
 						<HtmlTooltip placement="right-start" interactive
 							title={
 								<React.Fragment>
 									<Typography color="inherit" variant="h6">Matching algorithm</Typography>
-									<Typography color="inherit" variant="subtitle1"><em>{"Genres"}</em></Typography>
-									{'Genre matching takes the genres of your top 50 artists or the genres of a chosen playlist and compares it to the genres of our registered festivals.'}
-									<Typography color="inherit" variant="subtitle1"><em>{"Artists"}</em></Typography>
-									{'Artist matching checks if any of your top 50 artists have been to our registered festivals the last 1-3 years.'}
+									{'The matching agorithm is based on the genres of the festivals, giving a higher score if the genres fit well to your top artists or selected playlist. Matching artists in the lineup of a festival will also increase the matching percent.'}
 								</React.Fragment>
 							}
 						>

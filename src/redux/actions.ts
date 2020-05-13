@@ -237,8 +237,8 @@ export const initializeSite = async (
                 if (error.status === 401) {
                     dispatch(setLoggedOff());
                 }
-                console.log('status code: ' + error.status);
             }
+            console.log('status code: ' + error.status);
             console.log(error);
         })
 

@@ -170,7 +170,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     let matching_percent: number = 0;
     switch (matchingMethod) {
         case MatchingMethod.Genre:
-            matching_percent = Math.ceil(festival.matching_percent_genres);
+            matching_percent = Math.ceil(festival.matching_percent_combined);
             break;
         case MatchingMethod.Artist:
             matching_percent = Math.ceil(festival.matching_percent_artists);
