@@ -19,6 +19,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import DateFnsUtils from '@date-io/date-fns';
+import {
+	MuiPickersUtilsProvider,
+	KeyboardTimePicker,
+	KeyboardDatePicker,
+} from '@material-ui/pickers';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -51,6 +57,9 @@ const useStyles = makeStyles((theme: Theme) =>
 			flexDirection: 'column',
 			alignItems: 'center',
 			//paddingRight: '10px',
+		},
+		datePickerField: {
+			marginRight: theme.spacing(1),
 		},
 	}),
 );
@@ -87,18 +96,26 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	const [useTopArtists, setUseTopArtists] = React.useState(true);
 	const [playlistArtists, setPlaylistArtists] = React.useState<Artist[]>([]);
 	const [chosenPlaylist, setChosenPlaylist] = React.useState('__your__top__artists__');
+	const [selectedFromDate, setSelectedFromDate] = React.useState<Date>(new Date());
+	const [selectedToDate, setSelectedToDate] = React.useState<Date>(new Date(new Date().getFullYear(), 11, 31));
+	const [isOpen, setIsOpen] = React.useState(false);
 
 	const testMatchesWithGivenSettings = (
 		area: Area,
+		dateFrom: Date,
+		dateTo: Date,
 		isTopArtists: boolean,
 		artistsFromPlaylist: Artist[]
 	) => {
 		if (area.isoCode === 'everywhere') {
-			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists, props.dispatch);
+			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists,
+				props.dispatch, dateFrom, dateTo);
 		} else if (continents.find(continent => continent.isoCode === area.isoCode)) {
-			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists, props.dispatch, [area.isoCode], []);
+			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists,
+				props.dispatch, dateFrom, dateTo, [area.isoCode], []);
 		} else {
-			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists, props.dispatch, [], [area.isoCode]);
+			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists,
+				props.dispatch, dateFrom, dateTo, [], [area.isoCode]);
 		}
 	}
 
@@ -109,7 +126,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		}
 		setChosenPlaylist(name);
 		if (name === '__your__top__artists__') {
-			testMatchesWithGivenSettings(chosenArea, true, playlistArtists);
+			testMatchesWithGivenSettings(chosenArea, selectedFromDate, selectedToDate, true, playlistArtists);
 			setUseTopArtists(true);
 			return;
 		}
@@ -165,7 +182,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 			}
 
 			if (newArtists.length > 0) {
-				testMatchesWithGivenSettings(chosenArea, false, newArtists);
+				testMatchesWithGivenSettings(chosenArea, selectedFromDate, selectedToDate, false, newArtists);
 				setUseTopArtists(false);
 				setPlaylistArtists(newArtists);
 			} else {
@@ -182,8 +199,32 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 			isoCode: event.target.value as string
 		}
 		if (area.isoCode !== chosenArea.isoCode) {
-			testMatchesWithGivenSettings(area, useTopArtists, playlistArtists);
+			testMatchesWithGivenSettings(area, selectedFromDate, selectedToDate, useTopArtists, playlistArtists);
 			dispatch(setChosenArea(area));
+		}
+	};
+
+	const handleFromDateChange = (date: Date | null) => {
+		if (date) {
+			setSelectedFromDate(date);
+			if (date > selectedToDate) {
+				setSelectedToDate(date);
+				testMatchesWithGivenSettings(chosenArea, date, date, useTopArtists, playlistArtists);
+			} else {
+				testMatchesWithGivenSettings(chosenArea, date, selectedToDate, useTopArtists, playlistArtists);
+			}
+		}
+	};
+
+	const handleToDateChange = (date: Date | null) => {
+		if (date) {
+			setSelectedToDate(date);
+			if (date < selectedFromDate) {
+				setSelectedFromDate(date);
+				testMatchesWithGivenSettings(chosenArea, date, date, useTopArtists, playlistArtists);
+			} else {
+				testMatchesWithGivenSettings(chosenArea, selectedFromDate, date, useTopArtists, playlistArtists);
+			}
 		}
 	};
 
@@ -193,7 +234,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		<Box className={classes.box}>
 			<Paper>
 				<Grid component="label" container alignItems="center" spacing={1}>
-					<Grid item xs={4} className={classes.alignItems}>
+					<Grid item xs={3} className={classes.alignItems}>
 						<FormControl className={classes.formControl} variant="outlined" size="small" color={useTopArtists ? 'secondary' : 'primary'}>
 							<InputLabel id="choose-playlist-label">
 								Match with
@@ -246,6 +287,47 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 						</FormControl>
 					</Grid>
 					<Grid item xs={4} className={classes.alignItems}>
+						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+							<Grid container justify="space-around">
+								<KeyboardDatePicker
+									className={classes.datePickerField}
+									margin="dense"
+									inputVariant="outlined"
+									id="date-picker-dialog-from"
+									label="From"
+									format="MM/yyyy"
+									maxDate={new Date('2021-12-31')}
+									minDate={new Date('2019-01-01')}
+									views={['year', 'month']}
+									value={selectedFromDate}
+									autoOk
+									onChange={handleFromDateChange}
+									KeyboardButtonProps={{
+										'aria-label': 'change date',
+									}}
+								/>
+							</Grid>
+							<Grid container justify="space-around">
+								<KeyboardDatePicker
+									margin="dense"
+									inputVariant="outlined"
+									id="date-picker-dialog-to"
+									label="To"
+									format="MM/yyyy"
+									maxDate={new Date('2021-12-31')}
+									minDate={new Date('2019-01-01')}
+									views={['year', 'month']}
+									value={selectedToDate}
+									autoOk
+									onChange={handleToDateChange}
+									KeyboardButtonProps={{
+										'aria-label': 'change date',
+									}}
+								/>
+							</Grid>
+						</MuiPickersUtilsProvider>
+					</Grid>
+					<Grid item xs={1}>
 					</Grid>
 					<Grid item xs={1} className={classes.toolTip}>
 						<HtmlTooltip placement="right-start" interactive

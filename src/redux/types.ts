@@ -166,6 +166,8 @@ export interface Artist {
 export interface MatchRequest {
     artists: Artist[],
     isTopArtists: Boolean,
+    dateFrom: string,
+    dateTo: string,
     continents: string[],
     countries: string[]
 }

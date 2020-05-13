@@ -113,7 +113,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         lineupBox: {
             display: 'flex',
-            alignItems: 'center'
+            alignItems: 'center',
+            marginTop: theme.spacing(1)
         },
         lineup: {
             maxHeight: 230,

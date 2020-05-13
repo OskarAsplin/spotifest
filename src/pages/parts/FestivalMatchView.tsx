@@ -37,7 +37,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 				(a.matching_percent_artists < b.matching_percent_artists)) ? 1 : -1)
 				.map((festival: FestivalMatch, idx) => {
 					return (
-						<FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name} />
+						<FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} />
 					)
 				})}
 		</Box>

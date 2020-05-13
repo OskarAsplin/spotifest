@@ -112,10 +112,14 @@ export const setChosenArea = (area: Area): Action => {
     }
 };
 
+const getShortDateISOString = (date: Date) => date.toISOString().substring(0, date.toISOString().search('T'));
+
 export const testFestivalMatches = (
     artists: Artist[],
     isTopArtists: Boolean,
     dispatch: Dispatch,
+    dateFrom: Date,
+    dateTo: Date,
     continents?: string[],
     countries?: string[]
 ) => {
@@ -123,6 +127,8 @@ export const testFestivalMatches = (
     const matchRequest: MatchRequest = {
         artists: artists,
         isTopArtists: isTopArtists,
+        dateFrom: getShortDateISOString(dateFrom),
+        dateTo: getShortDateISOString(dateTo),
         continents: continents ? continents : [],
         countries: countries ? countries : []
     }
@@ -198,7 +204,7 @@ export const initializeSite = async (
                         dispatch(setChosenArea(isRegisteredContinent));
                     }
                     testFestivalMatches(
-                        topArtists, true, dispatch,
+                        topArtists, true, dispatch, new Date(), new Date(new Date().getFullYear(), 11, 31),
                         isRegisteredCountry ? [] : isRegisteredContinent ? [userContinent] : [],
                         isRegisteredCountry ? [getMe.country] : []
                     );
