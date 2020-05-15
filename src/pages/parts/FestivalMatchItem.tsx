@@ -230,10 +230,10 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                 {festival.matching_artists.length > 0 &&
                                     festival.matching_artists.map((artist) => (
                                         <ArtistBubble
-                                        artist={artist}
-                                        key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
-                                        thememode={thememode} />
-                                        )
+                                            artist={artist}
+                                            key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                            thememode={thememode} />
+                                    )
                                     )}
                             </div>
                         </div>
@@ -273,7 +273,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                         artist={artist}
                                         key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
                                         thememode={thememode} />
-                                        )
+                                )
                                 )}
                         </div>
                     </Collapse>

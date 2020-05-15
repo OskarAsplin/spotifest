@@ -265,9 +265,9 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                     {festivalInfo.video &&
                         <Box className={classes.videoBox}>
                             <Paper elevation={3} className={classes.paper} key={'festival video:' + festivalInfo.name}>
-                            <iframe width="420" height="315" title={'festival video iframe:' + festivalInfo.name}
+                                <iframe width="420" height="315" title={'festival video iframe:' + festivalInfo.name}
                                     src={festivalInfo.video}>
-                                }
+                                    }
                                 </iframe>
                             </Paper>
                         </Box>
@@ -283,8 +283,8 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                         onChange={handleSelectedLineupChange}
                                         aria-label="lineups"
                                     >
-                                    {festivalInfo.lineups.map((lineup, idx) =>
-                                        <Tab label={<span className={classes.tabLabel}>{lineup.year}</span>} value={idx} key={'tab: ' + festivalInfo.name + lineup.year} />)}
+                                        {festivalInfo.lineups.map((lineup, idx) =>
+                                            <Tab label={<span className={classes.tabLabel}>{lineup.year}</span>} value={idx} key={'tab: ' + festivalInfo.name + lineup.year} />)}
                                     </Tabs>
                                     {festivalInfo.lineups.map((lineup, idx) =>
                                         <TabPanel value={selectedLineup} index={idx} key={'tabPanel: ' + festivalInfo.name + lineup.year}>
@@ -305,7 +305,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                                         Popularity
                                                     </Button>
                                                     <Switch checked={sortAlphabetically} color="default"
-                                                    onChange={(evt: any) => setSortAlphabetically(evt.target.checked ? true : false)}
+                                                        onChange={(evt: any) => setSortAlphabetically(evt.target.checked ? true : false)}
                                                         name="switchSortAlphabetically" />
                                                     <Button disableRipple disableElevation className={classes.button}
                                                         color={sortAlphabetically ? 'primary' : 'default'}
@@ -319,13 +319,13 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                                             lineup.artists.sort((a, b) => (sortAlphabetically ?
                                                                 (a.name > b.name) :
                                                                 (a.popularity < b.popularity)) ? 1 : -1)
-                                                            .map((artist) => (
-                                                                <ArtistBubble
-                                                                artist={artist}
-                                                                key={'avatar_festival_lineup_artist_' + festivalInfo.name + lineup.year + artist.name}
-                                                                thememode={thememode} />
+                                                                .map((artist) => (
+                                                                    <ArtistBubble
+                                                                        artist={artist}
+                                                                        key={'avatar_festival_lineup_artist_' + festivalInfo.name + lineup.year + artist.name}
+                                                                        thememode={thememode} />
                                                                 )
-                                                            )}
+                                                                )}
                                                     </div>
                                                 </Box>
                                                 {lineup.poster && <div className={classes.lineupBox}>
