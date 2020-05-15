@@ -22,7 +22,6 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import DateFnsUtils from '@date-io/date-fns';
 import {
 	MuiPickersUtilsProvider,
-	KeyboardTimePicker,
 	KeyboardDatePicker,
 } from '@material-ui/pickers';
 
@@ -98,7 +97,6 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	const [chosenPlaylist, setChosenPlaylist] = React.useState('__your__top__artists__');
 	const [selectedFromDate, setSelectedFromDate] = React.useState<Date>(new Date());
 	const [selectedToDate, setSelectedToDate] = React.useState<Date>(new Date(new Date().getFullYear(), 11, 31));
-	const [isOpen, setIsOpen] = React.useState(false);
 
 	const testMatchesWithGivenSettings = (
 		area: Area,

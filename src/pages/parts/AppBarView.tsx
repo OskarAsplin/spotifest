@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover } from '@material-ui/core';
+import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link } from '@material-ui/core';
 import { Brightness2, Brightness4 } from "@material-ui/icons";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Model, AppState, DispatchProps } from "../../redux/types";
@@ -67,7 +67,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
             <AppBar position="static">
                 <Toolbar className={classes.customizeToolbar}>
                     <Typography variant="h6" className={classes.title}>
-                        OnTour
+                        Oskarito Festival Matcher
                     </Typography>
                     {props.model.userInfo?.displayName ?
                         <Typography variant="body1">
@@ -101,18 +101,20 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                     >
                         <div className={classes.popover}>
                             {props.model.userInfo?.spotifyUrl &&
-                                <a href={props.model.userInfo.spotifyUrl}
+                                <Link color={'secondary'}
+                                    href={props.model.userInfo.spotifyUrl}
                                     target={"_blank"}
                                     rel="noopener noreferrer"
                                     className={classes.bottomMargin}>
                                     View profile in Spotify
-                                </a>}
-                            <a href={`https://accounts.spotify.com/en/logout`}
+                                </Link>}
+                            <Link color={'secondary'}
+                                href={`https://accounts.spotify.com/en/logout`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => dispatch(setLoggedOff())}>
                                 Log out
-                            </a>
+                            </Link>
                         </div>
                     </Popover>
                     <IconButton

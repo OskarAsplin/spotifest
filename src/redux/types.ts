@@ -163,6 +163,17 @@ export interface Artist {
     genres: string[];
 }
 
+export interface Lineup {
+    festival: string;
+    year: number;
+    from_date_iso: string;
+    to_date_iso: string;
+    date_str: string;
+    cancelled: boolean;
+    artists: Artist[];
+    poster: string;
+}
+
 export interface MatchRequest {
     artists: Artist[],
     isTopArtists: Boolean,
@@ -189,6 +200,18 @@ export interface FestivalMatch {
     webpage: string,
     ticketWebpage: string,
     video: string,
+}
+
+export interface FestivalInfo {
+    name: string,
+    locationText: string,
+    genres: string[],
+    festivalImg: string,
+    webpage: string,
+    ticketWebpage: string,
+    crawledWebpage: string,
+    video: string,
+    lineups: Lineup[],
 }
 
 export interface Area {

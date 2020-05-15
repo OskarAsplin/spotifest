@@ -147,7 +147,7 @@ export const testFestivalMatches = (
         });
     }).catch((reason) => {
         console.log(reason);
-    }).finally(() => dispatch(turnOffLoader()));;
+    }).finally(() => dispatch(turnOffLoader()));
 };
 
 export const initializeSite = async (
@@ -246,7 +246,5 @@ export const initializeSite = async (
             }
             console.log('status code: ' + error.status);
             console.log(error);
-        })
-
-
+        });
 }

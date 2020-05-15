@@ -1,16 +1,15 @@
 import React from 'react';
 import { AppState, DispatchProps, FestivalMatch, MatchingMethod } from "../../redux/types";
 import { connect } from "react-redux";
-import { createStyles, MuiThemeProvider, Theme, Avatar, Paper, IconButton, Button, Collapse, Typography, Box, PaletteType } from "@material-ui/core";
+import { createStyles, MuiThemeProvider, Theme, Paper, IconButton, Button, Collapse, Typography, Box, PaletteType } from "@material-ui/core";
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
-import { lightBlue, pink, blueGrey } from "@material-ui/core/colors";
-import { Model } from "../../redux/types";
+import { lightBlue, pink } from "@material-ui/core/colors";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import clsx from 'clsx';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MusicNote from '@material-ui/icons/MusicNote';
 import { Redirect } from 'react-router-dom';
+import ArtistBubble from './ArtistBubble';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -37,17 +36,6 @@ const useStyles = makeStyles((theme: Theme) =>
         box: {
             width: '80%',
             maxWidth: '764px'
-        },
-        artistAvatar: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100px',
-            textAlign: 'center'
-        },
-        artistAvatarImg: {
-            height: 80,
-            width: 80,
         },
         artistAvatarBox: {
             display: 'flex',
@@ -80,24 +68,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         titleLine: {
             width: '100%',
-        },
-        circleIconLight: {
-            background: blueGrey[300],
-            borderRadius: '50%',
-            width: 80,
-            height: 80,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        circleIconDark: {
-            background: blueGrey[700],
-            borderRadius: '50%',
-            width: 80,
-            height: 80,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
         },
         button: {
             flexGrow: 1,
@@ -132,7 +102,6 @@ interface OwnProps {
 }
 
 interface StoreProps {
-    model: Model;
     thememode: PaletteType,
     matchingMethod: MatchingMethod
 }
@@ -143,7 +112,6 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
 
     const { festival, thememode, matchingMethod } = props;
     const [expanded, setExpanded] = React.useState(false);
-    const [redirectArtist, setRedirectArtist] = React.useState('');
     const [redirectFestival, setRedirectFestival] = React.useState('');
 
     const handleExpandClick = () => {
@@ -183,10 +151,6 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     const textColor = thememode === 'light' ? '#3FBF3F' : '#3de53d';
     const trailColor = thememode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
 
-    if (redirectArtist) {
-        return <Redirect to={'/artist?' + redirectArtist} />
-    }
-
     if (redirectFestival) {
         return <Redirect to={'/festival?' + redirectFestival} />
     }
@@ -200,7 +164,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             <Button
                                 className={classes.button}
                                 color="inherit"
-                                onClick={() => { setRedirectFestival(festival.name) }}
+                                onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}
                             >
                                 <Typography variant="h2">
                                     {festival.name}
@@ -265,22 +229,11 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             <div className={classes.artistAvatarBox}>
                                 {festival.matching_artists.length > 0 &&
                                     festival.matching_artists.map((artist) => (
-                                        <div className={classes.artistAvatar} key={'div_avatar_artist_match_' + festival.name + artist.name} >
-                                            <IconButton
-                                                color="inherit"
-                                                onClick={() => { if (artist.spotifyId) setRedirectArtist(artist.spotifyId) }}
-                                            >
-                                                {artist.picture ?
-                                                    <Avatar src={artist.picture} alt={artist.name} className={classes.artistAvatarImg}
-                                                        key={'avatar_pop_artist_' + festival.name + artist.name} />
-                                                    : <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
-                                                        <MusicNote fontSize={'large'} />
-                                                    </div>}
-                                            </IconButton>
-                                            <Typography variant="caption" >
-                                                {artist.name}
-                                            </Typography>
-                                        </div>)
+                                        <ArtistBubble
+                                        artist={artist}
+                                        key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                        thememode={thememode} />
+                                        )
                                     )}
                             </div>
                         </div>
@@ -316,22 +269,11 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                         <div className={classes.artistAvatarBox}>
                             {festival.popular_artists.length > 0 &&
                                 festival.popular_artists.map((artist) => (
-                                    <div className={classes.artistAvatar} key={'div_avatar_pop_artist_' + festival.name + artist.name} >
-                                        <IconButton
-                                            color="inherit"
-                                            onClick={() => { if (artist.spotifyId) setRedirectArtist(artist.spotifyId) }}
-                                        >
-                                            {artist.picture ?
-                                                <Avatar src={artist.picture} alt={artist.name} className={classes.artistAvatarImg}
-                                                    key={'avatar_pop_artist_' + festival.name + artist.name} />
-                                                : <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
-                                                    <MusicNote fontSize={'large'} />
-                                                </div>}
-                                        </IconButton>
-                                        <Typography variant="caption" >
-                                            {artist.name}
-                                        </Typography>
-                                    </div>)
+                                    <ArtistBubble
+                                        artist={artist}
+                                        key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
+                                        thememode={thememode} />
+                                        )
                                 )}
                         </div>
                     </Collapse>
@@ -342,7 +284,6 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    model: state.model,
     thememode: state.model.thememode,
     matchingMethod: state.model.matchingMethod
 });
