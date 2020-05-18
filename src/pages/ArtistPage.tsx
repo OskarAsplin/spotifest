@@ -261,17 +261,17 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                 <div className={classes.align}>
                     <div className={classes.verticalSpace} />
                     <div className={classes.verticalSpace} />
-                        {!isValidSpotifyId &&
-                            <Typography variant="subtitle1" >
-                                Could not find artist
-                            </Typography>
-                        }
-                        {!window.location.search.substring(1) &&
-                            <Typography variant="subtitle1" >
-                                Invalid URL
-                            </Typography>
-                        }
-                    </div>
+                    {!isValidSpotifyId &&
+                        <Typography variant="subtitle1" >
+                            Could not find artist
+                        </Typography>
+                    }
+                    {!window.location.search.substring(1) &&
+                        <Typography variant="subtitle1" >
+                            Invalid URL
+                        </Typography>
+                    }
+                </div>
                 <div hidden={!loaderOn} className={classes.progressBar}>
                     <CircularProgress size={100} thickness={3} color={'secondary'} />
                 </div>
@@ -296,14 +296,15 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                 </Typography>
                                 {artistInfo.artist.spotifyId &&
                                     <Link color={'secondary'} variant="subtitle1"
-                                        href={'https://open.spotify.com/artist/' + artistInfo.artist.spotifyId}>
+                                        href={'https://open.spotify.com/artist/' + artistInfo.artist.spotifyId}
+                                        rel="noopener noreferrer" target="_blank">
                                         Open artist in spotify
                                     </Link>}
                                 {relatedArtists.length > 0 &&
                                     <MuiThemeProvider theme={lightBluePinkMuiTheme}>
                                         <div className={classes.matchingPopularBox}>
                                             <Typography variant="body1" color='primary' component="div" >
-                                            <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
+                                                <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
                                                     Related artists
                                                 </Box>
                                             </Typography>

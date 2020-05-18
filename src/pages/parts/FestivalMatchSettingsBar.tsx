@@ -234,7 +234,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 			<Paper>
 				<Grid component="label" container alignItems="center" spacing={1}>
 					<Grid item xs={3} className={classes.alignItems}>
-						<FormControl className={classes.formControl} variant="outlined" size="small" color={useTopArtists ? 'secondary' : 'primary'}>
+						<FormControl className={classes.formControl} variant="outlined" size="small">
 							<InputLabel id="choose-playlist-label">
 								Match with
 							</InputLabel>

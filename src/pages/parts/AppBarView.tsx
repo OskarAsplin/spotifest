@@ -1,11 +1,12 @@
 import React from 'react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link } from '@material-ui/core';
+import { createStyles, makeStyles, Theme, createMuiTheme } from '@material-ui/core/styles';
+import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider } from '@material-ui/core';
 import { Brightness2, Brightness4 } from "@material-ui/icons";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Model, AppState, DispatchProps } from "../../redux/types";
 import { connect } from "react-redux";
 import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../../redux/actions";
+import { lightBlue, pink } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -62,6 +63,22 @@ const AppBarView: React.FC<Props> = (props: Props) => {
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
+    const lightBluePinkMuiTheme = createMuiTheme({
+        palette: {
+            primary: {
+                light: lightBlue[300],
+                main: lightBlue[500],
+                dark: lightBlue[700]
+            },
+            secondary: {
+                light: pink[300],
+                main: pink[500],
+                dark: pink[700]
+            },
+            type: props.model.thememode
+        }
+    });
+
     return (
         <div className={classes.root}>
             <AppBar position="static">
@@ -99,23 +116,25 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             horizontal: 'center',
                         }}
                     >
-                        <div className={classes.popover}>
-                            {props.model.userInfo?.spotifyUrl &&
-                                <Link color={'secondary'}
-                                    href={props.model.userInfo.spotifyUrl}
-                                    target={"_blank"}
+                        <MuiThemeProvider theme={lightBluePinkMuiTheme}>
+                            <div className={classes.popover}>
+                                {props.model.userInfo?.spotifyUrl &&
+                                    <Link color={'primary'}
+                                        href={props.model.userInfo.spotifyUrl}
+                                        target={"_blank"}
+                                        rel="noopener noreferrer"
+                                        className={classes.bottomMargin}>
+                                        View profile in Spotify
+                                    </Link>}
+                                <Link color={'primary'}
+                                    href={`https://accounts.spotify.com/en/logout`}
+                                    target="_blank"
                                     rel="noopener noreferrer"
-                                    className={classes.bottomMargin}>
-                                    View profile in Spotify
-                                </Link>}
-                            <Link color={'secondary'}
-                                href={`https://accounts.spotify.com/en/logout`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => dispatch(setLoggedOff())}>
-                                Log out
-                            </Link>
-                        </div>
+                                    onClick={() => dispatch(setLoggedOff())}>
+                                    Log out
+                                </Link>
+                            </div>
+                        </MuiThemeProvider>
                     </Popover>
                     <IconButton
                         color="inherit"

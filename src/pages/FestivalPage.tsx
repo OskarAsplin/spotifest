@@ -242,15 +242,18 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                     {'Genres: ' + festivalInfo.genres.slice(0, 5).join(", ")}
                                 </Typography>
                                 {festivalInfo.webpage &&
-                                    <Link color={'secondary'} variant="subtitle1" href={festivalInfo.webpage}>
+                                    <Link color={'secondary'} variant="subtitle1" href={festivalInfo.webpage}
+                                        rel="noopener noreferrer" target="_blank">
                                         Official webpage
                                     </Link>}
                                 {festivalInfo.ticketWebpage &&
-                                    <Link color={'secondary'} variant="subtitle1" href={festivalInfo.ticketWebpage}>
+                                    <Link color={'secondary'} variant="subtitle1" href={festivalInfo.ticketWebpage}
+                                        rel="noopener noreferrer" target="_blank">
                                         Ticket webpage
                                     </Link>}
                                 {festivalInfo.crawledWebpage &&
-                                    <Link color={'secondary'} variant="subtitle1" href={festivalInfo.crawledWebpage}>
+                                    <Link color={'secondary'} variant="subtitle1" href={festivalInfo.crawledWebpage}
+                                        rel="noopener noreferrer" target="_blank">
                                         View on Musicfestivalwizard.com
                                     </Link>}
                             </div>
