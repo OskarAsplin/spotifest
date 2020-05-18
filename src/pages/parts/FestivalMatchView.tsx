@@ -35,11 +35,9 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 			{festivalMatches.sort((a, b) => (matchingMethod === MatchingMethod.Genre ?
 				(a.matching_percent_combined < b.matching_percent_combined) :
 				(a.matching_percent_artists < b.matching_percent_artists)) ? 1 : -1)
-				.map((festival: FestivalMatch, idx) => {
-					return (
-						<FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} />
-					)
-				})}
+				.map((festival: FestivalMatch, idx) =>
+					<FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={true}/>
+				)}
 		</Box>
 	);
 };

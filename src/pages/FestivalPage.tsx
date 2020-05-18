@@ -61,14 +61,13 @@ const useStyles = makeStyles((theme: Theme) =>
         videoBox: {
             margin: theme.spacing(0, 2, 2, 2),
         },
-        grow: {
+        flexColumn: {
             display: 'flex',
             flexDirection: 'column',
-            flexGrow: 1,
-            width: '50%'
+            maxWidth: '50%'
         },
         buttonBox: {
-            width: '50%',
+            maxWidth: '50%',
             display: 'flex',
             alignItems: 'center',
         },
@@ -161,8 +160,8 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
         let festival = window.location.search.substring(1);
         props.dispatch(turnOnLoader());
         fetchToJson('http://127.0.0.1:8000/onTour/festivalInfo/?q=' + festival)
-            .then((festivalInfo: any) => {
-                setFestivalInfo(festivalInfo as FestivalInfo);
+            .then((response: any) => {
+                setFestivalInfo(response as FestivalInfo);
                 props.dispatch(turnOffLoader());
             })
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -232,7 +231,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                 <div className={classes.root}>
                     <Box className={classes.box}>
                         <Paper elevation={10} className={classes.paper} key={'festivalInfo:' + festivalInfo.name}>
-                            <div className={classes.grow}>
+                            <div className={classes.flexColumn}>
                                 <Typography variant="h2">
                                     {festivalInfo.name}
                                 </Typography>

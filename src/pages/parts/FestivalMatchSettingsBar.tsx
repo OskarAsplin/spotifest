@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area } from "../../redux/types";
-import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setChosenArea } from "../../redux/actions";
+import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setChosenArea, getIconPicture, getBigPicture } from "../../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, Theme } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -167,7 +167,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 							return newArtists.push({
 								name: artistResponse.name,
 								spotifyId: artistResponse.id,
-								picture: artistResponse.images[0]?.url ? artistResponse.images[0].url : undefined,
+                                iconPicture: getIconPicture(artistResponse.images),
+                                bigPicture: getBigPicture(artistResponse.images),
 								popularity: artistResponse.popularity,
 								genres: artistResponse.genres
 							} as Artist);

@@ -69,10 +69,10 @@ const ArtistBubble: React.FC<Props> = (props: Props) => {
         <div className={classes.artistAvatar} key={'div_' + key} >
             <IconButton
                 color="inherit"
-                onClick={() => { if (artist.spotifyId) setRedirectArtist(artist.spotifyId) }}
+                onClick={() => { if (artist.spotifyId) setRedirectArtist(encodeURIComponent(artist.spotifyId)) }}
             >
-                {artist.picture ?
-                    <Avatar src={artist.picture} alt={artist.name} className={classes.artistAvatarImg}
+                {artist.iconPicture ?
+                    <Avatar src={artist.iconPicture} alt={artist.name} className={classes.artistAvatarImg}
                         key={key} />
                     : <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
                         <MusicNote fontSize={'large'} />

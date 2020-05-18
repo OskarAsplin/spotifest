@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         lineup: {
             maxHeight: 230,
-            maxWidth: 200,
+            maxWidth: 300,
         },
         flexRow: {
             display: 'flex',
@@ -99,6 +99,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface OwnProps {
     festival: FestivalMatch,
+    showMatching: boolean
 }
 
 interface StoreProps {
@@ -110,13 +111,9 @@ type Props = DispatchProps & StoreProps & OwnProps;
 
 const FestivalMatchItem: React.FC<Props> = (props: Props) => {
 
-    const { festival, thememode, matchingMethod } = props;
+    const { festival, showMatching, thememode, matchingMethod } = props;
     const [expanded, setExpanded] = React.useState(false);
     const [redirectFestival, setRedirectFestival] = React.useState('');
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
 
     const lightBluePinkMuiTheme = createMuiTheme({
         palette: {
@@ -171,36 +168,38 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                 </Typography>
                             </Button>
                         </div>
-                        <div>
-                            <div className={classes.circleSize}>
-                                <CircularProgressbar value={matching_percent} text={`${matching_percent}%`}
-                                    styles={buildStyles({
-                                        textSize: '22px',
-                                        pathTransitionDuration: 0.5,
-                                        pathColor: pathColor,
-                                        textColor: textColor,
-                                        trailColor: trailColor,
-                                        //backgroundColor: '#3e98c7',
-                                    })}
-                                />
-                                {/*<CircularProgressbarWithChildren value={matchingMethod === MatchingMethod.Genre ? matching_percent : Math.min(festival.matching_artists.length*10, 100)}
-                                    styles={buildStyles({
-                                        //textSize: '22px',
-                                        pathTransitionDuration: 0.5,
-                                        pathColor: pathColor,
-                                        textColor: textColor,
-                                        trailColor: trailColor,
-                                    })}
-                                >
-                                    <div className={classes.artistAvatarBox}>
-                                        <div style={{ fontSize: '18px', marginTop: -2, marginLeft: 3, color: textColor }}>
-                                            {matchingMethod === MatchingMethod.Genre ? matching_percent + '%' : festival.matching_artists.length}
+                        {showMatching &&
+                            <div>
+                                <div className={classes.circleSize}>
+                                    <CircularProgressbar value={matching_percent} text={`${matching_percent}%`}
+                                        styles={buildStyles({
+                                            textSize: '22px',
+                                            pathTransitionDuration: 0.5,
+                                            pathColor: pathColor,
+                                            textColor: textColor,
+                                            trailColor: trailColor,
+                                            //backgroundColor: '#3e98c7',
+                                        })}
+                                    />
+                                    {/*<CircularProgressbarWithChildren value={matchingMethod === MatchingMethod.Genre ? matching_percent : Math.min(festival.matching_artists.length*10, 100)}
+                                        styles={buildStyles({
+                                            //textSize: '22px',
+                                            pathTransitionDuration: 0.5,
+                                            pathColor: pathColor,
+                                            textColor: textColor,
+                                            trailColor: trailColor,
+                                        })}
+                                    >
+                                        <div className={classes.artistAvatarBox}>
+                                            <div style={{ fontSize: '18px', marginTop: -2, marginLeft: 3, color: textColor }}>
+                                                {matchingMethod === MatchingMethod.Genre ? matching_percent + '%' : festival.matching_artists.length}
+                                            </div>
+                                            {matchingMethod === MatchingMethod.Artist && <MusicNote style={{ marginTop: 0, color: textColor }} fontSize={'small'} />}
                                         </div>
-                                        {matchingMethod === MatchingMethod.Artist && <MusicNote style={{ marginTop: 0, color: textColor }} fontSize={'small'} />}
-                                    </div>
-                                </CircularProgressbarWithChildren>*/}
+                                    </CircularProgressbarWithChildren>*/}
+                                </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
                 <div className={classes.root2}>
@@ -219,23 +218,27 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             <Typography variant="subtitle1">
                                 {'Genres: ' + festival.matching_genres.slice(0, 3).join(", ")}
                             </Typography>
-                            <div className={classes.matchingPopularBox}>
-                                <Typography variant="body1" color='primary' component="div" >
-                                    <Box fontWeight="fontWeightBold">
-                                        {festival.matching_artists.length > 0 ? 'Matching artists' : 'No matching artists'}
-                                    </Box>
-                                </Typography>
-                            </div>
-                            <div className={classes.artistAvatarBox}>
-                                {festival.matching_artists.length > 0 &&
-                                    festival.matching_artists.map((artist) => (
-                                        <ArtistBubble
-                                            artist={artist}
-                                            key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
-                                            thememode={thememode} />
-                                    )
-                                    )}
-                            </div>
+                            {showMatching &&
+                                <div className={classes.matchingPopularBox}>
+                                    <Typography variant="body1" color='primary' component="div" >
+                                        <Box fontWeight="fontWeightBold">
+                                            {festival.matching_artists.length > 0 ? 'Matching artists' : 'No matching artists'}
+                                        </Box>
+                                    </Typography>
+                                </div>
+                            }
+                            {showMatching &&
+                                <div className={classes.artistAvatarBox}>
+                                    {festival.matching_artists.length > 0 &&
+                                        festival.matching_artists.map((artist) => (
+                                            <ArtistBubble
+                                                artist={artist}
+                                                key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                                thememode={thememode} />
+                                        )
+                                        )}
+                                </div>
+                            }
                         </div>
                         {festival.lineupImg && <div className={classes.lineupBox}>
                             <Button onClick={() => window.open(festival.lineupImg, '_blank')}>
@@ -250,7 +253,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                     </div>
                     <div className={classes.matchingPopularBox}>
                         <Typography variant="body1" color='primary' component="div" >
-                            <Box fontWeight="fontWeightBold">
+                            <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
                                 Popular artists at this festival
                             </Box>
                         </Typography>
@@ -258,7 +261,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             className={clsx(classes.expand, {
                                 [classes.expandOpen]: expanded,
                             })}
-                            onClick={handleExpandClick}
+                            onClick={() => setExpanded(!expanded)}
                             aria-expanded={expanded}
                             aria-label="show more"
                         >

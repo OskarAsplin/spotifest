@@ -158,7 +158,8 @@ export interface Playlist {
 export interface Artist {
     name: string;
     spotifyId?: string;
-    picture?: string;
+    iconPicture?: string;
+    bigPicture?: string;
     popularity: number;
     genres: string[];
 }
@@ -212,6 +213,12 @@ export interface FestivalInfo {
     crawledWebpage: string,
     video: string,
     lineups: Lineup[],
+}
+
+export interface ArtistInfo {
+    artist: Artist,
+    festivalsFuture: FestivalMatch[],
+    festivalsPast: FestivalMatch[]
 }
 
 export interface Area {

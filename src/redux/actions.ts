@@ -114,6 +114,25 @@ export const setChosenArea = (area: Area): Action => {
 
 const getShortDateISOString = (date: Date) => date.toISOString().substring(0, date.toISOString().search('T'));
 
+export const getIconPicture = (images: SpotifyApi.ImageObject[]): string => {
+    let picture = '';
+    if (images.length > 0) {
+        images.slice().reverse().forEach((image) => {
+            if (picture === '' && image.height && image.height > 159 && image.width && image.width > 159) {
+                picture = image.url;
+            }
+        });
+        if (picture === '') {
+            picture = images[0].url;
+        }
+    }
+    return picture;
+}
+
+export const getBigPicture = (images: SpotifyApi.ImageObject[]): string => {
+    return images.length > 0 ? images[0].url : ''
+}
+
 export const testFestivalMatches = (
     artists: Artist[],
     isTopArtists: Boolean,
@@ -188,7 +207,8 @@ export const initializeSite = async (
                         return {
                             name: artist.name,
                             spotifyId: artist.id,
-                            picture: artist.images[0]?.url ? artist.images[0].url : undefined,
+                            iconPicture: getIconPicture(artist.images),
+                            bigPicture: getBigPicture(artist.images),
                             popularity: artist.popularity,
                             genres: artist.genres
                         } as Artist;

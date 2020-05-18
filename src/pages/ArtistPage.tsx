@@ -1,12 +1,10 @@
 import React, { useEffect } from 'react';
-import { AppState, DispatchProps } from "../redux/types";
-import { initializeSite, setAccessToken, spotifyApi } from "../redux/actions";
+import { AppState, DispatchProps, ArtistInfo, Artist } from "../redux/types";
+import { spotifyApi, turnOnLoader, turnOffLoader, getIconPicture, getBigPicture } from "../redux/actions";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, Button, IconButton, Collapse } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
-import FestivalMatchView from "./parts/FestivalMatchView";
-import FestivalMatchSettingsBar from "./parts/FestivalMatchSettingsBar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import deepOrange from "@material-ui/core/colors/deepOrange";
@@ -15,7 +13,12 @@ import { Model } from "../redux/types";
 //import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
 import { Redirect } from 'react-router-dom';
-//import SplashScreen from "../components/splashScreen";
+import { fetchToJson } from "../utils/restUtils";
+import FestivalMatchItem from './parts/FestivalMatchItem';
+import ArtistBubble from './parts/ArtistBubble';
+import { lightBlue, pink } from "@material-ui/core/colors";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -41,6 +44,93 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: '-50px',
             marginLeft: '-50px'
         },
+        paper: {
+            display: 'flex',
+            flexDirection: 'row',
+            padding: theme.spacing(2, 4, 2, 4),
+            justifyContent: 'space-between',
+            width: '100%'
+        },
+        paper2: {
+            display: 'flex',
+            flexDirection: 'column',
+            padding: theme.spacing(0, 4, 2, 4),
+            marginBottom: theme.spacing(2),
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
+        paper3: {
+            display: 'flex',
+            flexDirection: 'column',
+            padding: theme.spacing(2, 4, 2, 4),
+            marginBottom: theme.spacing(2),
+            width: '100%',
+            alignItems: 'center',
+        },
+        box: {
+            width: '90%',
+            maxWidth: '1000px',
+            margin: theme.spacing(0, 2, 2, 2),
+        },
+        box2: {
+            width: '80%',
+            maxWidth: '764px'
+        },
+        buttonBox: {
+            maxWidth: '50%',
+            display: 'flex',
+            alignItems: 'center',
+        },
+        artistImg: {
+            maxHeight: 400,
+            maxWidth: '100%',
+        },
+        flexColumn: {
+            display: 'flex',
+            flexDirection: 'column',
+            maxWidth: '50%'
+        },
+        hundredWidth: {
+            width: '100%'
+        },
+        align: {
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        button: {
+            textTransform: 'none',
+            marginLeft: -theme.spacing(1.3),
+            paddingBottom: theme.spacing(0),
+            paddingTop: theme.spacing(0),
+            textAlign: 'left',
+            maxWidth: '85%'
+        },
+        artistAvatarBox: {
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap'
+        },
+        matchingPopularBox: {
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'nowrap',
+            alignItems: 'center',
+            minHeight: '48px'
+        },
+        expand: {
+            transform: 'rotate(0deg)',
+            transition: theme.transitions.create('transform', {
+                duration: theme.transitions.duration.shortest,
+            }),
+        },
+        expandOpen: {
+            transform: 'rotate(180deg)',
+        },
     }),
 );
 
@@ -50,24 +140,80 @@ interface StoreProps {
 
 type Props = DispatchProps & StoreProps;
 
-// Get the hash of the url
-const getAccessTokenFromHashParams = () => {
-    var e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    e = r.exec(q);
-    while (e) {
-        if (e[1] === 'access_token') {
-            return decodeURIComponent(e[2]);
-        }
-    }
-    return '';
-};
-
-const token = getAccessTokenFromHashParams();
-
-window.history.pushState("", document.title, window.location.pathname + window.location.search);
-
 const ArtistPage: React.FC<Props> = (props: Props) => {
+
+    useEffect(() => {
+        setArtistInfo(undefined);
+        let spotifyId = window.location.search.substring(1);
+        if (spotifyId) {
+            props.dispatch(turnOnLoader());
+            fetchToJson('http://127.0.0.1:8000/onTour/artistInfo/?q=' + spotifyId)
+                .then((response: any) => {
+                    const responseArtist = (response as ArtistInfo)
+                    setArtistInfo(responseArtist);
+                    props.dispatch(turnOffLoader());
+                }).catch((error) => {
+                    console.log(error);
+                    setArtistInDb(false);
+                    if (props.model.loggedIn && props.model.accessToken) {
+                        spotifyApi.setAccessToken(props.model.accessToken);
+                        spotifyApi.getArtist(spotifyId)
+                            .then((spotifyArtistResponse: SpotifyApi.SingleArtistResponse) => {
+                                const bigPicture: string = getBigPicture(spotifyArtistResponse.images);
+                                setArtistInfo({
+                                    artist: {
+                                        name: spotifyArtistResponse.name,
+                                        spotifyId: spotifyArtistResponse.id,
+                                        iconPicture: '',
+                                        bigPicture: bigPicture,
+                                        popularity: spotifyArtistResponse.popularity,
+                                        genres: spotifyArtistResponse.genres
+                                    },
+                                    festivalsFuture: [],
+                                    festivalsPast: []
+                                });
+                            }).catch((error) => {
+                                console.log(error);
+                                setIsValidSpotifyId(false);
+                            });
+                    }
+
+                }).finally(() => props.dispatch(turnOffLoader()));
+            if (props.model.loggedIn && props.model.accessToken) {
+                spotifyApi.setAccessToken(props.model.accessToken);
+                spotifyApi.getArtistRelatedArtists(spotifyId)
+                    .then((spotifyArtistResponse: SpotifyApi.ArtistsRelatedArtistsResponse) => {
+                        if (spotifyArtistResponse.artists.length > 0) {
+                            const related = spotifyArtistResponse.artists.map((relArtist) => {
+                                const iconPicture: string = getIconPicture(relArtist.images);
+                                return {
+                                    name: relArtist.name,
+                                    spotifyId: relArtist.id,
+                                    iconPicture: iconPicture,
+                                    bigPicture: '',
+                                    popularity: relArtist.popularity,
+                                    genres: relArtist.genres
+                                } as Artist
+                            })
+                            setRelatedArtists(related);
+                        }
+                    }).catch((error) => {
+                        console.log(error);
+                        setIsValidSpotifyId(false);
+                    });
+            }
+
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [window.location.search.substring(1)]);
+
+    const [artistInfo, setArtistInfo] = React.useState<ArtistInfo | undefined>(undefined);
+    const [redirectFestival, setRedirectFestival] = React.useState('');
+    const [relatedArtists, setRelatedArtists] = React.useState<Artist[]>([]);
+    const [expanded, setExpanded] = React.useState(false);
+    const [artistInDb, setArtistInDb] = React.useState(true);
+    const [isValidSpotifyId, setIsValidSpotifyId] = React.useState(true);
+
     const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
         palette: {
@@ -85,27 +231,175 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
         }
     });
 
+    const lightBluePinkMuiTheme = createMuiTheme({
+        palette: {
+            primary: {
+                light: lightBlue[300],
+                main: lightBlue[500],
+                dark: lightBlue[700]
+            },
+            secondary: {
+                light: pink[300],
+                main: pink[500],
+                dark: pink[700]
+            },
+            type: props.model.thememode
+        }
+    });
+
     const classes = useStyles();
 
-    if (!props.model.loggedIn || !props.model.accessToken) {
-        return <Redirect to='/login' />
+    if (redirectFestival) {
+        return <Redirect to={'/festival?' + redirectFestival} />
     }
-    return (
-        <MuiThemeProvider theme={muiTheme}>
-            <CssBaseline />
-            <AppBarView />
-            <div className={classes.verticalSpace} />
-            <div className={classes.root}>
-                Artist page. Nothing to see here yet..
-            </div>
 
-            <div hidden={!loaderOn} className={classes.progressBar}>
-                <CircularProgress size={100} thickness={3} color={'secondary'} />
-            </div>
+    if (!artistInfo) {
+        return (
+            <MuiThemeProvider theme={muiTheme}>
+                <CssBaseline />
+                <AppBarView />
+                <div className={classes.align}>
+                    <div className={classes.verticalSpace} />
+                    <div className={classes.verticalSpace} />
+                        {!isValidSpotifyId &&
+                            <Typography variant="subtitle1" >
+                                Could not find artist
+                            </Typography>
+                        }
+                        {!window.location.search.substring(1) &&
+                            <Typography variant="subtitle1" >
+                                Invalid URL
+                            </Typography>
+                        }
+                    </div>
+                <div hidden={!loaderOn} className={classes.progressBar}>
+                    <CircularProgress size={100} thickness={3} color={'secondary'} />
+                </div>
+            </MuiThemeProvider>
+        )
+    } else {
+        return (
+            <MuiThemeProvider theme={muiTheme}>
+                <CssBaseline />
+                <AppBarView />
+                <div className={classes.verticalSpace} />
 
-        </MuiThemeProvider>
-    );
-};
+                <div className={classes.root}>
+                    <Box className={classes.box}>
+                        <Paper elevation={10} className={classes.paper} key={'artistInfo:' + artistInfo.artist.name}>
+                            <div className={classes.flexColumn}>
+                                <Typography variant="h2">
+                                    {artistInfo.artist.name}
+                                </Typography>
+                                <Typography variant="subtitle1">
+                                    {'Genres: ' + artistInfo.artist.genres.join(", ")}
+                                </Typography>
+                                {artistInfo.artist.spotifyId &&
+                                    <Link color={'secondary'} variant="subtitle1"
+                                        href={'https://open.spotify.com/artist/' + artistInfo.artist.spotifyId}>
+                                        Open artist in spotify
+                                    </Link>}
+                                {relatedArtists.length > 0 &&
+                                    <MuiThemeProvider theme={lightBluePinkMuiTheme}>
+                                        <div className={classes.matchingPopularBox}>
+                                            <Typography variant="body1" color='primary' component="div" >
+                                            <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
+                                                    Related artists
+                                                </Box>
+                                            </Typography>
+                                            <IconButton
+                                                className={clsx(classes.expand, {
+                                                    [classes.expandOpen]: expanded,
+                                                })}
+                                                onClick={() => setExpanded(!expanded)}
+                                                aria-expanded={expanded}
+                                                aria-label="show more"
+                                            >
+                                                <ExpandMoreIcon />
+                                            </IconButton>
+                                        </div>
+                                    </MuiThemeProvider>
+                                }
+                                {relatedArtists.length > 0 &&
+                                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                        <div className={classes.artistAvatarBox}>
+                                            {relatedArtists.slice(0, 4).map((artist) => (
+                                                <ArtistBubble
+                                                    artist={artist}
+                                                    key={'avatar_rel_artist_' + artistInfo.artist.name + artist.name}
+                                                    thememode={props.model.thememode} />
+                                            ))}
+                                        </div>
+                                    </Collapse>
+                                }
+                            </div>
+                            <Box className={classes.buttonBox}>
+                                <Button onClick={() => window.open(artistInfo.artist.bigPicture, '_blank')}>
+                                    <img className={classes.artistImg} src={artistInfo.artist.bigPicture} alt="" />
+                                </Button>
+                            </Box>
+                        </Paper>
+                    </Box>
+                    {artistInDb && artistInfo.festivalsFuture.length !== 0 &&
+                        <Box className={classes.box2}>
+                            {artistInfo.festivalsFuture.map((festival, idx) =>
+                                <FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={false} />
+                            )}
+                        </Box>
+                    }
+                    {artistInDb && artistInfo.festivalsPast.length !== 0 &&
+                        <div className={classes.align}>
+                            <div className={classes.verticalSpace} />
+                            <div className={classes.verticalSpace} />
+                            <Typography variant="h4">
+                                Previously attended festivals
+                            </Typography>
+                            <div className={classes.verticalSpace} />
+                            <Box className={classes.box2}>
+                                {artistInfo.festivalsPast.map((festival, idx) =>
+                                    <Button className={classes.paper3} key={'festivals artist attends'}
+                                        variant="outlined"
+                                        onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}>
+                                        <div className={classes.hundredWidth} key={'past festival: ' + festival.name + idx}>
+                                            <Typography variant="h4">
+                                                {festival.name}
+                                            </Typography>
+                                            {festival.cancelled ?
+                                                <Typography variant="subtitle1" color='secondary'>
+                                                    {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
+                                                </Typography> :
+                                                <Typography variant="subtitle1">
+                                                    {festival.date + ', ' + festival.year}
+                                                </Typography>
+                                            }
+                                            <Typography variant="subtitle1" >
+                                                {festival.locationText}
+                                            </Typography>
+                                        </div>
+                                    </Button>
+                                )}
+                            </Box>
+                        </div>
+                    }
+                    {!artistInDb &&
+                        <div className={classes.align}>
+                            <div className={classes.verticalSpace} />
+                            <div className={classes.verticalSpace} />
+                            <Typography variant="subtitle1" >
+                                This artist has no festivals registered in our database
+                            </Typography>
+                        </div>
+                    }
+                </div>
+
+                <div hidden={!loaderOn} className={classes.progressBar}>
+                    <CircularProgress size={100} thickness={3} color={'secondary'} />
+                </div>
+
+            </MuiThemeProvider>
+        );
+    };
+}
 
 const mapStateToProps = (state: AppState) => ({
     model: state.model
