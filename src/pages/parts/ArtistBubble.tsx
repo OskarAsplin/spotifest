@@ -62,7 +62,7 @@ const ArtistBubble: React.FC<Props> = (props: Props) => {
     const classes = useStyles();
 
     if (redirectArtist) {
-        return <Redirect to={'/artist?' + redirectArtist} />
+        return <Redirect push to={'/artist?' + redirectArtist} />
     }
 
     return (

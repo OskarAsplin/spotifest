@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps, ArtistInfo, Artist } from "../redux/types";
-import { spotifyApi, turnOnLoader, turnOffLoader, getIconPicture, getBigPicture } from "../redux/actions";
+import { spotifyApi, turnOnLoader, turnOffLoader, getIconPicture, getBigPicture, setLoggedOff } from "../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, Button, IconButton, Collapse } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -151,10 +151,13 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                 .then((response: any) => {
                     const responseArtist = (response as ArtistInfo)
                     setArtistInfo(responseArtist);
-                    props.dispatch(turnOffLoader());
                 }).catch((error) => {
                     console.log(error);
-                    setArtistInDb(false);
+                    if (error instanceof TypeError) {
+                        setIsNetworkError(true);
+                    } else {
+                        setIsArtistInDb(false);
+                    }
                     if (props.model.loggedIn && props.model.accessToken) {
                         spotifyApi.setAccessToken(props.model.accessToken);
                         spotifyApi.getArtist(spotifyId)
@@ -174,7 +177,12 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                 });
                             }).catch((error) => {
                                 console.log(error);
-                                setIsValidSpotifyId(false);
+                                if (error.status === 401) {
+                                    // TODO: check if renewal time and just renew token and redirect to same page.
+                                    props.dispatch(setLoggedOff());
+                                } else {
+                                    setIsValidSpotifyId(false);
+                                }
                             });
                     }
 
@@ -199,7 +207,12 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                         }
                     }).catch((error) => {
                         console.log(error);
-                        setIsValidSpotifyId(false);
+                        if (error.status === 401) {
+                            // TODO: check if renewal time and just renew token and redirect to same page.
+                            props.dispatch(setLoggedOff());
+                        } else {
+                            setIsValidSpotifyId(false);
+                        }
                     });
             }
 
@@ -211,7 +224,8 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     const [redirectFestival, setRedirectFestival] = React.useState('');
     const [relatedArtists, setRelatedArtists] = React.useState<Artist[]>([]);
     const [expanded, setExpanded] = React.useState(false);
-    const [artistInDb, setArtistInDb] = React.useState(true);
+    const [isArtistInDb, setIsArtistInDb] = React.useState(true);
+    const [isNetworkError, setIsNetworkError] = React.useState(false);
     const [isValidSpotifyId, setIsValidSpotifyId] = React.useState(true);
 
     const loaderOn = props.model.loaderOn;
@@ -250,7 +264,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     const classes = useStyles();
 
     if (redirectFestival) {
-        return <Redirect to={'/festival?' + redirectFestival} />
+        return <Redirect push to={'/festival?' + redirectFestival} />
     }
 
     if (!artistInfo) {
@@ -261,14 +275,19 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                 <div className={classes.align}>
                     <div className={classes.verticalSpace} />
                     <div className={classes.verticalSpace} />
-                    {!isValidSpotifyId &&
+                    {isNetworkError &&
                         <Typography variant="subtitle1" >
-                            Could not find artist
+                            There seems to be some issue contacting our database. Try refreshing the page.
                         </Typography>
                     }
-                    {!window.location.search.substring(1) &&
+                    {!isNetworkError && !isValidSpotifyId &&
                         <Typography variant="subtitle1" >
-                            Invalid URL
+                            Could not find artist.
+                        </Typography>
+                    }
+                    {!isNetworkError && !window.location.search.substring(1) &&
+                        <Typography variant="subtitle1" >
+                            Invalid URL.
                         </Typography>
                     }
                 </div>
@@ -341,14 +360,14 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             </Box>
                         </Paper>
                     </Box>
-                    {artistInDb && artistInfo.festivalsFuture.length !== 0 &&
+                    {isArtistInDb && artistInfo.festivalsFuture.length !== 0 &&
                         <Box className={classes.box2}>
                             {artistInfo.festivalsFuture.map((festival, idx) =>
                                 <FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={false} />
                             )}
                         </Box>
                     }
-                    {artistInDb && artistInfo.festivalsPast.length !== 0 &&
+                    {isArtistInDb && artistInfo.festivalsPast.length !== 0 &&
                         <div className={classes.align}>
                             <div className={classes.verticalSpace} />
                             <div className={classes.verticalSpace} />
@@ -382,12 +401,21 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             </Box>
                         </div>
                     }
-                    {!artistInDb &&
+                    {!isArtistInDb &&
                         <div className={classes.align}>
                             <div className={classes.verticalSpace} />
                             <div className={classes.verticalSpace} />
                             <Typography variant="subtitle1" >
-                                This artist has no festivals registered in our database
+                                This artist has no festivals registered in our database.
+                            </Typography>
+                        </div>
+                    }
+                    {isNetworkError &&
+                        <div className={classes.align}>
+                            <div className={classes.verticalSpace} />
+                            <div className={classes.verticalSpace} />
+                            <Typography variant="subtitle1" >
+                                There seems to be some issue contacting our database. Try refreshing the page.
                             </Typography>
                         </div>
                     }

@@ -2,7 +2,7 @@ import React from 'react';
 import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area } from "../../redux/types";
 import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setChosenArea, getIconPicture, getBigPicture } from "../../redux/actions";
 import { connect } from "react-redux";
-import { createStyles, Theme } from "@material-ui/core";
+import { createStyles, Theme, MuiThemeProvider } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import indigo from "@material-ui/core/colors/indigo";
 import { Model } from "../../redux/types";
@@ -24,6 +24,8 @@ import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { lightBlue, pink } from "@material-ui/core/colors";
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -97,6 +99,22 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	const [chosenPlaylist, setChosenPlaylist] = React.useState('__your__top__artists__');
 	const [selectedFromDate, setSelectedFromDate] = React.useState<Date>(new Date());
 	const [selectedToDate, setSelectedToDate] = React.useState<Date>(new Date(new Date().getFullYear(), 11, 31));
+
+	const lightBluePinkMuiTheme = createMuiTheme({
+		palette: {
+			primary: {
+				light: lightBlue[300],
+				main: lightBlue[500],
+				dark: lightBlue[700]
+			},
+			secondary: {
+				light: pink[300],
+				main: pink[500],
+				dark: pink[700]
+			},
+			type: props.model.thememode
+		}
+	});
 
 	const testMatchesWithGivenSettings = (
 		area: Area,
@@ -231,117 +249,119 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	return (
 		<Box className={classes.box}>
-			<Paper>
-				<Grid component="label" container alignItems="center" spacing={1}>
-					<Grid item xs={3} className={classes.alignItems}>
-						<FormControl className={classes.formControl} variant="outlined" size="small">
-							<InputLabel id="choose-playlist-label">
-								Match with
-							</InputLabel>
-							<Select
-								labelId="choose-playlist-label"
-								id="choose-playlist"
-								value={chosenPlaylist}
-								onChange={handlePlaylistChange}
-								label="Match with"
+			<MuiThemeProvider theme={lightBluePinkMuiTheme}>
+				<Paper>
+					<Grid component="label" container alignItems="center" spacing={1}>
+						<Grid item xs={3} className={classes.alignItems}>
+							<FormControl className={classes.formControl} variant="outlined" size="small">
+								<InputLabel id="choose-playlist-label">
+									Match with
+								</InputLabel>
+								<Select
+									labelId="choose-playlist-label"
+									id="choose-playlist"
+									value={chosenPlaylist}
+									onChange={handlePlaylistChange}
+									label="Match with"
+								>
+									<MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
+										Your top artists
+									</MenuItem>
+									<ListSubheader>or choose a playlist below</ListSubheader>
+									{playlists.map((playlist) => (
+										<MenuItem key={playlist.name} value={playlist.name} style={{ maxWidth: 400 }}>
+											{playlist.name}
+										</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+						</Grid>
+						<Grid item xs={3}>
+							<FormControl className={classes.formControl} variant="outlined" size="small">
+								<InputLabel id="choose-countries-label">Area</InputLabel>
+								<Select
+									labelId="choose-countries-label"
+									id="choose-countries"
+									value={chosenArea.isoCode}
+									onChange={handleAreaChange}
+									label="Area"
+								>
+									<MenuItem key={'everywhere'} value={'everywhere'}>
+										Everywhere
+									</MenuItem>
+									<ListSubheader>Continents</ListSubheader>
+									{continents.map((continent) =>
+										<MenuItem key={continent.isoCode} value={continent.isoCode}>
+											{continent.name}
+										</MenuItem>
+									)}
+									<ListSubheader>Countries</ListSubheader>
+									{countries.map((country) =>
+										<MenuItem key={country.isoCode} value={country.isoCode}>
+											{country.name}
+										</MenuItem>
+									)}
+								</Select>
+							</FormControl>
+						</Grid>
+						<Grid item xs={4} className={classes.alignItems}>
+							<MuiPickersUtilsProvider utils={DateFnsUtils}>
+								<Grid container justify="space-around">
+									<KeyboardDatePicker
+										className={classes.datePickerField}
+										margin="dense"
+										inputVariant="outlined"
+										id="date-picker-dialog-from"
+										label="From"
+										format="MM/yyyy"
+										maxDate={new Date('2021-12-31')}
+										minDate={new Date('2019-01-01')}
+										views={['year', 'month']}
+										value={selectedFromDate}
+										autoOk
+										onChange={handleFromDateChange}
+										KeyboardButtonProps={{
+											'aria-label': 'change date',
+										}}
+									/>
+								</Grid>
+								<Grid container justify="space-around">
+									<KeyboardDatePicker
+										margin="dense"
+										inputVariant="outlined"
+										id="date-picker-dialog-to"
+										label="To"
+										format="MM/yyyy"
+										maxDate={new Date('2021-12-31')}
+										minDate={new Date('2019-01-01')}
+										views={['year', 'month']}
+										value={selectedToDate}
+										autoOk
+										onChange={handleToDateChange}
+										KeyboardButtonProps={{
+											'aria-label': 'change date',
+										}}
+									/>
+								</Grid>
+							</MuiPickersUtilsProvider>
+						</Grid>
+						<Grid item xs={1}>
+						</Grid>
+						<Grid item xs={1} className={classes.toolTip}>
+							<HtmlTooltip placement="right-start" interactive
+								title={
+									<React.Fragment>
+										<Typography color="inherit" variant="h6">Matching algorithm</Typography>
+										{'The matching agorithm is based on the genres of the festivals, giving a higher score if the genres fit well to your top artists or selected playlist. Matching artists in the lineup of a festival will also increase the matching percent.'}
+									</React.Fragment>
+								}
 							>
-								<MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
-									Your top artists
-								</MenuItem>
-								<ListSubheader>or choose a playlist below</ListSubheader>
-								{playlists.map((playlist) => (
-									<MenuItem key={playlist.name} value={playlist.name} style={{ maxWidth: 400 }}>
-										{playlist.name}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
+								<InfoIcon color="primary" style={{ fill: thememode === 'light' ? indigo[500] : '#fcfcfe' }} />
+							</HtmlTooltip>
+						</Grid>
 					</Grid>
-					<Grid item xs={3}>
-						<FormControl className={classes.formControl} variant="outlined" size="small">
-							<InputLabel id="choose-countries-label">Area</InputLabel>
-							<Select
-								labelId="choose-countries-label"
-								id="choose-countries"
-								value={chosenArea.isoCode}
-								onChange={handleAreaChange}
-								label="Area"
-							>
-								<MenuItem key={'everywhere'} value={'everywhere'}>
-									Everywhere
-								</MenuItem>
-								<ListSubheader>Continents</ListSubheader>
-								{continents.map((continent) =>
-									<MenuItem key={continent.isoCode} value={continent.isoCode}>
-										{continent.name}
-									</MenuItem>
-								)}
-								<ListSubheader>Countries</ListSubheader>
-								{countries.map((country) =>
-									<MenuItem key={country.isoCode} value={country.isoCode}>
-										{country.name}
-									</MenuItem>
-								)}
-							</Select>
-						</FormControl>
-					</Grid>
-					<Grid item xs={4} className={classes.alignItems}>
-						<MuiPickersUtilsProvider utils={DateFnsUtils}>
-							<Grid container justify="space-around">
-								<KeyboardDatePicker
-									className={classes.datePickerField}
-									margin="dense"
-									inputVariant="outlined"
-									id="date-picker-dialog-from"
-									label="From"
-									format="MM/yyyy"
-									maxDate={new Date('2021-12-31')}
-									minDate={new Date('2019-01-01')}
-									views={['year', 'month']}
-									value={selectedFromDate}
-									autoOk
-									onChange={handleFromDateChange}
-									KeyboardButtonProps={{
-										'aria-label': 'change date',
-									}}
-								/>
-							</Grid>
-							<Grid container justify="space-around">
-								<KeyboardDatePicker
-									margin="dense"
-									inputVariant="outlined"
-									id="date-picker-dialog-to"
-									label="To"
-									format="MM/yyyy"
-									maxDate={new Date('2021-12-31')}
-									minDate={new Date('2019-01-01')}
-									views={['year', 'month']}
-									value={selectedToDate}
-									autoOk
-									onChange={handleToDateChange}
-									KeyboardButtonProps={{
-										'aria-label': 'change date',
-									}}
-								/>
-							</Grid>
-						</MuiPickersUtilsProvider>
-					</Grid>
-					<Grid item xs={1}>
-					</Grid>
-					<Grid item xs={1} className={classes.toolTip}>
-						<HtmlTooltip placement="right-start" interactive
-							title={
-								<React.Fragment>
-									<Typography color="inherit" variant="h6">Matching algorithm</Typography>
-									{'The matching agorithm is based on the genres of the festivals, giving a higher score if the genres fit well to your top artists or selected playlist. Matching artists in the lineup of a festival will also increase the matching percent.'}
-								</React.Fragment>
-							}
-						>
-							<InfoIcon color="primary" style={{ fill: thememode === 'light' ? indigo[500] : '#fcfcfe' }} />
-						</HtmlTooltip>
-					</Grid>
-				</Grid>
-			</Paper>
+				</Paper>
+			</MuiThemeProvider>
 		</Box>
 	);
 };

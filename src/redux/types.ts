@@ -195,7 +195,7 @@ export interface FestivalMatch {
     popular_artists: Artist[],
     matching_percent_genres: number,
     matching_percent_combined: number,
-    matching_genres: string[],
+    top_genres: string[],
     lineupImg: string,
     festivalImg: string,
     webpage: string,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStyles, makeStyles, Theme, createMuiTheme } from '@material-ui/core/styles';
-import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider } from '@material-ui/core';
+import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider, Button } from '@material-ui/core';
 import { Brightness2, Brightness4 } from "@material-ui/icons";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Model, AppState, DispatchProps } from "../../redux/types";
@@ -33,6 +33,15 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         bottomMargin: {
             marginBottom: theme.spacing(1),
+        },
+        button: {
+            //flexGrow: 1,
+            textTransform: 'none',
+            //marginLeft: -theme.spacing(1.3),
+            //paddingBottom: theme.spacing(0),
+            //paddingTop: theme.spacing(0),
+            //textAlign: 'left',
+            //maxWidth: '85%'
         },
     }),
 );
@@ -81,11 +90,19 @@ const AppBarView: React.FC<Props> = (props: Props) => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static">
+            <AppBar position="static" id="oskarito-appbar">
                 <Toolbar className={classes.customizeToolbar}>
-                    <Typography variant="h6" className={classes.title}>
-                        Oskarito Festival Matcher
-                    </Typography>
+                    <div className={classes.title}>
+                        <Button
+                            className={classes.button}
+                            color="inherit"
+                            onClick={() => { window.open('http://localhost:3000/ontour', '_self') }}
+                        >
+                            <Typography variant="h6">
+                                Oskarito Festival Matcher
+                            </Typography>
+                        </Button>
+                    </div>
                     {props.model.userInfo?.displayName ?
                         <Typography variant="body1">
                             {props.model.userInfo.displayName}

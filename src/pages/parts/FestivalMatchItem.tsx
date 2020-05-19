@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         lineup: {
             maxHeight: 230,
-            maxWidth: 300,
+            maxWidth: 284,
         },
         flexRow: {
             display: 'flex',
@@ -149,7 +149,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     const trailColor = thememode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
 
     if (redirectFestival) {
-        return <Redirect to={'/festival?' + redirectFestival} />
+        return <Redirect push to={'/festival?' + redirectFestival} />
     }
 
     return (
@@ -216,7 +216,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                 {festival.locationText}
                             </Typography>
                             <Typography variant="subtitle1">
-                                {'Genres: ' + festival.matching_genres.slice(0, 3).join(", ")}
+                                {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}
                             </Typography>
                             {showMatching &&
                                 <div className={classes.matchingPopularBox}>

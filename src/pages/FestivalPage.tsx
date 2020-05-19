@@ -121,6 +121,13 @@ const useStyles = makeStyles((theme: Theme) =>
         invisibleButton: {
             display: 'none'
         },
+        align: {
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
     }),
 );
 
@@ -162,13 +169,21 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
         fetchToJson('http://127.0.0.1:8000/onTour/festivalInfo/?q=' + festival)
             .then((response: any) => {
                 setFestivalInfo(response as FestivalInfo);
-                props.dispatch(turnOffLoader());
-            })
+            }).catch((error) => {
+                console.log(error);
+                if (error instanceof TypeError) {
+                    setIsNetworkError(true);
+                } else {
+                    setIsFestivalInDb(false);
+                }
+            }).finally(() => props.dispatch(turnOffLoader()));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const { thememode } = props;
     const [festivalInfo, setFestivalInfo] = React.useState<FestivalInfo | undefined>(undefined);
+    const [isFestivalInDb, setIsFestivalInDb] = React.useState(true);
+    const [isNetworkError, setIsNetworkError] = React.useState(false);
     const [selectedLineup, setSelectedLineup] = React.useState(0);
     const [sortAlphabetically, setSortAlphabetically] = React.useState(false);
 
@@ -216,6 +231,25 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 <AppBarView />
+                <div className={classes.align}>
+                    <div className={classes.verticalSpace} />
+                    <div className={classes.verticalSpace} />
+                    {isNetworkError &&
+                        <Typography variant="subtitle1" >
+                            There seems to be some issue connecting to our database. Try refreshing the page.
+                        </Typography>
+                    }
+                    {!isNetworkError && !isFestivalInDb &&
+                        <Typography variant="subtitle1" >
+                            Could not find festival.
+                        </Typography>
+                    }
+                    {!isNetworkError && !window.location.search.substring(1) &&
+                        <Typography variant="subtitle1" >
+                            Invalid URL.
+                        </Typography>
+                    }
+                </div>
                 <div hidden={!loaderOn} className={classes.progressBar}>
                     <CircularProgress size={100} thickness={3} color={'secondary'} />
                 </div>

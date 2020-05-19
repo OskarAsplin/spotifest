@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppState, DispatchProps, FestivalMatch, MatchingMethod } from "../../redux/types";
 import { connect } from "react-redux";
 import { createStyles, Theme } from "@material-ui/core";
+import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import { Model } from "../../redux/types";
 import 'react-circular-progressbar/dist/styles.css';
@@ -13,6 +14,13 @@ const useStyles = makeStyles((theme: Theme) =>
 		box: {
 			width: '80%',
 			maxWidth: '764px'
+		},
+		align: {
+			display: 'flex',
+			width: '100%',
+			justifyContent: 'center',
+			alignItems: 'center',
+			marginBottom: theme.spacing(1)
 		},
 	}),
 );
@@ -30,14 +38,35 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 	const { festivalMatches, matchingMethod } = props;
 	const classes = useStyles();
 
+	const [page, setPage] = React.useState(1);
+	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+		setPage(value);
+	};
+	const itemsPerPage = 15
+	const numPages = Math.ceil(festivalMatches.length / itemsPerPage)
+
+	const showMatches = festivalMatches.sort((a, b) => (matchingMethod === MatchingMethod.Genre ?
+		(a.matching_percent_combined < b.matching_percent_combined) :
+		(a.matching_percent_artists < b.matching_percent_artists)) ? 1 : -1)
+		.slice((page - 1) * itemsPerPage, Math.min(page * itemsPerPage, festivalMatches.length));
+
+	useEffect(() => {
+		setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
+	}, [showMatches])
+
 	return (
 		<Box className={classes.box}>
-			{festivalMatches.sort((a, b) => (matchingMethod === MatchingMethod.Genre ?
-				(a.matching_percent_combined < b.matching_percent_combined) :
-				(a.matching_percent_artists < b.matching_percent_artists)) ? 1 : -1)
-				.map((festival: FestivalMatch, idx) =>
+			{showMatches.length > 0 &&
+				<Box className={classes.align}>
+					<Pagination count={numPages} page={page} onChange={handleChange} />
+				</Box>}
+			{showMatches.map((festival: FestivalMatch, idx) =>
 					<FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={true}/>
 				)}
+			{showMatches.length > 0 &&
+				<Box className={classes.align}>
+					<Pagination count={numPages} page={page} onChange={handleChange} />
+				</Box>}
 		</Box>
 	);
 };

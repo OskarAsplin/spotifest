@@ -7,7 +7,7 @@ export const initialModel: Model = {
     loggedIn: true,
 
     // Visnings
-    thememode: 'light',
+    thememode: 'dark',
 
     //Logikk
     accessToken: '',

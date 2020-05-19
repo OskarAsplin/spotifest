@@ -102,7 +102,7 @@ const V1: React.FC<Props> = (props: Props) => {
     const classes = useStyles();
 
     if (!props.model.loggedIn || (!token && !props.model.accessToken)) {
-        return <Redirect to='/login' />
+        return <Redirect push to='/login' />
     }
     return (
         //<SplashScreen>

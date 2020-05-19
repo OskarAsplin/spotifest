@@ -143,6 +143,7 @@ export const testFestivalMatches = (
     countries?: string[]
 ) => {
     dispatch(turnOnLoader());
+    dateTo.setMonth(dateTo.getMonth() + 1, 0); // Last day of month
     const matchRequest: MatchRequest = {
         artists: artists,
         isTopArtists: isTopArtists,
