@@ -6,7 +6,7 @@ import { createStyles, Theme, MuiThemeProvider } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import indigo from "@material-ui/core/colors/indigo";
 import { Model } from "../../redux/types";
-//import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
@@ -40,9 +40,22 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		alignItems: {
 			display: 'flex',
-			width: '100%',
+            '@media (max-width: 699px)': {
+                width: '100%',
+            },
 			alignItems: 'center',
 		},
+        alignItems2: {
+            display: 'flex',
+            '@media (min-width: 700px)': {
+                width: '300px'
+            },
+            '@media (max-width: 699px)': {
+                width: '100%',
+            },
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
 		box: {
 			width: '100%',
 			maxWidth: '1000px',
@@ -50,18 +63,46 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		formControl: {
 			margin: theme.spacing(1),
-			minWidth: 120,
-			maxWidth: 300,
+            '@media (min-width: 700px)': {
+                minWidth: 120,
+                maxWidth: 300,
+            },
+            '@media (max-width: 699px)': {
+                width: '100%',
+            },
 		},
 		toolTip: {
 			display: 'flex',
 			flexDirection: 'column',
 			alignItems: 'center',
-			//paddingRight: '10px',
 		},
-		datePickerField: {
-			marginRight: theme.spacing(1),
+		datePickerFieldFrom: {
+			marginRight: theme.spacing(0.5),
 		},
+        datePickerFieldTo: {
+            marginLeft: theme.spacing(0.5),
+        },
+        noPadding: {
+            paddingRight: 0
+        },
+        spaceBetween: {
+            display: 'flex',
+            flexWrap: 'wrap',
+            flexDirection: 'row',
+            alignItems: 'center',
+            '@media (min-width: 700px)': {
+            	justifyContent: 'space-between',
+            },
+            '@media (min-width: 1000px)': {
+                padding: theme.spacing(0.5, 2, 0, 2),
+            },
+            '@media (max-width: 999px)': {
+                padding: theme.spacing(0.5, 0.5, 0, 0.5),
+            },
+        },
+        marginBottom: {
+            marginBottom: '4px',
+        },
 	}),
 );
 
@@ -91,6 +132,7 @@ const HtmlTooltip = withStyles((theme) => ({
 const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	// const smallScreen = useMediaQuery('(max-width:610px)');
+    const pcScreen = useMediaQuery('(min-width:1200px)');
 
 	const { thememode, playlists, topArtists, countries, continents, dispatch, chosenArea } = props;
 
@@ -251,8 +293,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		<Box className={classes.box}>
 			<MuiThemeProvider theme={lightBluePinkMuiTheme}>
 				<Paper>
-					<Grid component="label" container alignItems="center" spacing={1}>
-						<Grid item xs={3} className={classes.alignItems}>
+					<Box className={classes.spaceBetween}>
+						<Box className={classes.alignItems}>
 							<FormControl className={classes.formControl} variant="outlined" size="small">
 								<InputLabel id="choose-playlist-label">
 									Match with
@@ -275,8 +317,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									))}
 								</Select>
 							</FormControl>
-						</Grid>
-						<Grid item xs={3}>
+						</Box>
+                        <Box className={classes.alignItems}>
 							<FormControl className={classes.formControl} variant="outlined" size="small">
 								<InputLabel id="choose-countries-label">Area</InputLabel>
 								<Select
@@ -303,12 +345,13 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									)}
 								</Select>
 							</FormControl>
-						</Grid>
-						<Grid item xs={4} className={classes.alignItems}>
+						</Box>
+						<Box className={classes.alignItems2}>
 							<MuiPickersUtilsProvider utils={DateFnsUtils}>
-								<Grid container justify="space-around">
-									<KeyboardDatePicker
-										className={classes.datePickerField}
+								<Grid container justify="space-around" className={classes.marginBottom}>
+                                    <KeyboardDatePicker
+										className={classes.datePickerFieldFrom}
+                                        //inputProps={{ classes: { adornedEnd: classes.noPadding } }}
 										margin="dense"
 										inputVariant="outlined"
 										id="date-picker-dialog-from"
@@ -325,8 +368,9 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 										}}
 									/>
 								</Grid>
-								<Grid container justify="space-around">
+                                <Grid container justify="space-around" className={classes.marginBottom}>
 									<KeyboardDatePicker
+                                        className={classes.datePickerFieldFrom}
 										margin="dense"
 										inputVariant="outlined"
 										id="date-picker-dialog-to"
@@ -344,10 +388,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									/>
 								</Grid>
 							</MuiPickersUtilsProvider>
-						</Grid>
-						<Grid item xs={1}>
-						</Grid>
-						<Grid item xs={1} className={classes.toolTip}>
+						</Box>
+						{pcScreen && <Box className={classes.toolTip}>
 							<HtmlTooltip placement="right-start" interactive
 								title={
 									<React.Fragment>
@@ -358,8 +400,9 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 							>
 								<InfoIcon color="primary" style={{ fill: thememode === 'light' ? indigo[500] : '#fcfcfe' }} />
 							</HtmlTooltip>
-						</Grid>
-					</Grid>
+						</Box>
+						}
+					</Box>
 				</Paper>
 			</MuiThemeProvider>
 		</Box>

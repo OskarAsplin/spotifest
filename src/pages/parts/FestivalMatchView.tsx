@@ -12,8 +12,14 @@ import FestivalMatchItem from './FestivalMatchItem';
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		box: {
-			width: '80%',
-			maxWidth: '764px'
+            '@media (min-width: 500px)': {
+                width: '95%',
+            },
+            '@media (max-width: 499px)': {
+                width: '100%',
+            },
+			maxWidth: '764px',
+			marginTop: theme.spacing(1)
 		},
 		align: {
 			display: 'flex',

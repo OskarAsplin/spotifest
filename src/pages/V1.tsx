@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(0, 4, 0, 4),
+            padding: theme.spacing(0, 2, 0, 2),
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'

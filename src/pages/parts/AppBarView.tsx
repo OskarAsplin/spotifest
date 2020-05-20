@@ -7,6 +7,7 @@ import { Model, AppState, DispatchProps } from "../../redux/types";
 import { connect } from "react-redux";
 import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../../redux/actions";
 import { lightBlue, pink } from "@material-ui/core/colors";
+import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -57,6 +58,8 @@ interface StoreProps {
 type Props = OwnProps & StoreProps & DispatchProps;
 
 const AppBarView: React.FC<Props> = (props: Props) => {
+    const bigScreen = useMediaQuery('(min-width:650px)');
+
     const classes = useStyles();
     const { dispatch } = props;
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -103,11 +106,10 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             </Typography>
                         </Button>
                     </div>
-                    {props.model.userInfo?.displayName ?
+                    {props.model.userInfo?.displayName && bigScreen &&
                         <Typography variant="body1">
                             {props.model.userInfo.displayName}
                         </Typography>
-                        : <div />
                     }
                     <IconButton
                         color="inherit"

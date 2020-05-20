@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Redirect } from 'react-router-dom';
 import ArtistBubble from './ArtistBubble';
+import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -17,7 +18,12 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            padding: theme.spacing(2, 4, 2, 4),
+            '@media (min-width: 500px)': {
+                padding: theme.spacing(2, 4, 2, 4),
+            },
+            '@media (max-width: 499px)': {
+                padding: theme.spacing(2, 1.5, 2, 1.5),
+            },
             marginBottom: theme.spacing(2),
             width: '100%',
         },
@@ -28,14 +34,22 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
         },
         circleSize: {
-            width: '80px'
+            '@media (min-width: 500px)': {
+                width: '80px'
+            },
+            '@media (max-width: 499px)': {
+                width: '60px'
+            },
         },
         festivalTitle: {
-            flexGrow: 1,
-        },
-        box: {
-            width: '80%',
-            maxWidth: '764px'
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            wordWrap: 'break-word',
+            whiteSpace: 'normal',
+            '@media (max-width: 499px)': {
+                maxWidth: '320px'
+            },
         },
         artistAvatarBox: {
             display: 'flex',
@@ -46,7 +60,14 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
             display: 'flex',
             flexDirection: 'row',
-            flexWrap: 'nowrap',
+            //'@media (min-width: 500px)': {
+            //    flexDirection: 'row',
+            //    flexWrap: 'nowrap',
+            //},
+            //'@media (max-width: 499px)': {
+            //    flexDirection: 'column-reverse',
+            //    alignItems: 'center'
+            //},
             minHeight: '48px'
         },
         matchingPopularBox: {
@@ -70,13 +91,22 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
         },
         button: {
-            flexGrow: 1,
+            whiteSpace: 'normal',
             textTransform: 'none',
             marginLeft: -theme.spacing(1.3),
+            textAlign: 'left',
+            maxWidth: '85%',
+            //'@media (min-width: 500px)': {
+            //    flexGrow: 1,
+            //    marginLeft: -theme.spacing(1.3),
+            //    textAlign: 'left',
+            //    maxWidth: '85%',
+            //},
+            //'@media (max-width: 499px)': {
+            //    maxWidth: '100%'
+            //},
             paddingBottom: theme.spacing(0),
             paddingTop: theme.spacing(0),
-            textAlign: 'left',
-            maxWidth: '85%'
         },
         grow: {
             flexGrow: 1,
@@ -84,6 +114,7 @@ const useStyles = makeStyles((theme: Theme) =>
         lineupBox: {
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
             marginTop: theme.spacing(1)
         },
         lineup: {
@@ -110,6 +141,7 @@ interface StoreProps {
 type Props = DispatchProps & StoreProps & OwnProps;
 
 const FestivalMatchItem: React.FC<Props> = (props: Props) => {
+    const bigScreen = useMediaQuery('(min-width:500px)');
 
     const { festival, showMatching, thememode, matchingMethod } = props;
     const [expanded, setExpanded] = React.useState(false);
@@ -163,7 +195,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                 color="inherit"
                                 onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}
                             >
-                                <Typography variant="h2">
+                                <Typography variant={bigScreen ? "h2": "h4"} className={classes.festivalTitle}>
                                     {festival.name}
                                 </Typography>
                             </Button>
@@ -218,6 +250,16 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             <Typography variant="subtitle1">
                                 {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}
                             </Typography>
+                            {!bigScreen && festival.lineupImg && <div className={classes.lineupBox}>
+                                <Button onClick={() => window.open(festival.lineupImg, '_blank')}>
+                                    <img className={classes.lineup} src={festival.lineupImg} alt="" />
+                                </Button>
+                            </div>}
+                            {!bigScreen && !festival.lineupImg && festival.festivalImg && <div className={classes.lineupBox}>
+                                <Button onClick={() => window.open(festival.festivalImg, '_blank')}>
+                                    <img className={classes.lineup} src={festival.festivalImg} alt="" />
+                                </Button>
+                            </div>}
                             {showMatching &&
                                 <div className={classes.matchingPopularBox}>
                                     <Typography variant="body1" color='primary' component="div" >
@@ -240,12 +282,12 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                 </div>
                             }
                         </div>
-                        {festival.lineupImg && <div className={classes.lineupBox}>
+                        {bigScreen && festival.lineupImg && <div className={classes.lineupBox}>
                             <Button onClick={() => window.open(festival.lineupImg, '_blank')}>
                                 <img className={classes.lineup} src={festival.lineupImg} alt="" />
                             </Button>
                         </div>}
-                        {!festival.lineupImg && festival.festivalImg && <div className={classes.lineupBox}>
+                        {bigScreen && !festival.lineupImg && festival.festivalImg && <div className={classes.lineupBox}>
                             <Button onClick={() => window.open(festival.festivalImg, '_blank')}>
                                 <img className={classes.lineup} src={festival.festivalImg} alt="" />
                             </Button>
@@ -271,7 +313,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <div className={classes.artistAvatarBox}>
                             {festival.popular_artists.length > 0 &&
-                                festival.popular_artists.map((artist) => (
+                                festival.popular_artists.slice(0, bigScreen ? 14 : 12).map((artist) => (
                                     <ArtistBubble
                                         artist={artist}
                                         key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
