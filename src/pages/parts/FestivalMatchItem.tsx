@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: theme.spacing(2, 4, 2, 4),
             },
             '@media (max-width: 499px)': {
-                padding: theme.spacing(2, 1.5, 2, 1.5),
+                padding: theme.spacing(2, 2, 2, 2),
             },
             marginBottom: theme.spacing(2),
             width: '100%',
@@ -42,19 +42,22 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         festivalTitle: {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
             wordWrap: 'break-word',
-            whiteSpace: 'normal',
+        },
+        festivalTitleCenter: {
+            wordWrap: 'break-word',
             '@media (max-width: 499px)': {
-                maxWidth: '320px'
+                textAlign: 'center'
             },
         },
         artistAvatarBox: {
             display: 'flex',
             flexDirection: 'row',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
+            '@media (max-width: 499px)': {
+                justifyContent: 'space-between',
+                minWidth: '300px'
+            },
         },
         titleAndMatchBox: {
             width: '100%',
@@ -95,7 +98,7 @@ const useStyles = makeStyles((theme: Theme) =>
             textTransform: 'none',
             marginLeft: -theme.spacing(1.3),
             textAlign: 'left',
-            maxWidth: '85%',
+            //maxWidth: '85%',
             //'@media (min-width: 500px)': {
             //    flexGrow: 1,
             //    marginLeft: -theme.spacing(1.3),
@@ -111,6 +114,11 @@ const useStyles = makeStyles((theme: Theme) =>
         grow: {
             flexGrow: 1,
         },
+        growAlign: {
+            display: 'flex',
+            justifyContent: 'center',
+            flexGrow: 1,
+        },
         lineupBox: {
             display: 'flex',
             alignItems: 'center',
@@ -124,6 +132,9 @@ const useStyles = makeStyles((theme: Theme) =>
         flexRow: {
             display: 'flex',
             flexDirection: 'row',
+        },
+        width100: {
+            width: '100px'
         },
     }),
 );
@@ -189,13 +200,13 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={lightBluePinkMuiTheme}>
                 <div className={classes.titleLine}>
                     <div className={classes.titleAndMatchBox}>
-                        <div className={classes.grow}>
+                        <div className={!showMatching && !bigScreen ? classes.growAlign : classes.grow}>
                             <Button
                                 className={classes.button}
                                 color="inherit"
                                 onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}
                             >
-                                <Typography variant={bigScreen ? "h2": "h4"} className={classes.festivalTitle}>
+                                <Typography variant={bigScreen ? "h2" : "h4"} className={!showMatching && !bigScreen ? classes.festivalTitleCenter : classes.festivalTitle}>
                                     {festival.name}
                                 </Typography>
                             </Button>
@@ -279,6 +290,9 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                                 thememode={thememode} />
                                         )
                                         )}
+                                {(festival.matching_artists.length - 2) % 3 === 0 &&
+                                    <div className={classes.width100}/>
+                                }
                                 </div>
                             }
                         </div>
@@ -320,6 +334,9 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                         thememode={thememode} />
                                 )
                                 )}
+                            {(festival.popular_artists.length - 2) % 3 === 0 &&
+                                <div className={classes.width100} />
+                            }
                         </div>
                     </Collapse>
                 </div>

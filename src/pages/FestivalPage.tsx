@@ -2,38 +2,47 @@ import React, { useEffect } from 'react';
 import { AppState, DispatchProps, FestivalInfo } from "../redux/types";
 import { turnOnLoader, turnOffLoader } from "../redux/actions";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, Paper, Box, Link, Button, Tabs, Tab, PaletteType, Switch } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, Paper, Box, Link, Button, Tabs, Tab, PaletteType, Switch, useTheme } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { deepOrange, indigo, lightBlue, pink } from "@material-ui/core/colors";
 import { Model } from "../redux/types";
-//import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
 import { fetchToJson } from "../utils/restUtils";
 import ArtistBubble from './parts/ArtistBubble';
+import SwipeableViews from 'react-swipeable-views';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(0, 4, 0, 4),
+            padding: theme.spacing(0, 2, 0, 2),
             alignItems: 'center',
             width: '100%'
         },
         paper: {
             display: 'flex',
-            flexDirection: 'row',
-            padding: theme.spacing(2, 4, 2, 4),
+            '@media (min-width: 500px)': {
+                padding: theme.spacing(2, 4, 2, 4),
+                flexDirection: 'row',
+            },
+            '@media (max-width: 499px)': {
+                padding: theme.spacing(2, 2, 2, 2),
+                flexDirection: 'column',
+            },
             justifyContent: 'space-between',
             width: '100%'
         },
         paper2: {
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(0, 4, 2, 4),
+            '@media (min-width: 500px)': {
+                padding: theme.spacing(0, 4, 2, 4),
+            },
             marginBottom: theme.spacing(2),
             width: '100%',
             justifyContent: 'center',
@@ -54,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) =>
             marginLeft: '-50px'
         },
         box: {
-            width: '90%',
+            width: '100%',
             maxWidth: '1112px',
             margin: theme.spacing(0, 2, 2, 2),
         },
@@ -64,10 +73,14 @@ const useStyles = makeStyles((theme: Theme) =>
         flexColumn: {
             display: 'flex',
             flexDirection: 'column',
-            maxWidth: '50%'
+            '@media (min-width: 500px)': {
+                maxWidth: '50%'
+            },
         },
         buttonBox: {
-            maxWidth: '50%',
+            '@media (min-width: 500px)': {
+                maxWidth: '50%'
+            },
             display: 'flex',
             alignItems: 'center',
         },
@@ -76,7 +89,7 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: '100%',
         },
         tabs: {
-            flexGrow: 1,
+            maxWidth: '90%'
         },
         lineupView: {
             display: 'flex',
@@ -91,7 +104,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
-            justifyContent: 'center'
+            justifyContent: 'center',
         },
         lineupBox: {
             display: 'flex',
@@ -100,7 +113,12 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         lineup: {
             maxHeight: 450,
-            maxWidth: 1000,
+            '@media (min-width: 500px)': {
+                maxWidth: 450,
+            },
+            '@media (max-width: 499px)': {
+                maxWidth: 300,
+            },
         },
         tabLabel: {
             fontSize: '20px',
@@ -128,6 +146,27 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             alignItems: 'center'
         },
+        tabPanel: {
+            padding: theme.spacing(2, 1, 2, 1)
+        },
+        tabRoot: {
+            '@media (min-width: 900px)': {
+                minWidth: '160px',
+            },
+            '@media (min-width: 500px)': {
+                '@media (max-width: 899px)': {
+                    minWidth: '100px',
+                },
+            },
+            '@media (max-width: 499px)': {
+                minWidth: '72px',
+            },
+        },
+        festivalTitle: {
+            '@media (max-width: 499px)': {
+                textAlign: 'center'
+            },
+        },
     }),
 );
 
@@ -135,23 +174,6 @@ interface TabPanelProps {
     children?: React.ReactNode;
     index: any;
     value: any;
-}
-
-function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props;
-
-    return (
-        <Typography
-            component="div"
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && <Box p={3}>{children}</Box>}
-        </Typography>
-    );
 }
 
 interface StoreProps {
@@ -162,6 +184,8 @@ interface StoreProps {
 type Props = DispatchProps & StoreProps;
 
 const FestivalPage: React.FC<Props> = (props: Props) => {
+
+    const bigScreen = useMediaQuery('(min-width:500px)');
 
     useEffect(() => {
         let festival = window.location.search.substring(1);
@@ -186,10 +210,6 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     const [isNetworkError, setIsNetworkError] = React.useState(false);
     const [selectedLineup, setSelectedLineup] = React.useState(0);
     const [sortAlphabetically, setSortAlphabetically] = React.useState(false);
-
-    const handleSelectedLineupChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-        setSelectedLineup(newValue);
-    };
 
     const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
@@ -225,6 +245,24 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     });
 
     const classes = useStyles();
+    const theme = useTheme();
+
+    const TabPanel = (props: TabPanelProps) => {
+        const { children, value, index, ...other } = props;
+
+        return (
+            <Typography
+                component="div"
+                role="tabpanel"
+                hidden={value !== index}
+                id={`simple-tabpanel-${index}`}
+                aria-labelledby={`simple-tab-${index}`}
+                {...other}
+            >
+                {value === index && <Box className={classes.tabPanel}>{children}</Box>}
+            </Typography>
+        );
+    }
 
     if (!festivalInfo) {
         return (
@@ -266,7 +304,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                     <Box className={classes.box}>
                         <Paper elevation={10} className={classes.paper} key={'festivalInfo:' + festivalInfo.name}>
                             <div className={classes.flexColumn}>
-                                <Typography variant="h2">
+                                <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
                                     {festivalInfo.name}
                                 </Typography>
                                 <Typography variant="subtitle1">
@@ -298,10 +336,11 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                             </Box>
                         </Paper>
                     </Box>
+                    <div className={classes.verticalSpace} />
                     {festivalInfo.video &&
                         <Box className={classes.videoBox}>
                             <Paper elevation={3} className={classes.paper} key={'festival video:' + festivalInfo.name}>
-                                <iframe width="420" height="315" title={'festival video iframe:' + festivalInfo.name}
+                            <iframe width={bigScreen ? '420' : '328'} height={bigScreen ? '315' : '246'} title={'festival video iframe:' + festivalInfo.name}
                                     src={festivalInfo.video}>
                                     }
                                 </iframe>
@@ -313,15 +352,22 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                             <MuiThemeProvider theme={lightBluePinkMuiTheme}>
                                 <Paper elevation={3} className={classes.paper2} key={'festival video:' + festivalInfo.name}>
                                     <Tabs
+                                        centered
                                         value={selectedLineup}
                                         indicatorColor="primary"
                                         textColor="primary"
-                                        onChange={handleSelectedLineupChange}
+                                        onChange={(event: React.ChangeEvent<{}>, newValue: number) => setSelectedLineup(newValue)}
                                         aria-label="lineups"
                                     >
                                         {festivalInfo.lineups.map((lineup, idx) =>
-                                            <Tab label={<span className={classes.tabLabel}>{lineup.year}</span>} value={idx} key={'tab: ' + festivalInfo.name + lineup.year} />)}
+                                            <Tab label={<span className={classes.tabLabel}>{lineup.year}</span>} value={idx}
+                                            key={'tab: ' + festivalInfo.name + lineup.year} classes={{ root: classes.tabRoot }}/>)}
                                     </Tabs>
+                                    <SwipeableViews
+                                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                                        index={selectedLineup}
+                                        onChangeIndex={(newValue: number) => setSelectedLineup(newValue)}
+                                    >
                                     {festivalInfo.lineups.map((lineup, idx) =>
                                         <TabPanel value={selectedLineup} index={idx} key={'tabPanel: ' + festivalInfo.name + lineup.year}>
                                             <Box className={classes.lineupView}>
@@ -371,6 +417,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                                 </div>}
                                             </Box>
                                         </TabPanel>)}
+                                    </SwipeableViews>
                                 </Paper>
                             </MuiThemeProvider>
                         </Box>

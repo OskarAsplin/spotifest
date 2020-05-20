@@ -10,7 +10,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import indigo from "@material-ui/core/colors/indigo";
 import { Model } from "../redux/types";
-//import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
 import { Redirect } from 'react-router-dom';
 import { fetchToJson } from "../utils/restUtils";
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(0, 4, 0, 4),
+            padding: theme.spacing(0, 2, 0, 2),
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'
@@ -46,15 +46,23 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         paper: {
             display: 'flex',
-            flexDirection: 'row',
-            padding: theme.spacing(2, 4, 2, 4),
+            '@media (min-width: 500px)': {
+                padding: theme.spacing(2, 4, 2, 4),
+                flexDirection: 'row',
+            },
+            '@media (max-width: 499px)': {
+                padding: theme.spacing(2, 2, 2, 2),
+                flexDirection: 'column-reverse',
+            },
             justifyContent: 'space-between',
             width: '100%'
         },
         paper2: {
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(0, 4, 2, 4),
+            '@media (min-width: 500px)': {
+                padding: theme.spacing(0, 4, 2, 4),
+            },
             marginBottom: theme.spacing(2),
             width: '100%',
             justifyContent: 'center',
@@ -63,22 +71,29 @@ const useStyles = makeStyles((theme: Theme) =>
         paper3: {
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(2, 4, 2, 4),
+            '@media (min-width: 500px)': {
+                padding: theme.spacing(2, 4, 2, 4),
+            },
+            '@media (max-width: 499px)': {
+                padding: theme.spacing(2, 2, 2, 2),
+            },
             marginBottom: theme.spacing(2),
             width: '100%',
             alignItems: 'center',
         },
         box: {
-            width: '90%',
+            width: '100%',
             maxWidth: '1000px',
             margin: theme.spacing(0, 2, 2, 2),
         },
         box2: {
-            width: '80%',
+            width: '100%',
             maxWidth: '764px'
         },
         buttonBox: {
-            maxWidth: '50%',
+            '@media (min-width: 500px)': {
+                maxWidth: '50%'
+            },
             display: 'flex',
             alignItems: 'center',
         },
@@ -89,7 +104,9 @@ const useStyles = makeStyles((theme: Theme) =>
         flexColumn: {
             display: 'flex',
             flexDirection: 'column',
-            maxWidth: '50%'
+            '@media (min-width: 500px)': {
+                maxWidth: '50%'
+            },
         },
         hundredWidth: {
             width: '100%'
@@ -112,7 +129,8 @@ const useStyles = makeStyles((theme: Theme) =>
         artistAvatarBox: {
             display: 'flex',
             flexDirection: 'row',
-            flexWrap: 'wrap'
+            flexWrap: 'wrap',
+            minWidth: '300px'
         },
         matchingPopularBox: {
             width: '100%',
@@ -131,6 +149,11 @@ const useStyles = makeStyles((theme: Theme) =>
         expandOpen: {
             transform: 'rotate(180deg)',
         },
+        festivalTitle: {
+            '@media (max-width: 499px)': {
+                textAlign: 'center'
+            },
+        },
     }),
 );
 
@@ -141,6 +164,8 @@ interface StoreProps {
 type Props = DispatchProps & StoreProps;
 
 const ArtistPage: React.FC<Props> = (props: Props) => {
+
+    const bigScreen = useMediaQuery('(min-width:500px)');
 
     useEffect(() => {
         setArtistInfo(undefined);
@@ -307,9 +332,9 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                     <Box className={classes.box}>
                         <Paper elevation={10} className={classes.paper} key={'artistInfo:' + artistInfo.artist.name}>
                             <div className={classes.flexColumn}>
-                                <Typography variant="h2">
+                                {bigScreen && <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
                                     {artistInfo.artist.name}
-                                </Typography>
+                                </Typography>}
                                 <Typography variant="subtitle1">
                                     {'Genres: ' + artistInfo.artist.genres.join(", ")}
                                 </Typography>
@@ -343,7 +368,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                 {relatedArtists.length > 0 &&
                                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                                         <div className={classes.artistAvatarBox}>
-                                            {relatedArtists.slice(0, 4).map((artist) => (
+                                            {relatedArtists.slice(0, bigScreen ? 4 : 3).map((artist) => (
                                                 <ArtistBubble
                                                     artist={artist}
                                                     key={'avatar_rel_artist_' + artistInfo.artist.name + artist.name}
@@ -358,8 +383,12 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                     <img className={classes.artistImg} src={artistInfo.artist.bigPicture} alt="" />
                                 </Button>
                             </Box>
+                            {!bigScreen && <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
+                                {artistInfo.artist.name}
+                            </Typography>}
                         </Paper>
                     </Box>
+                    <div className={classes.verticalSpace} />
                     {isArtistInDb && artistInfo.festivalsFuture.length !== 0 &&
                         <Box className={classes.box2}>
                             {artistInfo.festivalsFuture.map((festival, idx) =>
@@ -368,38 +397,40 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                         </Box>
                     }
                     {isArtistInDb && artistInfo.festivalsPast.length !== 0 &&
-                        <div className={classes.align}>
-                            <div className={classes.verticalSpace} />
-                            <div className={classes.verticalSpace} />
-                            <Typography variant="h4">
-                                Previously attended festivals
-                            </Typography>
-                            <div className={classes.verticalSpace} />
-                            <Box className={classes.box2}>
-                                {artistInfo.festivalsPast.map((festival, idx) =>
-                                    <Button className={classes.paper3} key={'festivals artist attends'}
-                                        variant="outlined"
-                                        onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}>
-                                        <div className={classes.hundredWidth} key={'past festival: ' + festival.name + idx}>
-                                            <Typography variant="h4">
-                                                {festival.name}
-                                            </Typography>
-                                            {festival.cancelled ?
-                                                <Typography variant="subtitle1" color='secondary'>
-                                                    {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
-                                                </Typography> :
-                                                <Typography variant="subtitle1">
-                                                    {festival.date + ', ' + festival.year}
+                        <MuiThemeProvider theme={lightBluePinkMuiTheme}>
+                            <div className={classes.align}>
+                                <div className={classes.verticalSpace} />
+                                <div className={classes.verticalSpace} />
+                                <Typography variant={bigScreen ? "h4" : "h5"} className={classes.festivalTitle}>
+                                    Previously attended festivals
+                                </Typography>
+                                <div className={classes.verticalSpace} />
+                                <Box className={classes.box2}>
+                                    {artistInfo.festivalsPast.map((festival, idx) =>
+                                        <Button className={classes.paper3} key={'festivals artist attends: ' + festival.name + festival.year}
+                                            variant="outlined"
+                                            onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}>
+                                            <div className={classes.hundredWidth} key={'past festival: ' + festival.name + idx}>
+                                                <Typography variant="h4">
+                                                    {festival.name}
                                                 </Typography>
-                                            }
-                                            <Typography variant="subtitle1" >
-                                                {festival.locationText}
-                                            </Typography>
-                                        </div>
-                                    </Button>
-                                )}
-                            </Box>
-                        </div>
+                                                {festival.cancelled ?
+                                                    <Typography variant="subtitle1" color='secondary'>
+                                                        {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
+                                                    </Typography> :
+                                                    <Typography variant="subtitle1">
+                                                        {festival.date + ', ' + festival.year}
+                                                    </Typography>
+                                                }
+                                                <Typography variant="subtitle1" >
+                                                    {festival.locationText}
+                                                </Typography>
+                                            </div>
+                                        </Button>
+                                    )}
+                                </Box>
+                            </div>
+                        </MuiThemeProvider>
                     }
                     {!isArtistInDb &&
                         <div className={classes.align}>
