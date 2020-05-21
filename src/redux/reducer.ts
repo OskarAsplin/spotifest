@@ -5,6 +5,7 @@ import { Reducer } from "redux";
 export const initialModel: Model = {
     loaderOn: false,
     loggedIn: true,
+    isDbOnline: true,
 
     // Visnings
     thememode: 'dark',
@@ -28,6 +29,8 @@ const reducer: Reducer<Model, Action> = (
     switch (action.type) {
         case ActionTypeKeys.TURN_ON_LOADER: return { ...state, loaderOn: true };
         case ActionTypeKeys.TURN_OFF_LOADER: return { ...state, loaderOn: false };
+        case ActionTypeKeys.SET_DB_IS_ONLINE: return { ...state, isDbOnline: true };
+        case ActionTypeKeys.SET_DB_IS_OFFLINE: return { ...state, isDbOnline: false };
         case ActionTypeKeys.SET_LOGGED_IN: return { ...state, loggedIn: true };
         case ActionTypeKeys.SET_LOGGED_OFF: return { ...initialModel, loggedIn: false, thememode: state.thememode };
         case ActionTypeKeys.SWITCH_TO_LIGHT_MODE: { return { ...state, thememode: 'light' } }

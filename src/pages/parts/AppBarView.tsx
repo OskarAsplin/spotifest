@@ -48,7 +48,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface OwnProps {
-
+    birghtnessSwitchEnabled: boolean,
+    accountCircleEnabled: boolean
 }
 
 interface StoreProps {
@@ -111,15 +112,16 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             {props.model.userInfo.displayName}
                         </Typography>
                     }
-                    <IconButton
-                        color="inherit"
-                        aria-describedby={id}
-                        onClick={handleClick}
-                    >
-                        {props.model.userInfo?.profilePictureUrl ?
-                            <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
-                            : <AccountCircleIcon />}
-                    </IconButton>
+                    {props.accountCircleEnabled &&
+                        <IconButton
+                            color="inherit"
+                            aria-describedby={id}
+                            onClick={handleClick}
+                        >
+                            {props.model.userInfo?.profilePictureUrl ?
+                                <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
+                                : <AccountCircleIcon />}
+                        </IconButton>}
                     <Popover
                         id={id}
                         hidden={!props.model.loggedIn}
@@ -155,16 +157,17 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             </div>
                         </MuiThemeProvider>
                     </Popover>
-                    <IconButton
-                        color="inherit"
-                        onClick={() => {
-                            props.model.thememode === 'light'
-                                ? dispatch(switchToDarkMode())
-                                : dispatch(switchToLightMode());
-                        }}
-                    >
-                        {props.model.thememode === 'light' ? <Brightness2 /> : <Brightness4 />}
-                    </IconButton>
+                    {props.birghtnessSwitchEnabled &&
+                        <IconButton
+                            color="inherit"
+                            onClick={() => {
+                                props.model.thememode === 'light'
+                                    ? dispatch(switchToDarkMode())
+                                    : dispatch(switchToLightMode());
+                            }}
+                        >
+                            {props.model.thememode === 'light' ? <Brightness2 /> : <Brightness4 />}
+                        </IconButton>}
                 </Toolbar>
             </AppBar>
         </div>

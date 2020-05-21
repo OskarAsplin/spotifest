@@ -10,6 +10,7 @@ export interface DispatchProps {
 export interface Model {
     loaderOn: boolean;
     loggedIn: boolean;
+    isDbOnline: boolean;
     thememode: PaletteType;
     accessToken: string;
     userInfo?: UserInfo;
@@ -30,6 +31,8 @@ export interface AppState {
 export type Action
     = TurnOnLoader
     | TurnOffLoader
+    | SetDbIsOnline
+    | SetDbIsOffline
     | SetLoggedIn
     | SetLoggedOff
     | SwitchToDarkMode
@@ -48,6 +51,8 @@ export type Action
 export enum ActionTypeKeys {
     TURN_ON_LOADER = "TURN_ON_LOADER",
     TURN_OFF_LOADER = "TURN_OFF_LOADER",
+    SET_DB_IS_ONLINE = "SET_DB_IS_ONLINE",
+    SET_DB_IS_OFFLINE = "SET_DB_IS_OFFLINE",
     SET_LOGGED_IN = "SET_LOGGED_IN",
     SET_LOGGED_OFF = "SET_LOGGED_OFF",
     SWITCH_TO_DARK_MODE = "SWITCH_TO_DARK_MODE",
@@ -70,6 +75,14 @@ export interface TurnOnLoader {
 
 export interface TurnOffLoader {
     type: ActionTypeKeys.TURN_OFF_LOADER;
+}
+
+export interface SetDbIsOnline {
+    type: ActionTypeKeys.SET_DB_IS_ONLINE;
+}
+
+export interface SetDbIsOffline {
+    type: ActionTypeKeys.SET_DB_IS_OFFLINE;
 }
 
 export interface SetLoggedIn {

@@ -18,6 +18,18 @@ export const turnOffLoader = (): Action => {
     }
 };
 
+export const setDbIsOnline = (): Action => {
+    return {
+        type: ActionTypeKeys.SET_DB_IS_ONLINE
+    }
+};
+
+export const setDbIsOffline = (): Action => {
+    return {
+        type: ActionTypeKeys.SET_DB_IS_OFFLINE
+    }
+};
+
 export const setLoggedIn = (): Action => {
     return {
         type: ActionTypeKeys.SET_LOGGED_IN
@@ -174,6 +186,7 @@ export const initializeSite = async (
     token: string,
     dispatch: Dispatch
 ) => {
+    dispatch(setDbIsOnline());
     if (token) {
         spotifyApi.setAccessToken(token);
     }
@@ -264,6 +277,9 @@ export const initializeSite = async (
                 if (error.status === 401) {
                     dispatch(setLoggedOff());
                 }
+            }
+            if (error instanceof TypeError) {
+                dispatch(setDbIsOffline());
             }
             console.log('status code: ' + error.status);
             console.log(error);

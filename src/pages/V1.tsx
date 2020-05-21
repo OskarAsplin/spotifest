@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { AppState, DispatchProps } from "../redux/types";
 import { initializeSite, setAccessToken, spotifyApi } from "../redux/actions";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import FestivalMatchView from "./parts/FestivalMatchView";
@@ -79,7 +79,6 @@ const V1: React.FC<Props> = (props: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
     //const smallScreen = useMediaQuery('(max-width:610px)');
 
     const loaderOn = props.model.loaderOn;
@@ -108,12 +107,19 @@ const V1: React.FC<Props> = (props: Props) => {
         //<SplashScreen>
         <MuiThemeProvider theme={muiTheme}>
             <CssBaseline />
-            <AppBarView />
+            <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
             <div className={classes.verticalSpace} />
-            <div className={classes.root}>
-                <FestivalMatchSettingsBar />
-                <FestivalMatchView />
-            </div>
+            {props.model.isDbOnline &&
+                <div className={classes.root}>
+                    <FestivalMatchSettingsBar />
+                    <FestivalMatchView />
+                </div>}
+            {!props.model.isDbOnline &&
+                <div className={classes.root}>
+                    <Typography variant="subtitle1" >
+                        There seems to be some issue with connecting to our database. Try refreshing the page.
+                    </Typography>
+                </div>}
 
             <div hidden={!loaderOn} className={classes.progressBar}>
                 <CircularProgress size={100} thickness={3} color={'secondary'} />

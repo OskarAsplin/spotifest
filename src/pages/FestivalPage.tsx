@@ -268,13 +268,13 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
         return (
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
-                <AppBarView />
+                <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
                 <div className={classes.align}>
                     <div className={classes.verticalSpace} />
                     <div className={classes.verticalSpace} />
                     {isNetworkError &&
                         <Typography variant="subtitle1" >
-                            There seems to be some issue connecting to our database. Try refreshing the page.
+                            There seems to be some issue with connecting to our database. Try refreshing the page.
                         </Typography>
                     }
                     {!isNetworkError && !isFestivalInDb &&
@@ -297,7 +297,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
         return (
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
-                <AppBarView />
+                <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
                 <div className={classes.verticalSpace} />
 
                 <div className={classes.root}>
