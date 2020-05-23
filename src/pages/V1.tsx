@@ -70,11 +70,11 @@ window.history.pushState("", document.title, window.location.pathname + window.l
 const V1: React.FC<Props> = (props: Props) => {
 
     useEffect(() => {
-        if (token) {
+        if (props.model.accessToken) {
+            spotifyApi.setAccessToken(props.model.accessToken);
+        } else if (token) {
             initializeSite(token, props.dispatch);
             props.dispatch(setAccessToken(token));
-        } else if (props.model.accessToken) {
-            spotifyApi.setAccessToken(props.model.accessToken);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

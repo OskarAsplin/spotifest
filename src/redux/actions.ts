@@ -1,6 +1,7 @@
-import { Action, ActionTypeKeys, Dispatch, Artist, MatchRequest, FestivalMatch, Area, MatchingMethod, UserInfo, Playlist } from "./types";
+import { Action, ActionTypeKeys, Dispatch, Artist, MatchRequest, FestivalMatch, Area, MatchSettings, MatchingMethod, UserInfo, Playlist } from "./types";
 import { fetchToJson } from "../utils/restUtils";
 import countries_list from 'countries-list/dist/data.json';
+import { initialModel } from './reducer'
 
 
 import SpotifyWebApi from 'spotify-web-api-js';
@@ -82,6 +83,13 @@ export const setPlaylists = (playlists: Playlist[]): Action => {
     }
 };
 
+export const setSelectedPlaylistArtists = (artists: Artist[]): Action => {
+    return {
+        type: ActionTypeKeys.SET_SELECTED_PLAYLIST_ARTISTS,
+        artists: artists
+    }
+};
+
 export const addCountries = (countries: Area[]): Action => {
     return {
         type: ActionTypeKeys.ADD_COUNTRIES,
@@ -117,10 +125,10 @@ export const setMatchingMethod = (method: MatchingMethod): Action => {
     }
 };
 
-export const setChosenArea = (area: Area): Action => {
+export const setMatchSettings = (settings: MatchSettings): Action => {
     return {
-        type: ActionTypeKeys.SET_CHOSEN_AREA,
-        area: area
+        type: ActionTypeKeys.SET_MATCH_SETTINGS,
+        settings: settings
     }
 };
 
@@ -190,6 +198,7 @@ export const initializeSite = async (
     if (token) {
         spotifyApi.setAccessToken(token);
     }
+    console.log('initializeSite');
 
     const getAvailableCountries = fetchToJson('http://127.0.0.1:8000/onTour/availableCountries');
     const getAvailableContinents = fetchToJson('http://127.0.0.1:8000/onTour/availableContinents');
@@ -233,12 +242,14 @@ export const initializeSite = async (
                     const userContinent: string = (countries_list as any).countries[getMe.country].continent;
                     const isRegisteredContinent = continents.find(continent => continent.isoCode === userContinent);
                     if (isRegisteredCountry) {
-                        dispatch(setChosenArea(isRegisteredCountry));
+                        dispatch(setMatchSettings({ ...initialModel.matchSettings, area: isRegisteredCountry }));
                     } else if (isRegisteredContinent) {
-                        dispatch(setChosenArea(isRegisteredContinent));
+                        dispatch(setMatchSettings({ ...initialModel.matchSettings, area: isRegisteredContinent }));
                     }
                     testFestivalMatches(
-                        topArtists, true, dispatch, new Date(), new Date(new Date().getFullYear(), 11, 31),
+                        topArtists, true, dispatch,
+                        new Date(Date.parse(initialModel.matchSettings.fromDate)),
+                        new Date(Date.parse(initialModel.matchSettings.toDate)),
                         isRegisteredCountry ? [] : isRegisteredContinent ? [userContinent] : [],
                         isRegisteredCountry ? [getMe.country] : []
                     );

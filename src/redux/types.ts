@@ -16,11 +16,12 @@ export interface Model {
     userInfo?: UserInfo;
     topArtists: Artist[];
     playlists: Playlist[];
+    selectedPlaylistArtists: Artist[];
     festivalMatches: FestivalMatch[];
     matchingMethod: MatchingMethod;
     countries: Area[];
     continents: Area[];
-    chosenArea: Area;
+    matchSettings: MatchSettings;
 }
 
 export interface AppState {
@@ -41,12 +42,13 @@ export type Action
     | SetUserInfo
     | SetTopArtists
     | SetPlaylists
+    | SetSelectedPlaylistArtists
     | AddFestivalMatch
     | AddFestivalMatches
     | AddCountries
     | AddContinents
     | SetMatchingMethod
-    | SetChosenArea
+    | SetMatchSettings
 
 export enum ActionTypeKeys {
     TURN_ON_LOADER = "TURN_ON_LOADER",
@@ -61,12 +63,13 @@ export enum ActionTypeKeys {
     SET_USER_INFO = "SET_USER_INFO",
     SET_TOP_ARTISTS = "SET_TOP_ARTISTS",
     SET_PLAYLISTS = "SET_PLAYLISTS",
+    SET_SELECTED_PLAYLIST_ARTISTS = "SET_SELECTED_PLAYLIST_ARTISTS",
     ADD_FESTIVAL_MATCH = "ADD_FESTIVAL_MATCH",
     ADD_FESTIVAL_MATCHES = "ADD_FESTIVAL_MATCHES",
     ADD_COUNTRIES = "ADD_COUNTRIES",
     ADD_CONTINENTS = "ADD_CONTINENTS",
     SET_MATCHING_METHOD = "SET_MATCHING_METHOD",
-    SET_CHOSEN_AREA = "SET_CHOSEN_AREA",
+    SET_MATCH_SETTINGS = "SET_MATCH_SETTINGS",
 }
 
 export interface TurnOnLoader {
@@ -121,6 +124,11 @@ export interface SetPlaylists {
     playlists: Playlist[];
 }
 
+export interface SetSelectedPlaylistArtists {
+    type: ActionTypeKeys.SET_SELECTED_PLAYLIST_ARTISTS;
+    artists: Artist[];
+}
+
 export interface AddFestivalMatch {
     type: ActionTypeKeys.ADD_FESTIVAL_MATCH;
     festival: FestivalMatch;
@@ -146,9 +154,9 @@ export interface SetMatchingMethod {
     method: MatchingMethod;
 }
 
-export interface SetChosenArea {
-    type: ActionTypeKeys.SET_CHOSEN_AREA;
-    area: Area;
+export interface SetMatchSettings {
+    type: ActionTypeKeys.SET_MATCH_SETTINGS;
+    settings: MatchSettings;
 }
 
 
@@ -237,6 +245,13 @@ export interface ArtistInfo {
 export interface Area {
     name: string,
     isoCode: string
+}
+
+export interface MatchSettings {
+    matchBasis: string,
+    area: Area,
+    fromDate: string,
+    toDate: string,
 }
 
 export enum MatchingMethod {

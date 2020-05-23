@@ -1,4 +1,4 @@
-import { Action, ActionTypeKeys, Model, FestivalMatch, MatchingMethod, Area } from "./types";
+import { Action, ActionTypeKeys, Model, FestivalMatch, MatchingMethod } from "./types";
 import { Reducer } from "redux";
 
 
@@ -15,11 +15,18 @@ export const initialModel: Model = {
     userInfo: undefined,
     topArtists: [],
     playlists: [],
+    selectedPlaylistArtists: [],
     festivalMatches: [],
     matchingMethod: MatchingMethod.Genre,
     countries: [],
     continents: [],
-    chosenArea: { name: 'Everywhere', isoCode: 'everywhere' } as Area
+    matchSettings: {
+        matchBasis: '__your__top__artists__',
+        area: { name: 'Everywhere', isoCode: 'everywhere' },
+        fromDate: (new Date()).toISOString(),
+        toDate: (new Date(new Date().getFullYear(), 11, 31)).toISOString()
+    },
+
 };
 
 const reducer: Reducer<Model, Action> = (
@@ -56,6 +63,10 @@ const reducer: Reducer<Model, Action> = (
             });
             return { ...state, playlists: sortedPlaylists }
         }
+        case ActionTypeKeys.SET_SELECTED_PLAYLIST_ARTISTS: {
+            const { artists } = action;
+            return { ...state, selectedPlaylistArtists: artists }
+        }
         case ActionTypeKeys.ADD_FESTIVAL_MATCH: {
             const { festival } = action;
             let is_new_festival = true
@@ -90,9 +101,9 @@ const reducer: Reducer<Model, Action> = (
             const { method } = action;
             return { ...state, matchingMethod: method }
         }
-        case ActionTypeKeys.SET_CHOSEN_AREA: {
-            const { area } = action;
-            return { ...state, chosenArea: area }
+        case ActionTypeKeys.SET_MATCH_SETTINGS: {
+            const { settings } = action;
+            return { ...state, matchSettings: settings }
         }
         default:
             return state;

@@ -388,13 +388,18 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             </Typography>}
                         </Paper>
                     </Box>
-                    <div className={classes.verticalSpace} />
                     {isArtistInDb && artistInfo.festivalsFuture.length !== 0 &&
-                        <Box className={classes.box2}>
-                            {artistInfo.festivalsFuture.map((festival, idx) =>
-                                <FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={false} />
-                            )}
-                        </Box>
+                        <div className={classes.align}>
+                            <div className={classes.verticalSpace} />
+                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.festivalTitle}>
+                                Attending festivals
+                            </Typography>
+                            <Box className={classes.box2}>
+                                {artistInfo.festivalsFuture.map((festival, idx) =>
+                                    <FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={false} />
+                                )}
+                            </Box>
+                        </div>
                     }
                     {isArtistInDb && artistInfo.festivalsPast.length !== 0 &&
                         <MuiThemeProvider theme={lightBluePinkMuiTheme}>

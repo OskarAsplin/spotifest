@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps, FestivalMatch, MatchingMethod } from "../../redux/types";
 import { connect } from "react-redux";
-import { createStyles, Theme } from "@material-ui/core";
+import { createStyles, Theme, Typography } from "@material-ui/core";
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 import { Model } from "../../redux/types";
@@ -12,12 +12,12 @@ import FestivalMatchItem from './FestivalMatchItem';
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		box: {
-            '@media (min-width: 500px)': {
-                width: '95%',
-            },
-            '@media (max-width: 499px)': {
-                width: '100%',
-            },
+			'@media (min-width: 500px)': {
+				width: '95%',
+			},
+			'@media (max-width: 499px)': {
+				width: '100%',
+			},
 			maxWidth: '764px',
 			marginTop: theme.spacing(1)
 		},
@@ -28,6 +28,17 @@ const useStyles = makeStyles((theme: Theme) =>
 			alignItems: 'center',
 			marginBottom: theme.spacing(1)
 		},
+		verticalSpace: {
+			display: 'flex',
+			padding: theme.spacing(2, 0, 2, 0),
+			justifyContent: 'center',
+			alignItems: 'center',
+			width: '100%'
+		},
+		noMatches: {
+			width: '100%',
+			textAlign: 'center'
+		}
 	}),
 );
 
@@ -45,6 +56,8 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 	const classes = useStyles();
 
 	const [page, setPage] = React.useState(1);
+	const [siteInitialized, setSiteInitialized] = React.useState(false);
+	const [isAnyMatch, setIsAnyMatch] = React.useState(true);
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		setPage(value);
 	};
@@ -58,6 +71,12 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 
 	useEffect(() => {
 		setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
+		if (showMatches.length === 0) {
+			setIsAnyMatch(false);
+		} else {
+			setIsAnyMatch(true);
+			setSiteInitialized(true);
+		}
 	}, [showMatches])
 
 	return (
@@ -67,12 +86,20 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 					<Pagination count={numPages} page={page} onChange={handleChange} />
 				</Box>}
 			{showMatches.map((festival: FestivalMatch, idx) =>
-					<FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={true}/>
-				)}
+				<FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={true} />
+			)}
 			{showMatches.length > 0 &&
 				<Box className={classes.align}>
 					<Pagination count={numPages} page={page} onChange={handleChange} />
 				</Box>}
+			{siteInitialized && !isAnyMatch &&
+				<div>
+					<div className={classes.verticalSpace} />
+					<Typography variant="subtitle1" className={classes.noMatches}>
+						No matches with these settings.
+		            </Typography>
+				</div>
+			}
 		</Box>
 	);
 };

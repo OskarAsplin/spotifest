@@ -14,27 +14,27 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			display: 'flex',
+    createStyles({
+        root: {
+            display: 'flex',
             flexDirection: 'column',
-			padding: theme.spacing(0, 4, 0, 4),
-			justifyContent: 'center',
-			alignItems: 'center',
-			width: '100%',
-		},
+            padding: theme.spacing(0, 4, 0, 4),
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+        },
         background: {
             height: '100vh',
             backgroundImage: "url(/background_image.jpg)",
             backgroundSize: 'cover',
         },
-		progressBar: {
-			position: 'fixed',
-			top: '50%',
-			left: '50%',
-			marginTop: '-50px',
-			marginLeft: '-50px'
-		},
+        progressBar: {
+            position: 'fixed',
+            top: '50%',
+            left: '50%',
+            marginTop: '-50px',
+            marginLeft: '-50px'
+        },
         verticalSpace: {
             display: 'flex',
             padding: theme.spacing(2, 0, 2, 0),
@@ -100,7 +100,7 @@ const useStyles = makeStyles((theme: Theme) =>
             position: 'absolute',
             bottom: 0,
             '@media (min-width: 500px)': {
-            	maxWidth: '1112px',
+                maxWidth: '1112px',
             },
             '@media (max-width: 499px)': {
                 maxWidth: '95%',
@@ -116,11 +116,11 @@ const useStyles = makeStyles((theme: Theme) =>
         expandOpen: {
             transform: 'rotate(0deg)',
         },
-	}),
+    }),
 );
 
 interface StoreProps {
-	model: Model;
+    model: Model;
 }
 
 type Props = DispatchProps & StoreProps;
@@ -130,125 +130,129 @@ export const authEndpoint = 'https://accounts.spotify.com/authorize';
 const clientId = '***REMOVED***';
 const redirectUri = 'http://localhost:3000';
 const scopes = [
-	'user-read-private',
-	'user-top-read',
-	'playlist-read-private',
-	'playlist-read-collaborative',
+    'user-read-private',
+    'user-top-read',
+    'playlist-read-private',
+    'playlist-read-collaborative',
 ];
 
 
 const LoginScreen: React.FC<Props> = (props: Props) => {
 
-    const bigScreen = useMediaQuery('(min-width:500px)');
+    const bigWidth = useMediaQuery('(min-width:500px)');
+    const bigHeight = useMediaQuery('(min-height:500px)');
+    const bigScreen = bigWidth && bigHeight;
 
-	useEffect(() => {
-		props.dispatch(setLoggedOff());
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+    useEffect(() => {
+        props.dispatch(setLoggedOff());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
-	const loaderOn = props.model.loaderOn;
-	const muiTheme = createMuiTheme({
-		palette: {
-			primary: {
-				light: indigo[300],
-				main: indigo[500],
-				dark: indigo[700]
-			},
-			secondary: {
-				light: deepOrange[300],
-				main: deepOrange[500],
-				dark: deepOrange[700]
-			},
-			type: 'dark'
-		}
-	});
+    const loaderOn = props.model.loaderOn;
+    const muiTheme = createMuiTheme({
+        palette: {
+            primary: {
+                light: indigo[300],
+                main: indigo[500],
+                dark: indigo[700]
+            },
+            secondary: {
+                light: deepOrange[300],
+                main: deepOrange[500],
+                dark: deepOrange[700]
+            },
+            type: 'dark'
+        }
+    });
 
-	const classes = useStyles();
+    const classes = useStyles();
 
     const [expanded, setExpanded] = React.useState(false);
 
     const authorizeHref = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token`;
 
-	return (
-		//<SplashScreen>
-		<div className={classes.background}>
-			<MuiThemeProvider theme={muiTheme}>
-				<CssBaseline />
+    return (
+        //<SplashScreen>
+        <div className={classes.background}>
+            <MuiThemeProvider theme={muiTheme}>
+                <CssBaseline />
                 {/*<AppBarView birghtnessSwitchEnabled={false} accountCircleEnabled={false} />*/}
-	            <div className={classes.verticalSpace} />
+                <div className={classes.verticalSpace} />
                 <div className={classes.verticalSpace} />
 
-	            <div className={classes.root}>
-	                <Box className={classes.box}>
+                <div className={classes.root}>
+                    <Box className={classes.box}>
                         <Typography variant={bigScreen ? "h2" : "h4"} className={classes.title}>
                             Oskarito Festival Matcher
                         </Typography>
-					</Box>
-	                <div className={classes.verticalSpace} />
-	                <div className={classes.verticalSpace} />
+                    </Box>
                     <div className={classes.verticalSpace} />
-	                <Box className={classes.box2}>
-	                    <Button className={classes.button} key={'Login to spotify button'}
-	                        variant="outlined"
-	                        onClick={() => {
-	                            props.dispatch(setLoggedIn());
+                    {!(bigWidth && !bigHeight) &&
+                        <div className={classes.verticalSpace} />}
+                    {!(bigWidth && !bigHeight) &&
+                        <div className={classes.verticalSpace} />}
+                    <Box className={classes.box2}>
+                        <Button className={classes.button} key={'Login to spotify button'}
+                            variant="outlined"
+                            onClick={() => {
+                                props.dispatch(setLoggedIn());
                                 window.open(authorizeHref, '_self');
-	                        }}>
+                            }}>
                             <Typography variant={bigScreen ? "h4" : "h6"}>
-	                            Log in with Spotify to see your festival matches
+                                Log in with Spotify to see your festival matches
 	                        </Typography>
-	                    </Button>
-	                </Box>
-	                <Box className={classes.footer}>
-		                <Paper className={classes.paper} key={'disclaimer paper'}>
-		                	<div className={classes.rowFlex}>
+                        </Button>
+                    </Box>
+                    <Box className={classes.footer}>
+                        <Paper className={classes.paper} key={'disclaimer paper'}>
+                            <div className={classes.rowFlex}>
                                 <Typography variant={"subtitle2"} onClick={() => setExpanded(!expanded)}>
-	                                Disclaimer
+                                    Disclaimer
 		                        </Typography>
-	                            <IconButton
-	                                className={clsx(classes.expand, {
-	                                    [classes.expandOpen]: expanded,
-	                                })}
-	                                onClick={() => setExpanded(!expanded)}
-	                                aria-expanded={expanded}
-	                                aria-label="show more"
-	                            >
-	                                <ExpandMoreIcon />
-	                            </IconButton>
+                                <IconButton
+                                    className={clsx(classes.expand, {
+                                        [classes.expandOpen]: expanded,
+                                    })}
+                                    onClick={() => setExpanded(!expanded)}
+                                    aria-expanded={expanded}
+                                    aria-label="show more"
+                                >
+                                    <ExpandMoreIcon />
+                                </IconButton>
                             </div>
                             <Collapse in={expanded} timeout="auto" unmountOnExit>
-                            	<div className={classes.paddingBottom}>
-				                	This website was made with the intention of inspiring people to attend festivals to their liking.
-				                	It was made by a simple minded Norwegian guy wanting to do some good in the world.
-				                	This Norwegian guy takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point.
-			                        Special thanks to Spotify and MusicFestivalWizard for their available information about artists and festivals, making this site possible to make.
+                                <div className={classes.paddingBottom}>
+                                    This website was made with the intention of inspiring people to attend festivals to their liking.
+                                    It was made by a simple minded Norwegian guy wanting to do some good in the world.
+                                    This Norwegian guy takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point.
+                                    Special thanks to Spotify and MusicFestivalWizard for their available information about artists and festivals, making this site possible to make.
 			                    </div>
-	                        </Collapse>
-		                </Paper>
-	                </Box>
-				</div>
+                            </Collapse>
+                        </Paper>
+                    </Box>
+                </div>
 
-				<div hidden={!loaderOn} className={classes.progressBar}>
-					<CircularProgress size={100} thickness={3} disableShrink color={'secondary'} />
-				</div>
+                <div hidden={!loaderOn} className={classes.progressBar}>
+                    <CircularProgress size={100} thickness={3} disableShrink color={'secondary'} />
+                </div>
 
-			</MuiThemeProvider>
-		</div>
-		//</SplashScreen>
-	);
+            </MuiThemeProvider>
+        </div>
+        //</SplashScreen>
+    );
 };
 
 const mapStateToProps = (state: AppState) => ({
-	model: state.model
+    model: state.model
 });
 
 const mapDispatchToProps = (dispatch: any) => {
-	return {
-		dispatch
-	}
+    return {
+        dispatch
+    }
 };
 
 export default connect(
-	mapStateToProps,
-	mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(LoginScreen);

@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area } from "../../redux/types";
-import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setChosenArea, getIconPicture, getBigPicture } from "../../redux/actions";
+import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings } from "../../redux/types";
+import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, getIconPicture, getBigPicture } from "../../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, Theme, MuiThemeProvider } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -40,22 +40,22 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		alignItems: {
 			display: 'flex',
-            '@media (max-width: 699px)': {
-                width: '100%',
-            },
+			'@media (max-width: 699px)': {
+				width: '100%',
+			},
 			alignItems: 'center',
 		},
-        alignItems2: {
-            display: 'flex',
-            '@media (min-width: 700px)': {
-                width: '300px'
-            },
-            '@media (max-width: 699px)': {
-                width: '100%',
-            },
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
+		alignItems2: {
+			display: 'flex',
+			'@media (min-width: 700px)': {
+				width: '300px'
+			},
+			'@media (max-width: 699px)': {
+				width: '100%',
+			},
+			alignItems: 'center',
+			justifyContent: 'center',
+		},
 		box: {
 			width: '100%',
 			maxWidth: '1000px',
@@ -63,46 +63,47 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		formControl: {
 			margin: theme.spacing(1),
-            '@media (min-width: 700px)': {
-                minWidth: 120,
-                maxWidth: 300,
-            },
-            '@media (max-width: 699px)': {
-                width: '100%',
-            },
+			'@media (min-width: 700px)': {
+				minWidth: 120,
+				maxWidth: 300,
+			},
+			'@media (max-width: 699px)': {
+				width: '100%',
+			},
 		},
 		toolTip: {
 			display: 'flex',
 			flexDirection: 'column',
 			alignItems: 'center',
+			paddingBottom: theme.spacing(0.5)
 		},
 		datePickerFieldFrom: {
 			marginRight: theme.spacing(0.5),
 		},
-        datePickerFieldTo: {
-            marginLeft: theme.spacing(0.5),
-        },
-        noPadding: {
-            paddingRight: 0
-        },
-        spaceBetween: {
-            display: 'flex',
-            flexWrap: 'wrap',
-            flexDirection: 'row',
-            alignItems: 'center',
-            '@media (min-width: 700px)': {
-            	justifyContent: 'space-between',
-            },
-            '@media (min-width: 1000px)': {
-                padding: theme.spacing(0.5, 2, 0, 2),
-            },
-            '@media (max-width: 999px)': {
-                padding: theme.spacing(0.5, 0.5, 0, 0.5),
-            },
-        },
-        marginBottom: {
-            marginBottom: '4px',
-        },
+		datePickerFieldTo: {
+			marginLeft: theme.spacing(0.5),
+		},
+		noPadding: {
+			paddingRight: 0
+		},
+		spaceBetween: {
+			display: 'flex',
+			flexWrap: 'wrap',
+			flexDirection: 'row',
+			alignItems: 'center',
+			'@media (min-width: 700px)': {
+				justifyContent: 'space-between',
+			},
+			'@media (min-width: 1000px)': {
+				padding: theme.spacing(0.5, 2, 0, 2),
+			},
+			'@media (max-width: 999px)': {
+				padding: theme.spacing(0.5, 0.5, 0, 0.5),
+			},
+		},
+		marginBottom: {
+			marginBottom: '4px',
+		},
 	}),
 );
 
@@ -112,9 +113,10 @@ interface StoreProps {
 	matchingMethod: MatchingMethod,
 	playlists: Playlist[],
 	topArtists: Artist[],
+	selectedPlaylistArtists: Artist[],
 	countries: Area[],
 	continents: Area[],
-	chosenArea: Area
+	matchSettings: MatchSettings
 }
 
 type Props = DispatchProps & StoreProps;
@@ -132,15 +134,9 @@ const HtmlTooltip = withStyles((theme) => ({
 const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	// const smallScreen = useMediaQuery('(max-width:610px)');
-    const pcScreen = useMediaQuery('(min-width:1200px)');
+	const pcScreen = useMediaQuery('(min-width:1200px)');
 
-	const { thememode, playlists, topArtists, countries, continents, dispatch, chosenArea } = props;
-
-	const [useTopArtists, setUseTopArtists] = React.useState(true);
-	const [playlistArtists, setPlaylistArtists] = React.useState<Artist[]>([]);
-	const [chosenPlaylist, setChosenPlaylist] = React.useState('__your__top__artists__');
-	const [selectedFromDate, setSelectedFromDate] = React.useState<Date>(new Date());
-	const [selectedToDate, setSelectedToDate] = React.useState<Date>(new Date(new Date().getFullYear(), 11, 31));
+	const { thememode, playlists, topArtists, selectedPlaylistArtists, countries, continents, dispatch, matchSettings } = props;
 
 	const lightBluePinkMuiTheme = createMuiTheme({
 		palette: {
@@ -162,39 +158,44 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		area: Area,
 		dateFrom: Date,
 		dateTo: Date,
-		isTopArtists: boolean,
+		chosenPlaylistName: string,
 		artistsFromPlaylist: Artist[]
 	) => {
+		const isTopArtists: boolean = chosenPlaylistName === '__your__top__artists__'
 		if (area.isoCode === 'everywhere') {
 			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists,
-				props.dispatch, dateFrom, dateTo);
+				dispatch, dateFrom, dateTo);
 		} else if (continents.find(continent => continent.isoCode === area.isoCode)) {
 			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists,
-				props.dispatch, dateFrom, dateTo, [area.isoCode], []);
+				dispatch, dateFrom, dateTo, [area.isoCode], []);
 		} else {
 			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists,
-				props.dispatch, dateFrom, dateTo, [], [area.isoCode]);
+				dispatch, dateFrom, dateTo, [], [area.isoCode]);
 		}
 	}
 
 	const handlePlaylistChange = async (event: React.ChangeEvent<{ value: unknown }>) => {
-		const name = event.target.value as string;
-		if (name === chosenPlaylist) {
+		const playlistName = event.target.value as string;
+		if (playlistName === matchSettings.matchBasis) {
 			return;
 		}
-		setChosenPlaylist(name);
-		if (name === '__your__top__artists__') {
-			testMatchesWithGivenSettings(chosenArea, selectedFromDate, selectedToDate, true, playlistArtists);
-			setUseTopArtists(true);
+		dispatch(setMatchSettings({ ...matchSettings, matchBasis: playlistName }));
+		if (playlistName === '__your__top__artists__') {
+			testMatchesWithGivenSettings(
+				matchSettings.area,
+				new Date(Date.parse(matchSettings.fromDate)),
+				new Date(Date.parse(matchSettings.toDate)),
+				playlistName,
+				selectedPlaylistArtists);
 			return;
 		}
 
 		const playlist = playlists.find(playlist => {
-			return playlist.name === name;
+			return playlist.name === playlistName;
 		})
 
 		if (playlist) {
-			props.dispatch(turnOnLoader());
+			dispatch(turnOnLoader());
 
 			let allArtistIdsRaw: string[] = [];
 
@@ -211,7 +212,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 					})
 					.catch((error) => {
 						console.log(error);
-						props.dispatch(setLoggedOff());
+						dispatch(setLoggedOff());
 						return [];
 					});
 				allArtistIdsRaw = allArtistIdsRaw.concat(artistIdsRaw);
@@ -227,28 +228,32 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 							return newArtists.push({
 								name: artistResponse.name,
 								spotifyId: artistResponse.id,
-                                iconPicture: getIconPicture(artistResponse.images),
-                                bigPicture: getBigPicture(artistResponse.images),
+								iconPicture: getIconPicture(artistResponse.images),
+								bigPicture: getBigPicture(artistResponse.images),
 								popularity: artistResponse.popularity,
 								genres: artistResponse.genres
 							} as Artist);
 						})
 					}).catch((error) => {
 						console.log(error);
-						props.dispatch(setLoggedOff());
+						dispatch(setLoggedOff());
 						return [];
 					});
 			}
 
 			if (newArtists.length > 0) {
-				testMatchesWithGivenSettings(chosenArea, selectedFromDate, selectedToDate, false, newArtists);
-				setUseTopArtists(false);
-				setPlaylistArtists(newArtists);
+				testMatchesWithGivenSettings(
+					matchSettings.area,
+					new Date(Date.parse(matchSettings.fromDate)),
+					new Date(Date.parse(matchSettings.toDate)),
+					playlistName,
+					newArtists);
+				dispatch(setSelectedPlaylistArtists(newArtists));
 			} else {
 				console.log('Something went wrong. No artists in list');
 			}
 		} else {
-			console.log('Could not find playlist: ' + name);
+			console.log('Could not find playlist: ' + playlistName);
 		}
 	};
 
@@ -257,32 +262,39 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 			name: event.target.name ? event.target.name : '',
 			isoCode: event.target.value as string
 		}
-		if (area.isoCode !== chosenArea.isoCode) {
-			testMatchesWithGivenSettings(area, selectedFromDate, selectedToDate, useTopArtists, playlistArtists);
-			dispatch(setChosenArea(area));
+		if (area.isoCode !== matchSettings.area.isoCode) {
+			testMatchesWithGivenSettings(
+				area,
+				new Date(Date.parse(matchSettings.fromDate)),
+				new Date(Date.parse(matchSettings.toDate)),
+				matchSettings.matchBasis,
+				selectedPlaylistArtists);
+			dispatch(setMatchSettings({ ...matchSettings, area: area }));
 		}
 	};
 
 	const handleFromDateChange = (date: Date | null) => {
+		const toDate = new Date(Date.parse(matchSettings.toDate));
 		if (date) {
-			setSelectedFromDate(date);
-			if (date > selectedToDate) {
-				setSelectedToDate(date);
-				testMatchesWithGivenSettings(chosenArea, date, date, useTopArtists, playlistArtists);
+			if (date > toDate) {
+				dispatch(setMatchSettings({ ...matchSettings, fromDate: date.toISOString(), toDate: date.toISOString() }));
+				testMatchesWithGivenSettings(matchSettings.area, date, date, matchSettings.matchBasis, selectedPlaylistArtists);
 			} else {
-				testMatchesWithGivenSettings(chosenArea, date, selectedToDate, useTopArtists, playlistArtists);
+				dispatch(setMatchSettings({ ...matchSettings, fromDate: date.toISOString() }));
+				testMatchesWithGivenSettings(matchSettings.area, date, toDate, matchSettings.matchBasis, selectedPlaylistArtists);
 			}
 		}
 	};
 
 	const handleToDateChange = (date: Date | null) => {
+		const fromDate = new Date(Date.parse(matchSettings.fromDate));
 		if (date) {
-			setSelectedToDate(date);
-			if (date < selectedFromDate) {
-				setSelectedFromDate(date);
-				testMatchesWithGivenSettings(chosenArea, date, date, useTopArtists, playlistArtists);
+			if (date < fromDate) {
+				dispatch(setMatchSettings({ ...matchSettings, fromDate: date.toISOString(), toDate: date.toISOString() }));
+				testMatchesWithGivenSettings(matchSettings.area, date, date, matchSettings.matchBasis, selectedPlaylistArtists);
 			} else {
-				testMatchesWithGivenSettings(chosenArea, selectedFromDate, date, useTopArtists, playlistArtists);
+				dispatch(setMatchSettings({ ...matchSettings, toDate: date.toISOString() }));
+				testMatchesWithGivenSettings(matchSettings.area, fromDate, date, matchSettings.matchBasis, selectedPlaylistArtists);
 			}
 		}
 	};
@@ -302,7 +314,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								<Select
 									labelId="choose-playlist-label"
 									id="choose-playlist"
-									value={chosenPlaylist}
+									value={matchSettings.matchBasis}
 									onChange={handlePlaylistChange}
 									label="Match with"
 								>
@@ -318,13 +330,13 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								</Select>
 							</FormControl>
 						</Box>
-                        <Box className={classes.alignItems}>
+						<Box className={classes.alignItems}>
 							<FormControl className={classes.formControl} variant="outlined" size="small">
 								<InputLabel id="choose-countries-label">Area</InputLabel>
 								<Select
 									labelId="choose-countries-label"
 									id="choose-countries"
-									value={chosenArea.isoCode}
+									value={matchSettings.area.isoCode}
 									onChange={handleAreaChange}
 									label="Area"
 								>
@@ -349,18 +361,18 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 						<Box className={classes.alignItems2}>
 							<MuiPickersUtilsProvider utils={DateFnsUtils}>
 								<Grid container justify="space-around" className={classes.marginBottom}>
-                                    <KeyboardDatePicker
+									<KeyboardDatePicker
 										className={classes.datePickerFieldFrom}
-                                        //inputProps={{ classes: { adornedEnd: classes.noPadding } }}
+										//inputProps={{ classes: { adornedEnd: classes.noPadding } }}
 										margin="dense"
 										inputVariant="outlined"
 										id="date-picker-dialog-from"
-										label="From"
+										label="From (m/y)"
 										format="MM/yyyy"
 										maxDate={new Date('2021-12-31')}
 										minDate={new Date('2019-01-01')}
-										views={['year', 'month']}
-										value={selectedFromDate}
+										views={['month', 'year']}
+										value={matchSettings.fromDate}
 										autoOk
 										onChange={handleFromDateChange}
 										KeyboardButtonProps={{
@@ -368,18 +380,18 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 										}}
 									/>
 								</Grid>
-                                <Grid container justify="space-around" className={classes.marginBottom}>
+								<Grid container justify="space-around" className={classes.marginBottom}>
 									<KeyboardDatePicker
-                                        className={classes.datePickerFieldFrom}
+										className={classes.datePickerFieldFrom}
 										margin="dense"
 										inputVariant="outlined"
 										id="date-picker-dialog-to"
-										label="To"
+										label="To (m/y)"
 										format="MM/yyyy"
 										maxDate={new Date('2021-12-31')}
 										minDate={new Date('2019-01-01')}
-										views={['year', 'month']}
-										value={selectedToDate}
+										views={['month', 'year']}
+										value={matchSettings.toDate}
 										autoOk
 										onChange={handleToDateChange}
 										KeyboardButtonProps={{
@@ -415,9 +427,10 @@ const mapStateToProps = (state: AppState) => ({
 	matchingMethod: state.model.matchingMethod,
 	playlists: state.model.playlists,
 	topArtists: state.model.topArtists,
+	selectedPlaylistArtists: state.model.selectedPlaylistArtists,
 	countries: state.model.countries,
 	continents: state.model.continents,
-	chosenArea: state.model.chosenArea
+	matchSettings: state.model.matchSettings
 });
 
 const mapDispatchToProps = (dispatch: any) => {
