@@ -43,6 +43,12 @@ export const setLoggedOff = (): Action => {
     }
 };
 
+export const setSiteInitialized = (): Action => {
+    return {
+        type: ActionTypeKeys.SET_SITE_INITIALIZED
+    }
+};
+
 export const switchToDarkMode = (): Action => {
     return {
         type: ActionTypeKeys.SWITCH_TO_DARK_MODE,
@@ -59,6 +65,13 @@ export const setAccessToken = (accessToken: string): Action => {
     return {
         type: ActionTypeKeys.SET_ACCESS_TOKEN,
         accessToken: accessToken
+    }
+};
+
+export const setTokenExpiryDate = (expiresInSeconds: number): Action => {
+    return {
+        type: ActionTypeKeys.SET_TOKEN_EXPIRY_DATE,
+        expiresInSeconds: expiresInSeconds
     }
 };
 
@@ -184,13 +197,15 @@ export const testFestivalMatches = (
         response.text().then((id: string) => {
             const matching_festivals: FestivalMatch[] = JSON.parse(id);
             dispatch(addFestivalMatches(matching_festivals));
+            dispatch(setDbIsOnline());
         });
     }).catch((reason) => {
         console.log(reason);
+        dispatch(setDbIsOffline());
     }).finally(() => dispatch(turnOffLoader()));
 };
 
-export const initializeSite = async (
+export const initializeSite = (
     token: string,
     dispatch: Dispatch
 ) => {
@@ -204,7 +219,7 @@ export const initializeSite = async (
     const getAvailableContinents = fetchToJson('http://127.0.0.1:8000/onTour/availableContinents');
 
     Promise.all([spotifyApi.getMe(), getAvailableCountries, getAvailableContinents])
-        .then(async ([responseGetMe, getAvailableCountriesReponse, getAvailableContinentsResponse]) => {
+        .then(([responseGetMe, getAvailableCountriesReponse, getAvailableContinentsResponse]) => {
             const getMe: SpotifyApi.CurrentUsersProfileResponse = responseGetMe as SpotifyApi.CurrentUsersProfileResponse;
             const countries: Area[] = getAvailableCountriesReponse as Area[];
             const continents: Area[] = getAvailableContinentsResponse as Area[];
@@ -221,6 +236,8 @@ export const initializeSite = async (
             }
 
             dispatch(setUserInfo(userInfo));
+
+            dispatch(setSiteInitialized());
 
             spotifyApi.getMyTopArtists({ limit: 50 })
                 .then((response: SpotifyApi.UsersTopArtistsResponse) => {
@@ -259,29 +276,7 @@ export const initializeSite = async (
                     dispatch(setLoggedOff());
                 })
 
-            spotifyApi.getUserPlaylists(getMe.id, { limit: 50 })
-                .then((response: SpotifyApi.ListOfUsersPlaylistsResponse) => {
-
-                    const playlists: Playlist[] = response.items.map((playlist) => {
-                        if (playlist.tracks.total === 0) {
-                            return undefined;
-                        } else {
-                            return {
-                                name: playlist.name,
-                                id: playlist.id,
-                                images: playlist.images.map((image) => { return image.url; }),
-                                ownerId: playlist.owner.id,
-                                numTracks: playlist.tracks.total
-                            } as Playlist;
-                        }
-                    }).filter(Boolean) as Playlist[];;
-
-                    dispatch(setPlaylists(playlists));
-                })
-                .catch((error) => {
-                    console.log(error);
-                    dispatch(setLoggedOff());
-                })
+            getAllPlaylists(getMe.id, 0, [], dispatch);
         })
         .catch((error) => {
             if (error instanceof XMLHttpRequest) {
@@ -295,4 +290,39 @@ export const initializeSite = async (
             console.log('status code: ' + error.status);
             console.log(error);
         });
+}
+
+export const getAllPlaylists = (
+    userId: string,
+    offset: number,
+    allPlaylists: Playlist[],
+    dispatch: Dispatch
+) => {
+    spotifyApi.getUserPlaylists(userId, { limit: 50, offset: offset })
+        .then((response: SpotifyApi.ListOfUsersPlaylistsResponse) => {
+
+            const playlists: Playlist[] = response.items.map((playlist) => {
+                if (playlist.tracks.total === 0) {
+                    return undefined;
+                } else {
+                    return {
+                        name: playlist.name,
+                        id: playlist.id,
+                        images: playlist.images.map((image) => { return image.url; }),
+                        ownerId: playlist.owner.id,
+                        numTracks: playlist.tracks.total
+                    } as Playlist;
+                }
+            }).filter(Boolean) as Playlist[];
+
+            if (response.total > offset + 50) {
+                getAllPlaylists(userId, offset + 50, allPlaylists.concat(playlists), dispatch);
+            } else {
+                dispatch(setPlaylists(allPlaylists));
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            dispatch(setLoggedOff());
+        })
 }

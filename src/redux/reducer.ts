@@ -5,6 +5,7 @@ import { Reducer } from "redux";
 export const initialModel: Model = {
     loaderOn: false,
     loggedIn: true,
+    siteInitialized: false,
     isDbOnline: true,
 
     // Visnings
@@ -12,6 +13,7 @@ export const initialModel: Model = {
 
     //Logikk
     accessToken: '',
+    tokenExpiryDate: '',
     userInfo: undefined,
     topArtists: [],
     playlists: [],
@@ -40,11 +42,21 @@ const reducer: Reducer<Model, Action> = (
         case ActionTypeKeys.SET_DB_IS_OFFLINE: return { ...state, isDbOnline: false };
         case ActionTypeKeys.SET_LOGGED_IN: return { ...state, loggedIn: true };
         case ActionTypeKeys.SET_LOGGED_OFF: return { ...initialModel, loggedIn: false, thememode: state.thememode };
+        case ActionTypeKeys.SET_SITE_INITIALIZED: return { ...state, siteInitialized: true };
         case ActionTypeKeys.SWITCH_TO_LIGHT_MODE: { return { ...state, thememode: 'light' } }
         case ActionTypeKeys.SWITCH_TO_DARK_MODE: { return { ...state, thememode: 'dark' } }
         case ActionTypeKeys.SET_ACCESS_TOKEN: {
             const { accessToken } = action;
             return { ...state, accessToken: accessToken }
+        }
+        case ActionTypeKeys.SET_TOKEN_EXPIRY_DATE: {
+            const { expiresInSeconds } = action;
+            if (expiresInSeconds === 0) {
+                return { ...state, tokenExpiryDate: '' }
+            }
+            const date = new Date()
+            date.setSeconds(date.getSeconds() + expiresInSeconds);
+            return { ...state, tokenExpiryDate: date.toISOString() }
         }
         case ActionTypeKeys.SET_USER_INFO: {
             const { info } = action;

@@ -10,9 +10,11 @@ export interface DispatchProps {
 export interface Model {
     loaderOn: boolean;
     loggedIn: boolean;
+    siteInitialized: boolean;
     isDbOnline: boolean;
     thememode: PaletteType;
     accessToken: string;
+    tokenExpiryDate: string;
     userInfo?: UserInfo;
     topArtists: Artist[];
     playlists: Playlist[];
@@ -36,9 +38,11 @@ export type Action
     | SetDbIsOffline
     | SetLoggedIn
     | SetLoggedOff
+    | SetSiteInitialized
     | SwitchToDarkMode
     | SwitchToLightMode
     | SetAccessToken
+    | SetTokenExpiryDate
     | SetUserInfo
     | SetTopArtists
     | SetPlaylists
@@ -57,9 +61,11 @@ export enum ActionTypeKeys {
     SET_DB_IS_OFFLINE = "SET_DB_IS_OFFLINE",
     SET_LOGGED_IN = "SET_LOGGED_IN",
     SET_LOGGED_OFF = "SET_LOGGED_OFF",
+    SET_SITE_INITIALIZED = "SET_SITE_INITIALIZED",
     SWITCH_TO_DARK_MODE = "SWITCH_TO_DARK_MODE",
     SWITCH_TO_LIGHT_MODE = "SWITCH_TO_LIGHT_MODE",
     SET_ACCESS_TOKEN = "SET_ACCESS_TOKEN",
+    SET_TOKEN_EXPIRY_DATE = "SET_TOKEN_EXPIRY_DATE",
     SET_USER_INFO = "SET_USER_INFO",
     SET_TOP_ARTISTS = "SET_TOP_ARTISTS",
     SET_PLAYLISTS = "SET_PLAYLISTS",
@@ -96,6 +102,10 @@ export interface SetLoggedOff {
     type: ActionTypeKeys.SET_LOGGED_OFF;
 }
 
+export interface SetSiteInitialized {
+    type: ActionTypeKeys.SET_SITE_INITIALIZED;
+}
+
 export interface SwitchToDarkMode {
     type: ActionTypeKeys.SWITCH_TO_DARK_MODE;
 }
@@ -107,6 +117,11 @@ export interface SwitchToLightMode {
 export interface SetAccessToken {
     type: ActionTypeKeys.SET_ACCESS_TOKEN;
     accessToken: string;
+}
+
+export interface SetTokenExpiryDate {
+    type: ActionTypeKeys.SET_TOKEN_EXPIRY_DATE;
+    expiresInSeconds: number;
 }
 
 export interface SetUserInfo {

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps } from "../redux/types";
-import { initializeSite, setAccessToken, spotifyApi } from "../redux/actions";
+import { initializeSite, setAccessToken, setTokenExpiryDate, setLoggedOff, spotifyApi } from "../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -12,6 +12,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import deepOrange from "@material-ui/core/colors/deepOrange";
 import indigo from "@material-ui/core/colors/indigo";
 import { Model } from "../redux/types";
+import { authorizeHref } from "./LoginScreen";
 //import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
 import { Redirect } from 'react-router-dom';
@@ -63,6 +64,17 @@ const getAccessTokenFromHashParams = () => {
     return '';
 };
 
+const getExpiresInFromUrl = () => {
+    const url = window.location.href;
+    const expire_pos = url.search('expires_in');
+    if (expire_pos !== -1) {
+        return url.slice(expire_pos + 11);
+    } else {
+        return '';
+    }
+};
+
+const expires_in = getExpiresInFromUrl();
 const token = getAccessTokenFromHashParams();
 
 window.history.pushState("", document.title, window.location.pathname + window.location.search);
@@ -70,11 +82,30 @@ window.history.pushState("", document.title, window.location.pathname + window.l
 const V1: React.FC<Props> = (props: Props) => {
 
     useEffect(() => {
-        if (props.model.accessToken) {
-            spotifyApi.setAccessToken(props.model.accessToken);
-        } else if (token) {
-            initializeSite(token, props.dispatch);
+        if (token) {
             props.dispatch(setAccessToken(token));
+            if (!props.model.siteInitialized) {
+                initializeSite(token, props.dispatch);
+            }
+            if (expires_in) {
+                props.dispatch(setTokenExpiryDate(+expires_in));
+            }
+        } else if (props.model.accessToken) {
+            spotifyApi.setAccessToken(props.model.accessToken);
+            if (props.model.tokenExpiryDate !== '') {
+                const unixTimeNow = new Date().getTime();
+                const tenMinMilliseconds = 600000;
+                const oneDayMilliseconds = 86400000;
+                const unixTimeExpiry = Date.parse(props.model.tokenExpiryDate);
+                if (unixTimeNow > unixTimeExpiry + oneDayMilliseconds) {
+                    props.dispatch(setLoggedOff());
+                } else if (unixTimeNow > unixTimeExpiry - tenMinMilliseconds) {
+                    props.dispatch(setAccessToken(''));
+                    window.open(authorizeHref, '_self');
+                }
+            }
+        } else {
+            props.dispatch(setLoggedOff());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -100,7 +131,7 @@ const V1: React.FC<Props> = (props: Props) => {
 
     const classes = useStyles();
 
-    if (!props.model.loggedIn || (!token && !props.model.accessToken)) {
+    if (!props.model.loggedIn || (!token && !props.model.accessToken && !props.model.tokenExpiryDate)) {
         return <Redirect push to='/login' />
     }
     return (
@@ -109,11 +140,11 @@ const V1: React.FC<Props> = (props: Props) => {
             <CssBaseline />
             <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
             <div className={classes.verticalSpace} />
-            {props.model.isDbOnline &&
-                <div className={classes.root}>
-                    <FestivalMatchSettingsBar />
-                    <FestivalMatchView />
-                </div>}
+            <div className={classes.root}>
+                <FestivalMatchSettingsBar />
+                {props.model.isDbOnline &&
+                    <FestivalMatchView />}
+            </div>
             {!props.model.isDbOnline &&
                 <div className={classes.root}>
                     <Typography variant="subtitle1" >

@@ -88,7 +88,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         box2: {
             width: '100%',
-            maxWidth: '764px'
+            maxWidth: '663px'
         },
         title: {
             textAlign: 'center',
@@ -125,7 +125,7 @@ interface StoreProps {
 
 type Props = DispatchProps & StoreProps;
 
-export const authEndpoint = 'https://accounts.spotify.com/authorize';
+const authEndpoint = 'https://accounts.spotify.com/authorize';
 
 const clientId = '***REMOVED***';
 const redirectUri = 'http://localhost:3000';
@@ -136,6 +136,7 @@ const scopes = [
     'playlist-read-collaborative',
 ];
 
+export const authorizeHref = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token`;
 
 const LoginScreen: React.FC<Props> = (props: Props) => {
 
@@ -168,8 +169,6 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
     const classes = useStyles();
 
     const [expanded, setExpanded] = React.useState(false);
-
-    const authorizeHref = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token`;
 
     return (
         //<SplashScreen>

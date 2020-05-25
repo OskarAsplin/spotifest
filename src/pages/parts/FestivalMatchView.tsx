@@ -59,7 +59,10 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 	const [siteInitialized, setSiteInitialized] = React.useState(false);
 	const [isAnyMatch, setIsAnyMatch] = React.useState(true);
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-		setPage(value);
+		if (page !== value) {
+			setPage(value);
+			setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
+		}
 	};
 	const itemsPerPage = 15
 	const numPages = Math.ceil(festivalMatches.length / itemsPerPage)
@@ -70,7 +73,6 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 		.slice((page - 1) * itemsPerPage, Math.min(page * itemsPerPage, festivalMatches.length));
 
 	useEffect(() => {
-		setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
 		if (showMatches.length === 0) {
 			setIsAnyMatch(false);
 		} else {

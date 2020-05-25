@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings } from "../../redux/types";
 import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, getIconPicture, getBigPicture } from "../../redux/actions";
 import { connect } from "react-redux";
@@ -132,6 +132,20 @@ const HtmlTooltip = withStyles((theme) => ({
 }))(Tooltip);
 
 const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
+
+	useEffect(() => {
+		console.log('useEffect');
+		if (!props.model.isDbOnline) {
+			console.log('is offline');
+			testMatchesWithGivenSettings(
+				matchSettings.area,
+				new Date(Date.parse(matchSettings.fromDate)),
+				new Date(Date.parse(matchSettings.toDate)),
+				matchSettings.matchBasis,
+				selectedPlaylistArtists);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// const smallScreen = useMediaQuery('(max-width:610px)');
 	const pcScreen = useMediaQuery('(min-width:1200px)');
@@ -300,6 +314,10 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	};
 
 	const classes = useStyles();
+
+	if (!props.model.isDbOnline) {
+		return (<div />);
+	}
 
 	return (
 		<Box className={classes.box}>
