@@ -45,10 +45,10 @@ const useStyles = makeStyles((theme: Theme) =>
         paper: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 padding: theme.spacing(0, 4, 0, 4),
             },
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 padding: theme.spacing(0, 2, 0, 2),
             },
             justifyContent: 'space-between',
@@ -60,10 +60,10 @@ const useStyles = makeStyles((theme: Theme) =>
         button: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 padding: theme.spacing(2, 4, 2, 4),
             },
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 padding: theme.spacing(2, 2, 2, 2),
             },
             marginBottom: theme.spacing(2),
@@ -99,10 +99,10 @@ const useStyles = makeStyles((theme: Theme) =>
         footer: {
             position: 'absolute',
             bottom: 0,
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 maxWidth: '1112px',
             },
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 maxWidth: '95%',
             },
             margin: theme.spacing(2),
@@ -140,7 +140,7 @@ export const authorizeHref = `${authEndpoint}?client_id=${clientId}&redirect_uri
 
 const LoginScreen: React.FC<Props> = (props: Props) => {
 
-    const bigWidth = useMediaQuery('(min-width:500px)');
+    const bigWidth = useMediaQuery('(min-width:610px)');
     const bigHeight = useMediaQuery('(min-height:500px)');
     const bigScreen = bigWidth && bigHeight;
 
@@ -151,6 +151,9 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
 
     const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
+        typography: {
+            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+        },
         palette: {
             primary: {
                 light: indigo[300],

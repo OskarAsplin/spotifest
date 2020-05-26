@@ -153,6 +153,9 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	const { thememode, playlists, topArtists, selectedPlaylistArtists, countries, continents, dispatch, matchSettings } = props;
 
 	const lightBluePinkMuiTheme = createMuiTheme({
+		typography: {
+			fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+		},
 		palette: {
 			primary: {
 				light: lightBlue[300],

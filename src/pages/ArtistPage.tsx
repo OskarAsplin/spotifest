@@ -46,11 +46,11 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         paper: {
             display: 'flex',
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 padding: theme.spacing(2, 4, 2, 4),
                 flexDirection: 'row',
             },
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 padding: theme.spacing(2, 2, 2, 2),
                 flexDirection: 'column-reverse',
             },
@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
         paper2: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 padding: theme.spacing(0, 4, 2, 4),
             },
             marginBottom: theme.spacing(2),
@@ -71,10 +71,10 @@ const useStyles = makeStyles((theme: Theme) =>
         paper3: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 padding: theme.spacing(2, 4, 2, 4),
             },
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 padding: theme.spacing(2, 2, 2, 2),
             },
             marginBottom: theme.spacing(2),
@@ -91,11 +91,12 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: '764px'
         },
         buttonBox: {
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 maxWidth: '50%'
             },
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
         },
         artistImg: {
             maxHeight: 400,
@@ -104,7 +105,7 @@ const useStyles = makeStyles((theme: Theme) =>
         flexColumn: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 maxWidth: '50%'
             },
         },
@@ -150,7 +151,7 @@ const useStyles = makeStyles((theme: Theme) =>
             transform: 'rotate(180deg)',
         },
         festivalTitle: {
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 textAlign: 'center'
             },
         },
@@ -165,7 +166,7 @@ type Props = DispatchProps & StoreProps;
 
 const ArtistPage: React.FC<Props> = (props: Props) => {
 
-    const bigScreen = useMediaQuery('(min-width:500px)');
+    const bigScreen = useMediaQuery('(min-width:610px)');
 
     useEffect(() => {
         setArtistInfo(undefined);
@@ -255,6 +256,9 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
 
     const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
+        typography: {
+            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+        },
         palette: {
             primary: {
                 light: indigo[300],
@@ -271,6 +275,9 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     });
 
     const lightBluePinkMuiTheme = createMuiTheme({
+        typography: {
+            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+        },
         palette: {
             primary: {
                 light: lightBlue[300],

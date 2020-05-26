@@ -114,6 +114,9 @@ const V1: React.FC<Props> = (props: Props) => {
 
     const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
+        typography: {
+            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+        },
         palette: {
             primary: {
                 light: indigo[300],

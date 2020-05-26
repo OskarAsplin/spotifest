@@ -6,7 +6,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Model, AppState, DispatchProps } from "../../redux/types";
 import { connect } from "react-redux";
 import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../../redux/actions";
-import { lightBlue, pink } from "@material-ui/core/colors";
+import { lightBlue, indigo } from "@material-ui/core/colors";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -77,6 +77,9 @@ const AppBarView: React.FC<Props> = (props: Props) => {
     const id = open ? 'simple-popover' : undefined;
 
     const lightBluePinkMuiTheme = createMuiTheme({
+        typography: {
+            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+        },
         palette: {
             primary: {
                 light: lightBlue[300],
@@ -84,9 +87,9 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                 dark: lightBlue[700]
             },
             secondary: {
-                light: pink[300],
-                main: pink[500],
-                dark: pink[700]
+                light: indigo[700],
+                main: indigo[800],
+                dark: indigo[900]
             },
             type: props.model.thememode
         }
@@ -94,7 +97,8 @@ const AppBarView: React.FC<Props> = (props: Props) => {
 
     return (
         <div className={classes.root}>
-            <AppBar position="static" id="oskarito-appbar">
+        <MuiThemeProvider theme={lightBluePinkMuiTheme}>
+            <AppBar position="static" id="oskarito-appbar" color="secondary">
                 <Toolbar className={classes.customizeToolbar}>
                     <div className={classes.title}>
                         <Button
@@ -137,7 +141,6 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             horizontal: 'center',
                         }}
                     >
-                        <MuiThemeProvider theme={lightBluePinkMuiTheme}>
                             <div className={classes.popover}>
                                 {props.model.userInfo?.spotifyUrl &&
                                     <Link color={'primary'}
@@ -155,7 +158,6 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                     Log out
                                 </Link>
                             </div>
-                        </MuiThemeProvider>
                     </Popover>
                     {props.birghtnessSwitchEnabled &&
                         <IconButton
@@ -170,6 +172,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                         </IconButton>}
                 </Toolbar>
             </AppBar>
+            </MuiThemeProvider>
         </div>
     );
 };

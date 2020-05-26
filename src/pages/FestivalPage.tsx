@@ -26,11 +26,11 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         paper: {
             display: 'flex',
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 padding: theme.spacing(2, 4, 2, 4),
                 flexDirection: 'row',
             },
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 padding: theme.spacing(2, 2, 2, 2),
                 flexDirection: 'column',
             },
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
         paper2: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 padding: theme.spacing(0, 4, 2, 4),
             },
             marginBottom: theme.spacing(2),
@@ -73,12 +73,12 @@ const useStyles = makeStyles((theme: Theme) =>
         flexColumn: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 maxWidth: '50%'
             },
         },
         buttonBox: {
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 maxWidth: '50%'
             },
             display: 'flex',
@@ -113,10 +113,10 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         lineup: {
             maxHeight: 450,
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 maxWidth: 450,
             },
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 maxWidth: 300,
             },
         },
@@ -153,17 +153,17 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (min-width: 900px)': {
                 minWidth: '160px',
             },
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 '@media (max-width: 899px)': {
                     minWidth: '100px',
                 },
             },
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 minWidth: '72px',
             },
         },
         festivalTitle: {
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 textAlign: 'center'
             },
         },
@@ -185,7 +185,7 @@ type Props = DispatchProps & StoreProps;
 
 const FestivalPage: React.FC<Props> = (props: Props) => {
 
-    const bigScreen = useMediaQuery('(min-width:500px)');
+    const bigScreen = useMediaQuery('(min-width:610px)');
 
     useEffect(() => {
         let festival = window.location.search.substring(1);
@@ -213,6 +213,9 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
 
     const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
+        typography: {
+            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+        },
         palette: {
             primary: {
                 light: indigo[300],
@@ -229,6 +232,9 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     });
 
     const lightBluePinkMuiTheme = createMuiTheme({
+        typography: {
+            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+        },
         palette: {
             primary: {
                 light: lightBlue[300],

@@ -12,10 +12,10 @@ import FestivalMatchItem from './FestivalMatchItem';
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		box: {
-			'@media (min-width: 500px)': {
+			'@media (min-width: 610px)': {
 				width: '95%',
 			},
-			'@media (max-width: 499px)': {
+			'@media (max-width: 609px)': {
 				width: '100%',
 			},
 			maxWidth: '764px',

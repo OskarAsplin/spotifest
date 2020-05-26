@@ -18,13 +18,13 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 padding: theme.spacing(2, 4, 2, 4),
             },
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 padding: theme.spacing(2, 2, 2, 2),
             },
-            marginBottom: theme.spacing(2),
+            marginBottom: theme.spacing(3),
             width: '100%',
         },
         root2: {
@@ -34,10 +34,10 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
         },
         circleSize: {
-            '@media (min-width: 500px)': {
+            '@media (min-width: 610px)': {
                 width: '80px'
             },
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 width: '60px'
             },
         },
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         festivalTitleCenter: {
             wordWrap: 'break-word',
-            '@media (max-width: 499px)': {
+            '@media (max-width: 609px)': {
                 textAlign: 'center'
             },
         },
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
-            '@media (max-width: 499px)': {
+            '@media (max-width: 565px)': {
                 justifyContent: 'space-between',
                 minWidth: '300px'
             },
@@ -63,11 +63,11 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
             display: 'flex',
             flexDirection: 'row',
-            //'@media (min-width: 500px)': {
+            //'@media (min-width: 610px)': {
             //    flexDirection: 'row',
             //    flexWrap: 'nowrap',
             //},
-            //'@media (max-width: 499px)': {
+            //'@media (max-width: 609px)': {
             //    flexDirection: 'column-reverse',
             //    alignItems: 'center'
             //},
@@ -99,13 +99,13 @@ const useStyles = makeStyles((theme: Theme) =>
             marginLeft: -theme.spacing(1.3),
             textAlign: 'left',
             //maxWidth: '85%',
-            //'@media (min-width: 500px)': {
+            //'@media (min-width: 610px)': {
             //    flexGrow: 1,
             //    marginLeft: -theme.spacing(1.3),
             //    textAlign: 'left',
             //    maxWidth: '85%',
             //},
-            //'@media (max-width: 499px)': {
+            //'@media (max-width: 609px)': {
             //    maxWidth: '100%'
             //},
             paddingBottom: theme.spacing(0),
@@ -136,6 +136,9 @@ const useStyles = makeStyles((theme: Theme) =>
         width100: {
             width: '100px'
         },
+        width200: {
+            width: '200px'
+        },
     }),
 );
 
@@ -152,13 +155,25 @@ interface StoreProps {
 type Props = DispatchProps & StoreProps & OwnProps;
 
 const FestivalMatchItem: React.FC<Props> = (props: Props) => {
-    const bigScreen = useMediaQuery('(min-width:500px)');
+    const bigScreen = useMediaQuery('(min-width:610px)');
+    const fourMatchingArtistsFirstRow = useMediaQuery('(min-width:840px)');
+    const threeMatchingArtistsFirstRowMinWidth = useMediaQuery('(min-width:740px)');
+    const twoMatchingArtistsFirstRowMinWidth = useMediaQuery('(min-width:640px)');
+    const threeMatchingArtistsFirstRow = threeMatchingArtistsFirstRowMinWidth && !fourMatchingArtistsFirstRow;
+    const twoMatchingArtistsFirstRow = twoMatchingArtistsFirstRowMinWidth && !threeMatchingArtistsFirstRow;
+    const threeArtistWidth = useMediaQuery('(max-width:464px)');
+    const fourArtistMinWidth = useMediaQuery('(min-width:465px)');
+    const fourArtistMaxWidth = useMediaQuery('(max-width:565px)');
+    const fourArtistWidth = fourArtistMinWidth && fourArtistMaxWidth;
 
     const { festival, showMatching, thememode, matchingMethod } = props;
     const [expanded, setExpanded] = React.useState(false);
     const [redirectFestival, setRedirectFestival] = React.useState('');
 
     const lightBluePinkMuiTheme = createMuiTheme({
+        typography: {
+            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+        },
         palette: {
             primary: {
                 light: lightBlue[300],
@@ -190,6 +205,10 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     const pathColor = thememode === 'light' ? '#3FBF3F' : '#3de53d';
     const textColor = thememode === 'light' ? '#3FBF3F' : '#3de53d';
     const trailColor = thememode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
+
+    const endFirstRow = () => {
+        return bigScreen ? fourMatchingArtistsFirstRow ? 4 : threeMatchingArtistsFirstRow ? 3 : twoMatchingArtistsFirstRow ? 2 : undefined : undefined;
+    }
 
     if (redirectFestival) {
         return <Redirect push to={'/festival?' + redirectFestival} />
@@ -283,15 +302,26 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             {showMatching &&
                                 <div className={classes.artistAvatarBox}>
                                     {festival.matching_artists.length > 0 &&
-                                        festival.matching_artists.map((artist) => (
+                                        festival.matching_artists
+                                    .slice(0, endFirstRow())
+                                        .map((artist) => (
                                             <ArtistBubble
                                                 artist={artist}
                                                 key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
                                                 thememode={thememode} />
                                         )
                                         )}
-                                {(festival.matching_artists.length - 2) % 3 === 0 &&
+                                {!bigScreen && threeArtistWidth &&
+                                (festival.matching_artists.length - 2) % 3 === 0 &&
                                     <div className={classes.width100}/>
+                                }
+                                {!bigScreen && fourArtistWidth &&
+                                    (festival.matching_artists.length - 3) % 4 === 0 &&
+                                    <div className={classes.width100} />
+                                }
+                                {!bigScreen && fourArtistWidth &&
+                                    (festival.matching_artists.length - 2) % 4 === 0 &&
+                                    <div className={classes.width200} />
                                 }
                                 </div>
                             }
@@ -307,6 +337,20 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             </Button>
                         </div>}
                     </div>
+                    {showMatching && bigScreen &&
+                        <div className={classes.artistAvatarBox}>
+                            {festival.matching_artists.length > 0 &&
+                                festival.matching_artists
+                                    .slice(endFirstRow())
+                                    .map((artist) => (
+                                        <ArtistBubble
+                                            artist={artist}
+                                            key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                            thememode={thememode} />
+                                    )
+                                    )}
+                        </div>
+                    }
                     <div className={classes.matchingPopularBox}>
                         <Typography variant="body1" color='primary' component="div" >
                             <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
@@ -334,8 +378,17 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                         thememode={thememode} />
                                 )
                                 )}
-                            {(festival.popular_artists.length - 2) % 3 === 0 &&
+                            {!bigScreen && threeArtistWidth &&
+                                (festival.popular_artists.length - 2) % 3 === 0 &&
                                 <div className={classes.width100} />
+                            }
+                            {!bigScreen && fourArtistWidth &&
+                                (festival.popular_artists.length - 3) % 4 === 0 &&
+                                <div className={classes.width100} />
+                            }
+                            {!bigScreen && fourArtistWidth &&
+                                (festival.popular_artists.length - 2) % 4 === 0 &&
+                                <div className={classes.width200} />
                             }
                         </div>
                     </Collapse>
