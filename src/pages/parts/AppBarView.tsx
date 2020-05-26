@@ -97,50 +97,50 @@ const AppBarView: React.FC<Props> = (props: Props) => {
 
     return (
         <div className={classes.root}>
-        <MuiThemeProvider theme={lightBluePinkMuiTheme}>
-            <AppBar position="static" id="oskarito-appbar" color="secondary">
-                <Toolbar className={classes.customizeToolbar}>
-                    <div className={classes.title}>
-                        <Button
-                            className={classes.button}
-                            color="inherit"
-                            onClick={() => { window.open('http://localhost:3000/ontour', '_self') }}
-                        >
-                            <Typography variant="h6">
-                                Oskarito Festival Matcher
+            <MuiThemeProvider theme={lightBluePinkMuiTheme}>
+                <AppBar position="static" id="oskarito-appbar" color="secondary">
+                    <Toolbar className={classes.customizeToolbar}>
+                        <div className={classes.title}>
+                            <Button
+                                className={classes.button}
+                                color="inherit"
+                                onClick={() => { window.open('http://localhost:3000/ontour', '_self') }}
+                            >
+                                <Typography variant="h6">
+                                    Oskarito Festival Matcher
                             </Typography>
-                        </Button>
-                    </div>
-                    {props.model.userInfo?.displayName && bigScreen &&
-                        <Typography variant="body1">
-                            {props.model.userInfo.displayName}
-                        </Typography>
-                    }
-                    {props.accountCircleEnabled &&
-                        <IconButton
-                            color="inherit"
-                            aria-describedby={id}
-                            onClick={handleClick}
+                            </Button>
+                        </div>
+                        {props.model.userInfo?.displayName && bigScreen &&
+                            <Typography variant="body1">
+                                {props.model.userInfo.displayName}
+                            </Typography>
+                        }
+                        {props.accountCircleEnabled &&
+                            <IconButton
+                                color="inherit"
+                                aria-describedby={id}
+                                onClick={handleClick}
+                            >
+                                {props.model.userInfo?.profilePictureUrl ?
+                                    <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
+                                    : <AccountCircleIcon />}
+                            </IconButton>}
+                        <Popover
+                            id={id}
+                            hidden={!props.model.loggedIn}
+                            open={open}
+                            anchorEl={anchorEl}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                            }}
+                            transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                            }}
                         >
-                            {props.model.userInfo?.profilePictureUrl ?
-                                <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
-                                : <AccountCircleIcon />}
-                        </IconButton>}
-                    <Popover
-                        id={id}
-                        hidden={!props.model.loggedIn}
-                        open={open}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'center',
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'center',
-                        }}
-                    >
                             <div className={classes.popover}>
                                 {props.model.userInfo?.spotifyUrl &&
                                     <Link color={'primary'}
@@ -158,20 +158,20 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                     Log out
                                 </Link>
                             </div>
-                    </Popover>
-                    {props.birghtnessSwitchEnabled &&
-                        <IconButton
-                            color="inherit"
-                            onClick={() => {
-                                props.model.thememode === 'light'
-                                    ? dispatch(switchToDarkMode())
-                                    : dispatch(switchToLightMode());
-                            }}
-                        >
-                            {props.model.thememode === 'light' ? <Brightness2 /> : <Brightness4 />}
-                        </IconButton>}
-                </Toolbar>
-            </AppBar>
+                        </Popover>
+                        {props.birghtnessSwitchEnabled &&
+                            <IconButton
+                                color="inherit"
+                                onClick={() => {
+                                    props.model.thememode === 'light'
+                                        ? dispatch(switchToDarkMode())
+                                        : dispatch(switchToLightMode());
+                                }}
+                            >
+                                {props.model.thememode === 'light' ? <Brightness2 /> : <Brightness4 />}
+                            </IconButton>}
+                    </Toolbar>
+                </AppBar>
             </MuiThemeProvider>
         </div>
     );

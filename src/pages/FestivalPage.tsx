@@ -346,7 +346,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                     {festivalInfo.video &&
                         <Box className={classes.videoBox}>
                             <Paper elevation={3} className={classes.paper} key={'festival video:' + festivalInfo.name}>
-                            <iframe width={bigScreen ? '420' : '328'} height={bigScreen ? '315' : '246'} title={'festival video iframe:' + festivalInfo.name}
+                                <iframe width={bigScreen ? '420' : '328'} height={bigScreen ? '315' : '246'} title={'festival video iframe:' + festivalInfo.name}
                                     src={festivalInfo.video}>
                                     }
                                 </iframe>
@@ -367,62 +367,62 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                     >
                                         {festivalInfo.lineups.map((lineup, idx) =>
                                             <Tab label={<span className={classes.tabLabel}>{lineup.year}</span>} value={idx}
-                                            key={'tab: ' + festivalInfo.name + lineup.year} classes={{ root: classes.tabRoot }}/>)}
+                                                key={'tab: ' + festivalInfo.name + lineup.year} classes={{ root: classes.tabRoot }} />)}
                                     </Tabs>
                                     <SwipeableViews
                                         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
                                         index={selectedLineup}
                                         onChangeIndex={(newValue: number) => setSelectedLineup(newValue)}
                                     >
-                                    {festivalInfo.lineups.map((lineup, idx) =>
-                                        <TabPanel value={selectedLineup} index={idx} key={'tabPanel: ' + festivalInfo.name + lineup.year}>
-                                            <Box className={classes.lineupView}>
-                                                {lineup.cancelled ?
-                                                    <Typography variant="h5" color='secondary'>
-                                                        {'CANCELLED' + (lineup.date_str ? ' (' + lineup.date_str + ')' : '')}
-                                                    </Typography> :
-                                                    <Typography variant="h5">
-                                                        {lineup.date_str}
-                                                    </Typography>}
-                                                <Box className={classes.sortButtonBox}>
-                                                    {/* The invisible button is a quick fix for click event propagation from the grid item */}
-                                                    <Button hidden className={classes.invisibleButton}>.</Button>
-                                                    <Button disableRipple disableElevation className={classes.button}
-                                                        color={!sortAlphabetically ? 'primary' : 'default'}
-                                                        onClick={() => setSortAlphabetically(false)}>
-                                                        Popularity
+                                        {festivalInfo.lineups.map((lineup, idx) =>
+                                            <TabPanel value={selectedLineup} index={idx} key={'tabPanel: ' + festivalInfo.name + lineup.year}>
+                                                <Box className={classes.lineupView}>
+                                                    {lineup.cancelled ?
+                                                        <Typography variant="h5" color='secondary'>
+                                                            {'CANCELLED' + (lineup.date_str ? ' (' + lineup.date_str + ')' : '')}
+                                                        </Typography> :
+                                                        <Typography variant="h5">
+                                                            {lineup.date_str}
+                                                        </Typography>}
+                                                    <Box className={classes.sortButtonBox}>
+                                                        {/* The invisible button is a quick fix for click event propagation from the grid item */}
+                                                        <Button hidden className={classes.invisibleButton}>.</Button>
+                                                        <Button disableRipple disableElevation className={classes.button}
+                                                            color={!sortAlphabetically ? 'primary' : 'default'}
+                                                            onClick={() => setSortAlphabetically(false)}>
+                                                            Popularity
                                                     </Button>
-                                                    <Switch checked={sortAlphabetically} color="default"
-                                                        onChange={(evt: any) => setSortAlphabetically(evt.target.checked ? true : false)}
-                                                        name="switchSortAlphabetically" />
-                                                    <Button disableRipple disableElevation className={classes.button}
-                                                        color={sortAlphabetically ? 'primary' : 'default'}
-                                                        onClick={() => setSortAlphabetically(true)}>
-                                                        Alphabetically
+                                                        <Switch checked={sortAlphabetically} color="default"
+                                                            onChange={(evt: any) => setSortAlphabetically(evt.target.checked ? true : false)}
+                                                            name="switchSortAlphabetically" />
+                                                        <Button disableRipple disableElevation className={classes.button}
+                                                            color={sortAlphabetically ? 'primary' : 'default'}
+                                                            onClick={() => setSortAlphabetically(true)}>
+                                                            Alphabetically
                                                     </Button>
+                                                    </Box>
+                                                    <Box className={classes.artistsView}>
+                                                        <div className={classes.artistAvatarBox}>
+                                                            {lineup.artists.length > 0 &&
+                                                                lineup.artists.sort((a, b) => (sortAlphabetically ?
+                                                                    (a.name > b.name) :
+                                                                    (a.popularity < b.popularity)) ? 1 : -1)
+                                                                    .map((artist) => (
+                                                                        <ArtistBubble
+                                                                            artist={artist}
+                                                                            key={'avatar_festival_lineup_artist_' + festivalInfo.name + lineup.year + artist.name}
+                                                                            thememode={thememode} />
+                                                                    )
+                                                                    )}
+                                                        </div>
+                                                    </Box>
+                                                    {lineup.poster && <div className={classes.lineupBox}>
+                                                        <Button onClick={() => window.open(lineup.poster, '_blank')}>
+                                                            <img className={classes.lineup} src={lineup.poster} alt="" />
+                                                        </Button>
+                                                    </div>}
                                                 </Box>
-                                                <Box className={classes.artistsView}>
-                                                    <div className={classes.artistAvatarBox}>
-                                                        {lineup.artists.length > 0 &&
-                                                            lineup.artists.sort((a, b) => (sortAlphabetically ?
-                                                                (a.name > b.name) :
-                                                                (a.popularity < b.popularity)) ? 1 : -1)
-                                                                .map((artist) => (
-                                                                    <ArtistBubble
-                                                                        artist={artist}
-                                                                        key={'avatar_festival_lineup_artist_' + festivalInfo.name + lineup.year + artist.name}
-                                                                        thememode={thememode} />
-                                                                )
-                                                                )}
-                                                    </div>
-                                                </Box>
-                                                {lineup.poster && <div className={classes.lineupBox}>
-                                                    <Button onClick={() => window.open(lineup.poster, '_blank')}>
-                                                        <img className={classes.lineup} src={lineup.poster} alt="" />
-                                                    </Button>
-                                                </div>}
-                                            </Box>
-                                        </TabPanel>)}
+                                            </TabPanel>)}
                                     </SwipeableViews>
                                 </Paper>
                             </MuiThemeProvider>

@@ -303,26 +303,26 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                 <div className={classes.artistAvatarBox}>
                                     {festival.matching_artists.length > 0 &&
                                         festival.matching_artists
-                                    .slice(0, endFirstRow())
-                                        .map((artist) => (
-                                            <ArtistBubble
-                                                artist={artist}
-                                                key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
-                                                thememode={thememode} />
-                                        )
-                                        )}
-                                {!bigScreen && threeArtistWidth &&
-                                (festival.matching_artists.length - 2) % 3 === 0 &&
-                                    <div className={classes.width100}/>
-                                }
-                                {!bigScreen && fourArtistWidth &&
-                                    (festival.matching_artists.length - 3) % 4 === 0 &&
-                                    <div className={classes.width100} />
-                                }
-                                {!bigScreen && fourArtistWidth &&
-                                    (festival.matching_artists.length - 2) % 4 === 0 &&
-                                    <div className={classes.width200} />
-                                }
+                                            .slice(0, endFirstRow())
+                                            .map((artist) => (
+                                                <ArtistBubble
+                                                    artist={artist}
+                                                    key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                                    thememode={thememode} />
+                                            )
+                                            )}
+                                    {!bigScreen && threeArtistWidth &&
+                                        (festival.matching_artists.length - 2) % 3 === 0 &&
+                                        <div className={classes.width100} />
+                                    }
+                                    {!bigScreen && fourArtistWidth &&
+                                        (festival.matching_artists.length - 3) % 4 === 0 &&
+                                        <div className={classes.width100} />
+                                    }
+                                    {!bigScreen && fourArtistWidth &&
+                                        (festival.matching_artists.length - 2) % 4 === 0 &&
+                                        <div className={classes.width200} />
+                                    }
                                 </div>
                             }
                         </div>
