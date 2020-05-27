@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { AppState, DispatchProps, FestivalInfo } from "../redux/types";
 import { turnOnLoader, turnOffLoader } from "../redux/actions";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, Paper, Box, Link, Button, Tabs, Tab, PaletteType, Switch, useTheme } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, Paper, Box, Link, Button, Tabs, Tab, PaletteType, Switch, useTheme, IconButton } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -14,6 +14,8 @@ import 'react-circular-progressbar/dist/styles.css';
 import { fetchToJson } from "../utils/restUtils";
 import ArtistBubble from './parts/ArtistBubble';
 import SwipeableViews from 'react-swipeable-views';
+import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -50,7 +52,12 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         verticalSpace: {
             display: 'flex',
-            padding: theme.spacing(2, 0, 2, 0),
+            '@media (min-width: 610px)': {
+                padding: theme.spacing(2, 0, 2, 0),
+            },
+            '@media (max-width: 609px)': {
+                padding: theme.spacing(1, 0, 1, 0),
+            },
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'
@@ -167,6 +174,11 @@ const useStyles = makeStyles((theme: Theme) =>
                 textAlign: 'center'
             },
         },
+        topLeft: {
+            position: 'absolute',
+            top: theme.spacing(8),
+            left: theme.spacing(2),
+        },
     }),
 );
 
@@ -186,6 +198,7 @@ type Props = DispatchProps & StoreProps;
 const FestivalPage: React.FC<Props> = (props: Props) => {
 
     const bigScreen = useMediaQuery('(min-width:610px)');
+    const pcScreen = useMediaQuery('(min-width:1300px)');
 
     useEffect(() => {
         let festival = window.location.search.substring(1);
@@ -205,6 +218,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     }, []);
 
     const { thememode } = props;
+    const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
     const [festivalInfo, setFestivalInfo] = React.useState<FestivalInfo | undefined>(undefined);
     const [isFestivalInDb, setIsFestivalInDb] = React.useState(true);
     const [isNetworkError, setIsNetworkError] = React.useState(false);
@@ -270,6 +284,10 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
         );
     }
 
+    if (redirectHome) {
+        return <Redirect push to={'/'} />
+    }
+
     if (!festivalInfo) {
         return (
             <MuiThemeProvider theme={muiTheme}>
@@ -304,6 +322,16 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
+                {pcScreen && <div className={classes.topLeft}>
+                    <IconButton
+                        onClick={() => {
+                            window.history.back();
+                            setTimeout(() => setRedirectHome(true), 10);
+                        }}
+                    >
+                        <ArrowBackOutlined fontSize='large' />
+                    </IconButton>
+                </div>}
                 <div className={classes.verticalSpace} />
 
                 <div className={classes.root}>

@@ -185,7 +185,7 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                 <div className={classes.root}>
                     <Box className={classes.box}>
                         <Typography variant={bigScreen ? "h2" : "h4"} className={classes.title}>
-                            Oskarito Festival Matcher
+                            Oskarito SpotiFest
                         </Typography>
                     </Box>
                     <div className={classes.verticalSpace} />

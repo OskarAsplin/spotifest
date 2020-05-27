@@ -6,7 +6,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Model, AppState, DispatchProps } from "../../redux/types";
 import { connect } from "react-redux";
 import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../../redux/actions";
-import { lightBlue, indigo } from "@material-ui/core/colors";
+import { lightBlue, blueGrey } from "@material-ui/core/colors";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -87,9 +87,9 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                 dark: lightBlue[700]
             },
             secondary: {
-                light: indigo[700],
-                main: indigo[800],
-                dark: indigo[900]
+                light: blueGrey[700],
+                main: props.model.thememode === 'dark' ? blueGrey[800] : blueGrey[700],
+                dark: blueGrey[900]
             },
             type: props.model.thememode
         }
@@ -107,7 +107,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                 onClick={() => { window.open('http://localhost:3000/ontour', '_self') }}
                             >
                                 <Typography variant="h6">
-                                    Oskarito Festival Matcher
+                                    Oskarito SpotiFest
                             </Typography>
                             </Button>
                         </div>
@@ -128,7 +128,6 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             </IconButton>}
                         <Popover
                             id={id}
-                            hidden={!props.model.loggedIn}
                             open={open}
                             anchorEl={anchorEl}
                             onClose={handleClose}
@@ -142,7 +141,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             }}
                         >
                             <div className={classes.popover}>
-                                {props.model.userInfo?.spotifyUrl &&
+                                {props.model.userInfo && props.model.userInfo.spotifyUrl &&
                                     <Link color={'primary'}
                                         href={props.model.userInfo.spotifyUrl}
                                         target={"_blank"}
@@ -150,13 +149,13 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                         className={classes.bottomMargin}>
                                         View profile in Spotify
                                     </Link>}
-                                <Link color={'primary'}
+                                {props.model.loggedIn && < Link color={'primary'}
                                     href={`https://accounts.spotify.com/en/logout`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     onClick={() => dispatch(setLoggedOff())}>
                                     Log out
-                                </Link>
+                                </Link>}
                             </div>
                         </Popover>
                         {props.birghtnessSwitchEnabled &&

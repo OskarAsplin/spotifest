@@ -19,6 +19,7 @@ import ArtistBubble from './parts/ArtistBubble';
 import { lightBlue, pink } from "@material-ui/core/colors";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
+import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,7 +33,12 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         verticalSpace: {
             display: 'flex',
-            padding: theme.spacing(2, 0, 2, 0),
+            '@media (min-width: 610px)': {
+                padding: theme.spacing(2, 0, 2, 0),
+            },
+            '@media (max-width: 609px)': {
+                padding: theme.spacing(1, 0, 1, 0),
+            },
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'
@@ -155,6 +161,17 @@ const useStyles = makeStyles((theme: Theme) =>
                 textAlign: 'center'
             },
         },
+        prevAndFutureFestivalsTitle: {
+            '@media (max-width: 609px)': {
+                textAlign: 'center'
+            },
+            marginBottom: theme.spacing(1)
+        },
+        topLeft: {
+            position: 'absolute',
+            top: theme.spacing(8),
+            left: theme.spacing(2),
+        },
     }),
 );
 
@@ -167,6 +184,7 @@ type Props = DispatchProps & StoreProps;
 const ArtistPage: React.FC<Props> = (props: Props) => {
 
     const bigScreen = useMediaQuery('(min-width:610px)');
+    const pcScreen = useMediaQuery('(min-width:1300px)');
 
     useEffect(() => {
         setArtistInfo(undefined);
@@ -247,6 +265,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     }, [window.location.search.substring(1)]);
 
     const [artistInfo, setArtistInfo] = React.useState<ArtistInfo | undefined>(undefined);
+    const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
     const [redirectFestival, setRedirectFestival] = React.useState('');
     const [relatedArtists, setRelatedArtists] = React.useState<Artist[]>([]);
     const [expanded, setExpanded] = React.useState(false);
@@ -299,11 +318,25 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
         return <Redirect push to={'/festival?' + redirectFestival} />
     }
 
+    if (redirectHome) {
+        return <Redirect push to={'/'} />
+    }
+
     if (!artistInfo) {
         return (
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
+                {pcScreen && <div className={classes.topLeft}>
+                    <IconButton
+                        onClick={() => {
+                            window.history.back();
+                            setTimeout(() => setRedirectHome(true), 10);
+                        }}
+                    >
+                        <ArrowBackOutlined fontSize='large' />
+                    </IconButton>
+                </div>}
                 <div className={classes.align}>
                     <div className={classes.verticalSpace} />
                     <div className={classes.verticalSpace} />
@@ -333,6 +366,16 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
+                {pcScreen && <div className={classes.topLeft}>
+                    <IconButton
+                        onClick={() => {
+                            window.history.back();
+                            setTimeout(() => setRedirectHome(true), 10);
+                        }}
+                    >
+                        <ArrowBackOutlined fontSize='large' />
+                    </IconButton>
+                </div>}
                 <div className={classes.verticalSpace} />
 
                 <div className={classes.root}>
@@ -398,7 +441,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                     {isArtistInDb && artistInfo.festivalsFuture.length !== 0 &&
                         <div className={classes.align}>
                             <div className={classes.verticalSpace} />
-                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.festivalTitle}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
                                 Attending festivals
                             </Typography>
                             <Box className={classes.box2}>
@@ -413,10 +456,9 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             <div className={classes.align}>
                                 <div className={classes.verticalSpace} />
                                 <div className={classes.verticalSpace} />
-                                <Typography variant={bigScreen ? "h4" : "h5"} className={classes.festivalTitle}>
+                                <Typography variant={bigScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
                                     Previously attended festivals
                                 </Typography>
-                                <div className={classes.verticalSpace} />
                                 <Box className={classes.box2}>
                                     {artistInfo.festivalsPast.map((festival, idx) =>
                                         <Button className={classes.paper3} key={'festivals artist attends: ' + festival.name + festival.year}

@@ -26,7 +26,18 @@ const useStyles = makeStyles((theme: Theme) =>
 			width: '100%',
 			justifyContent: 'center',
 			alignItems: 'center',
-			marginBottom: theme.spacing(1)
+		},
+		alignItems: {
+			display: 'flex',
+			'@media (min-width: 610px)': {
+				height: theme.spacing(7),
+			},
+			'@media (max-width: 609px)': {
+				flexDirection: 'column',
+				marginBottom: theme.spacing(1)
+			},
+			width: '100%',
+			alignItems: 'center',
 		},
 		verticalSpace: {
 			display: 'flex',
@@ -35,9 +46,25 @@ const useStyles = makeStyles((theme: Theme) =>
 			alignItems: 'center',
 			width: '100%'
 		},
+		verticalSpace2: {
+			display: 'flex',
+			padding: theme.spacing(2, 0, 0, 0),
+			justifyContent: 'center',
+			alignItems: 'center',
+			width: '100%'
+		},
 		noMatches: {
 			width: '100%',
 			textAlign: 'center'
+		},
+		matchLength: {
+			'@media (min-width: 610px)': {
+				position: 'absolute',
+				textAlign: 'center',
+			},
+			'@media (max-width: 609px)': {
+				marginBottom: theme.spacing(1)
+			},
 		}
 	}),
 );
@@ -58,6 +85,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 	const [page, setPage] = React.useState(1);
 	const [siteInitialized, setSiteInitialized] = React.useState(false);
 	const [isAnyMatch, setIsAnyMatch] = React.useState(true);
+
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		if (page !== value) {
 			setPage(value);
@@ -81,19 +109,31 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 		}
 	}, [showMatches])
 
+	useEffect(() => {
+		setPage(1);
+	}, [props.model.matchSettings])
+
 	return (
 		<Box className={classes.box}>
 			{showMatches.length > 0 &&
-				<Box className={classes.align}>
-					<Pagination count={numPages} page={page} onChange={handleChange} />
+				<Box className={classes.alignItems}>
+					<Typography variant="subtitle2" className={classes.matchLength}>
+						{festivalMatches.length + ' matches'}
+					</Typography>
+					<Box className={classes.align}>
+						<Pagination count={numPages} page={page} onChange={handleChange} />
+					</Box>
 				</Box>}
 			{showMatches.map((festival: FestivalMatch, idx) =>
 				<FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={true} />
 			)}
 			{showMatches.length > 0 &&
-				<Box className={classes.align}>
-					<Pagination count={numPages} page={page} onChange={handleChange} />
-				</Box>}
+				<div>
+					<Box className={classes.align}>
+						<Pagination count={numPages} page={page} onChange={handleChange} />
+					</Box>
+					<div className={classes.verticalSpace2} />
+				</div>}
 			{siteInitialized && !isAnyMatch &&
 				<div>
 					<div className={classes.verticalSpace} />

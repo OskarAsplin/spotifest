@@ -78,10 +78,22 @@ const useStyles = makeStyles((theme: Theme) =>
 			paddingBottom: theme.spacing(0.5)
 		},
 		datePickerFieldFrom: {
-			marginRight: theme.spacing(0.5),
+			'@media (min-width: 700px)': {
+				marginRight: theme.spacing(0.5),
+			},
+			'@media (max-width: 699px)': {
+				marginLeft: theme.spacing(1),
+				marginRight: theme.spacing(1),
+			},
 		},
 		datePickerFieldTo: {
-			marginLeft: theme.spacing(0.5),
+			'@media (min-width: 700px)': {
+				marginLeft: theme.spacing(0.5),
+			},
+			'@media (max-width: 699px)': {
+				marginRight: theme.spacing(1),
+				marginLeft: theme.spacing(1),
+			},
 		},
 		noPadding: {
 			paddingRight: 0
@@ -403,7 +415,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								</Grid>
 								<Grid container justify="space-around" className={classes.marginBottom}>
 									<KeyboardDatePicker
-										className={classes.datePickerFieldFrom}
+										className={classes.datePickerFieldTo}
 										margin="dense"
 										inputVariant="outlined"
 										id="date-picker-dialog-to"

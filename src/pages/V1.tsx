@@ -30,7 +30,12 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         verticalSpace: {
             display: 'flex',
-            padding: theme.spacing(2, 0, 2, 0),
+            '@media (min-width: 700px)': {
+                padding: theme.spacing(2, 0, 2, 0),
+            },
+            '@media (max-width: 699px)': {
+                padding: theme.spacing(1, 0, 1, 0),
+            },
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'
