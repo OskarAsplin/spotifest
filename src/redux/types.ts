@@ -269,6 +269,11 @@ export interface MatchSettings {
     toDate: string,
 }
 
+export interface SearchResponse {
+    festivals: { name: string, location: string }[],
+    artists: { name: string, spotifyId: string }[]
+}
+
 export enum MatchingMethod {
     Genre,
     Artist

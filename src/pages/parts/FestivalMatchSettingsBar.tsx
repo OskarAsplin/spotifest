@@ -146,9 +146,7 @@ const HtmlTooltip = withStyles((theme) => ({
 const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	useEffect(() => {
-		console.log('useEffect');
 		if (!props.model.isDbOnline) {
-			console.log('is offline');
 			testMatchesWithGivenSettings(
 				matchSettings.area,
 				new Date(Date.parse(matchSettings.fromDate)),
