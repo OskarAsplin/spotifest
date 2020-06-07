@@ -189,10 +189,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		artistsFromPlaylist: Artist[]
 	) => {
 		const isTopArtists: boolean = chosenPlaylistName === '__your__top__artists__'
-		if (area.isoCode === 'everywhere') {
-			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists,
-				dispatch, dateFrom, dateTo);
-		} else if (continents.find(continent => continent.isoCode === area.isoCode)) {
+		if (continents.find(continent => continent.isoCode === area.isoCode)) {
 			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists,
 				dispatch, dateFrom, dateTo, [area.isoCode], []);
 		} else {
@@ -202,6 +199,9 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	}
 
 	const handlePlaylistChange = async (event: React.ChangeEvent<{ value: unknown }>) => {
+		if (!event.target.value) {
+			return;
+		}
 		const playlistName = event.target.value as string;
 		if (playlistName === matchSettings.matchBasis) {
 			return;
@@ -285,6 +285,9 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	};
 
 	const handleAreaChange = async (event: React.ChangeEvent<{ value: unknown, name?: string | undefined }>) => {
+		if (!event.target.value) {
+			return;
+		}
 		const area: Area = {
 			name: event.target.name ? event.target.name : '',
 			isoCode: event.target.value as string
@@ -352,7 +355,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									<MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
 										Your top artists
 									</MenuItem>
-									<ListSubheader>or choose a playlist below</ListSubheader>
+									<ListSubheader disableSticky disableGutters>or choose a playlist below</ListSubheader>
 									{playlists.map((playlist) => (
 										<MenuItem key={playlist.name} value={playlist.name} style={{ maxWidth: 400 }}>
 											{playlist.name}
@@ -371,17 +374,14 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									onChange={handleAreaChange}
 									label="Area"
 								>
-									<MenuItem key={'everywhere'} value={'everywhere'}>
-										Everywhere
-									</MenuItem>
-									<ListSubheader>Continents</ListSubheader>
-									{continents.map((continent) =>
-										<MenuItem key={continent.isoCode} value={continent.isoCode}>
+
+									{continents.sort((a, b) => a.name > b.name ? 1 : -1).map((continent) =>
+										<MenuItem key={continent.isoCode} value={continent.isoCode} style={{ minWidth: 200 }}>
 											{continent.name}
 										</MenuItem>
 									)}
-									<ListSubheader>Countries</ListSubheader>
-									{countries.map((country) =>
+									<ListSubheader disableSticky disableGutters>Countries</ListSubheader>
+									{countries.sort((a, b) => a.name > b.name ? 1 : -1).map((country) =>
 										<MenuItem key={country.isoCode} value={country.isoCode}>
 											{country.name}
 										</MenuItem>

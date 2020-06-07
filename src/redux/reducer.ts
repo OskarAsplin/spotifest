@@ -24,7 +24,7 @@ export const initialModel: Model = {
     continents: [],
     matchSettings: {
         matchBasis: '__your__top__artists__',
-        area: { name: 'Everywhere', isoCode: 'everywhere' },
+        area: { name: 'Europe', isoCode: 'EU' },
         fromDate: (new Date()).toISOString(),
         toDate: (new Date(new Date().getFullYear(), 11, 31)).toISOString()
     },
