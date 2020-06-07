@@ -13,7 +13,7 @@ import { Model } from "../redux/types";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
 import { Redirect } from 'react-router-dom';
-import { fetchToJson } from "../utils/restUtils";
+import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 import FestivalMatchItem from './parts/FestivalMatchItem';
 import ArtistBubble from './parts/ArtistBubble';
 import { lightBlue, pink } from "@material-ui/core/colors";
@@ -191,7 +191,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
         let spotifyId = window.location.search.substring(1);
         if (spotifyId) {
             props.dispatch(turnOnLoader());
-            fetchToJson('http://127.0.0.1:8000/onTour/artistInfo/?q=' + spotifyId)
+            fetchToJson(getApiBaseUrl() + '/artistInfo/?q=' + spotifyId)
                 .then((response: any) => {
                     const responseArtist = (response as ArtistInfo)
                     setArtistInfo(responseArtist);

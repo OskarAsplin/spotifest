@@ -12,7 +12,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import useConstant from 'use-constant';
 import { useAsync } from 'react-async-hook';
-import { fetchToJson } from "../../utils/restUtils";
+import { fetchToJson, getApiBaseUrl } from "../../utils/restUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -247,7 +247,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
     });
 
     const searchDatabase = (searchString: string) => {
-        return fetchToJson('http://127.0.0.1:8000/onTour/search/?q=' + searchString)
+        return fetchToJson(getApiBaseUrl() + '/onTour/search/?q=' + searchString)
             .then((response: any) => {
                 const searchResponse = (response as SearchResponse);
                 return searchResponse;

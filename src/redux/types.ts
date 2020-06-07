@@ -7,6 +7,9 @@ export interface DispatchProps {
     dispatch: Dispatch;
 }
 
+//const isDev: boolean = window.location.href.indexOf("localhost:3000") > 0 || window.location.href.indexOf("localhost:3001") > 0;
+//export const backendUrl: string = isDev ? '157.230.25.202:8000' : 'http://127.0.0.1:8000';
+
 export interface Model {
     loaderOn: boolean;
     loggedIn: boolean;

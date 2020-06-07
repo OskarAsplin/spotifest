@@ -1,4 +1,4 @@
-import 'whatwg-fetch'
+//import 'whatwg-fetch'
 
 export function erDev(): boolean {
     const url = window.location.href;
@@ -7,17 +7,10 @@ export function erDev(): boolean {
 
 export function getApiBaseUrl(): string {
     if (erDev()) {
-        return "http://127.0.0.1:8000/onTour";
+        return "http://127.0.0.1:8000";
     } else {
-        return getAbsoluteApiUrl() + "onTour"
+        return "157.230.25.202:8000"
     }
-}
-
-/**
- * Resolves API URL in a pathname independent way
- */
-function getAbsoluteApiUrl() {
-    return window.location.pathname
 }
 
 enum RequestMethod {
@@ -48,7 +41,7 @@ export const serverRequest = (method: string, urlPath: string, body: string|null
         method,
         body: body ? body : null
     };
-
+    console.log(urlPath);
     return new Promise((resolve, reject) => {
         fetch(urlPath, OPTIONS)
             .then((response: Response) => {

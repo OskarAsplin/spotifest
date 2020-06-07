@@ -16,6 +16,7 @@ import ArtistBubble from './parts/ArtistBubble';
 import SwipeableViews from 'react-swipeable-views';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import { Redirect } from 'react-router-dom';
+import { getApiBaseUrl } from '../utils/restUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -203,7 +204,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     useEffect(() => {
         let festival = window.location.search.substring(1);
         props.dispatch(turnOnLoader());
-        fetchToJson('http://127.0.0.1:8000/onTour/festivalInfo/?q=' + festival)
+        fetchToJson(getApiBaseUrl() + '/onTour/festivalInfo/?q=' + festival)
             .then((response: any) => {
                 setFestivalInfo(response as FestivalInfo);
             }).catch((error) => {

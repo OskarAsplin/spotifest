@@ -374,7 +374,6 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									onChange={handleAreaChange}
 									label="Area"
 								>
-
 									{continents.sort((a, b) => a.name > b.name ? 1 : -1).map((continent) =>
 										<MenuItem key={continent.isoCode} value={continent.isoCode} style={{ minWidth: 200 }}>
 											{continent.name}

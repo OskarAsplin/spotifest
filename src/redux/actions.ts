@@ -1,5 +1,5 @@
 import { Action, ActionTypeKeys, Dispatch, Artist, MatchRequest, FestivalMatch, Area, MatchSettings, MatchingMethod, UserInfo, Playlist } from "./types";
-import { fetchToJson } from "../utils/restUtils";
+import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 import countries_list from 'countries-list/dist/data.json';
 import { initialModel } from './reducer'
 
@@ -185,8 +185,7 @@ export const testFestivalMatches = (
         continents: continents ? continents : [],
         countries: countries ? countries : []
     }
-    const backendUrl = 'http://127.0.0.1:8000/onTour/festivalMatches';
-    fetch(backendUrl, {
+    fetch(getApiBaseUrl() + '/onTour/festivalMatches', {
         method: 'POST',
         headers: {
             "Accept": "application/json",
@@ -215,8 +214,8 @@ export const initializeSite = (
     }
     console.log('initializeSite');
 
-    const getAvailableCountries = fetchToJson('http://127.0.0.1:8000/onTour/availableCountries');
-    const getAvailableContinents = fetchToJson('http://127.0.0.1:8000/onTour/availableContinents');
+    const getAvailableCountries = fetchToJson(getApiBaseUrl() + '/onTour/availableCountries');
+    const getAvailableContinents = fetchToJson(getApiBaseUrl() + '/onTour/availableContinents');
 
     Promise.all([spotifyApi.getMe(), getAvailableCountries, getAvailableContinents])
         .then(([responseGetMe, getAvailableCountriesReponse, getAvailableContinentsResponse]) => {

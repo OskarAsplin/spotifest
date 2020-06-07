@@ -127,8 +127,10 @@ type Props = DispatchProps & StoreProps;
 
 const authEndpoint = 'https://accounts.spotify.com/authorize';
 
+
+const isDev = false;
 const clientId = '***REMOVED***';
-const redirectUri = 'http://localhost:3000';
+const redirectUri = isDev ? 'http://localhost:3000' : 'https://unruffled-fermat-562886.netlify.app';
 const scopes = [
     'user-read-private',
     'user-top-read',
