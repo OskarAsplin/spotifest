@@ -9,7 +9,7 @@ export function getApiBaseUrl(): string {
     if (erDev()) {
         return "http://127.0.0.1:8000";
     } else {
-        return "https://157.230.25.202:80"
+        return "https://157.230.25.202"
     }
 }
 

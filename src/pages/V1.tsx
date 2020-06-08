@@ -97,6 +97,9 @@ const V1: React.FC<Props> = (props: Props) => {
             }
         } else if (props.model.accessToken) {
             spotifyApi.setAccessToken(props.model.accessToken);
+            if (!props.model.siteInitialized) {
+                initializeSite(token, props.dispatch);
+            }
             if (props.model.tokenExpiryDate !== '') {
                 const unixTimeNow = new Date().getTime();
                 const tenMinMilliseconds = 600000;
