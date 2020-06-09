@@ -94,9 +94,9 @@ const V1: React.FC<Props> = (props: Props) => {
         const festival_redirect = url.search('spotifest.app/festival?');
         const artist_redirect = url.search('spotifest.app/artist?');
         if (festival_redirect !== -1) {
-            setRedirectFestival(url.slice(festival_redirect + 'spotifest.app'.length))
+            setRedirectFestival(url.slice(festival_redirect + 'spotifest.app/festival'.length))
         } else if (artist_redirect !== -1) {
-            setRedirectArtist(url.slice(artist_redirect + 'spotifest.app'.length))
+            setRedirectArtist(url.slice(artist_redirect + 'spotifest.app/artist'.length))
         } else {
             if (token) {
                 props.dispatch(setAccessToken(token));
