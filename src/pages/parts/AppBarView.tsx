@@ -257,6 +257,17 @@ const AppBarView: React.FC<Props> = (props: Props) => {
             });
     }
 
+    const getBaseUrl = () => {
+        const url = window.location.href;
+        const spotifest_pos = url.search('spotifest.app');
+        if (spotifest_pos !== -1) {
+            return url.slice(0, spotifest_pos) + 'spotifest.app';
+        } else {
+            const localhost_pos = url.search('localhost:3000');
+            return url.slice(0, localhost_pos) + 'localhost:3000';
+        }
+    }
+
     const getFestivalUrl = (festival: string) => {
         const url = window.location.href;
         const spotifest_pos = url.search('spotifest.app');
@@ -365,7 +376,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                         <Button
                             className={classes.button}
                             color="inherit"
-                            onClick={() => { window.open(getApiBaseUrl(), '_self') }}
+                            onClick={() => { window.open(getBaseUrl(), '_self') }}
                         >
                             <Typography variant="h6">
                                 Oskarito SpotiFest
