@@ -93,9 +93,9 @@ const V1: React.FC<Props> = (props: Props) => {
         const url = window.location.href;
         const festival_redirect = url.search('spotifest.app/festival?');
         const artist_redirect = url.search('spotifest.app/artist?');
-        if (festival_redirect) {
+        if (festival_redirect !== -1) {
             setRedirectFestival(url.slice(festival_redirect + 'spotifest.app'.length))
-        } else if (artist_redirect) {
+        } else if (artist_redirect !== -1) {
             setRedirectArtist(url.slice(artist_redirect + 'spotifest.app'.length))
         } else {
             if (token) {
@@ -153,9 +153,6 @@ const V1: React.FC<Props> = (props: Props) => {
     });
 
     const classes = useStyles();
-
-    const url = window.location.href;
-    const spotifest_pos = url.search('spotifest.app/festival?');
 
     if (redirectFestival) {
         return <Redirect push to={redirectFestival} />
