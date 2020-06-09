@@ -191,7 +191,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
         let spotifyId = window.location.search.substring(1);
         if (spotifyId) {
             props.dispatch(turnOnLoader());
-            fetchToJson(getApiBaseUrl() + '/artistInfo/?q=' + spotifyId)
+            fetchToJson(getApiBaseUrl() + 'onTour/artistInfo/?q=' + spotifyId)
                 .then((response: any) => {
                     const responseArtist = (response as ArtistInfo)
                     setArtistInfo(responseArtist);

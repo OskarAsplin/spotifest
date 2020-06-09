@@ -130,7 +130,7 @@ const authEndpoint = 'https://accounts.spotify.com/authorize';
 
 const isDev = false;
 const clientId = '***REMOVED***';
-const redirectUri = isDev ? 'http://localhost:3000' : 'https://unruffled-fermat-562886.netlify.app';
+const redirectUri = isDev ? 'http://localhost:3000' : 'https://www.spotifest.app';
 const scopes = [
     'user-read-private',
     'user-top-read',

@@ -13,7 +13,6 @@ import { erDev } from "./utils/restUtils";
 export function getAbsoluteBasename() {
 	// @ts-ignore
 	return erDev() ? "ontour" : window.location.pathname
-	//return window.location.pathname.replace(/^\/(([^/]+\/)?sosialhjelp\/fagsystem-mock).+$/, "$1")
 }
 
 export const history = createBrowserHistory({

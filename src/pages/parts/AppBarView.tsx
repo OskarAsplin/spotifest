@@ -259,14 +259,24 @@ const AppBarView: React.FC<Props> = (props: Props) => {
 
     const getFestivalUrl = (festival: string) => {
         const url = window.location.href;
-        const ontour_pos = url.search('ontour');
-        return url.slice(0, ontour_pos) + 'ontour/festival?' + encodeURIComponent(festival);
+        const spotifest_pos = url.search('spotifest.app');
+        if (spotifest_pos !== -1) {
+            return url.slice(0, spotifest_pos) + 'spotifest.app/festival?' + encodeURIComponent(festival);
+        } else {
+            const localhost_pos = url.search('localhost:3000');
+            return url.slice(0, localhost_pos) + 'localhost:3000/festival?' + encodeURIComponent(festival);
+        }
     }
 
     const getArtistUrl = (spotifyId: string) => {
         const url = window.location.href;
-        const ontour_pos = url.search('ontour');
-        return url.slice(0, ontour_pos) + 'ontour/artist?' + encodeURIComponent(spotifyId);
+        const spotifest_pos = url.search('spotifest.app');
+        if (spotifest_pos !== -1) {
+            return url.slice(0, spotifest_pos) + 'spotifest.app/artist?' + encodeURIComponent(spotifyId);
+        } else {
+            const localhost_pos = url.search('localhost:3000');
+            return url.slice(0, localhost_pos) + 'localhost:3000/artist?' + encodeURIComponent(spotifyId);
+        }
     }
 
     const getSearchFieldAndResults = () => {
@@ -355,7 +365,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                         <Button
                             className={classes.button}
                             color="inherit"
-                            onClick={() => { window.open('http://localhost:3000/ontour', '_self') }}
+                            onClick={() => { window.open(getApiBaseUrl(), '_self') }}
                         >
                             <Typography variant="h6">
                                 Oskarito SpotiFest
