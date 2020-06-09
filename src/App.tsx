@@ -30,10 +30,10 @@ const App: React.FC = () => {
           <div className="informasjon-side">
             <ConnectedRouter history={history}>
               <Switch>
-                <Route exact path="/" component={V1} />
-                <Route exact path="/login" component={LoginScreen} />
-                <Route exact path="/artist" component={ArtistPage} />
-                <Route exact path="/festival" component={FestivalPage} />
+                <Route path="/" component={V1} />
+                <Route path="/login" component={LoginScreen} />
+                <Route path="/artist" component={ArtistPage} />
+                <Route path="/festival" component={FestivalPage} />
               </Switch>
             </ConnectedRouter>
           </div>
