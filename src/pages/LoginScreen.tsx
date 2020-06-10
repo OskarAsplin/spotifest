@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme: Theme) =>
             height: '100vh',
             backgroundImage: "url(/background_image.jpg)",
             backgroundSize: 'cover',
+            backgroundPosition: 'center center'
         },
         progressBar: {
             position: 'fixed',
@@ -88,7 +89,7 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(0, 2, 2, 2),
         },
         box2: {
-            width: '100%',
+            width: '95%',
             maxWidth: '663px'
         },
         title: {
