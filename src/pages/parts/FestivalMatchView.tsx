@@ -8,6 +8,7 @@ import { Model } from "../../redux/types";
 import 'react-circular-progressbar/dist/styles.css';
 import Box from '@material-ui/core/Box';
 import FestivalMatchItem from './FestivalMatchItem';
+import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -82,6 +83,8 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 	const { festivalMatches, matchingMethod } = props;
 	const classes = useStyles();
 
+	const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
+
 	const [page, setPage] = React.useState(1);
 	const [siteInitialized, setSiteInitialized] = React.useState(false);
 	const [isAnyMatch, setIsAnyMatch] = React.useState(true);
@@ -121,7 +124,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 						{festivalMatches.length + ' matches'}
 					</Typography>
 					<Box className={classes.align}>
-						<Pagination count={numPages} page={page} onChange={handleChange} />
+						<Pagination count={numPages} page={page} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
 					</Box>
 				</Box>}
 			{showMatches.map((festival: FestivalMatch, idx) =>
@@ -130,7 +133,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 			{showMatches.length > 0 &&
 				<div>
 					<Box className={classes.align}>
-						<Pagination count={numPages} page={page} onChange={handleChange} />
+						<Pagination count={numPages} page={page} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
 					</Box>
 					<div className={classes.verticalSpace2} />
 				</div>}
