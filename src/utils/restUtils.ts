@@ -1,12 +1,12 @@
 //import 'whatwg-fetch'
 
-export function erDev(): boolean {
+export function isDev(): boolean {
     const url = window.location.href;
     return (url.indexOf("localhost:3000") > 0 || url.indexOf("localhost:3001") > 0);
 }
 
 export function getApiBaseUrl(): string {
-    if (erDev()) {
+    if (isDev()) {
         return "http://127.0.0.1:8000";
     } else {
         return "https://www.spotifest-api.xyz"

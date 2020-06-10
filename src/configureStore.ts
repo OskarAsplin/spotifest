@@ -5,14 +5,14 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 import { routerMiddleware } from 'connected-react-router'
 import reducers from './rootReducer'
 import thunkMiddleware from 'redux-thunk'
-import { erDev } from "./utils/restUtils";
+import { isDev } from "./utils/restUtils";
 
 /**
  * Resolves basename in a pathname independent way
  */
 export function getAbsoluteBasename() {
 	// @ts-ignore
-	return erDev() ? "ontour" : window.location.pathname
+	return isDev() ? "ontour" : window.location.pathname
 }
 
 export const history = createBrowserHistory({

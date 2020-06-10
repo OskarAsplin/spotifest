@@ -86,46 +86,34 @@ window.history.pushState("", document.title, window.location.pathname + window.l
 
 const V1: React.FC<Props> = (props: Props) => {
 
-    const [redirectFestival, setRedirectFestival] = React.useState('');
-    const [redirectArtist, setRedirectArtist] = React.useState('');
-
     useEffect(() => {
-        const url = window.location.href;
-        const festival_redirect = url.search('spotifest.app/festival?');
-        const artist_redirect = url.search('spotifest.app/artist?');
-        if (festival_redirect !== -1) {
-            setRedirectFestival(url.slice(festival_redirect + 'spotifest.app'.length))
-        } else if (artist_redirect !== -1) {
-            setRedirectArtist(url.slice(artist_redirect + 'spotifest.app'.length))
-        } else {
-            if (token) {
-                props.dispatch(setAccessToken(token));
-                if (!props.model.siteInitialized) {
-                    initializeSite(token, props.dispatch);
-                }
-                if (expires_in) {
-                    props.dispatch(setTokenExpiryDate(+expires_in));
-                }
-            } else if (props.model.accessToken) {
-                spotifyApi.setAccessToken(props.model.accessToken);
-                if (!props.model.siteInitialized) {
-                    initializeSite(token, props.dispatch);
-                }
-                if (props.model.tokenExpiryDate !== '') {
-                    const unixTimeNow = new Date().getTime();
-                    const tenMinMilliseconds = 600000;
-                    const oneDayMilliseconds = 86400000;
-                    const unixTimeExpiry = Date.parse(props.model.tokenExpiryDate);
-                    if (unixTimeNow > unixTimeExpiry + oneDayMilliseconds) {
-                        props.dispatch(setLoggedOff());
-                    } else if (unixTimeNow > unixTimeExpiry - tenMinMilliseconds) {
-                        props.dispatch(setAccessToken(''));
-                        window.open(authorizeHref, '_self');
-                    }
-                }
-            } else {
-                props.dispatch(setLoggedOff());
+        if (token) {
+            props.dispatch(setAccessToken(token));
+            if (!props.model.siteInitialized) {
+                initializeSite(token, props.dispatch);
             }
+            if (expires_in) {
+                props.dispatch(setTokenExpiryDate(+expires_in));
+            }
+        } else if (props.model.accessToken) {
+            spotifyApi.setAccessToken(props.model.accessToken);
+            if (!props.model.siteInitialized) {
+                initializeSite(token, props.dispatch);
+            }
+            if (props.model.tokenExpiryDate !== '') {
+                const unixTimeNow = new Date().getTime();
+                const tenMinMilliseconds = 600000;
+                const oneDayMilliseconds = 86400000;
+                const unixTimeExpiry = Date.parse(props.model.tokenExpiryDate);
+                if (unixTimeNow > unixTimeExpiry + oneDayMilliseconds) {
+                    props.dispatch(setLoggedOff());
+                } else if (unixTimeNow > unixTimeExpiry - tenMinMilliseconds) {
+                    props.dispatch(setAccessToken(''));
+                    window.open(authorizeHref, '_self');
+                }
+            }
+        } else {
+            props.dispatch(setLoggedOff());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -153,16 +141,6 @@ const V1: React.FC<Props> = (props: Props) => {
     });
 
     const classes = useStyles();
-
-    if (redirectFestival) {
-        window.history.pushState("", document.title, "");
-        return <Redirect push to={redirectFestival} />
-    }
-
-    if (redirectArtist) {
-        window.history.pushState("", document.title, "");
-        return <Redirect push to={redirectArtist} />
-    }
 
     if (!props.model.loggedIn || (!token && !props.model.accessToken && !props.model.tokenExpiryDate)) {
         return <Redirect push to='/login' />

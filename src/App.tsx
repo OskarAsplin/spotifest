@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.css';
 
-import { ConnectedRouter } from "connected-react-router";
-import configureStore, { history } from "./configureStore";
+import configureStore from "./configureStore";
 import { PersistGate } from 'redux-persist/integration/react';
 import { Provider } from "react-redux";
-import { Route, Switch } from "react-router";
+//import { Route, Switch } from "react-router";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { IntlProvider } from "react-intl";
 import { texts } from "./texts/texts";
 //import './App.less';
@@ -28,14 +28,14 @@ const App: React.FC = () => {
       <PersistGate loading={null} persistor={persistor}>
         <IntlProvider defaultLocale={language} locale={language} messages={texts[language]}>
           <div className="informasjon-side">
-            <ConnectedRouter history={history}>
+            <Router>
               <Switch>
                 <Route exact path="/" component={V1} />
                 <Route exact path="/login" component={LoginScreen} />
                 <Route exact path="/artist" component={ArtistPage} />
                 <Route exact path="/festival" component={FestivalPage} />
               </Switch>
-            </ConnectedRouter>
+            </Router>
           </div>
         </IntlProvider>
       </PersistGate>

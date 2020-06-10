@@ -12,6 +12,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
+import { isDev } from "../utils/restUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -128,9 +129,8 @@ type Props = DispatchProps & StoreProps;
 const authEndpoint = 'https://accounts.spotify.com/authorize';
 
 
-const isDev = false;
 const clientId = '***REMOVED***';
-const redirectUri = isDev ? 'http://localhost:3000' : 'https://www.spotifest.app';
+const redirectUri = isDev() ? 'http://localhost:3000' : 'https://www.spotifest.app';
 const scopes = [
     'user-read-private',
     'user-top-read',
