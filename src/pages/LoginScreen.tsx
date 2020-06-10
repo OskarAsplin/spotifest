@@ -19,6 +19,14 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
             flexDirection: 'column',
+            padding: theme.spacing(0, 3, 0, 3),
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+        },
+        root1: {
+            display: 'flex',
+            flexDirection: 'column',
             padding: theme.spacing(0, 4, 0, 4),
             justifyContent: 'center',
             alignItems: 'center',
@@ -93,6 +101,9 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: '663px'
         },
         title: {
+            '@media (max-width: 357px)': {
+                maxWidth: '220px'
+            },
             textAlign: 'center',
             borderRadius: '15%',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -191,6 +202,8 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                             Oskarito SpotiFest
                         </Typography>
                     </Box>
+                </div>
+                <div className={classes.root1}>
                     <div className={classes.verticalSpace} />
                     {!(bigWidth && !bigHeight) &&
                         <div className={classes.verticalSpace} />}
