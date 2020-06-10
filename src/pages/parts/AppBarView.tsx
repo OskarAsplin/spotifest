@@ -268,25 +268,25 @@ const AppBarView: React.FC<Props> = (props: Props) => {
         }
     }
 
-    const getFestivalUrl = (festival: string) => {
+    const getFestivalUrl = (festivalName: string) => {
         const url = window.location.href;
         const spotifest_pos = url.search('spotifest.app');
         if (spotifest_pos !== -1) {
-            return url.slice(0, spotifest_pos) + 'spotifest.app/festival?' + encodeURIComponent(festival);
+            return url.slice(0, spotifest_pos) + 'spotifest.app/festival?' + encodeURIComponent(festivalName);
         } else {
             const localhost_pos = url.search('localhost:3000');
-            return url.slice(0, localhost_pos) + 'localhost:3000/festival?' + encodeURIComponent(festival);
+            return url.slice(0, localhost_pos) + 'localhost:3000/festival?' + encodeURIComponent(festivalName);
         }
     }
 
-    const getArtistUrl = (spotifyId: string) => {
+    const getArtistUrl = (artistName: string) => {
         const url = window.location.href;
         const spotifest_pos = url.search('spotifest.app');
         if (spotifest_pos !== -1) {
-            return url.slice(0, spotifest_pos) + 'spotifest.app/artist?' + encodeURIComponent(spotifyId);
+            return url.slice(0, spotifest_pos) + 'spotifest.app/artist?' + encodeURIComponent(artistName);
         } else {
             const localhost_pos = url.search('localhost:3000');
-            return url.slice(0, localhost_pos) + 'localhost:3000/artist?' + encodeURIComponent(spotifyId);
+            return url.slice(0, localhost_pos) + 'localhost:3000/artist?' + encodeURIComponent(artistName);
         }
     }
 
@@ -352,7 +352,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                         {searchResults.result.artists.slice(0, 5).map((artist: any) => (
                                             <Link color={'textSecondary'}
                                                 key={'searchResult artist: ' + artist.name}
-                                                href={getArtistUrl(artist.spotifyId)}
+                                                href={getArtistUrl(artist.name)}
                                                 onClick={() => setInputText('')}
                                                 className={classes.bottomMargin}>
                                                 {artist.name}

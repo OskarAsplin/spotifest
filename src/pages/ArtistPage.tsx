@@ -187,11 +187,14 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     const pcScreen = useMediaQuery('(min-width:1300px)');
 
     useEffect(() => {
+        setIsValidSpotifyId(true);
+        setIsArtistInDb(true);
         setArtistInfo(undefined);
-        let spotifyId = window.location.search.substring(1);
-        if (spotifyId) {
+        const queryString = window.location.search;
+        if (queryString.indexOf('spotifyId=') !== -1) {
+            let spotifyId = window.location.search.substring('spotifyId='.length + 1);
             props.dispatch(turnOnLoader());
-            fetchToJson(getApiBaseUrl() + '/onTour/artistInfo/?q=' + spotifyId)
+            fetchToJson(getApiBaseUrl() + '/onTour/artistInfo/?spotifyId=' + spotifyId)
                 .then((response: any) => {
                     const responseArtist = (response as ArtistInfo)
                     setArtistInfo(responseArtist);
@@ -211,6 +214,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                     artist: {
                                         name: spotifyArtistResponse.name,
                                         spotifyId: spotifyArtistResponse.id,
+                                        hasSpotifyId: true,
                                         iconPicture: '',
                                         bigPicture: bigPicture,
                                         popularity: spotifyArtistResponse.popularity,
@@ -241,6 +245,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                 return {
                                     name: relArtist.name,
                                     spotifyId: relArtist.id,
+                                    hasSpotifyId: true,
                                     iconPicture: iconPicture,
                                     bigPicture: '',
                                     popularity: relArtist.popularity,
@@ -259,7 +264,53 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                         }
                     });
             }
+        } else {
+            let artistName = window.location.search.substring(1);
+            if (artistName) {
+                props.dispatch(turnOnLoader());
+                fetchToJson(getApiBaseUrl() + '/onTour/artistInfo/?q=' + artistName)
+                    .then((response: any) => {
+                        const responseArtist = (response as ArtistInfo)
+                        setArtistInfo(responseArtist);
 
+                        if (responseArtist.artist.spotifyId && props.model.loggedIn && props.model.accessToken) {
+                            spotifyApi.setAccessToken(props.model.accessToken);
+                            spotifyApi.getArtistRelatedArtists(responseArtist.artist.spotifyId)
+                                .then((spotifyArtistResponse: SpotifyApi.ArtistsRelatedArtistsResponse) => {
+                                    if (spotifyArtistResponse.artists.length > 0) {
+                                        const related = spotifyArtistResponse.artists.map((relArtist) => {
+                                            const iconPicture: string = getIconPicture(relArtist.images);
+                                            return {
+                                                name: relArtist.name,
+                                                spotifyId: relArtist.id,
+                                                hasSpotifyId: true,
+                                                iconPicture: iconPicture,
+                                                bigPicture: '',
+                                                popularity: relArtist.popularity,
+                                                genres: relArtist.genres
+                                            } as Artist
+                                        })
+                                        setRelatedArtists(related);
+                                    }
+                                }).catch((error) => {
+                                    console.log(error);
+                                    if (error.status === 401) {
+                                        // TODO: check if renewal time and just renew token and redirect to same page.
+                                        props.dispatch(setLoggedOff());
+                                    } else {
+                                        setIsValidSpotifyId(false);
+                                    }
+                                });
+                        }
+                    }).catch((error) => {
+                        console.log(error);
+                        if (error instanceof TypeError) {
+                            setIsNetworkError(true);
+                        } else {
+                            setIsArtistInDb(false);
+                        }
+                    }).finally(() => props.dispatch(turnOffLoader()));
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.location.search.substring(1)]);
@@ -345,7 +396,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             There seems to be some issue with connecting to our database. Try refreshing the page.
                         </Typography>
                     }
-                    {!isNetworkError && !isValidSpotifyId &&
+                    {!isNetworkError && (!isArtistInDb || !isValidSpotifyId) &&
                         <Typography variant="subtitle1" >
                             Could not find artist.
                         </Typography>
@@ -421,6 +472,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                             {relatedArtists.slice(0, bigScreen ? 4 : 3).map((artist) => (
                                                 <ArtistBubble
                                                     artist={artist}
+                                                    useSpotifyId={true}
                                                     key={'avatar_rel_artist_' + artistInfo.artist.name + artist.name}
                                                     thememode={props.model.thememode} />
                                             ))}

@@ -194,6 +194,7 @@ export interface Playlist {
 export interface Artist {
     name: string;
     spotifyId?: string;
+    hasSpotifyId: boolean;
     iconPicture?: string;
     bigPicture?: string;
     popularity: number;
@@ -271,7 +272,7 @@ export interface MatchSettings {
 
 export interface SearchResponse {
     festivals: { name: string, location: string }[],
-    artists: { name: string, spotifyId: string }[]
+    artists: { name: string }[]
 }
 
 export enum MatchingMethod {

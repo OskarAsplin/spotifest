@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 interface OwnProps {
     artist: Artist,
+    useSpotifyId?: boolean,
     key: string,
     thememode: PaletteType,
 }
@@ -56,20 +57,20 @@ type Props = DispatchProps & OwnProps;
 
 const ArtistBubble: React.FC<Props> = (props: Props) => {
 
-    const { artist, key, thememode } = props;
+    const { artist, useSpotifyId, key, thememode } = props;
     const [redirectArtist, setRedirectArtist] = React.useState('');
 
     const classes = useStyles();
 
     if (redirectArtist) {
-        return <Redirect push to={'/artist?' + redirectArtist} />
+        return <Redirect push to={'/artist?' + (useSpotifyId ? 'spotifyId=':'') + redirectArtist} />
     }
 
     return (
         <div className={classes.artistAvatar} key={'div_' + key} >
             <IconButton
                 color="inherit"
-                onClick={() => { if (artist.spotifyId) setRedirectArtist(encodeURIComponent(artist.spotifyId)) }}
+                onClick={() => { if (artist.hasSpotifyId) setRedirectArtist(encodeURIComponent(useSpotifyId ? artist.spotifyId! : artist.name)) }}
             >
                 {artist.iconPicture ?
                     <Avatar src={artist.iconPicture} alt={artist.name} className={classes.artistAvatarImg}

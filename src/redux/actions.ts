@@ -246,6 +246,7 @@ export const initializeSite = (
                         return {
                             name: artist.name,
                             spotifyId: artist.id,
+                            hasSpotifyId: true,
                             iconPicture: getIconPicture(artist.images),
                             bigPicture: getBigPicture(artist.images),
                             popularity: artist.popularity,
