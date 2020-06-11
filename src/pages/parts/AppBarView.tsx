@@ -170,6 +170,7 @@ const useDebouncedSearch = (searchFunction: any) => {
 
 const AppBarView: React.FC<Props> = (props: Props) => {
     const bigScreen = useMediaQuery('(min-width:610px)');
+    const smallMobileScreen = useMediaQuery('(max-width:355px)');
 
     const useSearchDb = () => useDebouncedSearch((text: any) => searchDatabase(text))
 
@@ -379,7 +380,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             onClick={() => { window.open(getBaseUrl(), '_self') }}
                         >
                             <Typography variant="h6">
-                                Oskarito SpotiFest
+                                {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
                             </Typography>
                         </Button>
                         <div className={classes.grow}>
