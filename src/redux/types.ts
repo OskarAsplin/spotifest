@@ -17,7 +17,9 @@ export interface Model {
     tokenExpiryDate: string;
     userInfo?: UserInfo;
     topArtists: Artist[];
+    showPlaylistModal: boolean;
     playlists: Playlist[];
+    noRegisteredPlaylists: boolean;
     selectedPlaylistArtists: Artist[];
     festivalMatches: FestivalMatch[];
     matchingMethod: MatchingMethod;
@@ -45,7 +47,9 @@ export type Action
     | SetTokenExpiryDate
     | SetUserInfo
     | SetTopArtists
+    | SetShowPlaylistModal
     | SetPlaylists
+    | SetNoRegisteredPlaylists
     | SetSelectedPlaylistArtists
     | AddFestivalMatch
     | AddFestivalMatches
@@ -68,7 +72,9 @@ export enum ActionTypeKeys {
     SET_TOKEN_EXPIRY_DATE = "SET_TOKEN_EXPIRY_DATE",
     SET_USER_INFO = "SET_USER_INFO",
     SET_TOP_ARTISTS = "SET_TOP_ARTISTS",
+    SET_SHOW_PLAYLIST_MODAL = "SET_SHOW_PLAYLIST_MODAL",
     SET_PLAYLISTS = "SET_PLAYLISTS",
+    SET_NO_REGISTERED_PLAYLISTS = "SET_NO_REGISTERED_PLAYLISTS",
     SET_SELECTED_PLAYLIST_ARTISTS = "SET_SELECTED_PLAYLIST_ARTISTS",
     ADD_FESTIVAL_MATCH = "ADD_FESTIVAL_MATCH",
     ADD_FESTIVAL_MATCHES = "ADD_FESTIVAL_MATCHES",
@@ -134,9 +140,18 @@ export interface SetTopArtists {
     artists: Artist[];
 }
 
+export interface SetShowPlaylistModal {
+    type: ActionTypeKeys.SET_SHOW_PLAYLIST_MODAL;
+    show: boolean;
+}
+
 export interface SetPlaylists {
     type: ActionTypeKeys.SET_PLAYLISTS;
     playlists: Playlist[];
+}
+
+export interface SetNoRegisteredPlaylists {
+    type: ActionTypeKeys.SET_NO_REGISTERED_PLAYLISTS;
 }
 
 export interface SetSelectedPlaylistArtists {

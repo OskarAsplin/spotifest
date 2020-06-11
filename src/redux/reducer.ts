@@ -16,14 +16,16 @@ export const initialModel: Model = {
     tokenExpiryDate: '',
     userInfo: undefined,
     topArtists: [],
+    showPlaylistModal: false,
     playlists: [],
+    noRegisteredPlaylists: false,
     selectedPlaylistArtists: [],
     festivalMatches: [],
     matchingMethod: MatchingMethod.Genre,
     countries: [],
     continents: [],
     matchSettings: {
-        matchBasis: '__your__top__artists__',
+        matchBasis: '',
         area: { name: 'Europe', isoCode: 'EU' },
         fromDate: (new Date()).toISOString(),
         toDate: (new Date(new Date().getFullYear(), 11, 31)).toISOString()
@@ -66,6 +68,10 @@ const reducer: Reducer<Model, Action> = (
             const { artists } = action;
             return { ...state, topArtists: artists }
         }
+        case ActionTypeKeys.SET_SHOW_PLAYLIST_MODAL: {
+            const { show } = action;
+            return { ...state, showPlaylistModal: show }
+        }
         case ActionTypeKeys.SET_PLAYLISTS: {
             const { playlists } = action;
             const sortedPlaylists = playlists.sort((a, b) => {
@@ -74,6 +80,9 @@ const reducer: Reducer<Model, Action> = (
                 return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
             });
             return { ...state, playlists: sortedPlaylists }
+        }
+        case ActionTypeKeys.SET_NO_REGISTERED_PLAYLISTS: {
+            return { ...state, noRegisteredPlaylists: true }
         }
         case ActionTypeKeys.SET_SELECTED_PLAYLIST_ARTISTS: {
             const { artists } = action;

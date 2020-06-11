@@ -1,24 +1,12 @@
 import React, { useEffect } from 'react';
-import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings } from "../../redux/types";
-import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, getIconPicture, getBigPicture } from "../../redux/actions";
+import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, Model } from "../../redux/types";
+import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, getIconPicture, getBigPicture, setShowPlaylistModal } from "../../redux/actions";
 import { connect } from "react-redux";
-import { createStyles, Theme, MuiThemeProvider } from "@material-ui/core";
+import { createStyles, Theme, MuiThemeProvider, Typography, Box, Paper, Grid, Tooltip, PaletteType, InputLabel, MenuItem, FormControl, Select, ListSubheader, Modal, Fade, Backdrop, Link } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import indigo from "@material-ui/core/colors/indigo";
-import { Model } from "../../redux/types";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
-import Tooltip from '@material-ui/core/Tooltip';
 import InfoIcon from '@material-ui/icons/Info';
-import { PaletteType } from "@material-ui/core";
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import DateFnsUtils from '@date-io/date-fns';
 import {
 	MuiPickersUtilsProvider,
@@ -56,6 +44,14 @@ const useStyles = makeStyles((theme: Theme) =>
 			alignItems: 'center',
 			justifyContent: 'center',
 		},
+		alignItems3: {
+			display: 'flex',
+			flexDirection: 'column',
+			'@media (max-width: 699px)': {
+				width: '100%',
+			},
+			alignItems: 'center',
+		},
 		box: {
 			width: '100%',
 			maxWidth: '1000px',
@@ -64,7 +60,17 @@ const useStyles = makeStyles((theme: Theme) =>
 		formControl: {
 			margin: theme.spacing(1),
 			'@media (min-width: 700px)': {
-				minWidth: 120,
+				minWidth: 150,
+				maxWidth: 300,
+			},
+			'@media (max-width: 699px)': {
+				width: '100%',
+			},
+		},
+		formControl2: {
+			margin: theme.spacing(1),
+			'@media (min-width: 700px)': {
+				minWidth: 200,
 				maxWidth: 300,
 			},
 			'@media (max-width: 699px)': {
@@ -116,6 +122,18 @@ const useStyles = makeStyles((theme: Theme) =>
 		marginBottom: {
 			marginBottom: '4px',
 		},
+		modal: {
+			display: 'flex',
+			justifyContent: 'center',
+			alignItems: 'center',
+			overflowY: 'auto',
+		},
+		paper: {
+			padding: theme.spacing(2)
+		},
+		initialPlaylistTitle: {
+			marginBottom: theme.spacing(2)
+		}
 	}),
 );
 
@@ -128,7 +146,9 @@ interface StoreProps {
 	selectedPlaylistArtists: Artist[],
 	countries: Area[],
 	continents: Area[],
-	matchSettings: MatchSettings
+	matchSettings: MatchSettings,
+	showPlaylistModal: boolean,
+	noRegisteredPlaylists: boolean
 }
 
 type Props = DispatchProps & StoreProps;
@@ -157,10 +177,10 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	// const smallScreen = useMediaQuery('(max-width:610px)');
+	const smallScreen = useMediaQuery('(max-width:610px)');
 	const pcScreen = useMediaQuery('(min-width:1200px)');
 
-	const { thememode, playlists, topArtists, selectedPlaylistArtists, countries, continents, dispatch, matchSettings } = props;
+	const { thememode, playlists, topArtists, selectedPlaylistArtists, countries, continents, dispatch, matchSettings, showPlaylistModal, noRegisteredPlaylists } = props;
 
 	const lightBluePinkMuiTheme = createMuiTheme({
 		typography: {
@@ -353,12 +373,12 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									onChange={handlePlaylistChange}
 									label="Match with"
 								>
-									<MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
+									{topArtists.length !== 0 && <MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
 										Your top artists
-									</MenuItem>
-									<ListSubheader disableSticky disableGutters>or choose a playlist below</ListSubheader>
+									</MenuItem>}
+									<ListSubheader disableSticky disableGutters>{topArtists.length !== 0 ? 'or choose a playlist below' : 'choose a playlist below'}</ListSubheader>
 									{playlists.map((playlist) => (
-										<MenuItem key={playlist.name} value={playlist.name} style={{ maxWidth: 400 }}>
+										<MenuItem key={playlist.name} value={playlist.name} style={{ minWidth: 200, maxWidth: 400 }}>
 											{playlist.name}
 										</MenuItem>
 									))}
@@ -447,6 +467,61 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 						}
 					</Box>
 				</Paper>
+				<Modal
+					aria-labelledby="transition-modal-title"
+					aria-describedby="transition-modal-description"
+					className={classes.modal}
+					closeAfterTransition
+					BackdropComponent={Backdrop}
+					BackdropProps={{
+						timeout: 500,
+					}}
+					open={showPlaylistModal}
+					onClose={() => {
+						dispatch(setShowPlaylistModal(false));
+					}}
+					disableBackdropClick
+					disableEscapeKeyDown
+				>
+					<Fade in={showPlaylistModal}>
+						<Paper className={classes.paper}>
+							{playlists.length !== 0 &&
+								<Box className={classes.alignItems3}>
+									<Typography variant={smallScreen ? "h6" : "h4"} className={classes.initialPlaylistTitle}>
+										Choose a playlist to start your matching
+			                        </Typography>
+									<FormControl className={classes.formControl2} variant="outlined" size="small">
+										<InputLabel id="choose-playlist-label">
+											Playlist
+			                        </InputLabel>
+										<Select
+											labelId="choose-initial-playlist-label"
+											id="choose-initial-playlist"
+											value={''}
+										onChange={async (event: React.ChangeEvent<{ value: unknown }>) => {
+											dispatch(setShowPlaylistModal(false));
+											handlePlaylistChange(event);
+										}}
+											label="Playlist"
+										>
+											{playlists.map((playlist) => (
+												<MenuItem key={playlist.name} value={playlist.name} style={{ minWidth: 200, maxWidth: 400 }}>
+													{playlist.name}
+												</MenuItem>
+											))}
+										</Select>
+									</FormControl>
+								</Box>}
+							{noRegisteredPlaylists &&
+								<Typography>We can't find any listening habits or playlists to use for our festival matching. Go to your {(props.model.userInfo && props.model.userInfo.spotifyUrl) ? <Link color={'primary'}
+                                        href={props.model.userInfo.spotifyUrl}
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+									Spotify profile
+                                    </Link>: 'Spotify profile'} and create or subscribe to a playlist to start your festival matching</Typography>}
+						</Paper>
+					</Fade>
+				</Modal>
 			</MuiThemeProvider>
 		</Box>
 	);
@@ -461,7 +536,9 @@ const mapStateToProps = (state: AppState) => ({
 	selectedPlaylistArtists: state.model.selectedPlaylistArtists,
 	countries: state.model.countries,
 	continents: state.model.continents,
-	matchSettings: state.model.matchSettings
+	matchSettings: state.model.matchSettings,
+	showPlaylistModal: state.model.showPlaylistModal,
+	noRegisteredPlaylists: state.model.noRegisteredPlaylists
 });
 
 const mapDispatchToProps = (dispatch: any) => {
