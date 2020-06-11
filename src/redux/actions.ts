@@ -319,7 +319,7 @@ export const getAllPlaylists = (
             if (response.total > offset + 50) {
                 getAllPlaylists(userId, offset + 50, allPlaylists.concat(playlists), dispatch);
             } else {
-                dispatch(setPlaylists(allPlaylists));
+                dispatch(setPlaylists(allPlaylists.concat(playlists)));
             }
         })
         .catch((error) => {
