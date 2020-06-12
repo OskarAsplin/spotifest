@@ -89,6 +89,7 @@ const V1: React.FC<Props> = (props: Props) => {
     useEffect(() => {
         if (token) {
             props.dispatch(setAccessToken(token));
+            spotifyApi.setAccessToken(token);
             if (!props.model.siteInitialized) {
                 initializeSite(token, props.dispatch);
             }

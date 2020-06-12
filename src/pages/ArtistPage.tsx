@@ -541,10 +541,10 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                     {!isArtistInDb &&
                         <div className={classes.align}>
                             <div className={classes.verticalSpace} />
-                            <div className={classes.verticalSpace} />
                             <Typography variant="subtitle1" >
-                                This artist has no festivals registered in our database.
+                                This artist has no registered festivals in our database.
                             </Typography>
+                            <div className={classes.verticalSpace} />
                         </div>
                     }
                     {isNetworkError &&

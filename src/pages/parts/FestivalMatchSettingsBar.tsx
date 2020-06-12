@@ -374,7 +374,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									label="Match with"
 								>
 									{topArtists.length !== 0 && <MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
-										Your top artists
+										Your most played artists
 									</MenuItem>}
 									<ListSubheader disableSticky disableGutters>{topArtists.length !== 0 ? 'or choose a playlist below' : 'choose a playlist below'}</ListSubheader>
 									{playlists.map((playlist) => (
@@ -457,7 +457,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								title={
 									<React.Fragment>
 										<Typography color="inherit" variant="h6">Matching algorithm</Typography>
-										{'The matching agorithm is based on the genres of the festivals, giving a higher score if the genres fit well to your top artists or selected playlist. Matching artists in the lineup of a festival will also increase the matching percent.'}
+										{'The matching agorithm is based on the genres of the festivals, giving a higher score if the genres fit well to your most played artists or selected playlist. Matching artists in the lineup of a festival will also increase the matching percent.'}
 									</React.Fragment>
 								}
 							>

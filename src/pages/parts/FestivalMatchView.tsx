@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { createStyles, Theme, Typography } from "@material-ui/core";
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
-import { Model } from "../../redux/types";
+import { MatchSettings } from "../../redux/types";
 import 'react-circular-progressbar/dist/styles.css';
 import Box from '@material-ui/core/Box';
 import FestivalMatchItem from './FestivalMatchItem';
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface StoreProps {
-	model: Model;
+	matchSettings: MatchSettings;
 	festivalMatches: FestivalMatch[],
 	matchingMethod: MatchingMethod
 }
@@ -80,7 +80,7 @@ type Props = DispatchProps & StoreProps;
 
 const FestivalMatchView: React.FC<Props> = (props: Props) => {
 
-	const { festivalMatches, matchingMethod } = props;
+	const { matchSettings, festivalMatches, matchingMethod } = props;
 	const classes = useStyles();
 
 	const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
@@ -114,7 +114,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 
 	useEffect(() => {
 		setPage(1);
-	}, [props.model.matchSettings])
+	}, [matchSettings])
 
 	return (
 		<Box className={classes.box}>
@@ -141,7 +141,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 				<div>
 					<div className={classes.verticalSpace} />
 					<Typography variant="subtitle1" className={classes.noMatches}>
-						No matches with these settings.
+						No registered festivals in {matchSettings.area.name} in this time frame.
 		            </Typography>
 				</div>
 			}
@@ -150,7 +150,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-	model: state.model,
+	matchSettings: state.model.matchSettings,
 	festivalMatches: state.model.festivalMatches,
 	matchingMethod: state.model.matchingMethod
 });

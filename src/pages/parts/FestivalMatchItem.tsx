@@ -1,8 +1,8 @@
 import React from 'react';
 import { AppState, DispatchProps, FestivalMatch, MatchingMethod } from "../../redux/types";
 import { connect } from "react-redux";
-import { createStyles, MuiThemeProvider, Theme, Paper, IconButton, Button, Collapse, Typography, Box, PaletteType } from "@material-ui/core";
-import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { createStyles, MuiThemeProvider, Theme, Paper, IconButton, Button, Collapse, Typography, Box, PaletteType, Tooltip } from "@material-ui/core";
+import { withStyles, makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { lightBlue, pink } from "@material-ui/core/colors";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -139,8 +139,25 @@ const useStyles = makeStyles((theme: Theme) =>
         width200: {
             width: '200px'
         },
+        toolTip: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            paddingBottom: theme.spacing(0.5)
+        },
     }),
 );
+
+const HtmlTooltip = withStyles((theme) => ({
+    tooltip: {
+        backgroundColor: '#f5f5f9',
+        color: 'rgba(0, 0, 0, 0.87)',
+        maxWidth: 320,
+        margin: theme.spacing(0, 2, 0, 2),
+        fontSize: theme.typography.pxToRem(12),
+        border: '1px solid #dadde9',
+    },
+}))(Tooltip);
 
 interface OwnProps {
     festival: FestivalMatch,
@@ -232,34 +249,46 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                         </div>
                         {showMatching &&
                             <div>
-                                <div className={classes.circleSize}>
-                                    <CircularProgressbar value={matching_percent} text={`${matching_percent}%`}
-                                        styles={buildStyles({
-                                            textSize: '22px',
-                                            pathTransitionDuration: 0.5,
-                                            pathColor: pathColor,
-                                            textColor: textColor,
-                                            trailColor: trailColor,
-                                            //backgroundColor: '#3e98c7',
-                                        })}
-                                    />
-                                    {/*<CircularProgressbarWithChildren value={matchingMethod === MatchingMethod.Genre ? matching_percent : Math.min(festival.matching_artists.length*10, 100)}
-                                        styles={buildStyles({
-                                            //textSize: '22px',
-                                            pathTransitionDuration: 0.5,
-                                            pathColor: pathColor,
-                                            textColor: textColor,
-                                            trailColor: trailColor,
-                                        })}
+                                <Box className={classes.toolTip}>
+                                    <HtmlTooltip placement="left-start" interactive
+                                        title={
+                                            <React.Fragment>
+                                                <Typography color="inherit" variant={bigScreen ? 'subtitle2' : 'body2'}>{'Genres: ' + Math.ceil(festival.matching_percent_genres) + '%'}</Typography>
+                                                <Typography color="inherit" variant={bigScreen ? 'subtitle2' : 'body2'}>{'Artists: ' + Math.ceil(festival.matching_percent_artists) + '%'}</Typography>
+                                                <Typography color="inherit" variant={bigScreen ? 'subtitle2' : 'body2'}>{'Total: ' + Math.ceil(festival.matching_percent_combined) + '%'}</Typography>
+                                            </React.Fragment>
+                                        }
                                     >
-                                        <div className={classes.artistAvatarBox}>
-                                            <div style={{ fontSize: '18px', marginTop: -2, marginLeft: 3, color: textColor }}>
-                                                {matchingMethod === MatchingMethod.Genre ? matching_percent + '%' : festival.matching_artists.length}
-                                            </div>
-                                            {matchingMethod === MatchingMethod.Artist && <MusicNote style={{ marginTop: 0, color: textColor }} fontSize={'small'} />}
+                                        <div className={classes.circleSize}>
+                                            <CircularProgressbar value={matching_percent} text={`${matching_percent}%`}
+                                                styles={buildStyles({
+                                                    textSize: '22px',
+                                                    pathTransitionDuration: 0.5,
+                                                    pathColor: pathColor,
+                                                    textColor: textColor,
+                                                    trailColor: trailColor,
+                                                    //backgroundColor: '#3e98c7',
+                                                })}
+                                            />
+                                            {/*<CircularProgressbarWithChildren value={matchingMethod === MatchingMethod.Genre ? matching_percent : Math.min(festival.matching_artists.length*10, 100)}
+                                                styles={buildStyles({
+                                                    //textSize: '22px',
+                                                    pathTransitionDuration: 0.5,
+                                                    pathColor: pathColor,
+                                                    textColor: textColor,
+                                                    trailColor: trailColor,
+                                                })}
+                                            >
+                                                <div className={classes.artistAvatarBox}>
+                                                    <div style={{ fontSize: '18px', marginTop: -2, marginLeft: 3, color: textColor }}>
+                                                        {matchingMethod === MatchingMethod.Genre ? matching_percent + '%' : festival.matching_artists.length}
+                                                    </div>
+                                                    {matchingMethod === MatchingMethod.Artist && <MusicNote style={{ marginTop: 0, color: textColor }} fontSize={'small'} />}
+                                                </div>
+                                            </CircularProgressbarWithChildren>*/}
                                         </div>
-                                    </CircularProgressbarWithChildren>*/}
-                                </div>
+                                    </HtmlTooltip>
+                                </Box>
                             </div>
                         }
                     </div>
@@ -280,12 +309,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             <Typography variant="subtitle1">
                                 {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}
                             </Typography>
-                            {!bigScreen && festival.lineupImg && <div className={classes.lineupBox}>
-                                <Button onClick={() => window.open(festival.lineupImg, '_blank')}>
-                                    <img className={classes.lineup} src={festival.lineupImg} alt="" />
-                                </Button>
-                            </div>}
-                            {!bigScreen && !festival.lineupImg && festival.festivalImg && <div className={classes.lineupBox}>
+                            {!bigScreen && festival.festivalImg && <div className={classes.lineupBox}>
                                 <Button onClick={() => window.open(festival.festivalImg, '_blank')}>
                                     <img className={classes.lineup} src={festival.festivalImg} alt="" />
                                 </Button>
@@ -326,12 +350,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                 </div>
                             }
                         </div>
-                        {bigScreen && festival.lineupImg && <div className={classes.lineupBox}>
-                            <Button onClick={() => window.open(festival.lineupImg, '_blank')}>
-                                <img className={classes.lineup} src={festival.lineupImg} alt="" />
-                            </Button>
-                        </div>}
-                        {bigScreen && !festival.lineupImg && festival.festivalImg && <div className={classes.lineupBox}>
+                        {bigScreen && festival.festivalImg && <div className={classes.lineupBox}>
                             <Button onClick={() => window.open(festival.festivalImg, '_blank')}>
                                 <img className={classes.lineup} src={festival.festivalImg} alt="" />
                             </Button>
