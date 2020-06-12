@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (max-width: 609px)': {
                 width: '60px'
             },
+            userSelect: 'none'
         },
         festivalTitle: {
             wordWrap: 'break-word',
@@ -250,7 +251,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                         {showMatching &&
                             <div>
                                 <Box className={classes.toolTip}>
-                                    <HtmlTooltip placement="left-start" interactive disableTouchListener enterTouchDelay={0} leaveTouchDelay={3000}
+                                    <HtmlTooltip placement="left-start" interactive leaveTouchDelay={3000}
                                         title={
                                             <React.Fragment>
                                                 <Typography color="inherit" variant={bigScreen ? 'subtitle2' : 'body2'}>{'Genres: ' + Math.ceil(festival.matching_percent_genres) + '%'}</Typography>
