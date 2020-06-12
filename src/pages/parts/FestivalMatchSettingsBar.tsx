@@ -28,17 +28,17 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		alignItems: {
 			display: 'flex',
-			'@media (max-width: 699px)': {
+			'@media (max-width: 799px)': {
 				width: '100%',
 			},
 			alignItems: 'center',
 		},
 		alignItems2: {
 			display: 'flex',
-			'@media (min-width: 700px)': {
-				width: '300px'
+			'@media (min-width: 800px)': {
+				width: '316px'
 			},
-			'@media (max-width: 699px)': {
+			'@media (max-width: 799px)': {
 				width: '100%',
 			},
 			alignItems: 'center',
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		alignItems3: {
 			display: 'flex',
 			flexDirection: 'column',
-			'@media (max-width: 699px)': {
+			'@media (max-width: 799px)': {
 				width: '100%',
 			},
 			alignItems: 'center',
@@ -59,21 +59,21 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		formControl: {
 			margin: theme.spacing(1),
-			'@media (min-width: 700px)': {
+			'@media (min-width: 800px)': {
 				minWidth: 150,
-				maxWidth: 300,
+				maxWidth: 200,
 			},
-			'@media (max-width: 699px)': {
+			'@media (max-width: 799px)': {
 				width: '100%',
 			},
 		},
 		formControl2: {
 			margin: theme.spacing(1),
-			'@media (min-width: 700px)': {
+			'@media (min-width: 800px)': {
 				minWidth: 200,
 				maxWidth: 300,
 			},
-			'@media (max-width: 699px)': {
+			'@media (max-width: 799px)': {
 				width: '100%',
 			},
 		},
@@ -84,19 +84,21 @@ const useStyles = makeStyles((theme: Theme) =>
 			paddingBottom: theme.spacing(0.5)
 		},
 		datePickerFieldFrom: {
-			'@media (min-width: 700px)': {
+			'@media (min-width: 800px)': {
 				marginRight: theme.spacing(0.5),
+				marginLeft: theme.spacing(1),
 			},
-			'@media (max-width: 699px)': {
+			'@media (max-width: 799px)': {
 				marginLeft: theme.spacing(1),
 				marginRight: theme.spacing(1),
 			},
 		},
 		datePickerFieldTo: {
-			'@media (min-width: 700px)': {
+			'@media (min-width: 800px)': {
 				marginLeft: theme.spacing(0.5),
+				marginRight: theme.spacing(1),
 			},
-			'@media (max-width: 699px)': {
+			'@media (max-width: 799px)': {
 				marginRight: theme.spacing(1),
 				marginLeft: theme.spacing(1),
 			},
@@ -109,7 +111,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			flexWrap: 'wrap',
 			flexDirection: 'row',
 			alignItems: 'center',
-			'@media (min-width: 700px)': {
+			'@media (min-width: 800px)': {
 				justifyContent: 'space-between',
 			},
 			'@media (min-width: 1000px)': {
