@@ -370,11 +370,12 @@ const useStyles = makeStyles((theme: Theme) =>
             height: '40px',
         },
         footerRight: {
-            position: 'absolute',
+            width: '100%',
+            //position: 'absolute',
             //bottom: 0,
-            '@media (min-width: 610px)': {
-                right: 0,
-            },
+            //'@media (min-width: 610px)': {
+            //    right: 0,
+            //},
             margin: theme.spacing(1),
         },
     }),
@@ -640,6 +641,78 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                 </Grid>
                             </div>
+                            <Box className={classes.footerRight}>
+                                <div className={classes.verticalSpace} />
+                                <div className={classes.verticalSpace} />
+                                <div>
+                                    Icon licenses
+                                </div>
+                                <div>
+                                    Facebook, <Link color={'primary'}
+                                        href="https://commons.wikimedia.org/wiki/File:React-icon.svg"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        React-icon
+                                    </Link> / <Link color={'primary'}
+                                        href="https://creativecommons.org/licenses/by-sa/1.0/legalcode"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        CC BY-SA 1.0
+                                    </Link>
+                                </div>
+                                <div>
+                                    <Link color={'primary'}
+                                        href="https://iconscout.com/icons/typescript"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        Typescript Icon
+                                    </Link> on <Link color={'primary'}
+                                        href="https://iconscout.com/contributors/icon-mafia"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        Icon Mafia
+                                    </Link>
+                                </div>
+                                <div>
+                                    <Link color={'primary'}
+                                        href="https://iconscout.com/icons/redux"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        Redux Logo Icon
+                                    </Link> by <Link color={'primary'}
+                                        href="https://iconscout.com/contributors/icon-mafia"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        Icon Mafia
+                                    </Link>
+                                </div>
+                                <div>
+                                    <Link color={'primary'}
+                                        href="https://www.python.org/community/logos/"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        Python-logo
+                                    </Link> / <Link color={'primary'}
+                                        href="https://www.python.org/psf/trademarks/"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        PSF Trademark Usage Policy
+                                    </Link>
+                                </div>
+                                <div>
+                                    <Link color={'primary'}
+                                        href="https://icon-icons.com/icon/file-type-django/130645"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        Django Icon
+                                    </Link> / <Link color={'primary'}
+                                        href="https://creativecommons.org/licenses/by/4.0/"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        CC BY 4.0
+                                    </Link>
+                                </div>
+                            </Box>
                         </Collapse>
                     </Paper>
                 </Box>
@@ -723,78 +796,6 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                     </Paper>
                 </Box>
             </div>
-            <Box className={classes.footerRight}>
-                <div className={classes.verticalSpace} />
-                <div className={classes.verticalSpace} />
-                <div>
-                    Icon licenses
-                </div>
-                <div>
-                    Facebook, <Link color={'primary'}
-                        href="https://commons.wikimedia.org/wiki/File:React-icon.svg"
-                        target={"_blank"}
-                        rel="noopener noreferrer">
-                        React-icon
-                    </Link> / <Link color={'primary'}
-                        href="https://creativecommons.org/licenses/by-sa/1.0/legalcode"
-                        target={"_blank"}
-                        rel="noopener noreferrer">
-                        CC BY-SA 1.0
-                    </Link>
-                </div>
-                <div>
-                    <Link color={'primary'}
-                        href="https://iconscout.com/icons/typescript"
-                        target={"_blank"}
-                        rel="noopener noreferrer">
-                        Typescript Icon
-                    </Link> on <Link color={'primary'}
-                        href="https://iconscout.com/contributors/icon-mafia"
-                        target={"_blank"}
-                        rel="noopener noreferrer">
-                        Icon Mafia
-                    </Link>
-                </div>
-                <div>
-                    <Link color={'primary'}
-                        href="https://iconscout.com/icons/redux"
-                        target={"_blank"}
-                        rel="noopener noreferrer">
-                        Redux Logo Icon
-                    </Link> by <Link color={'primary'}
-                        href="https://iconscout.com/contributors/icon-mafia"
-                        target={"_blank"}
-                        rel="noopener noreferrer">
-                        Icon Mafia
-                    </Link>
-                </div>
-                <div>
-                    <Link color={'primary'}
-                        href="https://www.python.org/community/logos/"
-                        target={"_blank"}
-                        rel="noopener noreferrer">
-                        Python-logo
-                    </Link> / <Link color={'primary'}
-                        href="https://www.python.org/psf/trademarks/"
-                        target={"_blank"}
-                        rel="noopener noreferrer">
-                        PSF Trademark Usage Policy
-                    </Link>
-                </div>
-                <div>
-                    <Link color={'primary'}
-                        href="https://icon-icons.com/icon/file-type-django/130645"
-                        target={"_blank"}
-                        rel="noopener noreferrer">
-                        Django Icon
-                    </Link> / <Link color={'primary'}
-                        href="https://creativecommons.org/licenses/by/4.0/"
-                        target={"_blank"}
-                        rel="noopener noreferrer">
-                        CC BY 4.0
-                    </Link>
-                </div>
-            </Box>
         </MuiThemeProvider>
     );
 }
