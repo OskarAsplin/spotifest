@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Model, AppState, DispatchProps } from "../redux/types";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Button, IconButton, Collapse } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Button, IconButton, Collapse, Link } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -13,6 +13,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import { isDev } from "../utils/restUtils";
+import { lightBlue, pink } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -118,7 +119,15 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (max-width: 609px)': {
                 maxWidth: '95%',
             },
-            margin: theme.spacing(2),
+            margin: theme.spacing(4),
+        },
+        footerRight: {
+            position: 'absolute',
+            bottom: 0,
+            '@media (min-width: 610px)': {
+                right: 0,
+            },
+            margin: theme.spacing(1),
         },
         expand: {
             transform: 'rotate(180deg)',
@@ -128,6 +137,15 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         expandOpen: {
             transform: 'rotate(0deg)',
+        },
+        attributionPaper: {
+            padding: theme.spacing(1),
+        },
+        attributionShadow: {
+            textAlign: 'center',
+            //borderRadius: '15%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            boxShadow: '0 0 5rem rgba(0, 0, 0, 1)',
         },
     }),
 );
@@ -183,6 +201,25 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
         }
     });
 
+    const lightBluePinkMuiTheme = createMuiTheme({
+        typography: {
+            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+        },
+        palette: {
+            primary: {
+                light: lightBlue[300],
+                main: lightBlue[500],
+                dark: lightBlue[700]
+            },
+            secondary: {
+                light: pink[300],
+                main: pink[500],
+                dark: pink[700]
+            },
+            type: props.model.thememode
+        }
+    });
+
     const classes = useStyles();
 
     const [expanded, setExpanded] = React.useState(false);
@@ -190,7 +227,7 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
     return (
         //<SplashScreen>
         <div className={classes.background}>
-            <MuiThemeProvider theme={muiTheme}>
+            <MuiThemeProvider theme={lightBluePinkMuiTheme}>
                 <CssBaseline />
                 {/*<AppBarView birghtnessSwitchEnabled={false} accountCircleEnabled={false} />*/}
                 <div className={classes.verticalSpace} />
@@ -247,6 +284,26 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
 			                    </div>
                             </Collapse>
                         </Paper>
+                    </Box>
+                    <Box className={classes.footerRight}>
+                        <div className={classes.attributionShadow}>
+                            <Link color={'primary'}
+                                href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/"
+                                target={"_blank"}
+                                rel="noopener noreferrer">
+                                Photo
+                            </Link> by <Link color={'primary'}
+                                href="https://www.flickr.com/photos/149801000@N05/"
+                                target={"_blank"}
+                                rel="noopener noreferrer">
+                                veldmusicfestival
+                            </Link> / <Link color={'primary'}
+                                href="https://creativecommons.org/licenses/by-sa/2.0/"
+                                target={"_blank"}
+                                rel="noopener noreferrer">
+                                CC BY-SA 2.0
+                            </Link>
+                        </div>
                     </Box>
                 </div>
 

@@ -16,6 +16,7 @@ import V1 from "./pages/V1";
 import LoginScreen from "./pages/LoginScreen";
 import ArtistPage from "./pages/ArtistPage";
 import FestivalPage from "./pages/FestivalPage";
+import AboutPage from "./pages/AboutPage";
 
 
 const { store, persistor } = configureStore();
@@ -34,6 +35,7 @@ const App: React.FC = () => {
                 <Route exact path="/login" component={LoginScreen} />
                 <Route exact path="/artist" component={ArtistPage} />
                 <Route exact path="/festival" component={FestivalPage} />
+                <Route exact path="/about" component={AboutPage} />
               </Switch>
             </Router>
           </div>
