@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppState, DispatchProps } from "../redux/types";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, IconButton, Collapse, List, ListItem, ListItemIcon, ListItemText, Grid, PaletteType } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, IconButton, Collapse, List, ListItem, ListItemIcon, ListItemText, Grid, PaletteType, Button } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -13,6 +13,8 @@ import clsx from 'clsx';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import MusicNote from '@material-ui/icons/MusicNote';
 import { Redirect } from 'react-router-dom';
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+//import { faLinkedin, faLinkedinIn, faGithub, faGithubAlt, faGithubSquare } from '@fortawesome/free-brands-svg-icons'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -62,25 +64,15 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'column',
             '@media (min-width: 610px)': {
-                padding: theme.spacing(0, 4, 2, 4),
-            },
-            marginBottom: theme.spacing(2),
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        paper3: {
-            display: 'flex',
-            flexDirection: 'column',
-            '@media (min-width: 610px)': {
-                padding: theme.spacing(2, 4, 2, 4),
+                padding: theme.spacing(1, 4, 1, 4),
             },
             '@media (max-width: 609px)': {
-                padding: theme.spacing(2, 2, 2, 2),
+                padding: theme.spacing(1, 2, 1, 2),
             },
-            marginBottom: theme.spacing(2),
-            width: '100%',
+            justifyContent: 'center',
             alignItems: 'center',
+            width: '100%',
+            maxWidth: '400px'
         },
         box: {
             width: '100%',
@@ -90,6 +82,15 @@ const useStyles = makeStyles((theme: Theme) =>
         box2: {
             width: '100%',
             maxWidth: '764px'
+        },
+        box3: {
+            width: '100%',
+            maxWidth: '1000px',
+            margin: theme.spacing(0, 2, 2, 2),
+            justifyContent: 'center',
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'column'
         },
         buttonBox: {
             '@media (min-width: 610px)': {
@@ -110,6 +111,18 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             alignItems: 'center'
         },
+        creatorFlex: {
+            display: 'flex',
+            '@media (min-width: 610px)': {
+                flexDirection: 'row'
+            },
+            '@media (max-width: 609px)': {
+                flexDirection: 'column-reverse'
+            },
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
         hundredWidth: {
             width: '100%'
         },
@@ -122,11 +135,12 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         button: {
             textTransform: 'none',
-            marginLeft: -theme.spacing(1.3),
-            paddingBottom: theme.spacing(0),
-            paddingTop: theme.spacing(0),
-            textAlign: 'left',
-            maxWidth: '85%'
+            backgroundColor: '#2867b2'
+            //marginLeft: -theme.spacing(1.3),
+            //paddingBottom: theme.spacing(0),
+            //paddingTop: theme.spacing(0),
+            //textAlign: 'left',
+            //maxWidth: '85%'
         },
         artistAvatarBox: {
             display: 'flex',
@@ -234,7 +248,7 @@ const useStyles = makeStyles((theme: Theme) =>
             },
             '@media (max-width: 499px)': {
                 marginLeft: theme.spacing(3),
-                height: '25px',
+                height: '23px',
             },
             '@media (max-width: 1299px)': {
                 marginBottom: theme.spacing(5),
@@ -261,8 +275,27 @@ const useStyles = makeStyles((theme: Theme) =>
                 marginBottom: theme.spacing(5),
             },
         },
+        fullFirstMedium: {
+            '@media (min-width: 500px)': {
+                height: '40px',
+            },
+            '@media (max-width: 499px)': {
+                height: '35px',
+            },
+            '@media (min-width: 1300px)': {
+                marginLeft: theme.spacing(5),
+            },
+            '@media (max-width: 1299px)': {
+                marginBottom: theme.spacing(5),
+            },
+        },
         fullLastRow: {
-            height: '40px',
+            '@media (min-width: 500px)': {
+                height: '40px',
+            },
+            '@media (max-width: 499px)': {
+                height: '35px',
+            },
             '@media (min-width: 1300px)': {
                 marginLeft: theme.spacing(5),
             },
@@ -314,7 +347,36 @@ const useStyles = makeStyles((theme: Theme) =>
                 justifyContent: 'center',
                 alignItems: 'center',
             },
-        }
+        },
+        creatorImage: {
+            marginTop: theme.spacing(2),
+            marginBottom: theme.spacing(1),
+            width: '90%',
+            borderRadius: '5%',
+        },
+        fullCreatorButton: {
+            height: '40px',
+        },
+        fullCreatorButtonLeftMargin: {
+            height: '40px',
+            marginLeft: theme.spacing(1)
+        },
+        fullCreatorButtonRightMargin: {
+            height: '40px',
+            marginRight: theme.spacing(1)
+        },
+        fullFaCreatorButton: {
+            width: '40px',
+            height: '40px',
+        },
+        footerRight: {
+            position: 'absolute',
+            //bottom: 0,
+            '@media (min-width: 610px)': {
+                right: 0,
+            },
+            margin: theme.spacing(1),
+        },
     }),
 );
 
@@ -331,7 +393,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
 
     const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
     const [algorithmExpanded, setAlgorithmExpanded] = React.useState(false);
-    const [techExpanded, setTechExpanded] = React.useState(true);
+    const [techExpanded, setTechExpanded] = React.useState(false);
     const [disclaimerExpanded, setDisclaimerExpanded] = React.useState(false);
 
     const { thememode } = props;
@@ -426,32 +488,6 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <Box className={classes.box}>
                     <Paper elevation={3} className={classes.paper}>
                         <div className={classes.rowFlexCenter}>
-                            <Typography variant={bigScreen ? "h3" : "h5"} onClick={() => setAlgorithmExpanded(!algorithmExpanded)}>
-                                Matching algorithm
-                            </Typography>
-                            <IconButton
-                                className={clsx(classes.expand, {
-                                    [classes.expandOpen]: algorithmExpanded,
-                                })}
-                                onClick={() => setAlgorithmExpanded(!algorithmExpanded)}
-                                aria-expanded={algorithmExpanded}
-                                aria-label="show more"
-                            >
-                                <ExpandMoreIcon />
-                            </IconButton>
-                        </div>
-                        <Collapse in={algorithmExpanded} timeout="auto" unmountOnExit>
-                            <div className={classes.expandedDiv}>
-                                <Typography variant="body1" className={classes.festivalTitle}>
-                                    The "Match with" selector on top of the main page allows you to select a playlist or your most played artists as a match basis for festivals. The match score given to each festival is a combination of genre matching and artist matching to the selected match basis. The genre matching checks the genres of the match basis and checks how well these coincide with the genres of the festival. The artist score counts how many artists in the match basis that are attending the festival. The more artists in the match basis, the more attending artists are needed for a high score. To see the individual genre and artist score for each festival you can hold the mouse pointer over the score circle on a pc or press and hold the the score circle on a touh screen.
-                                </Typography>
-                            </div>
-                        </Collapse>
-                    </Paper>
-                </Box>
-                <Box className={classes.box}>
-                    <Paper elevation={3} className={classes.paper}>
-                        <div className={classes.rowFlexCenter}>
                             <Typography variant={bigScreen ? "h3" : "h5"} onClick={() => setTechExpanded(!techExpanded)}>
                                 Technical info
                             </Typography>
@@ -468,7 +504,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </div>
                         <Collapse in={techExpanded} timeout="auto" unmountOnExit>
                             <div className={classes.expandedDiv}>
-                                <Grid container spacing={pcScreen ? 3 : 1} justify="center" alignItems="center" zeroMinWidth>
+                                <Grid container spacing={pcScreen ? 3 : 1} justify="center" alignItems="center">
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
                                             <Typography variant="body1" className={classes.festivalTitle}>
@@ -522,7 +558,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.rowFlex}>
                                             <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/large_gunicorn.png' : process.env.PUBLIC_URL + '/techIcons/large_gunicorn_white.png'}
-                                                className={classes.fullFirst} alt="Gunicorn-logo" />
+                                                className={classes.fullFirstMedium} alt="Gunicorn-logo" />
                                             <img src={process.env.PUBLIC_URL + '/techIcons/Nginx_logo.svg'} className={classes.fullNginx} alt="Nginx-logo" />
                                         </div>
                                     </Grid>
@@ -535,7 +571,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.rowFlex}>
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/digitalocean.svg'} className={classes.fullFirst} alt="Digitalocean-icon" />
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/digitalocean.svg'} className={classes.fullFirstMedium} alt="Digitalocean-icon" />
                                             <img src={process.env.PUBLIC_URL + '/techIcons/ubuntu-icon.svg'} className={classes.full} alt="Ubuntu-icon" />
                                         </div>
                                     </Grid>
@@ -610,6 +646,32 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <Box className={classes.box}>
                     <Paper elevation={3} className={classes.paper}>
                         <div className={classes.rowFlexCenter}>
+                            <Typography variant={bigScreen ? "h3" : "h5"} onClick={() => setAlgorithmExpanded(!algorithmExpanded)}>
+                                Matching algorithm
+                            </Typography>
+                            <IconButton
+                                className={clsx(classes.expand, {
+                                    [classes.expandOpen]: algorithmExpanded,
+                                })}
+                                onClick={() => setAlgorithmExpanded(!algorithmExpanded)}
+                                aria-expanded={algorithmExpanded}
+                                aria-label="show more"
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
+                        </div>
+                        <Collapse in={algorithmExpanded} timeout="auto" unmountOnExit>
+                            <div className={classes.expandedDiv}>
+                                <Typography variant="body1" className={classes.festivalTitle}>
+                                    The "Match with" selector on top of the main page allows you to select a playlist or your most played artists as a match basis for festivals. The match score given to each festival is a combination of genre matching and artist matching to the selected match basis. The genre matching checks the genres of the match basis and checks how well these coincide with the genres of the festival. The artist score counts how many artists in the match basis that are attending the festival. The more artists in the match basis, the more attending artists are needed for a high score. To see the individual genre and artist score for each festival you can hold the mouse pointer over the score circle on a pc or press and hold the the score circle on a touh screen.
+                                </Typography>
+                            </div>
+                        </Collapse>
+                    </Paper>
+                </Box>
+                <Box className={classes.box}>
+                    <Paper elevation={3} className={classes.paper}>
+                        <div className={classes.rowFlexCenter}>
                             <Typography variant={bigScreen ? "h3" : "h5"} onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}>
                                 Disclaimer
                             </Typography>
@@ -633,91 +695,106 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </Collapse>
                     </Paper>
                 </Box>
-                <Box className={classes.box}>
-                    <Paper elevation={3} className={classes.paper}>
+                <div className={classes.verticalSpace} />
+                <div className={classes.verticalSpace} />
+                <div className={classes.verticalSpace} />
+                <Box className={classes.box3}>
+                    <Paper elevation={3} className={classes.paper2}>
                         <div className={classes.flexColumn}>
                             <Typography variant={bigScreen ? "h3" : "h5"} className={classes.festivalTitle}>
                                 Created by
                             </Typography>
+                            <img src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'} className={classes.creatorImage} alt="React-icon" />
                             <Typography variant="body1" className={classes.festivalTitle}>
                                 Oskar Asplin
                             </Typography>
+                            <div className={classes.verticalSpace} />
+                            <Button onClick={() => window.open("https://www.linkedin.com/in/oskar-buset-asplin-22796314a", '_blank')}>
+                                <img src={process.env.PUBLIC_URL + '/techIcons/LinkedIn-Logo.png'} className={classes.fullCreatorButtonLeftMargin} alt="LinkedIn" />
+                            </Button>
+                            <Button onClick={() => window.open("https://github.com/OskarAsplin", '_blank')}>
+                                <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Logo.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Logo-White.png'}
+                                    className={classes.fullCreatorButton} alt="GitHub-logo" />
+                                <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Mark.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Mark-Light.png'}
+                                    className={classes.fullCreatorButtonRightMargin} alt="" />
+                            </Button>
+                            <div className={classes.verticalSpace} />
                         </div>
                     </Paper>
-                    <div className={classes.verticalSpace} />
-                    <div className={classes.verticalSpace} />
-                    <div className={classes.verticalSpace} />
-                    <div className={classes.verticalSpace} />
-                    <div>
-                        Icon licenses
-                    </div>
-                    <div>
-                        Facebook, <Link color={'primary'}
-                            href="https://commons.wikimedia.org/wiki/File:React-icon.svg"
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            React-icon
-                        </Link> / <Link color={'primary'}
-                            href="https://creativecommons.org/licenses/by-sa/1.0/legalcode"
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            CC BY-SA 1.0
-                        </Link>
-                    </div>
-                    <div>
-                        <Link color={'primary'}
-                            href="https://iconscout.com/icons/typescript"
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            Typescript Icon
-                        </Link> on <Link color={'primary'}
-                            href="https://iconscout.com/contributors/icon-mafia"
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            Icon Mafia
-                        </Link>
-                    </div>
-                    <div>
-                        <Link color={'primary'}
-                            href="https://iconscout.com/icons/redux"
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            Redux Logo Icon
-                        </Link> by <Link color={'primary'}
-                            href="https://iconscout.com/contributors/icon-mafia"
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            Icon Mafia
-                        </Link>
-                    </div>
-                    <div>
-                        <Link color={'primary'}
-                            href="https://www.python.org/community/logos/"
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            Python-logo
-                        </Link> / <Link color={'primary'}
-                            href="https://www.python.org/psf/trademarks/"
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            PSF Trademark Usage Policy
-                        </Link>
-                    </div>
-                    <div>
-                        <Link color={'primary'}
-                            href="https://icon-icons.com/icon/file-type-django/130645"
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            Django Icon
-                        </Link> / <Link color={'primary'}
-                            href="https://creativecommons.org/licenses/by/4.0/"
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            CC BY 4.0
-                        </Link>
-                    </div>
                 </Box>
             </div>
+            <Box className={classes.footerRight}>
+                <div className={classes.verticalSpace} />
+                <div className={classes.verticalSpace} />
+                <div>
+                    Icon licenses
+                </div>
+                <div>
+                    Facebook, <Link color={'primary'}
+                        href="https://commons.wikimedia.org/wiki/File:React-icon.svg"
+                        target={"_blank"}
+                        rel="noopener noreferrer">
+                        React-icon
+                    </Link> / <Link color={'primary'}
+                        href="https://creativecommons.org/licenses/by-sa/1.0/legalcode"
+                        target={"_blank"}
+                        rel="noopener noreferrer">
+                        CC BY-SA 1.0
+                    </Link>
+                </div>
+                <div>
+                    <Link color={'primary'}
+                        href="https://iconscout.com/icons/typescript"
+                        target={"_blank"}
+                        rel="noopener noreferrer">
+                        Typescript Icon
+                    </Link> on <Link color={'primary'}
+                        href="https://iconscout.com/contributors/icon-mafia"
+                        target={"_blank"}
+                        rel="noopener noreferrer">
+                        Icon Mafia
+                    </Link>
+                </div>
+                <div>
+                    <Link color={'primary'}
+                        href="https://iconscout.com/icons/redux"
+                        target={"_blank"}
+                        rel="noopener noreferrer">
+                        Redux Logo Icon
+                    </Link> by <Link color={'primary'}
+                        href="https://iconscout.com/contributors/icon-mafia"
+                        target={"_blank"}
+                        rel="noopener noreferrer">
+                        Icon Mafia
+                    </Link>
+                </div>
+                <div>
+                    <Link color={'primary'}
+                        href="https://www.python.org/community/logos/"
+                        target={"_blank"}
+                        rel="noopener noreferrer">
+                        Python-logo
+                    </Link> / <Link color={'primary'}
+                        href="https://www.python.org/psf/trademarks/"
+                        target={"_blank"}
+                        rel="noopener noreferrer">
+                        PSF Trademark Usage Policy
+                    </Link>
+                </div>
+                <div>
+                    <Link color={'primary'}
+                        href="https://icon-icons.com/icon/file-type-django/130645"
+                        target={"_blank"}
+                        rel="noopener noreferrer">
+                        Django Icon
+                    </Link> / <Link color={'primary'}
+                        href="https://creativecommons.org/licenses/by/4.0/"
+                        target={"_blank"}
+                        rel="noopener noreferrer">
+                        CC BY 4.0
+                    </Link>
+                </div>
+            </Box>
         </MuiThemeProvider>
     );
 }
