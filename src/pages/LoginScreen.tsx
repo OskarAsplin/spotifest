@@ -1,12 +1,9 @@
 import React, { useEffect } from 'react';
-import { Model, AppState, DispatchProps } from "../redux/types";
+import { AppState, DispatchProps } from "../redux/types";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Button, IconButton, Collapse, Link } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Button, IconButton, Collapse, Link, PaletteType } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import deepOrange from "@material-ui/core/colors/deepOrange";
-import indigo from "@material-ui/core/colors/indigo";
 import { setLoggedIn, setLoggedOff } from "../redux/actions";
 import 'react-circular-progressbar/dist/styles.css';
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
@@ -151,7 +148,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface StoreProps {
-    model: Model;
+    thememode: PaletteType
 }
 
 type Props = DispatchProps & StoreProps;
@@ -175,33 +172,15 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
     const bigWidth = useMediaQuery('(min-width:610px)');
     const bigHeight = useMediaQuery('(min-height:500px)');
     const bigScreen = bigWidth && bigHeight;
+    const { thememode } = props;
+    const [expanded, setExpanded] = React.useState(false);
 
     useEffect(() => {
         props.dispatch(setLoggedOff());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
-        typography: {
-            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-        },
-        palette: {
-            primary: {
-                light: indigo[300],
-                main: indigo[500],
-                dark: indigo[700]
-            },
-            secondary: {
-                light: deepOrange[300],
-                main: deepOrange[500],
-                dark: deepOrange[700]
-            },
-            type: 'dark'
-        }
-    });
-
-    const lightBluePinkMuiTheme = createMuiTheme({
         typography: {
             fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
         },
@@ -216,18 +195,16 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                 main: pink[500],
                 dark: pink[700]
             },
-            type: props.model.thememode
+            type: thememode
         }
     });
 
     const classes = useStyles();
 
-    const [expanded, setExpanded] = React.useState(false);
-
     return (
         //<SplashScreen>
         <div className={classes.background}>
-            <MuiThemeProvider theme={lightBluePinkMuiTheme}>
+            <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 {/*<AppBarView birghtnessSwitchEnabled={false} accountCircleEnabled={false} />*/}
                 <div className={classes.verticalSpace} />
@@ -306,11 +283,6 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                         </div>
                     </Box>
                 </div>
-
-                <div hidden={!loaderOn} className={classes.progressBar}>
-                    <CircularProgress size={100} thickness={3} disableShrink color={'secondary'} />
-                </div>
-
             </MuiThemeProvider>
         </div>
         //</SplashScreen>
@@ -318,7 +290,7 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    model: state.model
+    thememode: state.model.thememode
 });
 
 const mapDispatchToProps = (dispatch: any) => {

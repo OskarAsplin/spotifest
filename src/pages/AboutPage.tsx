@@ -1,26 +1,18 @@
-import React, { useEffect } from 'react';
-import { AppState, DispatchProps, ArtistInfo, Artist } from "../redux/types";
-import { spotifyApi, turnOnLoader, turnOffLoader, getIconPicture, getBigPicture, setLoggedOff } from "../redux/actions";
+import React from 'react';
+import { AppState, DispatchProps } from "../redux/types";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, Button, IconButton, Collapse, List, ListItem, ListItemIcon, ListItemText, Grid } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, IconButton, Collapse, List, ListItem, ListItemIcon, ListItemText, Grid, PaletteType } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import makeStyles from "@material-ui/core/styles/makeStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import deepOrange from "@material-ui/core/colors/deepOrange";
-import indigo from "@material-ui/core/colors/indigo";
-import { Model } from "../redux/types";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
-import { Redirect } from 'react-router-dom';
-import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
-import FestivalMatchItem from './parts/FestivalMatchItem';
-import ArtistBubble from './parts/ArtistBubble';
 import { lightBlue, pink, blueGrey } from "@material-ui/core/colors";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import MusicNote from '@material-ui/icons/MusicNote';
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -327,7 +319,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface StoreProps {
-    model: Model;
+    thememode: PaletteType
 }
 
 type Props = DispatchProps & StoreProps;
@@ -337,38 +329,14 @@ const AboutPage: React.FC<Props> = (props: Props) => {
     const bigScreen = useMediaQuery('(min-width:610px)');
     const pcScreen = useMediaQuery('(min-width:1300px)');
 
-    const [artistInfo, setArtistInfo] = React.useState<ArtistInfo | undefined>(undefined);
     const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
-    const [redirectFestival, setRedirectFestival] = React.useState('');
-    const [relatedArtists, setRelatedArtists] = React.useState<Artist[]>([]);
     const [algorithmExpanded, setAlgorithmExpanded] = React.useState(false);
     const [techExpanded, setTechExpanded] = React.useState(true);
     const [disclaimerExpanded, setDisclaimerExpanded] = React.useState(false);
-    const [isArtistInDb, setIsArtistInDb] = React.useState(true);
-    const [isNetworkError, setIsNetworkError] = React.useState(false);
-    const [isValidSpotifyId, setIsValidSpotifyId] = React.useState(true);
 
-    const loaderOn = props.model.loaderOn;
+    const { thememode } = props;
+
     const muiTheme = createMuiTheme({
-        typography: {
-            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-        },
-        palette: {
-            primary: {
-                light: indigo[300],
-                main: indigo[500],
-                dark: indigo[700]
-            },
-            secondary: {
-                light: deepOrange[300],
-                main: deepOrange[500],
-                dark: deepOrange[700]
-            },
-            type: props.model.thememode
-        }
-    });
-
-    const lightBluePinkMuiTheme = createMuiTheme({
         typography: {
             fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
         },
@@ -383,15 +351,18 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 main: pink[500],
                 dark: pink[700]
             },
-            type: props.model.thememode
+            type: thememode
         }
     });
 
     const classes = useStyles();
 
+    if (redirectHome) {
+        return <Redirect push to={'/'} />
+    }
 
     return (
-        <MuiThemeProvider theme={lightBluePinkMuiTheme}>
+        <MuiThemeProvider theme={muiTheme}>
             <CssBaseline />
             <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
             {pcScreen && <div className={classes.topLeft}>
@@ -421,7 +392,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         <List>
                             <ListItem>
                                 <ListItemIcon>
-                                    <div className={props.model.thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
+                                    <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
                                         <MusicNote fontSize={'large'} />
                                     </div>
                                 </ListItemIcon>
@@ -431,7 +402,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                             </ListItem>
                             <ListItem>
                                 <ListItemIcon>
-                                    <div className={props.model.thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
+                                    <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
                                         <MusicNote fontSize={'large'} />
                                     </div>
                                 </ListItemIcon>
@@ -441,7 +412,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                             </ListItem>
                             <ListItem>
                                 <ListItemIcon>
-                                    <div className={props.model.thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
+                                    <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
                                         <MusicNote fontSize={'large'} />
                                     </div>
                                 </ListItemIcon>
@@ -523,7 +494,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.rowFlex}>
-                                            <img src={props.model.thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/full-netlify-logo-light.svg' : process.env.PUBLIC_URL + '/techIcons/full-netlify-logo-dark.svg'}
+                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/full-netlify-logo-light.svg' : process.env.PUBLIC_URL + '/techIcons/full-netlify-logo-dark.svg'}
                                                 className={classes.fullFirst} alt="Netlify-icon" />
                                         </div>
                                     </Grid>
@@ -538,7 +509,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                         <div className={classes.rowFlex}>
                                             <img src={process.env.PUBLIC_URL + '/techIcons/python-logo-generic.svg'} className={classes.fullFirst} alt="Python-logo" />
                                             <img src={process.env.PUBLIC_URL + '/techIcons/django-icon.svg'} className={classes.fullDjango} alt="Django-icon" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/SQLite.svg'} className={props.model.thememode === 'light' ? classes.full : classes.fullLight} alt="Sqlite-icon" />
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/SQLite.svg'} className={thememode === 'light' ? classes.full : classes.fullLight} alt="Sqlite-icon" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
@@ -550,7 +521,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.rowFlex}>
-                                            <img src={props.model.thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/large_gunicorn.png' : process.env.PUBLIC_URL + '/techIcons/large_gunicorn_white.png'}
+                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/large_gunicorn.png' : process.env.PUBLIC_URL + '/techIcons/large_gunicorn_white.png'}
                                                 className={classes.fullFirst} alt="Gunicorn-logo" />
                                             <img src={process.env.PUBLIC_URL + '/techIcons/Nginx_logo.svg'} className={classes.fullNginx} alt="Nginx-logo" />
                                         </div>
@@ -589,7 +560,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.rowFlex}>
-                                            <img src={props.model.thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/MFW-logo-black.png' : process.env.PUBLIC_URL + '/techIcons/MFW-logo.png'}
+                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/MFW-logo-black.png' : process.env.PUBLIC_URL + '/techIcons/MFW-logo.png'}
                                                 className={classes.fullFirst} alt="MusicFestivalWizard-logo" />
                                         </div>
                                     </Grid>
@@ -602,7 +573,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.rowFlex}>
-                                            <img src={props.model.thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Logo.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Logo-White.png'}
+                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Logo.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Logo-White.png'}
                                                 className={classes.fullFirst} alt="GitHub-logo" />
                                         </div>
                                     </Grid>
@@ -615,7 +586,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.rowFlex}>
-                                            <img src={props.model.thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/jira-logo-blue.svg' : process.env.PUBLIC_URL + '/techIcons/jira-logo-white.svg'}
+                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/jira-logo-blue.svg' : process.env.PUBLIC_URL + '/techIcons/jira-logo-white.svg'}
                                                 className={classes.fullFirst} alt="Jira-logo" />
                                         </div>
                                     </Grid>
@@ -752,7 +723,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
 }
 
 const mapStateToProps = (state: AppState) => ({
-    model: state.model
+    thememode: state.model.thememode
 });
 
 const mapDispatchToProps = (dispatch: any) => {

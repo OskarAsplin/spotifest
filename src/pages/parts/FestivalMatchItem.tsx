@@ -1,9 +1,8 @@
 import React from 'react';
 import { AppState, DispatchProps, FestivalMatch, MatchingMethod } from "../../redux/types";
 import { connect } from "react-redux";
-import { createStyles, MuiThemeProvider, Theme, Paper, IconButton, Button, Collapse, Typography, Box, PaletteType, Tooltip } from "@material-ui/core";
-import { withStyles, makeStyles, createMuiTheme } from '@material-ui/core/styles';
-import { lightBlue, pink } from "@material-ui/core/colors";
+import { createStyles,  Theme, Paper, IconButton, Button, Collapse, Typography, Box, PaletteType, Tooltip } from "@material-ui/core";
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import clsx from 'clsx';
@@ -188,25 +187,6 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     const [expanded, setExpanded] = React.useState(false);
     const [redirectFestival, setRedirectFestival] = React.useState('');
 
-    const lightBluePinkMuiTheme = createMuiTheme({
-        typography: {
-            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-        },
-        palette: {
-            primary: {
-                light: lightBlue[300],
-                main: lightBlue[500],
-                dark: lightBlue[700]
-            },
-            secondary: {
-                light: pink[300],
-                main: pink[500],
-                dark: pink[700]
-            },
-            type: thememode
-        }
-    });
-
     const classes = useStyles();
 
     let matching_percent: number = 0;
@@ -234,186 +214,184 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
 
     return (
         <Paper elevation={3} className={classes.root} key={festival.name}>
-            <MuiThemeProvider theme={lightBluePinkMuiTheme}>
-                <div className={classes.titleLine}>
-                    <div className={classes.titleAndMatchBox}>
-                        <div className={!showMatching && !bigScreen ? classes.growAlign : classes.grow}>
-                            <Button
-                                className={classes.button}
-                                color="inherit"
-                                onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}
-                            >
-                                <Typography variant={bigScreen ? "h2" : "h4"} className={!showMatching && !bigScreen ? classes.festivalTitleCenter : classes.festivalTitle}>
-                                    {festival.name}
-                                </Typography>
-                            </Button>
-                        </div>
-                        {showMatching &&
-                            <div>
-                                <Box className={classes.toolTip}>
-                                    <HtmlTooltip placement="left-start" interactive leaveTouchDelay={3000}
-                                        title={
-                                            <React.Fragment>
-                                                <Typography color="inherit" variant={bigScreen ? 'subtitle2' : 'body2'}>{'Genres: ' + Math.ceil(festival.matching_percent_genres) + '%'}</Typography>
-                                                <Typography color="inherit" variant={bigScreen ? 'subtitle2' : 'body2'}>{'Artists: ' + Math.ceil(festival.matching_percent_artists) + '%'}</Typography>
-                                                <Typography color="inherit" variant={bigScreen ? 'subtitle2' : 'body2'}>{'Total: ' + Math.ceil(festival.matching_percent_combined) + '%'}</Typography>
-                                            </React.Fragment>
-                                        }
-                                    >
-                                        <div className={classes.circleSize}>
-                                            <CircularProgressbar value={matching_percent} text={`${matching_percent}%`}
-                                                styles={buildStyles({
-                                                    textSize: '22px',
-                                                    pathTransitionDuration: 0.5,
-                                                    pathColor: pathColor,
-                                                    textColor: textColor,
-                                                    trailColor: trailColor,
-                                                    //backgroundColor: '#3e98c7',
-                                                })}
-                                            />
-                                            {/*<CircularProgressbarWithChildren value={matchingMethod === MatchingMethod.Genre ? matching_percent : Math.min(festival.matching_artists.length*10, 100)}
-                                                styles={buildStyles({
-                                                    //textSize: '22px',
-                                                    pathTransitionDuration: 0.5,
-                                                    pathColor: pathColor,
-                                                    textColor: textColor,
-                                                    trailColor: trailColor,
-                                                })}
-                                            >
-                                                <div className={classes.artistAvatarBox}>
-                                                    <div style={{ fontSize: '18px', marginTop: -2, marginLeft: 3, color: textColor }}>
-                                                        {matchingMethod === MatchingMethod.Genre ? matching_percent + '%' : festival.matching_artists.length}
-                                                    </div>
-                                                    {matchingMethod === MatchingMethod.Artist && <MusicNote style={{ marginTop: 0, color: textColor }} fontSize={'small'} />}
-                                                </div>
-                                            </CircularProgressbarWithChildren>*/}
-                                        </div>
-                                    </HtmlTooltip>
-                                </Box>
-                            </div>
-                        }
+            <div className={classes.titleLine}>
+                <div className={classes.titleAndMatchBox}>
+                    <div className={!showMatching && !bigScreen ? classes.growAlign : classes.grow}>
+                        <Button
+                            className={classes.button}
+                            color="inherit"
+                            onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}
+                        >
+                            <Typography variant={bigScreen ? "h2" : "h4"} className={!showMatching && !bigScreen ? classes.festivalTitleCenter : classes.festivalTitle}>
+                                {festival.name}
+                            </Typography>
+                        </Button>
                     </div>
-                </div>
-                <div className={classes.root2}>
-                    <div id={'details_and_matching_artists_and_lineup'} className={classes.flexRow}>
-                        <div id={'details_and_matching_artists'} className={classes.grow}>
-                            {festival.cancelled ?
-                                <Typography variant="subtitle1" color='secondary'>
-                                    {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
-                                </Typography> :
-                                <Typography variant="subtitle1">
-                                    {festival.date + ', ' + festival.year}
-                                </Typography>}
-                            <Typography variant="subtitle1">
-                                {festival.locationText}
-                            </Typography>
-                            <Typography variant="subtitle1">
-                                {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}
-                            </Typography>
-                            {!bigScreen && festival.festivalImg && <div className={classes.lineupBox}>
-                                <Button onClick={() => window.open(festival.festivalImg, '_blank')}>
-                                    <img className={classes.lineup} src={festival.festivalImg} alt="" />
-                                </Button>
-                            </div>}
-                            {showMatching &&
-                                <div className={classes.matchingPopularBox}>
-                                    <Typography variant="body1" color='primary' component="div" >
-                                        <Box fontWeight="fontWeightBold">
-                                            {festival.matching_artists.length > 0 ? 'Matching artists' : 'No matching artists'}
-                                        </Box>
-                                    </Typography>
-                                </div>
-                            }
-                            {showMatching &&
-                                <div className={classes.artistAvatarBox}>
-                                    {festival.matching_artists.length > 0 &&
-                                        festival.matching_artists
-                                            .slice(0, endFirstRow())
-                                            .map((artist) => (
-                                                <ArtistBubble
-                                                    artist={artist}
-                                                    key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
-                                                    thememode={thememode} />
-                                            )
-                                            )}
-                                    {!bigScreen && threeArtistWidth &&
-                                        (festival.matching_artists.length - 2) % 3 === 0 &&
-                                        <div className={classes.width100} />
+                    {showMatching &&
+                        <div>
+                            <Box className={classes.toolTip}>
+                                <HtmlTooltip placement="left-start" interactive leaveTouchDelay={3000}
+                                    title={
+                                        <React.Fragment>
+                                            <Typography color="inherit" variant={bigScreen ? 'subtitle2' : 'body2'}>{'Genres: ' + Math.ceil(festival.matching_percent_genres) + '%'}</Typography>
+                                            <Typography color="inherit" variant={bigScreen ? 'subtitle2' : 'body2'}>{'Artists: ' + Math.ceil(festival.matching_percent_artists) + '%'}</Typography>
+                                            <Typography color="inherit" variant={bigScreen ? 'subtitle2' : 'body2'}>{'Total: ' + Math.ceil(festival.matching_percent_combined) + '%'}</Typography>
+                                        </React.Fragment>
                                     }
-                                    {!bigScreen && fourArtistWidth &&
-                                        (festival.matching_artists.length - 3) % 4 === 0 &&
-                                        <div className={classes.width100} />
-                                    }
-                                    {!bigScreen && fourArtistWidth &&
-                                        (festival.matching_artists.length - 2) % 4 === 0 &&
-                                        <div className={classes.width200} />
-                                    }
-                                </div>
-                            }
+                                >
+                                    <div className={classes.circleSize}>
+                                        <CircularProgressbar value={matching_percent} text={`${matching_percent}%`}
+                                            styles={buildStyles({
+                                                textSize: '22px',
+                                                pathTransitionDuration: 0.5,
+                                                pathColor: pathColor,
+                                                textColor: textColor,
+                                                trailColor: trailColor,
+                                                //backgroundColor: '#3e98c7',
+                                            })}
+                                        />
+                                        {/*<CircularProgressbarWithChildren value={matchingMethod === MatchingMethod.Genre ? matching_percent : Math.min(festival.matching_artists.length*10, 100)}
+                                            styles={buildStyles({
+                                                //textSize: '22px',
+                                                pathTransitionDuration: 0.5,
+                                                pathColor: pathColor,
+                                                textColor: textColor,
+                                                trailColor: trailColor,
+                                            })}
+                                        >
+                                            <div className={classes.artistAvatarBox}>
+                                                <div style={{ fontSize: '18px', marginTop: -2, marginLeft: 3, color: textColor }}>
+                                                    {matchingMethod === MatchingMethod.Genre ? matching_percent + '%' : festival.matching_artists.length}
+                                                </div>
+                                                {matchingMethod === MatchingMethod.Artist && <MusicNote style={{ marginTop: 0, color: textColor }} fontSize={'small'} />}
+                                            </div>
+                                        </CircularProgressbarWithChildren>*/}
+                                    </div>
+                                </HtmlTooltip>
+                            </Box>
                         </div>
-                        {bigScreen && festival.festivalImg && <div className={classes.lineupBox}>
+                    }
+                </div>
+            </div>
+            <div className={classes.root2}>
+                <div id={'details_and_matching_artists_and_lineup'} className={classes.flexRow}>
+                    <div id={'details_and_matching_artists'} className={classes.grow}>
+                        {festival.cancelled ?
+                            <Typography variant="subtitle1" color='secondary'>
+                                {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
+                            </Typography> :
+                            <Typography variant="subtitle1">
+                                {festival.date + ', ' + festival.year}
+                            </Typography>}
+                        <Typography variant="subtitle1">
+                            {festival.locationText}
+                        </Typography>
+                        <Typography variant="subtitle1">
+                            {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}
+                        </Typography>
+                        {!bigScreen && festival.festivalImg && <div className={classes.lineupBox}>
                             <Button onClick={() => window.open(festival.festivalImg, '_blank')}>
                                 <img className={classes.lineup} src={festival.festivalImg} alt="" />
                             </Button>
                         </div>}
+                        {showMatching &&
+                            <div className={classes.matchingPopularBox}>
+                                <Typography variant="body1" color='primary' component="div" >
+                                    <Box fontWeight="fontWeightBold">
+                                        {festival.matching_artists.length > 0 ? 'Matching artists' : 'No matching artists'}
+                                    </Box>
+                                </Typography>
+                            </div>
+                        }
+                        {showMatching &&
+                            <div className={classes.artistAvatarBox}>
+                                {festival.matching_artists.length > 0 &&
+                                    festival.matching_artists
+                                        .slice(0, endFirstRow())
+                                        .map((artist) => (
+                                            <ArtistBubble
+                                                artist={artist}
+                                                key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                                thememode={thememode} />
+                                        )
+                                        )}
+                                {!bigScreen && threeArtistWidth &&
+                                    (festival.matching_artists.length - 2) % 3 === 0 &&
+                                    <div className={classes.width100} />
+                                }
+                                {!bigScreen && fourArtistWidth &&
+                                    (festival.matching_artists.length - 3) % 4 === 0 &&
+                                    <div className={classes.width100} />
+                                }
+                                {!bigScreen && fourArtistWidth &&
+                                    (festival.matching_artists.length - 2) % 4 === 0 &&
+                                    <div className={classes.width200} />
+                                }
+                            </div>
+                        }
                     </div>
-                    {showMatching && bigScreen &&
-                        <div className={classes.artistAvatarBox}>
-                            {festival.matching_artists.length > 0 &&
-                                festival.matching_artists
-                                    .slice(endFirstRow())
-                                    .map((artist) => (
-                                        <ArtistBubble
-                                            artist={artist}
-                                            key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
-                                            thememode={thememode} />
-                                    )
-                                    )}
-                        </div>
-                    }
-                    <div className={classes.matchingPopularBox}>
-                        <Typography variant="body1" color='primary' component="div" >
-                            <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
-                                Popular artists at this festival
-                            </Box>
-                        </Typography>
-                        <IconButton
-                            className={clsx(classes.expand, {
-                                [classes.expandOpen]: expanded,
-                            })}
-                            onClick={() => setExpanded(!expanded)}
-                            aria-expanded={expanded}
-                            aria-label="show more"
-                        >
-                            <ExpandMoreIcon />
-                        </IconButton>
-                    </div>
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
-                        <div className={classes.artistAvatarBox}>
-                            {festival.popular_artists.length > 0 &&
-                                festival.popular_artists.slice(0, bigScreen ? 14 : 12).map((artist) => (
+                    {bigScreen && festival.festivalImg && <div className={classes.lineupBox}>
+                        <Button onClick={() => window.open(festival.festivalImg, '_blank')}>
+                            <img className={classes.lineup} src={festival.festivalImg} alt="" />
+                        </Button>
+                    </div>}
+                </div>
+                {showMatching && bigScreen &&
+                    <div className={classes.artistAvatarBox}>
+                        {festival.matching_artists.length > 0 &&
+                            festival.matching_artists
+                                .slice(endFirstRow())
+                                .map((artist) => (
                                     <ArtistBubble
                                         artist={artist}
-                                        key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
+                                        key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
                                         thememode={thememode} />
                                 )
                                 )}
-                            {!bigScreen && threeArtistWidth &&
-                                (festival.popular_artists.length - 2) % 3 === 0 &&
-                                <div className={classes.width100} />
-                            }
-                            {!bigScreen && fourArtistWidth &&
-                                (festival.popular_artists.length - 3) % 4 === 0 &&
-                                <div className={classes.width100} />
-                            }
-                            {!bigScreen && fourArtistWidth &&
-                                (festival.popular_artists.length - 2) % 4 === 0 &&
-                                <div className={classes.width200} />
-                            }
-                        </div>
-                    </Collapse>
+                    </div>
+                }
+                <div className={classes.matchingPopularBox}>
+                    <Typography variant="body1" color='primary' component="div" >
+                        <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
+                            Popular artists at this festival
+                        </Box>
+                    </Typography>
+                    <IconButton
+                        className={clsx(classes.expand, {
+                            [classes.expandOpen]: expanded,
+                        })}
+                        onClick={() => setExpanded(!expanded)}
+                        aria-expanded={expanded}
+                        aria-label="show more"
+                    >
+                        <ExpandMoreIcon />
+                    </IconButton>
                 </div>
-            </MuiThemeProvider>
+                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <div className={classes.artistAvatarBox}>
+                        {festival.popular_artists.length > 0 &&
+                            festival.popular_artists.slice(0, bigScreen ? 14 : 12).map((artist) => (
+                                <ArtistBubble
+                                    artist={artist}
+                                    key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
+                                    thememode={thememode} />
+                            )
+                            )}
+                        {!bigScreen && threeArtistWidth &&
+                            (festival.popular_artists.length - 2) % 3 === 0 &&
+                            <div className={classes.width100} />
+                        }
+                        {!bigScreen && fourArtistWidth &&
+                            (festival.popular_artists.length - 3) % 4 === 0 &&
+                            <div className={classes.width100} />
+                        }
+                        {!bigScreen && fourArtistWidth &&
+                            (festival.popular_artists.length - 2) % 4 === 0 &&
+                            <div className={classes.width200} />
+                        }
+                    </div>
+                </Collapse>
+            </div>
         </Paper>
     );
 };

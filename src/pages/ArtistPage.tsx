@@ -331,25 +331,6 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
         },
         palette: {
             primary: {
-                light: indigo[300],
-                main: indigo[500],
-                dark: indigo[700]
-            },
-            secondary: {
-                light: deepOrange[300],
-                main: deepOrange[500],
-                dark: deepOrange[700]
-            },
-            type: props.model.thememode
-        }
-    });
-
-    const lightBluePinkMuiTheme = createMuiTheme({
-        typography: {
-            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-        },
-        palette: {
-            primary: {
                 light: lightBlue[300],
                 main: lightBlue[500],
                 dark: lightBlue[700]
@@ -358,6 +339,24 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                 light: pink[300],
                 main: pink[500],
                 dark: pink[700]
+            },
+            type: props.model.thememode
+        }
+    });
+    const indigoOrangeMuiTheme = createMuiTheme({
+        typography: {
+            fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+        },
+        palette: {
+            primary: {
+                light: indigo[300],
+                main: indigo[500],
+                dark: indigo[700]
+            },
+            secondary: {
+                light: deepOrange[300],
+                main: deepOrange[500],
+                dark: deepOrange[700]
             },
             type: props.model.thememode
         }
@@ -375,7 +374,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
 
     if (!artistInfo) {
         return (
-            <MuiThemeProvider theme={muiTheme}>
+            <MuiThemeProvider theme={indigoOrangeMuiTheme}>
                 <CssBaseline />
                 <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
                 {pcScreen && <div className={classes.topLeft}>
@@ -440,31 +439,31 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                     {'Genres: ' + artistInfo.artist.genres.join(", ")}
                                 </Typography>
                                 {artistInfo.artist.spotifyId &&
-                                    <Link color={'secondary'} variant="subtitle1"
-                                        href={'https://open.spotify.com/artist/' + artistInfo.artist.spotifyId}
-                                        rel="noopener noreferrer" target="_blank">
-                                        Open artist in spotify
-                                    </Link>}
+                                    <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+                                        <Link color={'secondary'} variant="subtitle1"
+                                            href={'https://open.spotify.com/artist/' + artistInfo.artist.spotifyId}
+                                            rel="noopener noreferrer" target="_blank">
+                                            Open artist in spotify
+                                        </Link>
+                                    </MuiThemeProvider>}
                                 {relatedArtists.length > 0 &&
-                                    <MuiThemeProvider theme={lightBluePinkMuiTheme}>
-                                        <div className={classes.matchingPopularBox}>
-                                            <Typography variant="body1" color='primary' component="div" >
-                                                <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
-                                                    Related artists
-                                                </Box>
-                                            </Typography>
-                                            <IconButton
-                                                className={clsx(classes.expand, {
-                                                    [classes.expandOpen]: expanded,
-                                                })}
-                                                onClick={() => setExpanded(!expanded)}
-                                                aria-expanded={expanded}
-                                                aria-label="show more"
-                                            >
-                                                <ExpandMoreIcon />
-                                            </IconButton>
-                                        </div>
-                                    </MuiThemeProvider>
+                                    <div className={classes.matchingPopularBox}>
+                                        <Typography variant="body1" color='primary' component="div" >
+                                            <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
+                                                Related artists
+                                            </Box>
+                                        </Typography>
+                                        <IconButton
+                                            className={clsx(classes.expand, {
+                                                [classes.expandOpen]: expanded,
+                                            })}
+                                            onClick={() => setExpanded(!expanded)}
+                                            aria-expanded={expanded}
+                                            aria-label="show more"
+                                        >
+                                            <ExpandMoreIcon />
+                                        </IconButton>
+                                    </div>
                                 }
                                 {relatedArtists.length > 0 &&
                                     <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -504,39 +503,37 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                         </div>
                     }
                     {isArtistInDb && artistInfo.festivalsPast.length !== 0 &&
-                        <MuiThemeProvider theme={lightBluePinkMuiTheme}>
-                            <div className={classes.align}>
-                                <div className={classes.verticalSpace} />
-                                <div className={classes.verticalSpace} />
-                                <Typography variant={bigScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
-                                    Previously attended festivals
-                                </Typography>
-                                <Box className={classes.box2}>
-                                    {artistInfo.festivalsPast.map((festival, idx) =>
-                                        <Button className={classes.paper3} key={'festivals artist attends: ' + festival.name + festival.year}
-                                            variant="outlined"
-                                            onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}>
-                                            <div className={classes.hundredWidth} key={'past festival: ' + festival.name + idx}>
-                                                <Typography variant="h4">
-                                                    {festival.name}
+                        <div className={classes.align}>
+                            <div className={classes.verticalSpace} />
+                            <div className={classes.verticalSpace} />
+                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
+                                Previously attended festivals
+                            </Typography>
+                            <Box className={classes.box2}>
+                                {artistInfo.festivalsPast.map((festival, idx) =>
+                                    <Button className={classes.paper3} key={'festivals artist attends: ' + festival.name + festival.year}
+                                        variant="outlined"
+                                        onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}>
+                                        <div className={classes.hundredWidth} key={'past festival: ' + festival.name + idx}>
+                                            <Typography variant="h4">
+                                                {festival.name}
+                                            </Typography>
+                                            {festival.cancelled ?
+                                                <Typography variant="subtitle1" color='secondary'>
+                                                    {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
+                                                </Typography> :
+                                                <Typography variant="subtitle1">
+                                                    {festival.date + ', ' + festival.year}
                                                 </Typography>
-                                                {festival.cancelled ?
-                                                    <Typography variant="subtitle1" color='secondary'>
-                                                        {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
-                                                    </Typography> :
-                                                    <Typography variant="subtitle1">
-                                                        {festival.date + ', ' + festival.year}
-                                                    </Typography>
-                                                }
-                                                <Typography variant="subtitle1" >
-                                                    {festival.locationText}
-                                                </Typography>
-                                            </div>
-                                        </Button>
-                                    )}
-                                </Box>
-                            </div>
-                        </MuiThemeProvider>
+                                            }
+                                            <Typography variant="subtitle1" >
+                                                {festival.locationText}
+                                            </Typography>
+                                        </div>
+                                    </Button>
+                                )}
+                            </Box>
+                        </div>
                     }
                     {!isArtistInDb &&
                         <div className={classes.align}>
@@ -558,10 +555,11 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                     }
                 </div>
 
-                <div hidden={!loaderOn} className={classes.progressBar}>
-                    <CircularProgress size={100} thickness={3} color={'secondary'} />
-                </div>
-
+                <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+                    <div hidden={!loaderOn} className={classes.progressBar}>
+                        <CircularProgress size={100} thickness={3} color={'secondary'} />
+                    </div>
+                </MuiThemeProvider>
             </MuiThemeProvider>
         );
     };

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, Model } from "../../redux/types";
 import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, getIconPicture, getBigPicture, setShowPlaylistModal } from "../../redux/actions";
 import { connect } from "react-redux";
-import { createStyles, Theme, MuiThemeProvider, Typography, Box, Paper, Grid, Tooltip, PaletteType, InputLabel, MenuItem, FormControl, Select, ListSubheader, Modal, Fade, Backdrop, Link } from "@material-ui/core";
+import { createStyles, Theme, Typography, Box, Paper, Grid, Tooltip, PaletteType, InputLabel, MenuItem, FormControl, Select, ListSubheader, Modal, Fade, Backdrop, Link } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import indigo from "@material-ui/core/colors/indigo";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
@@ -12,8 +12,6 @@ import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { lightBlue, pink } from "@material-ui/core/colors";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -57,11 +55,21 @@ const useStyles = makeStyles((theme: Theme) =>
 			maxWidth: '1000px',
 			marginBottom: theme.spacing(2)
 		},
-		formControl: {
+		formControlPlaylist: {
 			margin: theme.spacing(1),
 			'@media (min-width: 800px)': {
 				minWidth: 150,
-				maxWidth: 200,
+				maxWidth: 215,
+			},
+			'@media (max-width: 799px)': {
+				width: '100%',
+			},
+		},
+		formControlArea: {
+			margin: theme.spacing(1),
+			'@media (min-width: 800px)': {
+				minWidth: 150,
+				maxWidth: 185,
 			},
 			'@media (max-width: 799px)': {
 				width: '100%',
@@ -183,25 +191,6 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	const pcScreen = useMediaQuery('(min-width:1200px)');
 
 	const { thememode, playlists, topArtists, selectedPlaylistArtists, countries, continents, dispatch, matchSettings, showPlaylistModal, noRegisteredPlaylists } = props;
-
-	const lightBluePinkMuiTheme = createMuiTheme({
-		typography: {
-			fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-		},
-		palette: {
-			primary: {
-				light: lightBlue[300],
-				main: lightBlue[500],
-				dark: lightBlue[700]
-			},
-			secondary: {
-				light: pink[300],
-				main: pink[500],
-				dark: pink[700]
-			},
-			type: props.model.thememode
-		}
-	});
 
 	const testMatchesWithGivenSettings = (
 		area: Area,
@@ -360,171 +349,169 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	return (
 		<Box className={classes.box}>
-			<MuiThemeProvider theme={lightBluePinkMuiTheme}>
-				<Paper>
-					<Box className={classes.spaceBetween}>
-						<Box className={classes.alignItems}>
-							<FormControl className={classes.formControl} variant="outlined" size="small">
-								<InputLabel id="choose-playlist-label">
-									Match with
-								</InputLabel>
-								<Select
-									labelId="choose-playlist-label"
-									id="choose-playlist"
-									value={matchSettings.matchBasis}
-									onChange={handlePlaylistChange}
-									label="Match with"
-								>
-									{topArtists.length !== 0 && <MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
-										Your most played artists
-									</MenuItem>}
-									<ListSubheader disableSticky disableGutters>{topArtists.length !== 0 ? 'or choose a playlist below' : 'choose a playlist below'}</ListSubheader>
-									{playlists.map((playlist) => (
-										<MenuItem key={playlist.name} value={playlist.name} style={{ minWidth: 200, maxWidth: 400 }}>
-											{playlist.name}
-										</MenuItem>
-									))}
-								</Select>
-							</FormControl>
-						</Box>
-						<Box className={classes.alignItems}>
-							<FormControl className={classes.formControl} variant="outlined" size="small">
-								<InputLabel id="choose-countries-label">Area</InputLabel>
-								<Select
-									labelId="choose-countries-label"
-									id="choose-countries"
-									value={matchSettings.area.isoCode}
-									onChange={handleAreaChange}
-									label="Area"
-								>
-									{continents.sort((a, b) => a.name > b.name ? 1 : -1).map((continent) =>
-										<MenuItem key={continent.isoCode} value={continent.isoCode} style={{ minWidth: 200 }}>
-											{continent.name}
-										</MenuItem>
-									)}
-									<ListSubheader disableSticky disableGutters>Countries</ListSubheader>
-									{countries.sort((a, b) => a.name > b.name ? 1 : -1).map((country) =>
-										<MenuItem key={country.isoCode} value={country.isoCode}>
-											{country.name}
-										</MenuItem>
-									)}
-								</Select>
-							</FormControl>
-						</Box>
-						<Box className={classes.alignItems2}>
-							<MuiPickersUtilsProvider utils={DateFnsUtils}>
-								<Grid container justify="space-around" className={classes.marginBottom}>
-									<KeyboardDatePicker
-										className={classes.datePickerFieldFrom}
-										//inputProps={{ classes: { adornedEnd: classes.noPadding } }}
-										margin="dense"
-										inputVariant="outlined"
-										id="date-picker-dialog-from"
-										label="From (m/y)"
-										format="MM/yyyy"
-										maxDate={new Date('2021-12-31')}
-										minDate={new Date('2019-01-01')}
-										views={['month', 'year']}
-										value={matchSettings.fromDate}
-										autoOk
-										onChange={handleFromDateChange}
-										KeyboardButtonProps={{
-											'aria-label': 'change date',
-										}}
-									/>
-								</Grid>
-								<Grid container justify="space-around" className={classes.marginBottom}>
-									<KeyboardDatePicker
-										className={classes.datePickerFieldTo}
-										margin="dense"
-										inputVariant="outlined"
-										id="date-picker-dialog-to"
-										label="To (m/y)"
-										format="MM/yyyy"
-										maxDate={new Date('2021-12-31')}
-										minDate={new Date('2019-01-01')}
-										views={['month', 'year']}
-										value={matchSettings.toDate}
-										autoOk
-										onChange={handleToDateChange}
-										KeyboardButtonProps={{
-											'aria-label': 'change date',
-										}}
-									/>
-								</Grid>
-							</MuiPickersUtilsProvider>
-						</Box>
-						{pcScreen && <Box className={classes.toolTip}>
-							<HtmlTooltip placement="right-start" interactive
-								title={
-									<React.Fragment>
-										<Typography color="inherit" variant="h6">Matching algorithm</Typography>
-										{'The matching agorithm is based on the genres of the festivals, giving a higher score if the genres fit well to your most played artists or selected playlist. Matching artists in the lineup of a festival will also increase the matching percent.'}
-									</React.Fragment>
-								}
+			<Paper>
+				<Box className={classes.spaceBetween}>
+					<Box className={classes.alignItems}>
+						<FormControl className={classes.formControlPlaylist} variant="outlined" size="small">
+							<InputLabel id="choose-playlist-label">
+								Match with
+							</InputLabel>
+							<Select
+								labelId="choose-playlist-label"
+								id="choose-playlist"
+								value={matchSettings.matchBasis}
+								onChange={handlePlaylistChange}
+								label="Match with"
 							>
-								<InfoIcon color="primary" style={{ fill: thememode === 'light' ? indigo[500] : '#fcfcfe' }} />
-							</HtmlTooltip>
-						</Box>
-						}
+								{topArtists.length !== 0 && <MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
+									Your most played artists
+								</MenuItem>}
+								<ListSubheader disableSticky disableGutters>{topArtists.length !== 0 ? 'or choose a playlist below' : 'choose a playlist below'}</ListSubheader>
+								{playlists.map((playlist) => (
+									<MenuItem key={playlist.name} value={playlist.name} style={{ minWidth: 200, maxWidth: 400 }}>
+										{playlist.name}
+									</MenuItem>
+								))}
+							</Select>
+						</FormControl>
 					</Box>
-				</Paper>
-				<Modal
-					aria-labelledby="transition-modal-title"
-					aria-describedby="transition-modal-description"
-					className={classes.modal}
-					closeAfterTransition
-					BackdropComponent={Backdrop}
-					BackdropProps={{
-						timeout: 500,
-					}}
-					open={showPlaylistModal}
-					onClose={() => {
-						dispatch(setShowPlaylistModal(false));
-					}}
-					disableBackdropClick
-					disableEscapeKeyDown
-				>
-					<Fade in={showPlaylistModal}>
-						<Paper className={classes.paper}>
-							{playlists.length !== 0 &&
-								<Box className={classes.alignItems3}>
-									<Typography variant={smallScreen ? "h6" : "h4"} className={classes.initialPlaylistTitle}>
-										Choose a playlist to start your matching
-			                        </Typography>
-									<FormControl className={classes.formControl2} variant="outlined" size="small">
-										<InputLabel id="choose-playlist-label">
-											Playlist
-			                        </InputLabel>
-										<Select
-											labelId="choose-initial-playlist-label"
-											id="choose-initial-playlist"
-											value={''}
-										onChange={async (event: React.ChangeEvent<{ value: unknown }>) => {
-											dispatch(setShowPlaylistModal(false));
-											handlePlaylistChange(event);
-										}}
-											label="Playlist"
-										>
-											{playlists.map((playlist) => (
-												<MenuItem key={playlist.name} value={playlist.name} style={{ minWidth: 200, maxWidth: 400 }}>
-													{playlist.name}
-												</MenuItem>
-											))}
-										</Select>
-									</FormControl>
-								</Box>}
-							{noRegisteredPlaylists &&
-								<Typography>We can't find any listening habits or playlists to use for our festival matching. Go to your {(props.model.userInfo && props.model.userInfo.spotifyUrl) ? <Link color={'primary'}
-                                        href={props.model.userInfo.spotifyUrl}
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-									Spotify profile
-                                    </Link>: 'Spotify profile'} and create or subscribe to a playlist to start your festival matching</Typography>}
-						</Paper>
-					</Fade>
-				</Modal>
-			</MuiThemeProvider>
+					<Box className={classes.alignItems}>
+						<FormControl className={classes.formControlArea} variant="outlined" size="small">
+							<InputLabel id="choose-countries-label">Area</InputLabel>
+							<Select
+								labelId="choose-countries-label"
+								id="choose-countries"
+								value={matchSettings.area.isoCode}
+								onChange={handleAreaChange}
+								label="Area"
+							>
+								{continents.sort((a, b) => a.name > b.name ? 1 : -1).map((continent) =>
+									<MenuItem key={continent.isoCode} value={continent.isoCode} style={{ minWidth: 200 }}>
+										{continent.name}
+									</MenuItem>
+								)}
+								<ListSubheader disableSticky disableGutters>Countries</ListSubheader>
+								{countries.sort((a, b) => a.name > b.name ? 1 : -1).map((country) =>
+									<MenuItem key={country.isoCode} value={country.isoCode}>
+										{country.name}
+									</MenuItem>
+								)}
+							</Select>
+						</FormControl>
+					</Box>
+					<Box className={classes.alignItems2}>
+						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+							<Grid container justify="space-around" className={classes.marginBottom}>
+								<KeyboardDatePicker
+									className={classes.datePickerFieldFrom}
+									//inputProps={{ classes: { adornedEnd: classes.noPadding } }}
+									margin="dense"
+									inputVariant="outlined"
+									id="date-picker-dialog-from"
+									label="From (m/y)"
+									format="MM/yyyy"
+									maxDate={new Date('2021-12-31')}
+									minDate={new Date('2019-01-01')}
+									views={['month', 'year']}
+									value={matchSettings.fromDate}
+									autoOk
+									onChange={handleFromDateChange}
+									KeyboardButtonProps={{
+										'aria-label': 'change date',
+									}}
+								/>
+							</Grid>
+							<Grid container justify="space-around" className={classes.marginBottom}>
+								<KeyboardDatePicker
+									className={classes.datePickerFieldTo}
+									margin="dense"
+									inputVariant="outlined"
+									id="date-picker-dialog-to"
+									label="To (m/y)"
+									format="MM/yyyy"
+									maxDate={new Date('2021-12-31')}
+									minDate={new Date('2019-01-01')}
+									views={['month', 'year']}
+									value={matchSettings.toDate}
+									autoOk
+									onChange={handleToDateChange}
+									KeyboardButtonProps={{
+										'aria-label': 'change date',
+									}}
+								/>
+							</Grid>
+						</MuiPickersUtilsProvider>
+					</Box>
+					{pcScreen && <Box className={classes.toolTip}>
+						<HtmlTooltip placement="right-start" interactive
+							title={
+								<React.Fragment>
+									<Typography color="inherit" variant="h6">Matching algorithm</Typography>
+									{'The matching agorithm is based on the genres of the festivals, giving a higher score if the genres fit well to your most played artists or selected playlist. Matching artists in the lineup of a festival will also increase the matching percent.'}
+								</React.Fragment>
+							}
+						>
+							<InfoIcon color="primary" style={{ fill: thememode === 'light' ? indigo[500] : '#fcfcfe' }} />
+						</HtmlTooltip>
+					</Box>
+					}
+				</Box>
+			</Paper>
+			<Modal
+				aria-labelledby="transition-modal-title"
+				aria-describedby="transition-modal-description"
+				className={classes.modal}
+				closeAfterTransition
+				BackdropComponent={Backdrop}
+				BackdropProps={{
+					timeout: 500,
+				}}
+				open={showPlaylistModal}
+				onClose={() => {
+					dispatch(setShowPlaylistModal(false));
+				}}
+				disableBackdropClick
+				disableEscapeKeyDown
+			>
+				<Fade in={showPlaylistModal}>
+					<Paper className={classes.paper}>
+						{playlists.length !== 0 &&
+							<Box className={classes.alignItems3}>
+								<Typography variant={smallScreen ? "h6" : "h4"} className={classes.initialPlaylistTitle}>
+									Choose a playlist to start your matching
+		                        </Typography>
+								<FormControl className={classes.formControl2} variant="outlined" size="small">
+									<InputLabel id="choose-playlist-label">
+										Playlist
+		                        </InputLabel>
+									<Select
+										labelId="choose-initial-playlist-label"
+										id="choose-initial-playlist"
+										value={''}
+									onChange={async (event: React.ChangeEvent<{ value: unknown }>) => {
+										dispatch(setShowPlaylistModal(false));
+										handlePlaylistChange(event);
+									}}
+										label="Playlist"
+									>
+										{playlists.map((playlist) => (
+											<MenuItem key={playlist.name} value={playlist.name} style={{ minWidth: 200, maxWidth: 400 }}>
+												{playlist.name}
+											</MenuItem>
+										))}
+									</Select>
+								</FormControl>
+							</Box>}
+						{noRegisteredPlaylists &&
+							<Typography>We can't find any listening habits or playlists to use for our festival matching. Go to your {(props.model.userInfo && props.model.userInfo.spotifyUrl) ? <Link color={'primary'}
+                                    href={props.model.userInfo.spotifyUrl}
+                                    target={"_blank"}
+                                    rel="noopener noreferrer">
+								Spotify profile
+                                </Link>: 'Spotify profile'} and create or subscribe to a playlist to start your festival matching</Typography>}
+					</Paper>
+				</Fade>
+			</Modal>
 		</Box>
 	);
 };

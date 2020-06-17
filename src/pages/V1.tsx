@@ -9,8 +9,7 @@ import FestivalMatchView from "./parts/FestivalMatchView";
 import FestivalMatchSettingsBar from "./parts/FestivalMatchSettingsBar";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import deepOrange from "@material-ui/core/colors/deepOrange";
-import indigo from "@material-ui/core/colors/indigo";
+import { deepOrange, indigo, pink, lightBlue } from "@material-ui/core/colors";
 import { Model } from "../redux/types";
 import { authorizeHref } from "./LoginScreen";
 //import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
@@ -128,6 +127,21 @@ const V1: React.FC<Props> = (props: Props) => {
         },
         palette: {
             primary: {
+                light: lightBlue[300],
+                main: lightBlue[500],
+                dark: lightBlue[700]
+            },
+            secondary: {
+                light: pink[300],
+                main: pink[500],
+                dark: pink[700]
+            },
+            type: props.model.thememode
+        }
+    });
+    const indigoOrangeMuiTheme = createMuiTheme({
+        palette: {
+            primary: {
                 light: indigo[300],
                 main: indigo[500],
                 dark: indigo[700]
@@ -163,9 +177,10 @@ const V1: React.FC<Props> = (props: Props) => {
                         There seems to be some issue with connecting to our database. Try refreshing the page.
                     </Typography>
                 </div>}
-
             <div hidden={!loaderOn} className={classes.progressBar}>
-                <CircularProgress size={100} thickness={3} color={'secondary'} />
+                <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+                    <CircularProgress size={100} thickness={3} color={'secondary'} />
+                </MuiThemeProvider>
             </div>
 
         </MuiThemeProvider>
