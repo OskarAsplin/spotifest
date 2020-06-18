@@ -293,7 +293,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
         return (
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
-                <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
+                <AppBarView />
                 <div className={classes.align}>
                     <div className={classes.verticalSpace} />
                     <div className={classes.verticalSpace} />
@@ -322,7 +322,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
         return (
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
-                <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
+                <AppBarView />
                 {pcScreen && <div className={classes.topLeft}>
                     <IconButton
                         onClick={() => {

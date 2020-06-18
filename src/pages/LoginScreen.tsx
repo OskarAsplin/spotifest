@@ -206,7 +206,6 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
         <div className={classes.background}>
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
-                {/*<AppBarView birghtnessSwitchEnabled={false} accountCircleEnabled={false} />*/}
                 <div className={classes.verticalSpace} />
                 <div className={classes.verticalSpace} />
 

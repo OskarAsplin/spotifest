@@ -376,7 +376,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
         return (
             <MuiThemeProvider theme={indigoOrangeMuiTheme}>
                 <CssBaseline />
-                <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
+                <AppBarView />
                 {pcScreen && <div className={classes.topLeft}>
                     <IconButton
                         onClick={() => {
@@ -415,7 +415,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
         return (
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
-                <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
+                <AppBarView />
                 {pcScreen && <div className={classes.topLeft}>
                     <IconButton
                         onClick={() => {

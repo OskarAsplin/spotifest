@@ -1,18 +1,22 @@
 import React, { useState } from 'react';
 import { createStyles, makeStyles, Theme, createMuiTheme } from '@material-ui/core/styles';
-import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider, Button, InputAdornment, TextField, Paper, Box, CircularProgress, ClickAwayListener } from '@material-ui/core';
+import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider, Button, InputAdornment, TextField, Paper, Box, CircularProgress, ClickAwayListener, Drawer } from '@material-ui/core';
+import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Brightness2, Brightness4 } from "@material-ui/icons";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Model, AppState, DispatchProps, SearchResponse } from "../../redux/types";
 import { connect } from "react-redux";
 import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../../redux/actions";
 import { lightBlue, blueGrey } from "@material-ui/core/colors";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from "@material-ui/icons/Search";
+import InfoIcon from '@material-ui/icons/Info';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import useConstant from 'use-constant';
 import { useAsync } from 'react-async-hook';
 import { fetchToJson, getApiBaseUrl } from "../../utils/restUtils";
+import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -118,20 +122,18 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (min-width: 610px)': {
                 marginLeft: theme.spacing(2),
             },
-        }
+        },
+        drawerList: {
+            width: 250,
+        },
     }),
 );
-
-interface OwnProps {
-    birghtnessSwitchEnabled: boolean,
-    accountCircleEnabled: boolean
-}
 
 interface StoreProps {
     model: Model
 }
 
-type Props = OwnProps & StoreProps & DispatchProps;
+type Props = StoreProps & DispatchProps;
 
 const emptySearchResponse: SearchResponse = { festivals: [], artists: [] };
 
@@ -180,6 +182,8 @@ const AppBarView: React.FC<Props> = (props: Props) => {
     const { inputText, setInputText, searchResults } = useSearchDb();
     const [searchBlur, setSearchBlur] = useState([false, false]);
     const [showSearchFieldSmallScreen, setShowSearchFieldSmallScreen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [redirectAboutPage, setRedirectAboutPage] = useState(false);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -202,6 +206,20 @@ const AppBarView: React.FC<Props> = (props: Props) => {
 
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
+
+    const toggleDrawer = (open: boolean) => (
+        event: React.KeyboardEvent | React.MouseEvent,
+    ) => {
+        if (
+            event.type === 'keydown' &&
+            ((event as React.KeyboardEvent).key === 'Tab' ||
+                (event as React.KeyboardEvent).key === 'Shift')
+        ) {
+            return;
+        }
+
+        setDrawerOpen(open);
+    };
 
     const lightBluePinkMuiTheme = createMuiTheme({
         typography: {
@@ -369,6 +387,10 @@ const AppBarView: React.FC<Props> = (props: Props) => {
         </div>);
     }
 
+    if (redirectAboutPage && !window.location.href.endsWith('/about')) {
+        return <Redirect push to={'/about'} />
+    }
+
     return (
         <div className={classes.root}>
             <MuiThemeProvider theme={lightBluePinkMuiTheme}>
@@ -392,19 +414,18 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                     <SearchIcon />
                                 </IconButton>
                             </MuiThemeProvider>}
-                        {props.accountCircleEnabled &&
-                            <MuiThemeProvider theme={lightBluePinkDarkMuiTheme}>
-                                <IconButton
-                                    color="inherit"
-                                    aria-describedby={id}
-                                    onClick={handleClick}
-                                    className={classes.marginLeft}
-                                >
-                                    {props.model.userInfo?.profilePictureUrl ?
-                                        <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
-                                        : <AccountCircleIcon />}
-                                </IconButton>
-                            </MuiThemeProvider>}
+                        <MuiThemeProvider theme={lightBluePinkDarkMuiTheme}>
+                            <IconButton
+                                color="inherit"
+                                aria-describedby={id}
+                                onClick={handleClick}
+                                className={classes.marginLeft}
+                            >
+                                {props.model.userInfo?.profilePictureUrl ?
+                                    <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
+                                    : <AccountCircleIcon />}
+                            </IconButton>
+                        </MuiThemeProvider>
                         <Popover
                             id={id}
                             open={open}
@@ -442,19 +463,37 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                 </Link>}
                             </div>
                         </Popover>
-                        {props.birghtnessSwitchEnabled &&
-                            <IconButton
-                                color="inherit"
-                                onClick={() => {
-                                    props.model.thememode === 'light'
-                                        ? dispatch(switchToDarkMode())
-                                        : dispatch(switchToLightMode());
-                                }}
-                            >
-                                {props.model.thememode === 'light' ? <Brightness2 /> : <Brightness4 />}
-                            </IconButton>}
+                        <IconButton
+                            color="inherit"
+                            onClick={toggleDrawer(true)}
+                        >
+                            <MenuIcon />
+                        </IconButton>
                     </Toolbar>
                 </AppBar>
+                <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
+                    <div
+                        className={classes.drawerList}
+                        role="presentation"
+                        onClick={toggleDrawer(false)}
+                        onKeyDown={toggleDrawer(false)}
+                    >
+                        <List>
+                            <ListItem button key='About' onClick={() => setRedirectAboutPage(true)}>
+                                <ListItemIcon><InfoIcon /></ListItemIcon>
+                                <ListItemText primary='About' />
+                            </ListItem>
+                            <ListItem button key='Brightness' onClick={() => {
+                                props.model.thememode === 'light'
+                                    ? dispatch(switchToDarkMode())
+                                    : dispatch(switchToLightMode());
+                            }}>
+                                <ListItemIcon>{props.model.thememode === 'light' ? <Brightness2 /> : <Brightness4 />}</ListItemIcon>
+                                <ListItemText primary='Brightness' />
+                            </ListItem>
+                        </List>
+                    </div>
+                </Drawer>
                 {!bigScreen && showSearchFieldSmallScreen && <div className={classes.fullWidthAndReverse}>
                     <Paper className={classes.fixedWidthAbsolute} style={{ backgroundColor: props.model.thememode === 'dark' ? blueGrey[800] : blueGrey[700] }}>
                         {getSearchFieldAndResults()}

@@ -164,7 +164,7 @@ const V1: React.FC<Props> = (props: Props) => {
         //<SplashScreen>
         <MuiThemeProvider theme={muiTheme}>
             <CssBaseline />
-            <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
+            <AppBarView />
             <div className={classes.verticalSpace} />
             <div className={classes.root}>
                 <FestivalMatchSettingsBar />
