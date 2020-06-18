@@ -6,15 +6,12 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
-import 'react-circular-progressbar/dist/styles.css';
 import { lightBlue, pink, blueGrey } from "@material-ui/core/colors";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import MusicNote from '@material-ui/icons/MusicNote';
 import { Redirect } from 'react-router-dom';
-//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-//import { faLinkedin, faLinkedinIn, faGithub, faGithubAlt, faGithubSquare } from '@fortawesome/free-brands-svg-icons'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -40,13 +37,6 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
             width: '100%'
         },
-        progressBar: {
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            marginTop: '-50px',
-            marginLeft: '-50px'
-        },
         paper: {
             display: 'flex',
             flexDirection: 'column',
@@ -58,32 +48,27 @@ const useStyles = makeStyles((theme: Theme) =>
             },
             justifyContent: 'center',
             alignItems: 'center',
-            width: '100%'
         },
-        paper2: {
-            display: 'flex',
-            flexDirection: 'column',
-            '@media (min-width: 610px)': {
-                padding: theme.spacing(1, 4, 1, 4),
-            },
-            '@media (max-width: 609px)': {
-                padding: theme.spacing(1, 2, 1, 2),
-            },
-            justifyContent: 'center',
-            alignItems: 'center',
+        maxWidth400: {
             width: '100%',
             maxWidth: '400px'
         },
+        minWidth650: {
+            '@media (min-width: 700px)': {
+                minWidth: '650px'
+            },
+            '@media (max-width: 699px)': {
+                width: '100%'
+            },
+        },
         box: {
-            width: '100%',
+            '@media (max-width: 699px)': {
+                width: '100%'
+            },
             maxWidth: '1000px',
             margin: theme.spacing(0, 2, 2, 2),
         },
         box2: {
-            width: '100%',
-            maxWidth: '764px'
-        },
-        box3: {
             width: '100%',
             maxWidth: '1000px',
             margin: theme.spacing(0, 2, 2, 2),
@@ -92,69 +77,12 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'column'
         },
-        buttonBox: {
-            '@media (min-width: 610px)': {
-                maxWidth: '50%'
-            },
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        artistImg: {
-            maxHeight: 400,
-            maxWidth: '100%',
-        },
         flexColumn: {
             display: 'flex',
             flexDirection: 'column',
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center'
-        },
-        creatorFlex: {
-            display: 'flex',
-            '@media (min-width: 610px)': {
-                flexDirection: 'row'
-            },
-            '@media (max-width: 609px)': {
-                flexDirection: 'column-reverse'
-            },
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center'
-        },
-        hundredWidth: {
-            width: '100%'
-        },
-        align: {
-            display: 'flex',
-            flexDirection: 'column',
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center'
-        },
-        button: {
-            textTransform: 'none',
-            backgroundColor: '#2867b2'
-            //marginLeft: -theme.spacing(1.3),
-            //paddingBottom: theme.spacing(0),
-            //paddingTop: theme.spacing(0),
-            //textAlign: 'left',
-            //maxWidth: '85%'
-        },
-        artistAvatarBox: {
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-            minWidth: '300px'
-        },
-        matchingPopularBox: {
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'nowrap',
-            alignItems: 'center',
-            minHeight: '48px'
         },
         expand: {
             transform: 'rotate(0deg)',
@@ -165,16 +93,19 @@ const useStyles = makeStyles((theme: Theme) =>
         expandOpen: {
             transform: 'rotate(180deg)',
         },
-        festivalTitle: {
+        textAlign: {
             '@media (max-width: 609px)': {
                 textAlign: 'center'
             },
         },
-        prevAndFutureFestivalsTitle: {
+        title: {
             '@media (max-width: 609px)': {
                 textAlign: 'center'
             },
-            marginBottom: theme.spacing(1)
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            minHeight: '48px'
         },
         topLeft: {
             position: 'absolute',
@@ -207,10 +138,10 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         rowFlex: {
             display: 'flex',
-            '@media (min-width: 1300px)': {
+            '@media (min-width: 1040px)': {
                 flexDirection: 'row',
             },
-            '@media (max-width: 1299px)': {
+            '@media (max-width: 1039px)': {
                 justifyContent: 'center',
                 alignItems: 'center',
             },
@@ -220,13 +151,6 @@ const useStyles = makeStyles((theme: Theme) =>
             paddingTop: theme.spacing(2),
             width: '100%'
         },
-        width40: {
-            width: '40px',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
         full: {
             height: '40px',
             '@media (min-width: 500px)': {
@@ -235,8 +159,25 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (max-width: 499px)': {
                 marginLeft: theme.spacing(3),
             },
-            '@media (max-width: 1299px)': {
+            '@media (max-width: 1039px)': {
                 marginBottom: theme.spacing(5),
+            },
+        },
+        fullFirst: {
+            height: '40px',
+            '@media (min-width: 1040px)': {
+                marginLeft: theme.spacing(5),
+            },
+            '@media (max-width: 1039px)': {
+                marginBottom: theme.spacing(5),
+            },
+        },
+        leftMargin: {
+            '@media (min-width: 500px)': {
+                marginLeft: theme.spacing(5),
+            },
+            '@media (max-width: 499px)': {
+                marginLeft: theme.spacing(3),
             },
         },
         fullNginx: {
@@ -250,7 +191,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 marginLeft: theme.spacing(3),
                 height: '23px',
             },
-            '@media (max-width: 1299px)': {
+            '@media (max-width: 1039px)': {
                 marginBottom: theme.spacing(5),
             },
         },
@@ -262,16 +203,7 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (max-width: 499px)': {
                 marginLeft: theme.spacing(1),
             },
-            '@media (max-width: 1299px)': {
-                marginBottom: theme.spacing(5),
-            },
-        },
-        fullFirst: {
-            height: '40px',
-            '@media (min-width: 1300px)': {
-                marginLeft: theme.spacing(5),
-            },
-            '@media (max-width: 1299px)': {
+            '@media (max-width: 1039px)': {
                 marginBottom: theme.spacing(5),
             },
         },
@@ -282,10 +214,10 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (max-width: 499px)': {
                 height: '35px',
             },
-            '@media (min-width: 1300px)': {
+            '@media (min-width: 1040px)': {
                 marginLeft: theme.spacing(5),
             },
-            '@media (max-width: 1299px)': {
+            '@media (max-width: 1039px)': {
                 marginBottom: theme.spacing(5),
             },
         },
@@ -296,25 +228,15 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (max-width: 499px)': {
                 height: '35px',
             },
-            '@media (min-width: 1300px)': {
+            '@media (min-width: 1040px)': {
                 marginLeft: theme.spacing(5),
             },
         },
         fullNoMargin: {
             height: '40px',
         },
-        fullLight: {
+        lightBackground: {
             background: '#e0e0e0',
-            height: '40px',
-            '@media (min-width: 500px)': {
-                marginLeft: theme.spacing(5),
-            },
-            '@media (max-width: 499px)': {
-                marginLeft: theme.spacing(3),
-            },
-            '@media (max-width: 1299px)': {
-                marginBottom: theme.spacing(5),
-            },
         },
         width40marginLeft: {
             width: '40px',
@@ -322,34 +244,30 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            '@media (min-width: 1300px)': {
+            '@media (min-width: 1040px)': {
                 marginLeft: theme.spacing(5),
             },
-            '@media (max-width: 1299px)': {
+            '@media (max-width: 1039px)': {
                 marginBottom: theme.spacing(5),
             },
         },
-        width40White: {
-            //background: '#FFFFFF',
-            //fill: "#044B94",
-            width: '40px',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
         flexEnd: {
             display: 'flex',
-            '@media (min-width: 1300px)': {
+            '@media (min-width: 1040px)': {
                 flexDirection: 'row-reverse',
             },
-            '@media (max-width: 1299px)': {
+            '@media (max-width: 1039px)': {
                 justifyContent: 'center',
                 alignItems: 'center',
             },
         },
         creatorImage: {
-            marginTop: theme.spacing(2),
+            '@media (min-width: 610px)': {
+                marginTop: theme.spacing(3),
+            },
+            '@media (max-width: 609px)': {
+                marginTop: theme.spacing(2),
+            },
             marginBottom: theme.spacing(1),
             width: '90%',
             borderRadius: '5%',
@@ -365,17 +283,8 @@ const useStyles = makeStyles((theme: Theme) =>
             height: '40px',
             marginRight: theme.spacing(1)
         },
-        fullFaCreatorButton: {
-            width: '40px',
-            height: '40px',
-        },
-        footerRight: {
+        licenses: {
             width: '100%',
-            //position: 'absolute',
-            //bottom: 0,
-            //'@media (min-width: 610px)': {
-            //    right: 0,
-            //},
             margin: theme.spacing(1),
         },
     }),
@@ -390,7 +299,8 @@ type Props = DispatchProps & StoreProps;
 const AboutPage: React.FC<Props> = (props: Props) => {
 
     const bigScreen = useMediaQuery('(min-width:610px)');
-    const pcScreen = useMediaQuery('(min-width:1300px)');
+    const pcScreen = useMediaQuery('(min-width:1040px)');
+    const bigPcScreen = useMediaQuery('(min-width:1300px)');
 
     const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
     const [algorithmExpanded, setAlgorithmExpanded] = React.useState(false);
@@ -428,7 +338,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
         <MuiThemeProvider theme={muiTheme}>
             <CssBaseline />
             <AppBarView birghtnessSwitchEnabled={true} accountCircleEnabled={true} />
-            {pcScreen && <div className={classes.topLeft}>
+            {bigPcScreen && <div className={classes.topLeft}>
                 <IconButton
                     onClick={() => {
                         window.history.back();
@@ -443,13 +353,13 @@ const AboutPage: React.FC<Props> = (props: Props) => {
             <div className={classes.root}>
                 <Box className={classes.box}>
                     <div className={classes.root}>
-                        <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
+                        <Typography variant={bigScreen ? "h2" : "h4"} className={classes.title}>
                             About
                         </Typography>
                     </div>
                     <div className={classes.verticalSpace} />
-                    <Paper elevation={3} className={classes.paper}>
-                        <Typography variant={bigScreen ? "h3" : "h5"} className={classes.festivalTitle}>
+                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
+                        <Typography variant={bigScreen ? "h3" : "h5"} className={classes.title}>
                             Oskarito SpotiFest
                         </Typography>
                         <List>
@@ -487,7 +397,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                     </Paper>
                 </Box>
                 <Box className={classes.box}>
-                    <Paper elevation={3} className={classes.paper}>
+                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
                         <div className={classes.rowFlexCenter}>
                             <Typography variant={bigScreen ? "h3" : "h5"} onClick={() => setTechExpanded(!techExpanded)}>
                                 Technical info
@@ -508,7 +418,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                 <Grid container spacing={pcScreen ? 3 : 1} justify="center" alignItems="center">
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
-                                            <Typography variant="body1" className={classes.festivalTitle}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Frontend written in React with Typescript and Redux store.
                                             </Typography>
                                         </div>
@@ -524,7 +434,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
-                                            <Typography variant="body1" className={classes.festivalTitle}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Frontend hosted on Netlify.
                                             </Typography>
                                         </div>
@@ -537,7 +447,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
-                                            <Typography variant="body1" className={classes.festivalTitle}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Backend written in Python with Django and SqlLite as database.
                                             </Typography>
                                         </div>
@@ -546,12 +456,12 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                         <div className={classes.rowFlex}>
                                             <img src={process.env.PUBLIC_URL + '/techIcons/python-logo-generic.svg'} className={classes.fullFirst} alt="Python-logo" />
                                             <img src={process.env.PUBLIC_URL + '/techIcons/django-icon.svg'} className={classes.fullDjango} alt="Django-icon" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/SQLite.svg'} className={thememode === 'light' ? classes.full : classes.fullLight} alt="Sqlite-icon" />
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/SQLite.svg'} className={thememode === 'light' ? classes.full : clsx(classes.full, classes.lightBackground)} alt="Sqlite-icon" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
-                                            <Typography variant="body1" className={classes.festivalTitle}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Django server set up with Gunicorn and Nginx.
                                             </Typography>
                                         </div>
@@ -565,7 +475,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
-                                            <Typography variant="body1" className={classes.festivalTitle}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Backend hosted on a DigitalOcean Droplet running Ubuntu 20.04
                                             </Typography>
                                         </div>
@@ -578,7 +488,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
-                                            <Typography variant="body1" className={classes.festivalTitle}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Spotify for artist and playlist information.
                                             </Typography>
                                         </div>
@@ -590,7 +500,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
-                                            <Typography variant="body1" className={classes.festivalTitle}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 MusicFestivalWizard for lineup and festival information.
                                             </Typography>
                                         </div>
@@ -603,7 +513,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
-                                            <Typography variant="body1" className={classes.festivalTitle}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Code version control on GitHub.
                                             </Typography>
                                         </div>
@@ -616,7 +526,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
-                                            <Typography variant="body1" className={classes.festivalTitle}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Atlassian Jira board for task administration.
                                             </Typography>
                                         </div>
@@ -629,7 +539,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
-                                            <Typography variant="body1" className={classes.festivalTitle}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Domain bought on NameCheap.
                                             </Typography>
                                         </div>
@@ -641,7 +551,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Grid>
                                 </Grid>
                             </div>
-                            <Box className={classes.footerRight}>
+                            <Box className={classes.licenses}>
                                 <div className={classes.verticalSpace} />
                                 <div className={classes.verticalSpace} />
                                 <div>
@@ -717,7 +627,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                     </Paper>
                 </Box>
                 <Box className={classes.box}>
-                    <Paper elevation={3} className={classes.paper}>
+                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
                         <div className={classes.rowFlexCenter}>
                             <Typography variant={bigScreen ? "h3" : "h5"} onClick={() => setAlgorithmExpanded(!algorithmExpanded)}>
                                 Matching algorithm
@@ -735,15 +645,15 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </div>
                         <Collapse in={algorithmExpanded} timeout="auto" unmountOnExit>
                             <div className={classes.expandedDiv}>
-                                <Typography variant="body1" className={classes.festivalTitle}>
-                                    The "Match with" selector on top of the main page allows you to select a playlist or your most played artists as a match basis for festivals. The match score given to each festival is a combination of genre matching and artist matching to the selected match basis. The genre matching checks the genres of the match basis and checks how well these coincide with the genres of the festival. The artist score counts how many artists in the match basis that are attending the festival. The more artists in the match basis, the more attending artists are needed for a high score. To see the individual genre and artist score for each festival you can hold the mouse pointer over the score circle on a pc or press and hold the the score circle on a touh screen.
+                                <Typography variant="body1" className={classes.textAlign}>
+                                    The "Match with" selector on top of the main page allows you to select a playlist or your most played artists as a match basis for festivals. The match score given to each festival is a combination of genre matching and artist matching to the selected match basis. The genre matching checks the genres of the match basis and checks how well these coincide with the genres of the festival. The artist score counts how many artists in the match basis are attending the festival. The more artists in the match basis, the more attending artists are needed for a high score. To see the individual genre and artist score for each festival you can hold the mouse pointer over the score circle on a pc or press and hold the the score circle on a touh screen.
                                 </Typography>
                             </div>
                         </Collapse>
                     </Paper>
                 </Box>
                 <Box className={classes.box}>
-                    <Paper elevation={3} className={classes.paper}>
+                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
                         <div className={classes.rowFlexCenter}>
                             <Typography variant={bigScreen ? "h3" : "h5"} onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}>
                                 Disclaimer
@@ -761,7 +671,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </div>
                         <Collapse in={disclaimerExpanded} timeout="auto" unmountOnExit>
                             <div className={classes.expandedDiv}>
-                                <Typography variant="body1" className={classes.festivalTitle}>
+                                <Typography variant="body1" className={classes.textAlign}>
                                     The creator of Oskarito SpotiFest takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by using this site. When logging out or going to /login, all browser data linked to the site is deleted.
                                 </Typography>
                             </div>
@@ -771,14 +681,14 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <div className={classes.verticalSpace} />
                 <div className={classes.verticalSpace} />
                 <div className={classes.verticalSpace} />
-                <Box className={classes.box3}>
-                    <Paper elevation={3} className={classes.paper2}>
+                <Box className={classes.box2}>
+                    <Paper elevation={3} className={clsx(classes.paper, classes.maxWidth400)}>
                         <div className={classes.flexColumn}>
-                            <Typography variant={bigScreen ? "h3" : "h5"} className={classes.festivalTitle}>
+                            <Typography variant={bigScreen ? "h3" : "h5"} className={classes.title}>
                                 Created by
                             </Typography>
                             <img src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'} className={classes.creatorImage} alt="React-icon" />
-                            <Typography variant="body1" className={classes.festivalTitle}>
+                            <Typography variant="h6" className={classes.textAlign}>
                                 Oskar Asplin
                             </Typography>
                             <div className={classes.verticalSpace} />
