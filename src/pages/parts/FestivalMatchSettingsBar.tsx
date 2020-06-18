@@ -176,7 +176,7 @@ const HtmlTooltip = withStyles((theme) => ({
 const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	useEffect(() => {
-		if (!props.model.isDbOnline) {
+		if (!props.model.isDbOnline && selectedPlaylistArtists.length !== 0) {
 			testMatchesWithGivenSettings(
 				matchSettings.area,
 				new Date(Date.parse(matchSettings.fromDate)),
