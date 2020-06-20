@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         background: {
             height: '100vh',
-            backgroundImage: "url(/background_image.jpg)",
+            backgroundImage: "url(/background_image.jpg), url(/background_image_low_res.jpg)",
+            backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             backgroundPosition: 'center center'
         },
@@ -107,22 +108,37 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             boxShadow: '0 0 2rem rgba(0, 0, 0, 1)',
         },
-        footer: {
+        footerBox: {
             position: 'absolute',
             bottom: 0,
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center'
+        },
+        footer: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
             '@media (min-width: 610px)': {
                 maxWidth: '1112px',
             },
             '@media (max-width: 609px)': {
                 maxWidth: '95%',
             },
-            margin: theme.spacing(4),
+            margin: theme.spacing(0, 4, 0, 4),
         },
         footerRight: {
-            position: 'absolute',
-            bottom: 0,
+            display: 'flex',
+            width: '100%',
             '@media (min-width: 610px)': {
-                right: 0,
+                flexDirection: 'row-reverse',
+                paddingRight: theme.spacing(1)
+            },
+            '@media (max-width: 609px)': {
+                justifyContent: 'center'
             },
             margin: theme.spacing(1),
         },
@@ -135,12 +151,9 @@ const useStyles = makeStyles((theme: Theme) =>
         expandOpen: {
             transform: 'rotate(0deg)',
         },
-        attributionPaper: {
-            padding: theme.spacing(1),
-        },
         attributionShadow: {
             textAlign: 'center',
-            //borderRadius: '15%',
+            borderRadius: '15%',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             boxShadow: '0 0 5rem rgba(0, 0, 0, 1)',
         },
@@ -234,52 +247,54 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
 	                        </Typography>
                         </Button>
                     </Box>
-                    <Box className={classes.footer}>
-                        <Paper className={classes.paper} key={'disclaimer paper'}>
-                            <div className={classes.rowFlex}>
-                                <Typography variant={"subtitle2"} onClick={() => setExpanded(!expanded)}>
-                                    Disclaimer
-		                        </Typography>
-                                <IconButton
-                                    className={clsx(classes.expand, {
-                                        [classes.expandOpen]: expanded,
-                                    })}
-                                    onClick={() => setExpanded(!expanded)}
-                                    aria-expanded={expanded}
-                                    aria-label="show more"
-                                >
-                                    <ExpandMoreIcon />
-                                </IconButton>
+                    <Box className={classes.footerBox}>
+                        <Box className={classes.footer}>
+                            <Paper className={classes.paper} key={'disclaimer paper'}>
+                                <div className={classes.rowFlex}>
+                                    <Typography variant={"subtitle2"} onClick={() => setExpanded(!expanded)}>
+                                        Disclaimer
+        	                        </Typography>
+                                    <IconButton
+                                        className={clsx(classes.expand, {
+                                            [classes.expandOpen]: expanded,
+                                        })}
+                                        onClick={() => setExpanded(!expanded)}
+                                        aria-expanded={expanded}
+                                        aria-label="show more"
+                                    >
+                                        <ExpandMoreIcon />
+                                    </IconButton>
+                                </div>
+                                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                    <div className={classes.paddingBottom}>
+                                        This website was made with the intention of inspiring people to attend festivals to their liking.
+                                        It was made by a simple minded Norwegian guy wanting to do some good in the world.
+                                        This Norwegian guy takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point.
+                                        Special thanks to Spotify and MusicFestivalWizard for their available information about artists and festivals, making this site possible to make.
+        		                    </div>
+                                </Collapse>
+                            </Paper>
+                        </Box>
+                        <Box className={classes.footerRight}>
+                            <div className={classes.attributionShadow}>
+                                <Link color={'primary'}
+                                    href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/"
+                                    target={"_blank"}
+                                    rel="noopener noreferrer">
+                                    Photo
+                                </Link> by <Link color={'primary'}
+                                    href="https://www.flickr.com/photos/149801000@N05/"
+                                    target={"_blank"}
+                                    rel="noopener noreferrer">
+                                    veldmusicfestival
+                                </Link> / <Link color={'primary'}
+                                    href="https://creativecommons.org/licenses/by-sa/2.0/"
+                                    target={"_blank"}
+                                    rel="noopener noreferrer">
+                                    CC BY-SA 2.0
+                                </Link>
                             </div>
-                            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                <div className={classes.paddingBottom}>
-                                    This website was made with the intention of inspiring people to attend festivals to their liking.
-                                    It was made by a simple minded Norwegian guy wanting to do some good in the world.
-                                    This Norwegian guy takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point.
-                                    Special thanks to Spotify and MusicFestivalWizard for their available information about artists and festivals, making this site possible to make.
-			                    </div>
-                            </Collapse>
-                        </Paper>
-                    </Box>
-                    <Box className={classes.footerRight}>
-                        <div className={classes.attributionShadow}>
-                            <Link color={'primary'}
-                                href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/"
-                                target={"_blank"}
-                                rel="noopener noreferrer">
-                                Photo
-                            </Link> by <Link color={'primary'}
-                                href="https://www.flickr.com/photos/149801000@N05/"
-                                target={"_blank"}
-                                rel="noopener noreferrer">
-                                veldmusicfestival
-                            </Link> / <Link color={'primary'}
-                                href="https://creativecommons.org/licenses/by-sa/2.0/"
-                                target={"_blank"}
-                                rel="noopener noreferrer">
-                                CC BY-SA 2.0
-                            </Link>
-                        </div>
+                        </Box>
                     </Box>
                 </div>
             </MuiThemeProvider>
