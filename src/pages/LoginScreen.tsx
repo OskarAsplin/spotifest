@@ -54,16 +54,16 @@ const useStyles = makeStyles((theme: Theme) =>
         paper: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 610px)': {
-                padding: theme.spacing(0, 4, 0, 4),
-            },
-            '@media (max-width: 609px)': {
-                padding: theme.spacing(0, 2, 0, 2),
-            },
+            paddingLeft: theme.spacing(2),
             justifyContent: 'space-between',
         },
         paddingBottom: {
-            paddingBottom: theme.spacing(2),
+            '@media (min-width: 610px)': {
+                padding: theme.spacing(0, 4, 2, 2),
+            },
+            '@media (max-width: 609px)': {
+                padding: theme.spacing(0, 2, 2, 0),
+            },
             width: '100%'
         },
         button: {
@@ -153,7 +153,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         attributionShadow: {
             textAlign: 'center',
-            borderRadius: '15%',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
             boxShadow: '0 0 5rem rgba(0, 0, 0, 1)',
         },
