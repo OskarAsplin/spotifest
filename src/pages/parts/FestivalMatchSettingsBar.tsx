@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			margin: theme.spacing(1),
 			'@media (min-width: 800px)': {
 				minWidth: 150,
-				maxWidth: 215,
+				maxWidth: 220,
 			},
 			'@media (max-width: 799px)': {
 				width: '100%',
@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			margin: theme.spacing(1),
 			'@media (min-width: 800px)': {
 				minWidth: 150,
-				maxWidth: 185,
+				maxWidth: 180,
 			},
 			'@media (max-width: 799px)': {
 				width: '100%',
@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) =>
 			},
 			'@media (max-width: 799px)': {
 				minWidth: 150,
-				maxWidth: 215,
+				maxWidth: 220,
 			},
 		},
 		toolTip: {
@@ -196,6 +196,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 				matchSettings.matchBasis,
 				selectedPlaylistArtists);
 		}
+		dispatch(setShowPlaylistModal(true));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
