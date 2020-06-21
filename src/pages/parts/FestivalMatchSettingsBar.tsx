@@ -196,7 +196,6 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 				matchSettings.matchBasis,
 				selectedPlaylistArtists);
 		}
-		dispatch(setShowPlaylistModal(true));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
