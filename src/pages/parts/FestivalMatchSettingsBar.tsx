@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, Model } from "../../redux/types";
 import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, getIconPicture, getBigPicture, setShowPlaylistModal } from "../../redux/actions";
 import { connect } from "react-redux";
-import { createStyles, Theme, Typography, Box, Paper, Grid, Tooltip, PaletteType, InputLabel, MenuItem, FormControl, Select, ListSubheader, Modal, Fade, Backdrop, Link } from "@material-ui/core";
+import { createStyles, Theme, Typography, Box, Paper, Grid, Tooltip, PaletteType, InputLabel, MenuItem, FormControl, Select, ListSubheader, Modal, Fade, Backdrop, Link, MuiThemeProvider, CircularProgress, Button } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import indigo from "@material-ui/core/colors/indigo";
+import { deepOrange, indigo } from "@material-ui/core/colors";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import InfoIcon from '@material-ui/icons/Info';
 import DateFnsUtils from '@date-io/date-fns';
@@ -12,6 +12,7 @@ import {
 	MuiPickersUtilsProvider,
 	KeyboardDatePicker,
 } from '@material-ui/pickers';
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -82,7 +83,8 @@ const useStyles = makeStyles((theme: Theme) =>
 				maxWidth: 300,
 			},
 			'@media (max-width: 799px)': {
-				width: '100%',
+				minWidth: 150,
+				maxWidth: 215,
 			},
 		},
 		toolTip: {
@@ -139,10 +141,19 @@ const useStyles = makeStyles((theme: Theme) =>
 			overflowY: 'auto',
 		},
 		paper: {
-			padding: theme.spacing(2)
+			padding: theme.spacing(2),
+			outline: 'none'
 		},
 		initialPlaylistTitle: {
-			marginBottom: theme.spacing(2)
+			textAlign: 'center',
+			marginBottom: theme.spacing(1)
+		},
+		button: {
+			marginTop: theme.spacing(3),
+			marginBottom: theme.spacing(1),
+		},
+		loadChoicesSpinner: {
+			margin: theme.spacing(3)
 		}
 	}),
 );
@@ -158,7 +169,8 @@ interface StoreProps {
 	continents: Area[],
 	matchSettings: MatchSettings,
 	showPlaylistModal: boolean,
-	noRegisteredPlaylists: boolean
+	topArtistsLoaded: boolean,
+	playlistsLoaded: boolean
 }
 
 type Props = DispatchProps & StoreProps;
@@ -190,7 +202,23 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	const smallScreen = useMediaQuery('(max-width:610px)');
 	const pcScreen = useMediaQuery('(min-width:1200px)');
 
-	const { thememode, playlists, topArtists, selectedPlaylistArtists, countries, continents, dispatch, matchSettings, showPlaylistModal, noRegisteredPlaylists } = props;
+	const { thememode, playlists, topArtists, selectedPlaylistArtists, countries, continents, dispatch, matchSettings, showPlaylistModal, topArtistsLoaded, playlistsLoaded } = props;
+
+	const indigoOrangeMuiTheme = createMuiTheme({
+		palette: {
+			primary: {
+				light: indigo[300],
+				main: indigo[500],
+				dark: indigo[700]
+			},
+			secondary: {
+				light: deepOrange[300],
+				main: deepOrange[500],
+				dark: deepOrange[700]
+			},
+			type: props.model.thememode
+		}
+	});
 
 	const testMatchesWithGivenSettings = (
 		area: Area,
@@ -366,7 +394,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								{topArtists.length !== 0 && <MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
 									Your most played artists
 								</MenuItem>}
-								<ListSubheader disableSticky disableGutters>{topArtists.length !== 0 ? 'or choose a playlist below' : 'choose a playlist below'}</ListSubheader>
+								{topArtists.length !== 0 && playlists.length !== 0 && <ListSubheader disableSticky disableGutters>or choose a playlist below</ListSubheader>}
 								{playlists.map((playlist) => (
 									<MenuItem key={playlist.name} value={playlist.name} style={{ minWidth: 200, maxWidth: 400 }}>
 										{playlist.name}
@@ -475,25 +503,32 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 			>
 				<Fade in={showPlaylistModal}>
 					<Paper className={classes.paper}>
-						{playlists.length !== 0 &&
+						{!(topArtistsLoaded && playlistsLoaded) && <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+							<CircularProgress size={100} thickness={3} color={'secondary'} className={classes.loadChoicesSpinner} />
+						</MuiThemeProvider>}
+						{topArtistsLoaded && playlistsLoaded &&
 							<Box className={classes.alignItems3}>
-								<Typography variant={smallScreen ? "h6" : "h4"} className={classes.initialPlaylistTitle}>
-									Choose a playlist to start your matching
+							<Typography variant={smallScreen ? topArtists.length === 0 ? "h6" : "h5" : "h4"} className={classes.initialPlaylistTitle}>
+								{topArtists.length === 0 ? 'Choose a playlist to start your matching' : 'Match festivals with'}
 		                        </Typography>
 								<FormControl className={classes.formControl2} variant="outlined" size="small">
-									<InputLabel id="choose-playlist-label">
+									{topArtists.length === 0 && <InputLabel id="choose-initial-playlist-inputlabel">
 										Playlist
-		                        </InputLabel>
+									</InputLabel>}
 									<Select
 										labelId="choose-initial-playlist-label"
 										id="choose-initial-playlist"
-										value={''}
-									onChange={async (event: React.ChangeEvent<{ value: unknown }>) => {
-										dispatch(setShowPlaylistModal(false));
-										handlePlaylistChange(event);
-									}}
-										label="Playlist"
+										value={topArtists.length !== 0 ? '__your__top__artists__' : '' }
+										label={topArtists.length === 0 ? "Playlist" : undefined}
+										onChange={async (event: React.ChangeEvent<{ value: unknown }>) => {
+											dispatch(setShowPlaylistModal(false));
+											handlePlaylistChange(event);
+										}}
 									>
+										{topArtists.length !== 0 && <MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
+											Your most played artists
+										</MenuItem>}
+										{topArtists.length !== 0 && playlists.length !== 0 && <ListSubheader disableSticky disableGutters>or choose a playlist below</ListSubheader>}
 										{playlists.map((playlist) => (
 											<MenuItem key={playlist.name} value={playlist.name} style={{ minWidth: 200, maxWidth: 400 }}>
 												{playlist.name}
@@ -502,7 +537,29 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									</Select>
 								</FormControl>
 							</Box>}
-						{noRegisteredPlaylists &&
+						{topArtistsLoaded && playlistsLoaded && topArtists.length !== 0 &&
+							<Box className={classes.alignItems3}>
+								<Button
+									color="primary"
+									size="large"
+									variant="outlined"
+									className={classes.button}
+									onClick={() => {
+										dispatch(setShowPlaylistModal(false));
+										dispatch(setMatchSettings({ ...matchSettings, matchBasis: '__your__top__artists__' }));
+										testMatchesWithGivenSettings(
+											matchSettings.area,
+											new Date(Date.parse(matchSettings.fromDate)),
+											new Date(Date.parse(matchSettings.toDate)),
+											'__your__top__artists__',
+											selectedPlaylistArtists);
+									}}>
+									<Typography variant={smallScreen ? "h6" : "h4"}>
+										Go
+		                        	</Typography>
+								</Button>
+							</Box>}
+						{topArtistsLoaded && playlistsLoaded && topArtists.length === 0 && playlists.length === 0 &&
 							<Typography>We can't find any listening habits or playlists to use for our festival matching. Go to your {(props.model.userInfo && props.model.userInfo.spotifyUrl) ? <Link color={'primary'}
                                     href={props.model.userInfo.spotifyUrl}
                                     target={"_blank"}
@@ -527,7 +584,8 @@ const mapStateToProps = (state: AppState) => ({
 	continents: state.model.continents,
 	matchSettings: state.model.matchSettings,
 	showPlaylistModal: state.model.showPlaylistModal,
-	noRegisteredPlaylists: state.model.noRegisteredPlaylists
+	topArtistsLoaded: state.model.topArtistsLoaded,
+	playlistsLoaded: state.model.playlistsLoaded,
 });
 
 const mapDispatchToProps = (dispatch: any) => {

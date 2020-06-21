@@ -1,4 +1,4 @@
-import { Action, ActionTypeKeys, Model, FestivalMatch, MatchingMethod } from "./types";
+import { Action, ActionTypeKeys, Model, FestivalMatch, MatchingMethod, Playlist } from "./types";
 import { Reducer } from "redux";
 
 
@@ -15,10 +15,11 @@ export const initialModel: Model = {
     accessToken: '',
     tokenExpiryDate: '',
     userInfo: undefined,
+    showPlaylistModal: true,
     topArtists: [],
-    showPlaylistModal: false,
     playlists: [],
-    noRegisteredPlaylists: false,
+    topArtistsLoaded: false,
+    playlistsLoaded: false,
     selectedPlaylistArtists: [],
     festivalMatches: [],
     matchingMethod: MatchingMethod.Genre,
@@ -64,25 +65,22 @@ const reducer: Reducer<Model, Action> = (
             const { info } = action;
             return { ...state, userInfo: info }
         }
-        case ActionTypeKeys.SET_TOP_ARTISTS: {
-            const { artists } = action;
-            return { ...state, topArtists: artists }
-        }
         case ActionTypeKeys.SET_SHOW_PLAYLIST_MODAL: {
             const { show } = action;
             return { ...state, showPlaylistModal: show }
         }
+        case ActionTypeKeys.SET_TOP_ARTISTS: {
+            const { artists } = action;
+            return { ...state, topArtists: artists, topArtistsLoaded: true }
+        }
         case ActionTypeKeys.SET_PLAYLISTS: {
             const { playlists } = action;
-            const sortedPlaylists = playlists.sort((a, b) => {
+            const sortedPlaylists = playlists.sort((a: Playlist, b: Playlist) => {
                 let aName = a.name.toUpperCase();
                 let bName = b.name.toUpperCase();
                 return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
             });
-            return { ...state, playlists: sortedPlaylists }
-        }
-        case ActionTypeKeys.SET_NO_REGISTERED_PLAYLISTS: {
-            return { ...state, noRegisteredPlaylists: true }
+            return { ...state, playlists: sortedPlaylists, playlistsLoaded: true }
         }
         case ActionTypeKeys.SET_SELECTED_PLAYLIST_ARTISTS: {
             const { artists } = action;

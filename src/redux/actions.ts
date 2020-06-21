@@ -82,13 +82,6 @@ export const setUserInfo = (info: UserInfo): Action => {
     }
 };
 
-export const setTopArtists = (artists: Artist[]): Action => {
-    return {
-        type: ActionTypeKeys.SET_TOP_ARTISTS,
-        artists: artists
-    }
-};
-
 export const setShowPlaylistModal = (show: boolean): Action => {
     return {
         type: ActionTypeKeys.SET_SHOW_PLAYLIST_MODAL,
@@ -96,16 +89,17 @@ export const setShowPlaylistModal = (show: boolean): Action => {
     }
 };
 
+export const setTopArtists = (artists: Artist[]): Action => {
+    return {
+        type: ActionTypeKeys.SET_TOP_ARTISTS,
+        artists: artists
+    }
+};
+
 export const setPlaylists = (playlists: Playlist[]): Action => {
     return {
         type: ActionTypeKeys.SET_PLAYLISTS,
         playlists: playlists
-    }
-};
-
-export const setNoRegisteredPlaylists = (): Action => {
-    return {
-        type: ActionTypeKeys.SET_NO_REGISTERED_PLAYLISTS
     }
 };
 
@@ -273,24 +267,9 @@ export const initializeSite = (
                         (countries_list as any).countries[getMe.country].continent : '';
                     const isRegisteredContinent = continents.find(continent => continent.isoCode === userContinent);
                     if (isRegisteredCountry) {
-                        dispatch(setMatchSettings({ ...initialModel.matchSettings,
-                            matchBasis: topArtists.length !== 0 ? '__your__top__artists__' : '',
-                            area: isRegisteredCountry }));
+                        dispatch(setMatchSettings({ ...initialModel.matchSettings, area: isRegisteredCountry }));
                     } else if (isRegisteredContinent) {
-                        dispatch(setMatchSettings({ ...initialModel.matchSettings,
-                            matchBasis: topArtists.length !== 0 ? '__your__top__artists__' : '',
-                            area: isRegisteredContinent }));
-                    }
-                    if (topArtists.length !== 0) {
-                        testFestivalMatches(
-                            topArtists, true, dispatch,
-                            new Date(Date.parse(initialModel.matchSettings.fromDate)),
-                            new Date(Date.parse(initialModel.matchSettings.toDate)),
-                            isRegisteredCountry ? [] : isRegisteredContinent ? [userContinent] : [],
-                            isRegisteredCountry ? [getMe.country] : []
-                        );
-                    } else {
-                        dispatch(setShowPlaylistModal(true));
+                        dispatch(setMatchSettings({ ...initialModel.matchSettings, area: isRegisteredContinent }));
                     }
                 })
                 .catch((error) => {
@@ -341,11 +320,7 @@ export const getAllPlaylists = (
                 getAllPlaylists(userId, offset + 50, allPlaylists.concat(playlists), dispatch);
             } else {
                 allPlaylists = allPlaylists.concat(playlists);
-                if (allPlaylists.length !== 0) {
-                    dispatch(setPlaylists(allPlaylists));
-                } else {
-                    dispatch(setNoRegisteredPlaylists());
-                }
+                dispatch(setPlaylists(allPlaylists));
             }
         })
         .catch((error) => {
