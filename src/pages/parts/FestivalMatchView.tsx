@@ -141,7 +141,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 				<div>
 					<div className={classes.verticalSpace} />
 					<Typography variant="subtitle1" className={classes.noMatches}>
-						No registered festivals in {matchSettings.area.name} in this time frame.
+						No registered festivals in the selected area in this time frame.
 		            </Typography>
 				</div>
 			}

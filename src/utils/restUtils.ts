@@ -41,7 +41,6 @@ export const serverRequest = (method: string, urlPath: string, body: string|null
         method,
         body: body ? body : null
     };
-    console.log(urlPath);
     return new Promise((resolve, reject) => {
         fetch(urlPath, OPTIONS)
             .then((response: Response) => {

@@ -208,6 +208,7 @@ export interface Artist {
     iconPicture?: string;
     bigPicture?: string;
     popularity: number;
+    userPopularity?: number;
     genres: string[];
 }
 
@@ -224,6 +225,7 @@ export interface Lineup {
 
 export interface MatchRequest {
     artists: Artist[],
+    numTracks: number,
     isTopArtists: Boolean,
     dateFrom: string,
     dateTo: string,
@@ -278,6 +280,7 @@ export interface MatchSettings {
     area: Area,
     fromDate: string,
     toDate: string,
+    numTracks: number
 }
 
 export interface SearchResponse {

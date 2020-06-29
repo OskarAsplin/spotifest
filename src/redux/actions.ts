@@ -175,6 +175,7 @@ export const getBigPicture = (images: SpotifyApi.ImageObject[]): string => {
 
 export const testFestivalMatches = (
     artists: Artist[],
+    numTracks: number,
     isTopArtists: Boolean,
     dispatch: Dispatch,
     dateFrom: Date,
@@ -186,6 +187,7 @@ export const testFestivalMatches = (
     dateTo.setMonth(dateTo.getMonth() + 1, 0); // Last day of month
     const matchRequest: MatchRequest = {
         artists: artists,
+        numTracks: numTracks,
         isTopArtists: isTopArtists,
         dateFrom: getShortDateISOString(dateFrom),
         dateTo: getShortDateISOString(dateTo),
@@ -219,8 +221,6 @@ export const initializeSite = (
     if (token) {
         spotifyApi.setAccessToken(token);
     }
-    console.log('initializeSite');
-
     const getAvailableCountries = fetchToJson(getApiBaseUrl() + '/onTour/availableCountries');
     const getAvailableContinents = fetchToJson(getApiBaseUrl() + '/onTour/availableContinents');
 
@@ -247,9 +247,7 @@ export const initializeSite = (
 
             spotifyApi.getMyTopArtists({ limit: 50 })
                 .then((response: SpotifyApi.UsersTopArtistsResponse) => {
-                    console.log('getTopArtists response: ');
-                    console.log(response);
-                    const topArtists: Artist[] = response.items.map((artist) => {
+                    const topArtists: Artist[] = response.items.map((artist, idx) => {
                         return {
                             name: artist.name,
                             spotifyId: artist.id,
@@ -257,6 +255,7 @@ export const initializeSite = (
                             iconPicture: getIconPicture(artist.images),
                             bigPicture: getBigPicture(artist.images),
                             popularity: artist.popularity,
+                            userPopularity: response.items.length * 2 - idx,
                             genres: artist.genres
                         } as Artist;
                     });

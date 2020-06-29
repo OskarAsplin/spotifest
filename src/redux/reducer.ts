@@ -29,7 +29,8 @@ export const initialModel: Model = {
         matchBasis: '',
         area: { name: 'Europe', isoCode: 'EU' },
         fromDate: (new Date()).toISOString(),
-        toDate: (new Date(new Date().getFullYear(), 11, 31)).toISOString()
+        toDate: (new Date(new Date().getFullYear(), 11, 31)).toISOString(),
+        numTracks: 0
     },
 
 };

@@ -194,7 +194,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 				new Date(Date.parse(matchSettings.fromDate)),
 				new Date(Date.parse(matchSettings.toDate)),
 				matchSettings.matchBasis,
-				selectedPlaylistArtists);
+				selectedPlaylistArtists,
+				matchSettings.numTracks);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -225,14 +226,15 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		dateFrom: Date,
 		dateTo: Date,
 		chosenPlaylistName: string,
-		artistsFromPlaylist: Artist[]
+		artistsFromPlaylist: Artist[],
+		numTracks: number
 	) => {
 		const isTopArtists: boolean = chosenPlaylistName === '__your__top__artists__'
 		if (continents.find(continent => continent.isoCode === area.isoCode)) {
-			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists,
+			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
 				dispatch, dateFrom, dateTo, [area.isoCode], []);
 		} else {
-			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, isTopArtists,
+            testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
 				dispatch, dateFrom, dateTo, [], [area.isoCode]);
 		}
 	}
@@ -245,14 +247,16 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		if (playlistName === matchSettings.matchBasis) {
 			return;
 		}
-		dispatch(setMatchSettings({ ...matchSettings, matchBasis: playlistName }));
 		if (playlistName === '__your__top__artists__') {
+            const countTopArtists = topArtists.length * (3 * topArtists.length + 1) / 2;  // n(3n+1)/2
+            dispatch(setMatchSettings({ ...matchSettings, matchBasis: playlistName, numTracks: countTopArtists }));
 			testMatchesWithGivenSettings(
 				matchSettings.area,
 				new Date(Date.parse(matchSettings.fromDate)),
 				new Date(Date.parse(matchSettings.toDate)),
 				playlistName,
-				selectedPlaylistArtists);
+				selectedPlaylistArtists,
+                countTopArtists);
 			return;
 		}
 
@@ -284,6 +288,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 				allArtistIdsRaw = allArtistIdsRaw.concat(artistIdsRaw);
 			}
 
+            let count: { [id: string]: number; } = {};
+            allArtistIdsRaw.forEach((val: string) => count[val] = (count[val] || 0) + 1);
 			const artistIds: string[] = [...new Set(allArtistIdsRaw)].filter(Boolean) as string[];
 			let newArtists: Artist[] = [];
 
@@ -297,7 +303,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								hasSpotifyId: true,
 								iconPicture: getIconPicture(artistResponse.images),
 								bigPicture: getBigPicture(artistResponse.images),
-								popularity: artistResponse.popularity,
+                                popularity: artistResponse.popularity,
+                                userPopularity: count[artistResponse.id],
 								genres: artistResponse.genres
 							} as Artist);
 						})
@@ -309,12 +316,14 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 			}
 
 			if (newArtists.length > 0) {
+                dispatch(setMatchSettings({ ...matchSettings, matchBasis: playlistName, numTracks: allArtistIdsRaw.length }));
 				testMatchesWithGivenSettings(
 					matchSettings.area,
 					new Date(Date.parse(matchSettings.fromDate)),
 					new Date(Date.parse(matchSettings.toDate)),
 					playlistName,
-					newArtists);
+					newArtists,
+                    allArtistIdsRaw.length);
 				dispatch(setSelectedPlaylistArtists(newArtists));
 			} else {
 				console.log('Something went wrong. No artists in list');
@@ -338,7 +347,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 				new Date(Date.parse(matchSettings.fromDate)),
 				new Date(Date.parse(matchSettings.toDate)),
 				matchSettings.matchBasis,
-				selectedPlaylistArtists);
+				selectedPlaylistArtists,
+				matchSettings.numTracks);
 			dispatch(setMatchSettings({ ...matchSettings, area: area }));
 		}
 	};
@@ -348,10 +358,10 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		if (date) {
 			if (date > toDate) {
 				dispatch(setMatchSettings({ ...matchSettings, fromDate: date.toISOString(), toDate: date.toISOString() }));
-				testMatchesWithGivenSettings(matchSettings.area, date, date, matchSettings.matchBasis, selectedPlaylistArtists);
+                testMatchesWithGivenSettings(matchSettings.area, date, date, matchSettings.matchBasis, selectedPlaylistArtists, matchSettings.numTracks);
 			} else {
 				dispatch(setMatchSettings({ ...matchSettings, fromDate: date.toISOString() }));
-				testMatchesWithGivenSettings(matchSettings.area, date, toDate, matchSettings.matchBasis, selectedPlaylistArtists);
+				testMatchesWithGivenSettings(matchSettings.area, date, toDate, matchSettings.matchBasis, selectedPlaylistArtists, matchSettings.numTracks);
 			}
 		}
 	};
@@ -361,10 +371,10 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		if (date) {
 			if (date < fromDate) {
 				dispatch(setMatchSettings({ ...matchSettings, fromDate: date.toISOString(), toDate: date.toISOString() }));
-				testMatchesWithGivenSettings(matchSettings.area, date, date, matchSettings.matchBasis, selectedPlaylistArtists);
+                testMatchesWithGivenSettings(matchSettings.area, date, date, matchSettings.matchBasis, selectedPlaylistArtists, matchSettings.numTracks);
 			} else {
 				dispatch(setMatchSettings({ ...matchSettings, toDate: date.toISOString() }));
-				testMatchesWithGivenSettings(matchSettings.area, fromDate, date, matchSettings.matchBasis, selectedPlaylistArtists);
+				testMatchesWithGivenSettings(matchSettings.area, fromDate, date, matchSettings.matchBasis, selectedPlaylistArtists, matchSettings.numTracks);
 			}
 		}
 	};
@@ -546,13 +556,15 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									className={classes.button}
 									onClick={() => {
 										dispatch(setShowPlaylistModal(false));
-										dispatch(setMatchSettings({ ...matchSettings, matchBasis: '__your__top__artists__' }));
+                                        const countTopArtists = topArtists.length * (3 * topArtists.length + 1) / 2;  // n(3n+1)/2
+                                    	dispatch(setMatchSettings({ ...matchSettings, matchBasis: '__your__top__artists__', numTracks: countTopArtists }));
 										testMatchesWithGivenSettings(
 											matchSettings.area,
 											new Date(Date.parse(matchSettings.fromDate)),
 											new Date(Date.parse(matchSettings.toDate)),
 											'__your__top__artists__',
-											selectedPlaylistArtists);
+											selectedPlaylistArtists,
+											countTopArtists);
 									}}>
 									<Typography variant={smallScreen ? "h6" : "h4"}>
 										Go
