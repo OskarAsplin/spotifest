@@ -1,6 +1,9 @@
 import { Action, ActionTypeKeys, Model, FestivalMatch, MatchingMethod, Playlist } from "./types";
 import { Reducer } from "redux";
 
+const endOfYear = new Date(new Date().getFullYear(), 11, 31);
+endOfYear.setUTCDate(31);
+endOfYear.setUTCHours(0);
 
 export const initialModel: Model = {
     loaderOn: false,
@@ -29,7 +32,7 @@ export const initialModel: Model = {
         matchBasis: '',
         area: { name: 'Europe', isoCode: 'EU' },
         fromDate: (new Date()).toISOString(),
-        toDate: (new Date(new Date().getFullYear(), 11, 31)).toISOString(),
+        toDate: endOfYear.toISOString(),
         numTracks: 0
     },
 

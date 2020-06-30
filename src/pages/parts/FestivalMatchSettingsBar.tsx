@@ -354,8 +354,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	};
 
 	const handleFromDateChange = (date: Date | null) => {
-		const toDate = new Date(Date.parse(matchSettings.toDate));
 		if (date) {
+			const toDate = new Date(matchSettings.toDate);
 			if (date > toDate) {
 				dispatch(setMatchSettings({ ...matchSettings, fromDate: date.toISOString(), toDate: date.toISOString() }));
                 testMatchesWithGivenSettings(matchSettings.area, date, date, matchSettings.matchBasis, selectedPlaylistArtists, matchSettings.numTracks);
@@ -367,8 +367,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	};
 
 	const handleToDateChange = (date: Date | null) => {
-		const fromDate = new Date(Date.parse(matchSettings.fromDate));
 		if (date) {
+			const fromDate = new Date(matchSettings.fromDate);
 			if (date < fromDate) {
 				dispatch(setMatchSettings({ ...matchSettings, fromDate: date.toISOString(), toDate: date.toISOString() }));
                 testMatchesWithGivenSettings(matchSettings.area, date, date, matchSettings.matchBasis, selectedPlaylistArtists, matchSettings.numTracks);

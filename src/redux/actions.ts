@@ -184,6 +184,9 @@ export const testFestivalMatches = (
     countries?: string[]
 ) => {
     dispatch(turnOnLoader());
+    dateFrom.setUTCHours(0);
+    dateFrom.setDate(1) // Frist day of month
+    dateTo.setUTCHours(0);
     dateTo.setMonth(dateTo.getMonth() + 1, 0); // Last day of month
     const matchRequest: MatchRequest = {
         artists: artists,
