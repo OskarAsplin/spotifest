@@ -17,6 +17,7 @@ import SwipeableViews from 'react-swipeable-views';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import { Redirect } from 'react-router-dom';
 import { getApiBaseUrl } from '../utils/restUtils';
+import ReactPlayer from 'react-player'
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -51,6 +52,15 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             alignItems: 'center',
         },
+        paperVideo: {
+            '@media (min-width: 610px)': {
+                padding: theme.spacing(2, 4, 2, 4),
+            },
+            '@media (max-width: 609px)': {
+                padding: theme.spacing(2, 2, 2, 2),
+            },
+            width: '100%'
+        },
         verticalSpace: {
             display: 'flex',
             '@media (min-width: 610px)': {
@@ -76,7 +86,7 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(0, 2, 2, 2),
         },
         videoBox: {
-            margin: theme.spacing(0, 2, 2, 2),
+            marginBottom: theme.spacing(2),
         },
         flexColumn: {
             display: 'flex',
@@ -200,6 +210,8 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
 
     const bigScreen = useMediaQuery('(min-width:610px)');
     const pcScreen = useMediaQuery('(min-width:1300px)');
+    const videoSizeMax = useMediaQuery('(min-width:770px)');
+    const videoSizeSmall = useMediaQuery('(max-width:470px)');
 
     useEffect(() => {
         let festival = window.location.search.substring(1);
@@ -374,11 +386,10 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                     <div className={classes.verticalSpace} />
                     {festivalInfo.video &&
                         <Box className={classes.videoBox}>
-                            <Paper elevation={3} className={classes.paper} key={'festival video:' + festivalInfo.name}>
-                                <iframe width={bigScreen ? '420' : '328'} height={bigScreen ? '315' : '246'} title={'festival video iframe:' + festivalInfo.name}
-                                    src={festivalInfo.video}>
-                                    }
-                                </iframe>
+                            <Paper elevation={3} className={classes.paperVideo} key={'festival video:' + festivalInfo.name}>
+                                <ReactPlayer url={festivalInfo.video} controls
+                                    width={videoSizeMax ? undefined : bigScreen ? 496 : videoSizeSmall ? '100%' : 400}
+                                    height={videoSizeMax ? undefined : bigScreen ? 279 : videoSizeSmall ? '100%' : 225} />
                             </Paper>
                         </Box>
                     }
