@@ -30,12 +30,23 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         paper: {
             display: 'flex',
+            flexDirection: 'column',
             '@media (min-width: 610px)': {
                 padding: theme.spacing(2, 4, 2, 4),
-                flexDirection: 'row',
             },
             '@media (max-width: 609px)': {
                 padding: theme.spacing(2, 2, 2, 2),
+            },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%'
+        },
+        rowFlexBig: {
+            display: 'flex',
+            '@media (min-width: 610px)': {
+                flexDirection: 'row',
+            },
+            '@media (max-width: 609px)': {
                 flexDirection: 'column',
             },
             justifyContent: 'space-between',
@@ -44,7 +55,13 @@ const useStyles = makeStyles((theme: Theme) =>
         paper2: {
             display: 'flex',
             flexDirection: 'column',
+            '@media (min-width: 920px)': {
+                padding: theme.spacing(0, 4, 2, 4),
+            },
             '@media (min-width: 610px)': {
+                '@media (max-width: 919px)': {
+                    padding: theme.spacing(0, 2, 1, 2),
+                },
                 padding: theme.spacing(0, 4, 2, 4),
             },
             marginBottom: theme.spacing(2),
@@ -91,8 +108,11 @@ const useStyles = makeStyles((theme: Theme) =>
         flexColumn: {
             display: 'flex',
             flexDirection: 'column',
+            '@media (max-width: 999px)': {
+                justifyContent: 'center',
+            },
             '@media (min-width: 610px)': {
-                maxWidth: '50%'
+                maxWidth: '50%',
             },
         },
         buttonBox: {
@@ -181,6 +201,9 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         festivalTitle: {
+            '@media (min-width: 1000px)': {
+                marginBottom: theme.spacing(3)
+            },
             '@media (max-width: 609px)': {
                 textAlign: 'center'
             },
@@ -210,6 +233,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
 
     const bigScreen = useMediaQuery('(min-width:610px)');
     const pcScreen = useMediaQuery('(min-width:1300px)');
+    const titleOnTop = useMediaQuery('(max-width:999px)');
     const videoSizeMax = useMediaQuery('(min-width:770px)');
     const videoSizeSmall = useMediaQuery('(max-width:470px)');
 
@@ -350,37 +374,42 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                 <div className={classes.root}>
                     <Box className={classes.box}>
                         <Paper elevation={10} className={classes.paper} key={'festivalInfo:' + festivalInfo.name}>
-                            <div className={classes.flexColumn}>
-                                <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
-                                    {festivalInfo.name}
-                                </Typography>
-                                <Typography variant="subtitle1">
-                                    {festivalInfo.locationText}
-                                </Typography>
-                                <Typography variant="subtitle1">
-                                    {'Genres: ' + festivalInfo.genres.slice(0, 5).join(", ")}
-                                </Typography>
-                                {festivalInfo.webpage &&
-                                    <Link color={'secondary'} variant="subtitle1" href={festivalInfo.webpage}
-                                        rel="noopener noreferrer" target="_blank">
-                                        Official webpage
-                                    </Link>}
-                                {festivalInfo.ticketWebpage &&
-                                    <Link color={'secondary'} variant="subtitle1" href={festivalInfo.ticketWebpage}
-                                        rel="noopener noreferrer" target="_blank">
-                                        Ticket webpage
-                                    </Link>}
-                                {festivalInfo.crawledWebpage &&
-                                    <Link color={'secondary'} variant="subtitle1" href={festivalInfo.crawledWebpage}
-                                        rel="noopener noreferrer" target="_blank">
-                                        View on Musicfestivalwizard.com
-                                    </Link>}
+                            {titleOnTop && <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
+                                {festivalInfo.name}
+                            </Typography>}
+                            <div className={classes.rowFlexBig}>
+                                <div className={classes.flexColumn}>
+                                    {!titleOnTop && <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
+                                        {festivalInfo.name}
+                                    </Typography>}
+                                    <Typography variant="subtitle1">
+                                        {festivalInfo.locationText}
+                                    </Typography>
+                                    <Typography variant="subtitle1">
+                                        {'Genres: ' + festivalInfo.genres.slice(0, 5).join(", ")}
+                                    </Typography>
+                                    {festivalInfo.webpage &&
+                                        <Link color={'secondary'} variant="subtitle1" href={festivalInfo.webpage}
+                                            rel="noopener noreferrer" target="_blank">
+                                            Official webpage
+                                        </Link>}
+                                    {festivalInfo.ticketWebpage &&
+                                        <Link color={'secondary'} variant="subtitle1" href={festivalInfo.ticketWebpage}
+                                            rel="noopener noreferrer" target="_blank">
+                                            Ticket webpage
+                                        </Link>}
+                                    {festivalInfo.crawledWebpage &&
+                                        <Link color={'secondary'} variant="subtitle1" href={festivalInfo.crawledWebpage}
+                                            rel="noopener noreferrer" target="_blank">
+                                            View on Musicfestivalwizard.com
+                                        </Link>}
+                                </div>
+                                <Box className={classes.buttonBox}>
+                                    <Button onClick={() => window.open(festivalInfo.festivalImg, '_blank')}>
+                                        <img className={classes.festivalImg} src={festivalInfo.festivalImg} alt="" />
+                                    </Button>
+                                </Box>
                             </div>
-                            <Box className={classes.buttonBox}>
-                                <Button onClick={() => window.open(festivalInfo.festivalImg, '_blank')}>
-                                    <img className={classes.festivalImg} src={festivalInfo.festivalImg} alt="" />
-                                </Button>
-                            </Box>
                         </Paper>
                     </Box>
                     <div className={classes.verticalSpace} />
