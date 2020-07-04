@@ -118,6 +118,11 @@ const useStyles = makeStyles((theme: Theme) =>
         minHeight: {
             minHeight: '40px',
         },
+        marginLeft: {
+            '@media (min-width: 610px)': {
+                marginLeft: theme.spacing(2),
+            },
+        },
         profilePicture: {
             '@media (min-width: 610px)': {
                 marginLeft: theme.spacing(2),
@@ -420,7 +425,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                 color="inherit"
                                 aria-describedby={id}
                                 onClick={handleClick}
-                                className={classes.profilePicture}
+                                className={props.model.userInfo?.profilePictureUrl ? classes.profilePicture : classes.marginLeft}
                             >
                                 {props.model.userInfo?.profilePictureUrl ?
                                     <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
