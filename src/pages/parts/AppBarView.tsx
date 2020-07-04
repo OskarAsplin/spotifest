@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme: Theme) =>
             minHeight: 36
         },
         profileImg: {
-            height: 30,
-            width: 30,
+            height: 28,
+            width: 28,
         },
         popover: {
             padding: theme.spacing(1.5),
@@ -127,7 +127,7 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (min-width: 610px)': {
                 marginLeft: theme.spacing(2),
             },
-            padding: '9px'
+            padding: '10px'
         },
         drawerList: {
             width: 250,
