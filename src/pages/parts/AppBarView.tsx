@@ -34,8 +34,8 @@ const useStyles = makeStyles((theme: Theme) =>
             minHeight: 36
         },
         profileImg: {
-            height: 24,
-            width: 24,
+            height: 30,
+            width: 30,
         },
         popover: {
             padding: theme.spacing(1.5),
@@ -118,10 +118,11 @@ const useStyles = makeStyles((theme: Theme) =>
         minHeight: {
             minHeight: '40px',
         },
-        marginLeft: {
+        profilePicture: {
             '@media (min-width: 610px)': {
                 marginLeft: theme.spacing(2),
             },
+            padding: '9px'
         },
         drawerList: {
             width: 250,
@@ -419,7 +420,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                 color="inherit"
                                 aria-describedby={id}
                                 onClick={handleClick}
-                                className={classes.marginLeft}
+                                className={classes.profilePicture}
                             >
                                 {props.model.userInfo?.profilePictureUrl ?
                                     <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
