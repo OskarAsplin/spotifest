@@ -21,7 +21,12 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: theme.spacing(2, 4, 2, 4),
             },
             '@media (max-width: 609px)': {
-                padding: theme.spacing(2, 2, 2, 2),
+                '@media (min-width: 364px)': {
+                    padding: theme.spacing(2, 2, 2, 2),
+                },
+            },
+            '@media (max-width: 363px)': {
+                padding: theme.spacing(2, 1, 2, 1),
             },
             marginBottom: theme.spacing(3),
             width: '100%',
@@ -38,6 +43,9 @@ const useStyles = makeStyles((theme: Theme) =>
             },
             '@media (max-width: 609px)': {
                 width: '60px'
+            },
+            '@media (max-width: 363px)': {
+                paddingRight: theme.spacing(1)
             },
             userSelect: 'none'
         },
@@ -96,7 +104,12 @@ const useStyles = makeStyles((theme: Theme) =>
         button: {
             whiteSpace: 'normal',
             textTransform: 'none',
-            marginLeft: -theme.spacing(1.3),
+            '@media (min-width: 364px)': {
+                marginLeft: -theme.spacing(1.3),
+            },
+            '@media (max-width: 363px)': {
+                marginLeft: -theme.spacing(0.3),
+            },
             textAlign: 'left',
             //maxWidth: '85%',
             //'@media (min-width: 610px)': {
@@ -145,6 +158,11 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
             paddingBottom: theme.spacing(0.5)
         },
+        paddingSmall: {
+            '@media (max-width: 363px)': {
+                paddingLeft: theme.spacing(1)
+            },
+        }
     }),
 );
 
@@ -279,16 +297,16 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                 <div id={'details_and_matching_artists_and_lineup'} className={classes.flexRow}>
                     <div id={'details_and_matching_artists'} className={classes.grow}>
                         {festival.cancelled ?
-                            <Typography variant="subtitle1" color='secondary'>
+                            <Typography variant="subtitle1" color='secondary' className={classes.paddingSmall}>
                                 {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
                             </Typography> :
-                            <Typography variant="subtitle1">
+                            <Typography variant="subtitle1" className={classes.paddingSmall}>
                                 {festival.date + ', ' + festival.year}
                             </Typography>}
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" className={classes.paddingSmall}>
                             {festival.locationText}
                         </Typography>
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" className={classes.paddingSmall}>
                             {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}
                         </Typography>
                         {!bigScreen && festival.festivalImg && <div className={classes.lineupBox}>
@@ -298,7 +316,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                         </div>}
                         {showMatching &&
                             <div className={classes.matchingPopularBox}>
-                                <Typography variant="body1" color='primary' component="div" >
+                                <Typography variant="body1" color='primary' component="div" className={classes.paddingSmall}>
                                     <Box fontWeight="fontWeightBold">
                                         {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
                                     </Box>
@@ -353,7 +371,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                     </div>
                 }
                 <div className={classes.matchingPopularBox}>
-                    <Typography variant="body1" color='primary' component="div" >
+                    <Typography variant="body1" color='primary' component="div" className={classes.paddingSmall}>
                         <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
                             Popular artists at this festival
                         </Box>
