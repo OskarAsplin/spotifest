@@ -88,11 +88,13 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 
 	const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
 
+	const [page, setPage] = React.useState(currentPage);
 	const [siteInitialized, setSiteInitialized] = React.useState(false);
 	const [isAnyMatch, setIsAnyMatch] = React.useState(true);
 
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-		if (currentPage !== value) {
+		if (page !== value) {
+			setPage(value);
 			dispatch(setCurrentPage(value));
 			const currentPageLineups = festivalMatches.slice((value - 1) * 15, value * 15).map(match => match.lineup_id);
 			if (currentPageLineups.length > 0) {
@@ -123,7 +125,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 						{festivalMatches.length + ' matches'}
 					</Typography>
 					<Box className={classes.align}>
-						<Pagination count={numPages} page={currentPage} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
+						<Pagination count={numPages} page={page} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
 					</Box>
 				</Box>}
 			{showMatches.map((festival: FestivalMatch, idx) => {
@@ -136,7 +138,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 			{showMatches.length > 0 &&
 				<div>
 					<Box className={classes.align}>
-						<Pagination count={numPages} page={currentPage} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
+						<Pagination count={numPages} page={page} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
 					</Box>
 					<div className={classes.verticalSpace2} />
 				</div>}
