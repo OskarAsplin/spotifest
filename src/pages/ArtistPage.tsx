@@ -497,7 +497,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             </Typography>
                             <Box className={classes.box2}>
                                 {artistInfo.festivalsFuture.map((festival, idx) =>
-                                    <FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={false} />
+                                    <FestivalMatchItem festival={festival} popularArtists={festival.popular_artists} matchingArtists={[]} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={false} />
                                 )}
                             </Box>
                         </div>

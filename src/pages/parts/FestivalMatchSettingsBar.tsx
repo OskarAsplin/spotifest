@@ -485,7 +485,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 							title={
 								<React.Fragment>
 									<Typography color="inherit" variant="h6">Matching algorithm</Typography>
-									{'The matching agorithm is based on the genres of the festivals, giving a higher score if the genres fit well to your most played artists or selected playlist. Matching artists in the lineup of a festival will also increase the matching percent.'}
+									{'The matching algorithm is a combination of artist and genre matching. The number of artists in your selected playlist attending a festival combined with how well the genres of the playlist fit the festival, determines the match score shown on each festival.'}
 								</React.Fragment>
 							}
 						>

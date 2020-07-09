@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import { AppState, DispatchProps, FestivalMatch, MatchingMethod } from "../../redux/types";
+import { AppState, DispatchProps, FestivalMatch, Artist, PopularArtistsDict } from "../../redux/types";
+import { getPopularArtistsInLineups, setCurrentPage } from "../../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, Theme, Typography } from "@material-ui/core";
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
-import { MatchSettings } from "../../redux/types";
 import 'react-circular-progressbar/dist/styles.css';
 import Box from '@material-ui/core/Box';
 import FestivalMatchItem from './FestivalMatchItem';
@@ -71,37 +71,40 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface StoreProps {
-	matchSettings: MatchSettings;
 	festivalMatches: FestivalMatch[],
-	matchingMethod: MatchingMethod
+	currentPage: number,
+	matchBasis: string,
+	topArtists: Artist[],
+	selectedPlaylistArtists: Artist[],
+	popularArtistsDict: PopularArtistsDict
 }
 
 type Props = DispatchProps & StoreProps;
 
 const FestivalMatchView: React.FC<Props> = (props: Props) => {
 
-	const { matchSettings, festivalMatches, matchingMethod } = props;
+	const { festivalMatches, currentPage, dispatch, matchBasis, topArtists, selectedPlaylistArtists, popularArtistsDict } = props;
 	const classes = useStyles();
 
 	const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
 
-	const [page, setPage] = React.useState(1);
 	const [siteInitialized, setSiteInitialized] = React.useState(false);
 	const [isAnyMatch, setIsAnyMatch] = React.useState(true);
 
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
-		if (page !== value) {
-			setPage(value);
+		if (currentPage !== value) {
+			dispatch(setCurrentPage(value));
+			const currentPageLineups = festivalMatches.slice((value - 1) * 15, value * 15).map(match => match.lineup_id);
+			if (currentPageLineups.length > 0) {
+				getPopularArtistsInLineups(currentPageLineups, dispatch);
+			}
 			setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
 		}
 	};
 	const itemsPerPage = 15
 	const numPages = Math.ceil(festivalMatches.length / itemsPerPage)
 
-	const showMatches = festivalMatches.sort((a, b) => (matchingMethod === MatchingMethod.Genre ?
-		(a.matching_percent_combined < b.matching_percent_combined) :
-		(a.matching_percent_artists < b.matching_percent_artists)) ? 1 : -1)
-		.slice((page - 1) * itemsPerPage, Math.min(page * itemsPerPage, festivalMatches.length));
+	const showMatches = festivalMatches.slice((currentPage - 1) * itemsPerPage, Math.min(currentPage * itemsPerPage, festivalMatches.length));
 
 	useEffect(() => {
 		if (showMatches.length === 0) {
@@ -112,10 +115,6 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 		}
 	}, [showMatches])
 
-	useEffect(() => {
-		setPage(1);
-	}, [matchSettings])
-
 	return (
 		<Box className={classes.box}>
 			{showMatches.length > 0 &&
@@ -124,16 +123,20 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 						{festivalMatches.length + ' matches'}
 					</Typography>
 					<Box className={classes.align}>
-						<Pagination count={numPages} page={page} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
+						<Pagination count={numPages} page={currentPage} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
 					</Box>
 				</Box>}
-			{showMatches.map((festival: FestivalMatch, idx) =>
-				<FestivalMatchItem festival={festival} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={true} />
-			)}
+			{showMatches.map((festival: FestivalMatch, idx) => {
+				const popularArtists = festival.lineup_id in popularArtistsDict ? popularArtistsDict[festival.lineup_id] : [];
+				const matchingArtists = matchBasis === "__your__top__artists__" ?
+					topArtists.filter(artist => artist.spotifyId && festival.matching_artists.includes(artist.spotifyId)).sort((a, b) => a.userPopularity! < b.userPopularity! ? 1 : -1) :
+					selectedPlaylistArtists.filter(artist => artist.spotifyId && festival.matching_artists.includes(artist.spotifyId)).sort((a, b) => a.userPopularity! < b.userPopularity! ? 1 : -1);
+				return (<FestivalMatchItem festival={festival} popularArtists={popularArtists} matchingArtists={matchingArtists} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={true} />)
+			})}
 			{showMatches.length > 0 &&
 				<div>
 					<Box className={classes.align}>
-						<Pagination count={numPages} page={page} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
+						<Pagination count={numPages} page={currentPage} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
 					</Box>
 					<div className={classes.verticalSpace2} />
 				</div>}
@@ -150,9 +153,12 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-	matchSettings: state.model.matchSettings,
 	festivalMatches: state.model.festivalMatches,
-	matchingMethod: state.model.matchingMethod
+	currentPage: state.model.currentPage,
+	matchBasis: state.model.matchSettings.matchBasis,
+	topArtists: state.model.topArtists,
+	selectedPlaylistArtists: state.model.selectedPlaylistArtists,
+	popularArtistsDict: state.model.popularArtists,
 });
 
 const mapDispatchToProps = (dispatch: any) => {

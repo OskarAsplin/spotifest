@@ -1,4 +1,4 @@
-import { Action, ActionTypeKeys, Model, FestivalMatch, MatchingMethod, Playlist } from "./types";
+import { Action, ActionTypeKeys, Model, MatchingMethod, Playlist } from "./types";
 import { Reducer } from "redux";
 
 const endOfYear = new Date(new Date().getFullYear(), 11, 31);
@@ -25,6 +25,7 @@ export const initialModel: Model = {
     playlistsLoaded: false,
     selectedPlaylistArtists: [],
     festivalMatches: [],
+    popularArtists: {},
     matchingMethod: MatchingMethod.Genre,
     countries: [],
     continents: [],
@@ -35,7 +36,7 @@ export const initialModel: Model = {
         toDate: endOfYear.toISOString(),
         numTracks: 0
     },
-
+    currentPage: 1
 };
 
 const reducer: Reducer<Model, Action> = (
@@ -90,27 +91,13 @@ const reducer: Reducer<Model, Action> = (
             const { artists } = action;
             return { ...state, selectedPlaylistArtists: artists }
         }
-        case ActionTypeKeys.ADD_FESTIVAL_MATCH: {
-            const { festival } = action;
-            let is_new_festival = true
-            const s0 = {
-                ...state, festivalMatches: state.festivalMatches.map((old_festival: FestivalMatch) => {
-                    if (old_festival.name === festival.name) {
-                        is_new_festival = false
-                        return festival
-                    } else {
-                        return old_festival
-                    }
-                })
-            }
-            if (is_new_festival) {
-                return { ...state, festivalMatches: [...state.festivalMatches, festival] }
-            }
-            return s0
-        }
         case ActionTypeKeys.ADD_FESTIVAL_MATCHES: {
             const { festivals } = action;
-            return { ...state, festivalMatches: festivals }
+            return { ...state, festivalMatches: festivals, currentPage: 1 }
+        }
+        case ActionTypeKeys.SET_POPULAR_ARTISTS: {
+            const { popularArtistsDict } = action;
+            return { ...state, popularArtists: popularArtistsDict }
         }
         case ActionTypeKeys.ADD_COUNTRIES: {
             const { countries } = action;
@@ -127,6 +114,10 @@ const reducer: Reducer<Model, Action> = (
         case ActionTypeKeys.SET_MATCH_SETTINGS: {
             const { settings } = action;
             return { ...state, matchSettings: settings }
+        }
+        case ActionTypeKeys.SET_CURRENT_PAGE: {
+            const { page } = action;
+            return { ...state, currentPage: page }
         }
         default:
             return state;

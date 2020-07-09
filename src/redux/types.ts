@@ -23,10 +23,12 @@ export interface Model {
     playlistsLoaded: boolean;
     selectedPlaylistArtists: Artist[];
     festivalMatches: FestivalMatch[];
+    popularArtists: PopularArtistsDict;
     matchingMethod: MatchingMethod;
     countries: Area[];
     continents: Area[];
     matchSettings: MatchSettings;
+    currentPage: number;
 }
 
 export interface AppState {
@@ -51,12 +53,13 @@ export type Action
     | SetTopArtists
     | SetPlaylists
     | SetSelectedPlaylistArtists
-    | AddFestivalMatch
     | AddFestivalMatches
+    | SetPopularArtists
     | AddCountries
     | AddContinents
     | SetMatchingMethod
     | SetMatchSettings
+    | SetCurrentPage
 
 export enum ActionTypeKeys {
     TURN_ON_LOADER = "TURN_ON_LOADER",
@@ -75,12 +78,13 @@ export enum ActionTypeKeys {
     SET_TOP_ARTISTS = "SET_TOP_ARTISTS",
     SET_PLAYLISTS = "SET_PLAYLISTS",
     SET_SELECTED_PLAYLIST_ARTISTS = "SET_SELECTED_PLAYLIST_ARTISTS",
-    ADD_FESTIVAL_MATCH = "ADD_FESTIVAL_MATCH",
     ADD_FESTIVAL_MATCHES = "ADD_FESTIVAL_MATCHES",
+    SET_POPULAR_ARTISTS = "SET_POPULAR_ARTISTS",
     ADD_COUNTRIES = "ADD_COUNTRIES",
     ADD_CONTINENTS = "ADD_CONTINENTS",
     SET_MATCHING_METHOD = "SET_MATCHING_METHOD",
     SET_MATCH_SETTINGS = "SET_MATCH_SETTINGS",
+    SET_CURRENT_PAGE = "SET_CURRENT_PAGE",
 }
 
 export interface TurnOnLoader {
@@ -154,14 +158,14 @@ export interface SetSelectedPlaylistArtists {
     artists: Artist[];
 }
 
-export interface AddFestivalMatch {
-    type: ActionTypeKeys.ADD_FESTIVAL_MATCH;
-    festival: FestivalMatch;
-}
-
 export interface AddFestivalMatches {
     type: ActionTypeKeys.ADD_FESTIVAL_MATCHES;
     festivals: FestivalMatch[];
+}
+
+export interface SetPopularArtists {
+    type: ActionTypeKeys.SET_POPULAR_ARTISTS;
+    popularArtistsDict: PopularArtistsDict;
 }
 
 export interface AddCountries {
@@ -182,6 +186,11 @@ export interface SetMatchingMethod {
 export interface SetMatchSettings {
     type: ActionTypeKeys.SET_MATCH_SETTINGS;
     settings: MatchSettings;
+}
+
+export interface SetCurrentPage {
+    type: ActionTypeKeys.SET_CURRENT_PAGE;
+    page: number;
 }
 
 
@@ -212,6 +221,11 @@ export interface Artist {
     genres: string[];
 }
 
+export interface ArtistMinimal {
+    spotifyId: string;
+    userPopularity: number;
+}
+
 export interface Lineup {
     festival: string;
     year: number;
@@ -223,8 +237,13 @@ export interface Lineup {
     poster: string;
 }
 
+export interface PopularArtistsDict {
+    [id: string]: Artist[];
+}
+
 export interface MatchRequest {
-    artists: Artist[],
+    artists: ArtistMinimal[],
+    genres: string[],
     numTracks: number,
     isTopArtists: Boolean,
     dateFrom: string,
@@ -234,22 +253,26 @@ export interface MatchRequest {
 }
 
 export interface FestivalMatch {
+    lineup_id: string,
     name: string,
     locationText: string,
     date: string,
     year: number,
     cancelled: boolean,
     matching_percent_artists: number,
-    matching_artists: Artist[],
-    popular_artists: Artist[],
+    matching_artists: string[],
     matching_percent_genres: number,
     matching_percent_combined: number,
     top_genres: string[],
     lineupImg: string,
     festivalImg: string,
+}
+
+export interface FestivalMatchExtended extends FestivalMatch {
+    popular_artists: Artist[],
     webpage: string,
     ticketWebpage: string,
-    video: string,
+    video: string
 }
 
 export interface FestivalInfo {
@@ -266,8 +289,8 @@ export interface FestivalInfo {
 
 export interface ArtistInfo {
     artist: Artist,
-    festivalsFuture: FestivalMatch[],
-    festivalsPast: FestivalMatch[]
+    festivalsFuture: FestivalMatchExtended[],
+    festivalsPast: FestivalMatchExtended[]
 }
 
 export interface Area {

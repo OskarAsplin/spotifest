@@ -1,4 +1,4 @@
-import { Action, ActionTypeKeys, Dispatch, Artist, MatchRequest, FestivalMatch, Area, MatchSettings, MatchingMethod, UserInfo, Playlist } from "./types";
+import { Action, ActionTypeKeys, Dispatch, Artist, ArtistMinimal, MatchRequest, FestivalMatch, Area, MatchSettings, MatchingMethod, UserInfo, Playlist, PopularArtistsDict } from "./types";
 import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 import countries_list from 'countries-list/dist/data.json';
 import { initialModel } from './reducer'
@@ -124,17 +124,17 @@ export const addContinents = (continents: Area[]): Action => {
     }
 };
 
-export const addFestivalMatch = (festival: FestivalMatch): Action => {
-    return {
-        type: ActionTypeKeys.ADD_FESTIVAL_MATCH,
-        festival: festival
-    }
-};
-
 export const addFestivalMatches = (festivals: FestivalMatch[]): Action => {
     return {
         type: ActionTypeKeys.ADD_FESTIVAL_MATCHES,
         festivals: festivals
+    }
+};
+
+export const setPopularArtists = (popularArtistsDict: PopularArtistsDict): Action => {
+    return {
+        type: ActionTypeKeys.SET_POPULAR_ARTISTS,
+        popularArtistsDict: popularArtistsDict
     }
 };
 
@@ -149,6 +149,13 @@ export const setMatchSettings = (settings: MatchSettings): Action => {
     return {
         type: ActionTypeKeys.SET_MATCH_SETTINGS,
         settings: settings
+    }
+};
+
+export const setCurrentPage = (page: number): Action => {
+    return {
+        type: ActionTypeKeys.SET_CURRENT_PAGE,
+        page: page
     }
 };
 
@@ -173,6 +180,26 @@ export const getBigPicture = (images: SpotifyApi.ImageObject[]): string => {
     return images.length > 0 ? images[0].url : ''
 }
 
+export const getPopularArtistsInLineups = (
+    lineups: string[],
+    dispatch: Dispatch
+) => {
+    fetch(getApiBaseUrl() + '/onTour/popularArtistsInLineups', {
+        method: 'POST',
+        headers: {
+            "Accept": "application/json",
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(lineups)
+    }).then(response => response.json())
+    .then((data) => {
+        dispatch(setPopularArtists(data as PopularArtistsDict));
+    }).catch((reason) => {
+        console.log(reason);
+        dispatch(setDbIsOffline());
+    });
+};
+
 export const testFestivalMatches = (
     artists: Artist[],
     numTracks: number,
@@ -189,7 +216,8 @@ export const testFestivalMatches = (
     dateTo.setUTCHours(0);
     dateTo.setMonth(dateTo.getMonth() + 1, 0); // Last day of month
     const matchRequest: MatchRequest = {
-        artists: artists,
+        artists: artists.map((artist) => { return { spotifyId: artist.spotifyId, userPopularity: artist.userPopularity } as ArtistMinimal}),
+        genres: artists.flatMap((artist) => artist.genres),
         numTracks: numTracks,
         isTopArtists: isTopArtists,
         dateFrom: getShortDateISOString(dateFrom),
@@ -204,12 +232,15 @@ export const testFestivalMatches = (
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(matchRequest)
-    }).then((response: Response) => {
-        response.text().then((id: string) => {
-            const matching_festivals: FestivalMatch[] = JSON.parse(id);
-            dispatch(addFestivalMatches(matching_festivals));
-            dispatch(setDbIsOnline());
-        });
+    }).then(response => response.json())
+    .then((data) => {
+        const festivalMatches = data as FestivalMatch[];
+        dispatch(addFestivalMatches(festivalMatches));
+        dispatch(setDbIsOnline());
+        if (festivalMatches.length > 0) {
+            const firstPageLineups = festivalMatches.slice(0, 15).map(match => match.lineup_id);
+            getPopularArtistsInLineups(firstPageLineups, dispatch);
+        }
     }).catch((reason) => {
         console.log(reason);
         dispatch(setDbIsOffline());

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppState, DispatchProps, FestivalMatch, MatchingMethod } from "../../redux/types";
+import { AppState, DispatchProps, FestivalMatch, MatchingMethod, Artist } from "../../redux/types";
 import { connect } from "react-redux";
 import { createStyles,  Theme, Paper, IconButton, Button, Collapse, Typography, Box, PaletteType, Tooltip } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -161,6 +161,8 @@ const HtmlTooltip = withStyles((theme) => ({
 
 interface OwnProps {
     festival: FestivalMatch,
+    popularArtists: Artist[],
+    matchingArtists: Artist[],
     showMatching: boolean
 }
 
@@ -183,7 +185,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     const fourArtistMaxWidth = useMediaQuery('(max-width:565px)');
     const fourArtistWidth = fourArtistMinWidth && fourArtistMaxWidth;
 
-    const { festival, showMatching, thememode, matchingMethod } = props;
+    const { festival, showMatching, thememode, matchingMethod, popularArtists, matchingArtists } = props;
     const [expanded, setExpanded] = React.useState(false);
     const [redirectFestival, setRedirectFestival] = React.useState('');
 
@@ -298,15 +300,15 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             <div className={classes.matchingPopularBox}>
                                 <Typography variant="body1" color='primary' component="div" >
                                     <Box fontWeight="fontWeightBold">
-                                        {festival.matching_artists.length > 0 ? 'Matching artists' : 'No matching artists'}
+                                        {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
                                     </Box>
                                 </Typography>
                             </div>
                         }
                         {showMatching &&
                             <div className={classes.artistAvatarBox}>
-                                {festival.matching_artists.length > 0 &&
-                                    festival.matching_artists
+                                {matchingArtists.length > 0 &&
+                                    matchingArtists
                                         .slice(0, endFirstRow())
                                         .map((artist) => (
                                             <ArtistBubble
@@ -316,15 +318,15 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                         )
                                         )}
                                 {!bigScreen && threeArtistWidth &&
-                                    (festival.matching_artists.length - 2) % 3 === 0 &&
+                                    (matchingArtists.length - 2) % 3 === 0 &&
                                     <div className={classes.width100} />
                                 }
                                 {!bigScreen && fourArtistWidth &&
-                                    (festival.matching_artists.length - 3) % 4 === 0 &&
+                                    (matchingArtists.length - 3) % 4 === 0 &&
                                     <div className={classes.width100} />
                                 }
                                 {!bigScreen && fourArtistWidth &&
-                                    (festival.matching_artists.length - 2) % 4 === 0 &&
+                                    (matchingArtists.length - 2) % 4 === 0 &&
                                     <div className={classes.width200} />
                                 }
                             </div>
@@ -338,8 +340,8 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                 </div>
                 {showMatching && bigScreen &&
                     <div className={classes.artistAvatarBox}>
-                        {festival.matching_artists.length > 0 &&
-                            festival.matching_artists
+                        {matchingArtists.length > 0 &&
+                            matchingArtists
                                 .slice(endFirstRow())
                                 .map((artist) => (
                                     <ArtistBubble
@@ -369,8 +371,8 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                 </div>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <div className={classes.artistAvatarBox}>
-                        {festival.popular_artists.length > 0 &&
-                            festival.popular_artists.slice(0, bigScreen ? 14 : 12).map((artist) => (
+                        {popularArtists.length > 0 &&
+                            popularArtists.slice(0, bigScreen ? 14 : 12).map((artist) => (
                                 <ArtistBubble
                                     artist={artist}
                                     key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
@@ -378,15 +380,15 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             )
                             )}
                         {!bigScreen && threeArtistWidth &&
-                            (festival.popular_artists.length - 2) % 3 === 0 &&
+                            (popularArtists.length - 2) % 3 === 0 &&
                             <div className={classes.width100} />
                         }
                         {!bigScreen && fourArtistWidth &&
-                            (festival.popular_artists.length - 3) % 4 === 0 &&
+                            (popularArtists.length - 3) % 4 === 0 &&
                             <div className={classes.width100} />
                         }
                         {!bigScreen && fourArtistWidth &&
-                            (festival.popular_artists.length - 2) % 4 === 0 &&
+                            (popularArtists.length - 2) % 4 === 0 &&
                             <div className={classes.width200} />
                         }
                     </div>
