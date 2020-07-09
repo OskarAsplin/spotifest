@@ -94,16 +94,13 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		if (page !== value) {
-			setPage(value);
 			dispatch(setCurrentPage(value));
 			const currentPageLineups = festivalMatches.slice((value - 1) * 15, value * 15).map(match => match.lineup_id);
 			if (currentPageLineups.length > 0) {
 				getPopularArtistsInLineups(currentPageLineups, dispatch);
 			}
-			setTimeout(() => {
-				setPage(value);
-				window.scrollTo({ top: 0, behavior: 'smooth' });
-			}, 30);
+			setPage(value);
+			setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
 		}
 	};
 	const itemsPerPage = 15
