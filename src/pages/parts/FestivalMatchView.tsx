@@ -100,7 +100,10 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 			if (currentPageLineups.length > 0) {
 				getPopularArtistsInLineups(currentPageLineups, dispatch);
 			}
-			setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
+			setTimeout(() => {
+				setPage(value);
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+			}, 30);
 		}
 	};
 	const itemsPerPage = 15
