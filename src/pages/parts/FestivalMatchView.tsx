@@ -104,13 +104,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 
 	const showMatches = festivalMatches.slice((page - 1) * itemsPerPage, Math.min(page * itemsPerPage, festivalMatches.length));
 
-	useEffect(() => {
-		if (showMatches.length === 0) {
-			setIsAnyMatch(false);
-		} else {
-			setIsAnyMatch(true);
-			setSiteInitialized(true);
-		}
+	const updatePopularArtists = () => {
 		if (oldPage !== page) {
 			dispatch(setCurrentPage(page));
 			const currentPageLineups = festivalMatches.slice((page - 1) * 15, page * 15).map(match => match.lineup_id);
@@ -119,6 +113,17 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 			}
 			setOldPage(page);
 		}
+	}
+
+	useEffect(() => {
+		if (showMatches.length === 0) {
+			setIsAnyMatch(false);
+		} else {
+			setIsAnyMatch(true);
+			setSiteInitialized(true);
+		}
+		updatePopularArtists();
+		// eslint-disable-next-line
 	}, [showMatches])
 
 	return (
