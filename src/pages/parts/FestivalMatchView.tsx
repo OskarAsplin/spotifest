@@ -89,21 +89,18 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 	const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
 
 	const [page, setPage] = React.useState(currentPage);
-	const [oldPage, setOldPage] = React.useState(currentPage);
 	const [siteInitialized, setSiteInitialized] = React.useState(false);
 	const [isAnyMatch, setIsAnyMatch] = React.useState(true);
 
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		if (page !== value) {
-			setPage(value);
+			const currentPageLineups = festivalMatches.slice((value - 1) * 15, value * 15).map(match => match.lineup_id);
+            if (currentPageLineups.length > 0) {
+                dispatch(getPopularArtistsInLineups(currentPageLineups, dispatch));
+            }
+            dispatch(setCurrentPage(value));
+            setPage(value);
 			setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
-            setTimeout(() => {
-                const currentPageLineups = festivalMatches.slice((page - 1) * 15, page * 15).map(match => match.lineup_id);
-                if (currentPageLineups.length > 0) {
-                    getPopularArtistsInLineups(currentPageLineups, dispatch);
-                }
-                setCurrentPage(value);
-            }, 1000);
 		}
 	};
 	const itemsPerPage = 15
