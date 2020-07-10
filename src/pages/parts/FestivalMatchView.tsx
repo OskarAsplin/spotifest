@@ -97,23 +97,19 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 		if (page !== value) {
 			setPage(value);
 			setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
+            setTimeout(() => {
+                const currentPageLineups = festivalMatches.slice((page - 1) * 15, page * 15).map(match => match.lineup_id);
+                if (currentPageLineups.length > 0) {
+                    getPopularArtistsInLineups(currentPageLineups, dispatch);
+                }
+                setCurrentPage(value);
+            }, 1000);
 		}
 	};
 	const itemsPerPage = 15
 	const numPages = Math.ceil(festivalMatches.length / itemsPerPage)
 
 	const showMatches = festivalMatches.slice((page - 1) * itemsPerPage, Math.min(page * itemsPerPage, festivalMatches.length));
-
-	const updatePopularArtists = () => {
-		if (oldPage !== page) {
-			dispatch(setCurrentPage(page));
-			const currentPageLineups = festivalMatches.slice((page - 1) * 15, page * 15).map(match => match.lineup_id);
-			if (currentPageLineups.length > 0) {
-				getPopularArtistsInLineups(currentPageLineups, dispatch);
-			}
-			setOldPage(page);
-		}
-	}
 
 	useEffect(() => {
 		if (showMatches.length === 0) {
@@ -122,8 +118,6 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 			setIsAnyMatch(true);
 			setSiteInitialized(true);
 		}
-		updatePopularArtists();
-		// eslint-disable-next-line
 	}, [showMatches])
 
 	return (
