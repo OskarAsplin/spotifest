@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps, FestivalMatch, Artist, PopularArtistsDict } from "../../redux/types";
-import { setCurrentPage } from "../../redux/actions";
+import { getPopularArtistsInLineups, setCurrentPage } from "../../redux/actions";
 import { connect } from "react-redux";
 import { createStyles, Theme, Typography } from "@material-ui/core";
 import Pagination from '@material-ui/lab/Pagination';
@@ -97,6 +97,10 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		if (currentPage !== value) {
             dispatch(setCurrentPage(value));
+            const currentPageLineups = festivalMatches.slice((value - 1) * 15, value * 15).map(match => match.lineup_id);
+            if (currentPageLineups.length > 0) {
+                getPopularArtistsInLineups(currentPageLineups, dispatch);
+            }
 			setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
 		}
 	};
