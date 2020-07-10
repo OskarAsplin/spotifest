@@ -94,14 +94,16 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 	const itemsPerPage = 15
 	const numPages = Math.ceil(festivalMatches.length / itemsPerPage)
 
-	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+	const handleChange = (event: React.ChangeEvent<unknown>, value: number, isBottomPagination: boolean) => {
 		if (currentPage !== value) {
             dispatch(setCurrentPage(value));
             const currentPageLineups = festivalMatches.slice((value - 1) * 15, value * 15).map(match => match.lineup_id);
             if (currentPageLineups.length > 0) {
                 getPopularArtistsInLineups(currentPageLineups, dispatch);
             }
-			setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
+            if (isBottomPagination) {
+                setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
+            }
 		}
 	};
 
@@ -124,7 +126,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 						{festivalMatches.length + ' matches'}
 					</Typography>
 					<Box className={classes.align}>
-						<Pagination count={numPages} page={currentPage} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
+                    <Pagination count={numPages} page={currentPage} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={(event: React.ChangeEvent<unknown>, value: number) => handleChange(event, value, false)} />
 					</Box>
 				</Box>}
 			{showMatches.map((festival: FestivalMatch, idx) => {
@@ -137,7 +139,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 			{showMatches.length > 0 &&
 				<div>
 					<Box className={classes.align}>
-						<Pagination count={numPages} page={currentPage} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={handleChange} />
+                    <Pagination count={numPages} page={currentPage} size={mediumOrBigScreen ? 'medium' : 'small'} onChange={(event: React.ChangeEvent<unknown>, value: number) => handleChange(event, value, true)} />
 					</Box>
 					<div className={classes.verticalSpace2} />
 				</div>}
