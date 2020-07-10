@@ -94,13 +94,17 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 
 	const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
 		if (page !== value) {
-			const currentPageLineups = festivalMatches.slice((value - 1) * 15, value * 15).map(match => match.lineup_id);
-            if (currentPageLineups.length > 0) {
-                dispatch(getPopularArtistsInLineups(currentPageLineups, dispatch));
-            }
             dispatch(setCurrentPage(value));
             setPage(value);
+			const currentPageLineups = festivalMatches.slice((value - 1) * 15, value * 15).map(match => match.lineup_id);
+            if (currentPageLineups.length > 0) {
+                getPopularArtistsInLineups(currentPageLineups, dispatch);
+            }
 			setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
+            setTimeout(() => {
+                dispatch(setCurrentPage(value));
+                setPage(value);
+            }, 300);
 		}
 	};
 	const itemsPerPage = 15
