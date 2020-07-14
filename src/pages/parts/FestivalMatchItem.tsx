@@ -17,10 +17,10 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            '@media (min-width: 610px)': {
+            '@media (min-width: 690px)': {
                 padding: theme.spacing(2, 4, 2, 4),
             },
-            '@media (max-width: 609px)': {
+            '@media (max-width: 689px)': {
                 '@media (min-width: 364px)': {
                     padding: theme.spacing(2, 2, 2, 2),
                 },
@@ -38,10 +38,10 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
         },
         circleSize: {
-            '@media (min-width: 610px)': {
+            '@media (min-width: 690px)': {
                 width: '80px'
             },
-            '@media (max-width: 609px)': {
+            '@media (max-width: 689px)': {
                 width: '60px'
             },
             '@media (max-width: 363px)': {
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         festivalTitleCenter: {
             wordWrap: 'break-word',
-            '@media (max-width: 609px)': {
+            '@media (max-width: 689px)': {
                 textAlign: 'center'
             },
         },
@@ -146,11 +146,8 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'row',
         },
-        width100: {
-            width: '100px'
-        },
-        width200: {
-            width: '200px'
+        artistWidth: {
+            width: '75px'
         },
         toolTip: {
             display: 'flex',
@@ -192,18 +189,22 @@ interface StoreProps {
 type Props = DispatchProps & StoreProps & OwnProps;
 
 const FestivalMatchItem: React.FC<Props> = (props: Props) => {
-    const bigScreen = useMediaQuery('(min-width:610px)');
+    const { festival, showMatching, thememode, matchingMethod, popularArtists, matchingArtists } = props;
+
+    const bigScreen = useMediaQuery('(min-width:690px)');
+    const mediumScreen = useMediaQuery('(min-width:610px)');
     const fourMatchingArtistsFirstRow = useMediaQuery('(min-width:840px)');
     const threeMatchingArtistsFirstRowMinWidth = useMediaQuery('(min-width:740px)');
     const twoMatchingArtistsFirstRowMinWidth = useMediaQuery('(min-width:640px)');
     const threeMatchingArtistsFirstRow = threeMatchingArtistsFirstRowMinWidth && !fourMatchingArtistsFirstRow;
     const twoMatchingArtistsFirstRow = twoMatchingArtistsFirstRowMinWidth && !threeMatchingArtistsFirstRow;
-    const threeArtistWidth = useMediaQuery('(max-width:464px)');
-    const fourArtistMinWidth = useMediaQuery('(min-width:465px)');
-    const fourArtistMaxWidth = useMediaQuery('(max-width:565px)');
-    const fourArtistWidth = fourArtistMinWidth && fourArtistMaxWidth;
+    const outerPaddingAndMargin = bigScreen ? 128 : mediumScreen ? 96 : 64;
+    const numArtistsInWidth = bigScreen ?
+        Math.min(7, Math.floor((window.innerWidth - outerPaddingAndMargin) / 100)) :
+        Math.max(4, Math.floor((window.innerWidth - outerPaddingAndMargin) / 75));
+    const fillMatchingArtistWidth = numArtistsInWidth - matchingArtists.length % numArtistsInWidth;
+    const fillPopularArtistWidth = numArtistsInWidth - matchingArtists.length % numArtistsInWidth;
 
-    const { festival, showMatching, thememode, matchingMethod, popularArtists, matchingArtists } = props;
     const [expanded, setExpanded] = React.useState(false);
     const [redirectFestival, setRedirectFestival] = React.useState('');
 
@@ -225,7 +226,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     const trailColor = thememode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
 
     const endFirstRow = () => {
-        return bigScreen ? fourMatchingArtistsFirstRow ? 4 : threeMatchingArtistsFirstRow ? 3 : twoMatchingArtistsFirstRow ? 2 : undefined : undefined;
+        return bigScreen ? fourMatchingArtistsFirstRow ? 4 : threeMatchingArtistsFirstRow ? 3 : twoMatchingArtistsFirstRow ? 2 : matchingArtists.length : matchingArtists.length;
     }
 
     if (redirectFestival) {
@@ -335,17 +336,8 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                                 thememode={thememode} />
                                         )
                                         )}
-                                {!bigScreen && threeArtistWidth &&
-                                    (matchingArtists.length - 2) % 3 === 0 &&
-                                    <div className={classes.width100} />
-                                }
-                                {!bigScreen && fourArtistWidth &&
-                                    (matchingArtists.length - 3) % 4 === 0 &&
-                                    <div className={classes.width100} />
-                                }
-                                {!bigScreen && fourArtistWidth &&
-                                    (matchingArtists.length - 2) % 4 === 0 &&
-                                    <div className={classes.width200} />
+                                {!bigScreen && matchingArtists.length > 0 &&
+                                    Array.from({ length: fillMatchingArtistWidth }, (_, i) => <div className={classes.artistWidth} key={i} />)
                                 }
                             </div>
                         }
@@ -390,24 +382,15 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <div className={classes.artistAvatarBox}>
                         {popularArtists.length > 0 &&
-                            popularArtists.slice(0, bigScreen ? 14 : 12).map((artist) => (
+                            popularArtists.slice(0, numArtistsInWidth > 4 ? numArtistsInWidth * 2 : numArtistsInWidth * 3).map((artist) => (
                                 <ArtistBubble
                                     artist={artist}
                                     key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
                                     thememode={thememode} />
                             )
                             )}
-                        {!bigScreen && threeArtistWidth &&
-                            (popularArtists.length - 2) % 3 === 0 &&
-                            <div className={classes.width100} />
-                        }
-                        {!bigScreen && fourArtistWidth &&
-                            (popularArtists.length - 3) % 4 === 0 &&
-                            <div className={classes.width100} />
-                        }
-                        {!bigScreen && fourArtistWidth &&
-                            (popularArtists.length - 2) % 4 === 0 &&
-                            <div className={classes.width200} />
+                        {!bigScreen && popularArtists.length > 0 &&
+                            Array.from({ length: fillPopularArtistWidth }, (_, i) => <div className={classes.artistWidth} key={i} />)
                         }
                     </div>
                 </Collapse>

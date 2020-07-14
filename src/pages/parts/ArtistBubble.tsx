@@ -9,21 +9,33 @@ import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        artistAvatar: {
+        artistAvatarBox: {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            width: '100px',
-            textAlign: 'center'
+            textAlign: 'center',
+            '@media (min-width: 690px)': {
+                width: '100px',
+            },
+            '@media (max-width: 689px)': {
+                width: '75px',
+                marginBottom: '6px'
+            },
         },
         artistAvatarImg: {
-            height: 80,
-            width: 80,
+            '@media (min-width: 690px)': {
+                height: 80,
+                width: 80,
+            },
+            '@media (max-width: 689px)': {
+                height: 60,
+                width: 60,
+            },
         },
-        artistAvatarBox: {
-            display: 'flex',
-            flexDirection: 'row',
-            flexWrap: 'wrap'
+        artistAvatar: {
+            '@media (max-width: 689px)': {
+                padding: '6px',
+            },
         },
         circleIconLight: {
             background: blueGrey[300],
@@ -67,10 +79,11 @@ const ArtistBubble: React.FC<Props> = (props: Props) => {
     }
 
     return (
-        <div className={classes.artistAvatar} key={'div_' + key} >
+        <div className={classes.artistAvatarBox} key={'div_' + key} >
             <IconButton
                 color="inherit"
                 onClick={() => { if (artist.hasSpotifyId) setRedirectArtist(encodeURIComponent(useSpotifyId ? artist.spotifyId! : artist.name)) }}
+                className={classes.artistAvatar}
             >
                 {artist.iconPicture ?
                     <Avatar src={artist.iconPicture} alt={artist.name} className={classes.artistAvatarImg}
