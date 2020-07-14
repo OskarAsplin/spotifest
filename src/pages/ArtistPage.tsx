@@ -21,6 +21,7 @@ import { lightBlue, pink } from "@material-ui/core/colors";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
+import { getMaxArtistsInWidth } from "../utils/utils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -53,16 +54,23 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         paper: {
             display: 'flex',
-            '@media (min-width: 610px)': {
-                padding: theme.spacing(2, 4, 2, 4),
-                flexDirection: 'row',
-            },
-            '@media (max-width: 609px)': {
-                padding: theme.spacing(2, 2, 2, 2),
-                flexDirection: 'column-reverse',
-            },
+            flexDirection: 'column',
             justifyContent: 'space-between',
-            width: '100%'
+            width: '100%',
+            padding: theme.spacing(2, 0, 1, 0),
+        },
+        addSidePadding: {
+            '@media (min-width: 690px)': {
+                padding: theme.spacing(0, 4, 0, 4),
+            },
+            '@media (max-width: 689px)': {
+                '@media (min-width: 364px)': {
+                    padding: theme.spacing(0, 2, 0, 2),
+                },
+            },
+            '@media (max-width: 363px)': {
+                padding: theme.spacing(0, 1, 0, 1),
+            },
         },
         paper2: {
             display: 'flex',
@@ -90,7 +98,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         box: {
             width: '100%',
-            maxWidth: '1000px',
+            maxWidth: '700px',
             margin: theme.spacing(0, 2, 2, 2),
         },
         box2: {
@@ -98,15 +106,20 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: '764px'
         },
         buttonBox: {
-            '@media (min-width: 610px)': {
-                maxWidth: '50%'
-            },
+            width: '100%',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            margin: theme.spacing(1, 0, 1, 0),
+        },
+        darkerBackground: {
+            backgroundColor: '#383838'
+        },
+        artistImgButton: {
+            padding: '0px'
         },
         artistImg: {
-            maxHeight: 400,
+            maxHeight: '350px',
             maxWidth: '100%',
         },
         flexColumn: {
@@ -138,7 +151,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
-            minWidth: '300px'
+            justifyContent: 'space-between',
         },
         matchingPopularBox: {
             width: '100%',
@@ -173,6 +186,19 @@ const useStyles = makeStyles((theme: Theme) =>
             top: theme.spacing(8),
             left: theme.spacing(2),
         },
+        festivalTitleBox: {
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+        },
+        artistWidth: {
+            '@media (min-width: 690px)': {
+                width: '100px',
+            },
+            '@media (max-width: 689px)': {
+                width: '75px',
+            },
+        },
     }),
 );
 
@@ -183,9 +209,6 @@ interface StoreProps {
 type Props = DispatchProps & StoreProps;
 
 const ArtistPage: React.FC<Props> = (props: Props) => {
-
-    const bigScreen = useMediaQuery('(min-width:610px)');
-    const pcScreen = useMediaQuery('(min-width:1300px)');
 
     useEffect(() => {
         setIsValidSpotifyId(true);
@@ -325,6 +348,16 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     const [isNetworkError, setIsNetworkError] = React.useState(false);
     const [isValidSpotifyId, setIsValidSpotifyId] = React.useState(true);
 
+    const mediumScreen = useMediaQuery('(min-width:610px)');
+    const bigScreen = useMediaQuery('(min-width:690px)');
+
+    const pcScreen = useMediaQuery('(min-width:1300px)');
+    const smallScreen = useMediaQuery('(max-width:363px)');
+    const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, mediumScreen, smallScreen, 6);
+    const fillRelatedArtistsWidth = maxArtistsInWidth - relatedArtists.length % maxArtistsInWidth;
+    console.log(maxArtistsInWidth);
+    console.log(fillRelatedArtistsWidth);
+
     const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
         typography: {
@@ -432,68 +465,71 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                 <div className={classes.root}>
                     <Box className={classes.box}>
                         <Paper elevation={10} className={classes.paper} key={'artistInfo:' + artistInfo.artist.name}>
-                            <div className={classes.flexColumn}>
-                                {bigScreen && <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
-                                    {artistInfo.artist.name}
-                                </Typography>}
-                                <Typography variant="subtitle1">
-                                    {'Genres: ' + artistInfo.artist.genres.join(", ")}
+                            <div className={classes.festivalTitleBox}>
+                                <Typography variant={bigScreen ? "h3" : mediumScreen ? "h4" : "h5"} className={classes.festivalTitle}>
+                                    <Box fontWeight="fontWeightBold">
+                                        {artistInfo.artist.name}
+                                    </Box>
                                 </Typography>
-                                {artistInfo.artist.spotifyId &&
-                                    <MuiThemeProvider theme={indigoOrangeMuiTheme}>
-                                        <Link color={'secondary'} variant="subtitle1"
-                                            href={'https://open.spotify.com/artist/' + artistInfo.artist.spotifyId}
-                                            rel="noopener noreferrer" target="_blank">
-                                            Open artist in spotify
-                                        </Link>
-                                    </MuiThemeProvider>}
-                                {relatedArtists.length > 0 &&
-                                    <div className={classes.matchingPopularBox}>
-                                        <Typography variant="body1" color='primary' component="div" >
-                                            <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
-                                                Related artists
-                                            </Box>
-                                        </Typography>
-                                        <IconButton
-                                            className={clsx(classes.expand, {
-                                                [classes.expandOpen]: expanded,
-                                            })}
-                                            onClick={() => setExpanded(!expanded)}
-                                            aria-expanded={expanded}
-                                            aria-label="show more"
-                                        >
-                                            <ExpandMoreIcon />
-                                        </IconButton>
-                                    </div>
-                                }
-                                {relatedArtists.length > 0 &&
-                                    <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                        <div className={classes.artistAvatarBox}>
-                                            {relatedArtists.slice(0, bigScreen ? 4 : 3).map((artist) => (
-                                                <ArtistBubble
-                                                    artist={artist}
-                                                    useSpotifyId={true}
-                                                    key={'avatar_rel_artist_' + artistInfo.artist.name + artist.name}
-                                                    thememode={props.model.thememode} />
-                                            ))}
-                                        </div>
-                                    </Collapse>
-                                }
                             </div>
-                            <Box className={classes.buttonBox}>
-                                <Button onClick={() => window.open(artistInfo.artist.bigPicture, '_blank')}>
+                            <Box className={props.model.thememode === 'light' ? classes.buttonBox : clsx(classes.buttonBox, classes.darkerBackground)}>
+                                <Button onClick={() => window.open(artistInfo.artist.bigPicture, '_blank')} className={classes.artistImgButton}>
                                     <img className={classes.artistImg} src={artistInfo.artist.bigPicture} alt="" />
                                 </Button>
                             </Box>
-                            {!bigScreen && <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
-                                {artistInfo.artist.name}
-                            </Typography>}
+                            <Typography variant="subtitle1" className={classes.addSidePadding}>
+                                {'Genres: ' + artistInfo.artist.genres.join(", ")}
+                            </Typography>
+                            {artistInfo.artist.spotifyId &&
+                                <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+                                    <Link color={'secondary'} variant="subtitle1"
+                                        href={'https://open.spotify.com/artist/' + artistInfo.artist.spotifyId}
+                                        className={classes.addSidePadding}
+                                        rel="noopener noreferrer" target="_blank">
+                                        Open artist in spotify
+                                    </Link>
+                                </MuiThemeProvider>}
+                            {relatedArtists.length > 0 &&
+                                <div className={clsx(classes.matchingPopularBox, classes.addSidePadding)}>
+                                    <Typography variant="body1" color='primary' component="div" >
+                                        <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
+                                            Related artists
+                                        </Box>
+                                    </Typography>
+                                    <IconButton
+                                        className={clsx(classes.expand, {
+                                            [classes.expandOpen]: expanded,
+                                        })}
+                                        onClick={() => setExpanded(!expanded)}
+                                        aria-expanded={expanded}
+                                        aria-label="show more"
+                                    >
+                                        <ExpandMoreIcon />
+                                    </IconButton>
+                                </div>
+                            }
+                            {relatedArtists.length > 0 &&
+                                <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                    <div className={clsx(classes.artistAvatarBox, classes.addSidePadding)}>
+                                        {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
+                                            <ArtistBubble
+                                                artist={artist}
+                                                useSpotifyId={true}
+                                                key={'avatar_rel_artist_' + artistInfo.artist.name + artist.name}
+                                                thememode={props.model.thememode} />
+                                        ))}
+                                        {relatedArtists.length > 0 &&
+                                            Array.from({ length: fillRelatedArtistsWidth }, (_, i) => <div className={classes.artistWidth} key={i} />)
+                                        }
+                                    </div>
+                                </Collapse>
+                            }
                         </Paper>
                     </Box>
                     {isArtistInDb && artistInfo.festivalsFuture.length !== 0 &&
                         <div className={classes.align}>
                             <div className={classes.verticalSpace} />
-                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
+                            <Typography variant={mediumScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
                                 Attending festivals
                             </Typography>
                             <Box className={classes.box2}>
@@ -507,7 +543,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                         <div className={classes.align}>
                             <div className={classes.verticalSpace} />
                             <div className={classes.verticalSpace} />
-                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
+                            <Typography variant={mediumScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
                                 Previously attended festivals
                             </Typography>
                             <Box className={classes.box2}>

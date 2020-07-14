@@ -147,7 +147,7 @@ const useStyles = makeStyles((theme: Theme) =>
         darkerBackground: {
             '@media (max-width: 689px)': {
                 backgroundColor: '#383838'
-            },
+            }
         },
         lineup: {
             maxHeight: 260,
@@ -223,7 +223,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     const bigScreen = useMediaQuery('(min-width:690px)');
     const mediumScreen = useMediaQuery('(min-width:610px)');
     const smallScreen = useMediaQuery('(max-width:363px)');
-    const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, mediumScreen, smallScreen);
+    const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, mediumScreen, smallScreen, 7);
     const fillMatchingArtistWidth = maxArtistsInWidth - matchingArtists.length % maxArtistsInWidth;
     const fillPopularArtistWidth = maxArtistsInWidth - matchingArtists.length % maxArtistsInWidth;
 
@@ -392,7 +392,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                     thememode={thememode} />
                             )
                             )}
-                        {!bigScreen && popularArtists.length > 0 &&
+                        {popularArtists.length > 0 &&
                             Array.from({ length: fillPopularArtistWidth }, (_, i) => <div className={classes.artistWidth} key={i} />)
                         }
                     </div>
