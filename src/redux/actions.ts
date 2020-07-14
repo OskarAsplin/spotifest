@@ -1,5 +1,6 @@
 import { Action, ActionTypeKeys, Dispatch, Artist, ArtistMinimal, MatchRequest, FestivalMatch, Area, MatchSettings, MatchingMethod, UserInfo, Playlist, PopularArtistsDict } from "./types";
 import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
+import { getShortDateISOString, getIconPicture, getBigPicture } from "../utils/utils";
 import countries_list from 'countries-list/dist/data.json';
 import { initialModel } from './reducer'
 
@@ -158,27 +159,6 @@ export const setCurrentPage = (page: number): Action => {
         page: page
     }
 };
-
-const getShortDateISOString = (date: Date) => date.toISOString().substring(0, date.toISOString().search('T'));
-
-export const getIconPicture = (images: SpotifyApi.ImageObject[]): string => {
-    let picture = '';
-    if (images.length > 0) {
-        images.slice().reverse().forEach((image) => {
-            if (picture === '' && image.height && image.height > 159 && image.width && image.width > 159) {
-                picture = image.url;
-            }
-        });
-        if (picture === '') {
-            picture = images[0].url;
-        }
-    }
-    return picture;
-}
-
-export const getBigPicture = (images: SpotifyApi.ImageObject[]): string => {
-    return images.length > 0 ? images[0].url : ''
-}
 
 export const getPopularArtistsInLineups = (
     lineups: string[],

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, Model } from "../../redux/types";
-import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, getIconPicture, getBigPicture, setShowPlaylistModal } from "../../redux/actions";
+import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, setShowPlaylistModal } from "../../redux/actions";
+import { getIconPicture, getBigPicture } from "../../utils/utils";
 import { connect } from "react-redux";
 import { createStyles, Theme, Typography, Box, Paper, Grid, Tooltip, PaletteType, InputLabel, MenuItem, FormControl, Select, ListSubheader, Modal, Fade, Backdrop, Link, MuiThemeProvider, CircularProgress, Button } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';

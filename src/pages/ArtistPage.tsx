@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps, ArtistInfo, Artist } from "../redux/types";
-import { spotifyApi, turnOnLoader, turnOffLoader, getIconPicture, getBigPicture, setLoggedOff } from "../redux/actions";
+import { spotifyApi, turnOnLoader, turnOffLoader, setLoggedOff } from "../redux/actions";
+import { getIconPicture, getBigPicture } from "../utils/utils";
 import { connect } from "react-redux";
 import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, Button, IconButton, Collapse } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
