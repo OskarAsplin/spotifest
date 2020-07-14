@@ -135,12 +135,18 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
             justifyContent: 'center',
             '@media (min-width: 690px)': {
-                maxWidth: '50%',
-                marginTop: theme.spacing(0.5)
+                maxWidth: '55%',
+                marginTop: theme.spacing(0.5),
+                padding: theme.spacing(0, 4, 0, 0),
             },
             '@media (max-width: 689px)': {
                 width: '100%',
-                marginTop: theme.spacing(1)
+                marginTop: theme.spacing(1),
+            },
+        },
+        darkerBackground: {
+            '@media (max-width: 689px)': {
+                backgroundColor: '#383838'
             },
         },
         lineup: {
@@ -330,8 +336,8 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             </div>
                         }
                     </div>
-                    {festival.festivalImg && <div className={classes.lineupBox}>
-                        <Button onClick={() => window.open(festival.festivalImg, '_blank')} className={classes.lineupImgButton} >
+                    {festival.festivalImg && <div className={thememode === 'light' ? classes.lineupBox : clsx(classes.lineupBox, classes.darkerBackground)}>
+                        <Button onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }} className={classes.lineupImgButton} >
                             <img className={classes.lineup} src={festival.festivalImg} alt="" />
                         </Button>
                     </div>}
