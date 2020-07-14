@@ -40,20 +40,32 @@ const useStyles = makeStyles((theme: Theme) =>
         circleIconLight: {
             background: blueGrey[300],
             borderRadius: '50%',
-            width: 80,
-            height: 80,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            '@media (min-width: 690px)': {
+                height: 80,
+                width: 80,
+            },
+            '@media (max-width: 689px)': {
+                height: 60,
+                width: 60,
+            },
         },
         circleIconDark: {
             background: blueGrey[700],
             borderRadius: '50%',
-            width: 80,
-            height: 80,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            '@media (min-width: 690px)': {
+                height: 80,
+                width: 80,
+            },
+            '@media (max-width: 689px)': {
+                height: 60,
+                width: 60,
+            },
         },
     }),
 );
