@@ -76,17 +76,6 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'column',
             '@media (min-width: 610px)': {
-                padding: theme.spacing(0, 4, 2, 4),
-            },
-            marginBottom: theme.spacing(2),
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        paper3: {
-            display: 'flex',
-            flexDirection: 'column',
-            '@media (min-width: 610px)': {
                 padding: theme.spacing(2, 4, 2, 4),
             },
             '@media (max-width: 609px)': {
@@ -122,13 +111,6 @@ const useStyles = makeStyles((theme: Theme) =>
             maxHeight: '350px',
             maxWidth: '100%',
         },
-        flexColumn: {
-            display: 'flex',
-            flexDirection: 'column',
-            '@media (min-width: 610px)': {
-                maxWidth: '50%'
-            },
-        },
         hundredWidth: {
             width: '100%'
         },
@@ -138,14 +120,6 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
             justifyContent: 'center',
             alignItems: 'center'
-        },
-        button: {
-            textTransform: 'none',
-            marginLeft: -theme.spacing(1.3),
-            paddingBottom: theme.spacing(0),
-            paddingTop: theme.spacing(0),
-            textAlign: 'left',
-            maxWidth: '85%'
         },
         artistAvatarBox: {
             display: 'flex',
@@ -170,10 +144,8 @@ const useStyles = makeStyles((theme: Theme) =>
         expandOpen: {
             transform: 'rotate(180deg)',
         },
-        festivalTitle: {
-            '@media (max-width: 609px)': {
-                textAlign: 'center'
-            },
+        artistTitle: {
+            textAlign: 'center'
         },
         prevAndFutureFestivalsTitle: {
             '@media (max-width: 609px)': {
@@ -186,7 +158,7 @@ const useStyles = makeStyles((theme: Theme) =>
             top: theme.spacing(8),
             left: theme.spacing(2),
         },
-        festivalTitleBox: {
+        artistTitleBox: {
             display: 'flex',
             justifyContent: 'center',
             width: '100%',
@@ -350,7 +322,6 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
 
     const mediumScreen = useMediaQuery('(min-width:610px)');
     const bigScreen = useMediaQuery('(min-width:690px)');
-
     const pcScreen = useMediaQuery('(min-width:1300px)');
     const smallScreen = useMediaQuery('(max-width:363px)');
     const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, mediumScreen, smallScreen, 6);
@@ -465,8 +436,8 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                 <div className={classes.root}>
                     <Box className={classes.box}>
                         <Paper elevation={10} className={classes.paper} key={'artistInfo:' + artistInfo.artist.name}>
-                            <div className={classes.festivalTitleBox}>
-                                <Typography variant={bigScreen ? "h3" : mediumScreen ? "h4" : "h5"} className={classes.festivalTitle}>
+                            <div className={classes.artistTitleBox}>
+                                <Typography variant={bigScreen ? "h3" : mediumScreen ? "h4" : "h5"} className={classes.artistTitle}>
                                     <Box fontWeight="fontWeightBold">
                                         {artistInfo.artist.name}
                                     </Box>
@@ -548,7 +519,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             </Typography>
                             <Box className={classes.box2}>
                                 {artistInfo.festivalsPast.map((festival, idx) =>
-                                    <Button className={classes.paper3} key={'festivals artist attends: ' + festival.name + festival.year}
+                                    <Button className={classes.paper2} key={'festivals artist attends: ' + festival.name + festival.year}
                                         variant="outlined"
                                         onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}>
                                         <div className={classes.hundredWidth} key={'past festival: ' + festival.name + idx}>

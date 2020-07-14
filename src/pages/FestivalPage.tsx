@@ -17,7 +17,8 @@ import SwipeableViews from 'react-swipeable-views';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import { Redirect } from 'react-router-dom';
 import { getApiBaseUrl } from '../utils/restUtils';
-import ReactPlayer from 'react-player'
+import ReactPlayer from 'react-player';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -31,26 +32,9 @@ const useStyles = makeStyles((theme: Theme) =>
         paper: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 610px)': {
-                padding: theme.spacing(2, 4, 2, 4),
-            },
-            '@media (max-width: 609px)': {
-                padding: theme.spacing(2, 2, 2, 2),
-            },
             justifyContent: 'space-between',
-            alignItems: 'center',
-            width: '100%'
-        },
-        rowFlexBig: {
-            display: 'flex',
-            '@media (min-width: 610px)': {
-                flexDirection: 'row',
-            },
-            '@media (max-width: 609px)': {
-                flexDirection: 'column',
-            },
-            justifyContent: 'space-between',
-            width: '100%'
+            width: '100%',
+            padding: theme.spacing(2, 0, 1, 0),
         },
         paper2: {
             display: 'flex',
@@ -99,44 +83,40 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         box: {
             width: '100%',
+            maxWidth: '750px',
+            margin: theme.spacing(0, 2, 2, 2),
+        },
+        box2: {
+            width: '100%',
             maxWidth: '1112px',
             margin: theme.spacing(0, 2, 2, 2),
         },
         videoBox: {
             marginBottom: theme.spacing(2),
         },
-        flexColumn: {
-            display: 'flex',
-            flexDirection: 'column',
-            '@media (max-width: 999px)': {
-                justifyContent: 'center',
-            },
-            '@media (min-width: 610px)': {
-                maxWidth: '50%',
-            },
-        },
         buttonBox: {
-            '@media (min-width: 610px)': {
-                maxWidth: '50%'
-            },
+            width: '100%',
             display: 'flex',
             alignItems: 'center',
+            justifyContent: 'center',
+            margin: theme.spacing(1, 0, 1, 0),
+        },
+        darkerBackground: {
+            backgroundColor: '#383838'
         },
         festivalImg: {
-            maxHeight: 400,
+            '@media (min-width: 900px)': {
+                maxHeight: 400,
+            },
+            '@media (max-width: 899px)': {
+                maxHeight: 350,
+            },
             maxWidth: '100%',
-        },
-        tabs: {
-            maxWidth: '90%'
         },
         lineupView: {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center'
-        },
-        artistsView: {
-            display: 'flex',
-            flexDirection: 'row',
         },
         artistAvatarBox: {
             display: 'flex',
@@ -201,17 +181,33 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         festivalTitle: {
-            '@media (min-width: 1000px)': {
-                marginBottom: theme.spacing(3)
-            },
-            '@media (max-width: 609px)': {
-                textAlign: 'center'
-            },
+            textAlign: 'center'
         },
         topLeft: {
             position: 'absolute',
             top: theme.spacing(8),
             left: theme.spacing(2),
+        },
+        festivalTitleBox: {
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+        },
+        addSidePadding: {
+            '@media (min-width: 690px)': {
+                padding: theme.spacing(0, 4, 0, 4),
+            },
+            '@media (max-width: 689px)': {
+                '@media (min-width: 364px)': {
+                    padding: theme.spacing(0, 2, 0, 2),
+                },
+            },
+            '@media (max-width: 363px)': {
+                padding: theme.spacing(0, 1, 0, 1),
+            },
+        },
+        festivalImgButton: {
+            padding: '0px'
         },
     }),
 );
@@ -231,9 +227,9 @@ type Props = DispatchProps & StoreProps;
 
 const FestivalPage: React.FC<Props> = (props: Props) => {
 
-    const bigScreen = useMediaQuery('(min-width:610px)');
+    const mediumScreen = useMediaQuery('(min-width:610px)');
+    const bigScreen = useMediaQuery('(min-width:690px)');
     const pcScreen = useMediaQuery('(min-width:1300px)');
-    const titleOnTop = useMediaQuery('(max-width:999px)');
     const videoSizeMax = useMediaQuery('(min-width:770px)');
     const videoSizeSmall = useMediaQuery('(max-width:470px)');
 
@@ -374,42 +370,42 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                 <div className={classes.root}>
                     <Box className={classes.box}>
                         <Paper elevation={10} className={classes.paper} key={'festivalInfo:' + festivalInfo.name}>
-                            {titleOnTop && <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
-                                {festivalInfo.name}
-                            </Typography>}
-                            <div className={classes.rowFlexBig}>
-                                <div className={classes.flexColumn}>
-                                    {!titleOnTop && <Typography variant={bigScreen ? "h2" : "h4"} className={classes.festivalTitle}>
+                            <div className={classes.festivalTitleBox}>
+                                <Typography variant={bigScreen ? "h3" : mediumScreen ? "h4" : "h5"} className={classes.festivalTitle}>
+                                    <Box fontWeight="fontWeightBold">
                                         {festivalInfo.name}
-                                    </Typography>}
-                                    <Typography variant="subtitle1">
-                                        {festivalInfo.locationText}
-                                    </Typography>
-                                    <Typography variant="subtitle1">
-                                        {'Genres: ' + festivalInfo.genres.slice(0, 5).join(", ")}
-                                    </Typography>
-                                    {festivalInfo.webpage &&
-                                        <Link color={'secondary'} variant="subtitle1" href={festivalInfo.webpage}
-                                            rel="noopener noreferrer" target="_blank">
-                                            Official webpage
-                                        </Link>}
-                                    {festivalInfo.ticketWebpage &&
-                                        <Link color={'secondary'} variant="subtitle1" href={festivalInfo.ticketWebpage}
-                                            rel="noopener noreferrer" target="_blank">
-                                            Ticket webpage
-                                        </Link>}
-                                    {festivalInfo.crawledWebpage &&
-                                        <Link color={'secondary'} variant="subtitle1" href={festivalInfo.crawledWebpage}
-                                            rel="noopener noreferrer" target="_blank">
-                                            View on Musicfestivalwizard.com
-                                        </Link>}
-                                </div>
-                                <Box className={classes.buttonBox}>
-                                    <Button onClick={() => window.open(festivalInfo.festivalImg, '_blank')}>
-                                        <img className={classes.festivalImg} src={festivalInfo.festivalImg} alt="" />
-                                    </Button>
-                                </Box>
+                                    </Box>
+                                </Typography>
                             </div>
+                            <Box className={thememode === 'light' ? classes.buttonBox : clsx(classes.buttonBox, classes.darkerBackground)}>
+                                <Button onClick={() => window.open(festivalInfo.festivalImg, '_blank')} className={classes.festivalImgButton}>
+                                    <img className={classes.festivalImg} src={festivalInfo.festivalImg} alt="" />
+                                </Button>
+                            </Box>
+                            <Typography variant="subtitle1" className={classes.addSidePadding}>
+                                {festivalInfo.locationText}
+                            </Typography>
+                            <Typography variant="subtitle1" className={classes.addSidePadding}>
+                                {'Genres: ' + festivalInfo.genres.slice(0, 5).join(", ")}
+                            </Typography>
+                            {festivalInfo.webpage &&
+                                <Link color={'secondary'} variant="subtitle1" href={festivalInfo.webpage}
+                                    className={classes.addSidePadding}
+                                    rel="noopener noreferrer" target="_blank">
+                                    Official webpage
+                                </Link>}
+                            {festivalInfo.ticketWebpage &&
+                                <Link color={'secondary'} variant="subtitle1" href={festivalInfo.ticketWebpage}
+                                    className={classes.addSidePadding}
+                                    rel="noopener noreferrer" target="_blank">
+                                    Ticket webpage
+                                </Link>}
+                            {festivalInfo.crawledWebpage &&
+                                <Link color={'secondary'} variant="subtitle1" href={festivalInfo.crawledWebpage}
+                                    className={classes.addSidePadding}
+                                    rel="noopener noreferrer" target="_blank">
+                                    View on Musicfestivalwizard.com
+                                </Link>}
                         </Paper>
                     </Box>
                     <div className={classes.verticalSpace} />
@@ -417,13 +413,13 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                         <Box className={classes.videoBox}>
                             <Paper elevation={3} className={classes.paperVideo} key={'festival video:' + festivalInfo.name}>
                                 <ReactPlayer url={festivalInfo.video} controls
-                                    width={videoSizeMax ? undefined : bigScreen ? 496 : videoSizeSmall ? '100%' : 400}
-                                    height={videoSizeMax ? undefined : bigScreen ? 279 : videoSizeSmall ? '100%' : 225} />
+                                    width={videoSizeMax ? undefined : mediumScreen ? 496 : videoSizeSmall ? '100%' : 400}
+                                    height={videoSizeMax ? undefined : mediumScreen ? 279 : videoSizeSmall ? '100%' : 225} />
                             </Paper>
                         </Box>
                     }
                     {festivalInfo.lineups.length !== 0 &&
-                        <Box className={classes.box}>
+                        <Box className={classes.box2}>
                             <MuiThemeProvider theme={lightBluePinkMuiTheme}>
                                 <Paper elevation={3} className={classes.paper2} key={'festival video:' + festivalInfo.name}>
                                     <Tabs
@@ -470,21 +466,19 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                                             Alphabetically
                                                     </Button>
                                                     </Box>
-                                                    <Box className={classes.artistsView}>
-                                                        <div className={classes.artistAvatarBox}>
-                                                            {lineup.artists.length > 0 &&
-                                                                lineup.artists.sort((a, b) => (sortAlphabetically ?
-                                                                    (a.name > b.name) :
-                                                                    (a.popularity < b.popularity)) ? 1 : -1)
-                                                                    .map((artist) => (
-                                                                        <ArtistBubble
-                                                                            artist={artist}
-                                                                            key={'avatar_festival_lineup_artist_' + festivalInfo.name + lineup.year + artist.name}
-                                                                            thememode={thememode} />
-                                                                    )
-                                                                    )}
-                                                        </div>
-                                                    </Box>
+                                                    <div className={classes.artistAvatarBox}>
+                                                        {lineup.artists.length > 0 &&
+                                                            lineup.artists.sort((a, b) => (sortAlphabetically ?
+                                                                (a.name > b.name) :
+                                                                (a.popularity < b.popularity)) ? 1 : -1)
+                                                                .map((artist) => (
+                                                                    <ArtistBubble
+                                                                        artist={artist}
+                                                                        key={'avatar_festival_lineup_artist_' + festivalInfo.name + lineup.year + artist.name}
+                                                                        thememode={thememode} />
+                                                                )
+                                                                )}
+                                                    </div>
                                                     {lineup.poster && <div className={classes.lineupBox}>
                                                         <Button onClick={() => window.open(lineup.poster, '_blank')}>
                                                             <img className={classes.lineup} src={lineup.poster} alt="" />
