@@ -68,6 +68,9 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: theme.spacing(0, 1, 0, 1),
             },
         },
+        addSmallSidePadding: {
+            padding: theme.spacing(0, 1.5, 0, 2.5),
+        },
         artistAvatarBoxFirstRow: {
             display: 'flex',
             flexDirection: 'row',
@@ -250,7 +253,9 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     const textColor = thememode === 'light' ? '#3FBF3F' : '#3de53d';
     const trailColor = thememode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
 
-    const matchingNextToPicture = useMediaQuery('(min-width:750px)') && matchingArtists.length <= 3;
+    const twoArtistsNextToPicture = bigScreen && matchingArtists.length <= 2;
+    const threeArtistsNextToPicture = useMediaQuery('(min-width:810px)') && matchingArtists.length <= 3;
+    const matchingNextToPicture = twoArtistsNextToPicture || threeArtistsNextToPicture;
 
     if (redirectFestival) {
         return <Redirect push to={'/festival?' + redirectFestival} />
@@ -304,23 +309,23 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
             </div>
             <div className={classes.root2}>
                 <div id={'details_and_matching_artists_and_lineup'} className={classes.flexRow}>
-                    <div id={'details_and_matching_artists'} className={clsx(classes.detailsAndMatching, classes.addSidePadding)}>
+                    <div id={'details_and_matching_artists'} className={classes.detailsAndMatching}>
                         {festival.cancelled ?
-                            <Typography variant="subtitle2" color='secondary' className={classes.paddingSmall}>
+                            <Typography variant="subtitle2" color='secondary' className={clsx(classes.paddingSmall, classes.addSidePadding)}>
                                 {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
                             </Typography> :
-                            <Typography variant="subtitle2" className={classes.paddingSmall}>
+                            <Typography variant="subtitle2" className={clsx(classes.paddingSmall, classes.addSidePadding)}>
                                 {festival.date + ', ' + festival.year}
                             </Typography>}
-                        <Typography variant="subtitle2" className={classes.paddingSmall}>
+                        <Typography variant="subtitle2" className={clsx(classes.paddingSmall, classes.addSidePadding)}>
                             {festival.locationText}
                         </Typography>
-                        <Typography variant="subtitle2" className={classes.paddingSmall} noWrap>
+                        <Typography variant="subtitle2" className={clsx(classes.paddingSmall, classes.addSidePadding)} noWrap>
                             {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}
                         </Typography>
                         {showMatching && matchingNextToPicture &&
                             <div className={classes.matchingPopularBoxFirstRow}>
-                                <Typography variant="body1" color='primary' component="div" className={classes.paddingSmall}>
+                            <Typography variant="body1" color='primary' component="div" className={clsx(classes.paddingSmall, classes.addSidePadding)}>
                                     <Box fontWeight="fontWeightBold">
                                         {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
                                     </Box>
@@ -328,7 +333,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             </div>
                         }
                         {showMatching && matchingNextToPicture &&
-                            <div className={classes.artistAvatarBoxFirstRow}>
+                            <div className={clsx(classes.artistAvatarBoxFirstRow, classes.addSmallSidePadding)}>
                                 {matchingArtists.map((artist) => (
                                     <ArtistBubble
                                         artist={artist}
