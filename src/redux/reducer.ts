@@ -1,9 +1,14 @@
 import { Action, ActionTypeKeys, Model, MatchingMethod, Playlist } from "./types";
 import { Reducer } from "redux";
 
-const endOfYear = new Date(new Date().getFullYear(), 11, 31);
-endOfYear.setUTCDate(31);
-endOfYear.setUTCHours(0);
+const afterApril: boolean = new Date() >= new Date(new Date().getFullYear(), 4, 30);
+const oneYearFromNow = new Date();
+oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+oneYearFromNow.setUTCHours(0);
+const endOfNextYear = new Date(new Date().getFullYear() + 1, 11, 31);
+endOfNextYear.setUTCDate(31);
+endOfNextYear.setUTCHours(0);
+const initialToDate = afterApril ? endOfNextYear : oneYearFromNow;
 
 export const initialModel: Model = {
     loaderOn: false,
@@ -33,7 +38,7 @@ export const initialModel: Model = {
         matchBasis: '',
         area: { name: 'Europe', isoCode: 'EU' },
         fromDate: (new Date()).toISOString(),
-        toDate: endOfYear.toISOString(),
+        toDate: initialToDate.toISOString(),
         numTracks: 0
     },
     currentPage: 1

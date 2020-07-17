@@ -275,13 +275,10 @@ export const initializeSite = (
                     });
 
                     dispatch(setTopArtists(topArtists));
-                    const isRegisteredCountry = countries.find(country => country.isoCode === getMe.country);
                     const userContinent: string = getMe.country in (countries_list as any).countries ?
                         (countries_list as any).countries[getMe.country].continent : '';
                     const isRegisteredContinent = continents.find(continent => continent.isoCode === userContinent);
-                    if (isRegisteredCountry) {
-                        dispatch(setMatchSettings({ ...initialModel.matchSettings, area: isRegisteredCountry }));
-                    } else if (isRegisteredContinent) {
+                    if (isRegisteredContinent) {
                         dispatch(setMatchSettings({ ...initialModel.matchSettings, area: isRegisteredContinent }));
                     }
                 })

@@ -124,6 +124,9 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         detailsAndMatching: {
             flexGrow: 1,
+            '@media (min-width: 690px)': {
+                maxWidth: '45%',
+            },
         },
         growAlign: {
             display: 'flex',
