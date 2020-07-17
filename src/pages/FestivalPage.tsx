@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: theme.spacing(2, 4, 2, 4),
             },
             '@media (max-width: 609px)': {
-                padding: theme.spacing(2, 2, 2, 2),
+                padding: theme.spacing(1),
             },
             width: '100%'
         },
@@ -439,14 +439,14 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                         index={selectedLineup}
                                         onChangeIndex={(newValue: number) => setSelectedLineup(newValue)}
                                     >
-                                        {festivalInfo.lineups.map((lineup, idx) =>
+                                        {festivalInfo.lineups.slice(0, !mediumScreen ? 4 : undefined).map((lineup, idx) =>
                                             <TabPanel value={selectedLineup} index={idx} key={'tabPanel: ' + festivalInfo.name + lineup.year}>
                                                 <Box className={classes.lineupView}>
                                                     {lineup.cancelled ?
-                                                        <Typography variant="h5" color='secondary'>
+                                                        <Typography variant="h6" color='secondary' className={classes.festivalTitle}>
                                                             {'CANCELLED' + (lineup.date_str ? ' (' + lineup.date_str + ')' : '')}
                                                         </Typography> :
-                                                        <Typography variant="h5">
+                                                        <Typography variant="h5" className={classes.festivalTitle}>
                                                             {lineup.date_str}
                                                         </Typography>}
                                                     <Box className={classes.sortButtonBox}>
