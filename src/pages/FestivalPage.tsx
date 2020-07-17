@@ -58,9 +58,13 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: theme.spacing(2, 4, 2, 4),
             },
             '@media (max-width: 609px)': {
-                padding: theme.spacing(1),
+                '@media (min-width: 349px)': {
+                    padding: theme.spacing(1, 2, 1, 2),
+                },
             },
-            width: '100%'
+            '@media (max-width: 348px)': {
+                padding: theme.spacing(1, 1, 1, 1),
+            },
         },
         verticalSpace: {
             display: 'flex',
@@ -165,7 +169,17 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center'
         },
         tabPanel: {
-            padding: theme.spacing(2, 1, 2, 1)
+            '@media (min-width: 690px)': {
+                padding: theme.spacing(2, 1, 2, 1)
+            },
+            '@media (min-width: 364px)': {
+                '@media (max-width: 689px)': {
+                    padding: theme.spacing(1, 1, 1, 1)
+                },
+            },
+            '@media (max-width: 363px)': {
+                padding: theme.spacing(1, 0, 1, 0)
+            },
         },
         tabRoot: {
             '@media (min-width: 900px)': {
@@ -232,6 +246,8 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     const pcScreen = useMediaQuery('(min-width:1300px)');
     const videoSizeMax = useMediaQuery('(min-width:770px)');
     const videoSizeSmall = useMediaQuery('(max-width:470px)');
+
+    const limitLineups = !mediumScreen ? 4 : undefined;
 
     useEffect(() => {
         let festival = window.location.search.substring(1);
@@ -430,7 +446,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                         onChange={(event: React.ChangeEvent<{}>, newValue: number) => setSelectedLineup(newValue)}
                                         aria-label="lineups"
                                     >
-                                        {festivalInfo.lineups.map((lineup, idx) =>
+                                        {festivalInfo.lineups.slice(0, limitLineups).map((lineup, idx) =>
                                             <Tab label={<span className={classes.tabLabel}>{lineup.year}</span>} value={idx}
                                                 key={'tab: ' + festivalInfo.name + lineup.year} classes={{ root: classes.tabRoot }} />)}
                                     </Tabs>
@@ -439,7 +455,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                         index={selectedLineup}
                                         onChangeIndex={(newValue: number) => setSelectedLineup(newValue)}
                                     >
-                                        {festivalInfo.lineups.slice(0, !mediumScreen ? 4 : undefined).map((lineup, idx) =>
+                                        {festivalInfo.lineups.slice(0, limitLineups).map((lineup, idx) =>
                                             <TabPanel value={selectedLineup} index={idx} key={'tabPanel: ' + festivalInfo.name + lineup.year}>
                                                 <Box className={classes.lineupView}>
                                                     {lineup.cancelled ?
