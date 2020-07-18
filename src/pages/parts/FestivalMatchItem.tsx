@@ -29,10 +29,10 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
         },
         circleSize: {
-            '@media (min-width: 450px)': {
+            '@media (min-width: 690px)': {
                 width: '60px'
             },
-            '@media (max-width: 449px)': {
+            '@media (max-width: 689px)': {
                 width: '50px'
             },
             '@media (max-width: 363px)': {
@@ -169,11 +169,6 @@ const useStyles = makeStyles((theme: Theme) =>
                 flexDirection: 'row',
             },
             '@media (max-width: 689px)': {
-                '@media (min-width: 364px)': {
-                    flexDirection: 'column',
-                },
-            },
-            '@media (max-width: 363px)': {
                 flexDirection: 'column',
             },
         },
@@ -192,9 +187,14 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         paddingSmall: {
             '@media (max-width: 363px)': {
+                padding: theme.spacing(0, 2, 0, 2),
+            },
+        },
+        paddingSmallDiv: {
+            '@media (max-width: 363px)': {
                 padding: theme.spacing(0, 1, 0, 1),
             },
-        }
+        },
     }),
 );
 
@@ -249,6 +249,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
         default:
             break;
     }
+    const textSize = smallScreen ? '28px': '25px';
     const pathColor = thememode === 'light' ? '#3FBF3F' : '#3de53d';
     const textColor = thememode === 'light' ? '#3FBF3F' : '#3de53d';
     const trailColor = thememode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
@@ -293,7 +294,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                     <div className={classes.circleSize}>
                                         <CircularProgressbar value={matching_percent} text={`${matching_percent}%`}
                                             styles={buildStyles({
-                                                textSize: '25px',
+                                                textSize: textSize,
                                                 pathTransitionDuration: 0.5,
                                                 pathColor: pathColor,
                                                 textColor: textColor,
@@ -325,7 +326,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                         </Typography>
                         {showMatching && matchingNextToPicture &&
                             <div className={classes.matchingPopularBoxFirstRow}>
-                            <Typography variant="body1" color='primary' component="div" className={clsx(classes.paddingSmall, classes.addSidePadding)}>
+                            <Typography variant="body1" color='primary' component="div" className={clsx(classes.paddingSmallDiv, classes.addSidePadding)}>
                                     <Box fontWeight="fontWeightBold">
                                         {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
                                     </Box>
@@ -352,7 +353,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                 </div>
                 {showMatching && !matchingNextToPicture &&
                     <div className={clsx(classes.matchingPopularBox, classes.addSidePadding)}>
-                        <Typography variant="body1" color='primary' component="div" className={classes.paddingSmall}>
+                        <Typography variant="body1" color='primary' component="div" className={classes.paddingSmallDiv}>
                             <Box fontWeight="fontWeightBold">
                                 {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
                             </Box>
@@ -374,7 +375,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                     </div>
                 }
                 <div className={clsx(classes.matchingPopularBox, classes.addSidePadding)}>
-                    <Typography variant="body1" color='primary' component="div" className={classes.paddingSmall}>
+                    <Typography variant="body1" color='primary' component="div" className={classes.paddingSmallDiv}>
                         <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
                             Popular artists at this festival
                         </Box>
