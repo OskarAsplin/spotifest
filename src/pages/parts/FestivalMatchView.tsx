@@ -18,9 +18,12 @@ const useStyles = makeStyles((theme: Theme) =>
 			},
 			'@media (max-width: 609px)': {
 				width: '100%',
+				marginTop: theme.spacing(1)
+			},
+			'@media (min-width: 800px)': {
+				marginTop: theme.spacing(1)
 			},
 			maxWidth: '764px',
-			marginTop: theme.spacing(1)
 		},
 		align: {
 			display: 'flex',

@@ -54,7 +54,12 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		box: {
 			width: '100%',
-			maxWidth: '1000px',
+			'@media (min-width: 800px)': {
+				maxWidth: '1000px',
+			},
+			'@media (max-width: 799px)': {
+				maxWidth: '460px',
+			},
 			marginBottom: theme.spacing(2)
 		},
 		formControlPlaylist: {
