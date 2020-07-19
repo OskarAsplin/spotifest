@@ -17,15 +17,6 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
-		root: {
-			display: 'flex',
-			justifyContent: 'space-between',
-			flexGrow: 1,
-			flexDirection: 'row',
-			padding: theme.spacing(2, 4, 1, 4),
-			width: '100%',
-			alignItems: 'center',
-		},
 		alignItems: {
 			display: 'flex',
 			'@media (max-width: 799px)': {
@@ -118,9 +109,6 @@ const useStyles = makeStyles((theme: Theme) =>
 				marginRight: theme.spacing(1),
 				marginLeft: theme.spacing(1),
 			},
-		},
-		noPadding: {
-			paddingRight: 0
 		},
 		spaceBetween: {
 			display: 'flex',
@@ -448,7 +436,6 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 							<Grid container justify="space-around" className={classes.marginBottom}>
 								<KeyboardDatePicker
 									className={classes.datePickerFieldFrom}
-									//inputProps={{ classes: { adornedEnd: classes.noPadding } }}
 									margin="dense"
 									inputVariant="outlined"
 									id="date-picker-dialog-from"

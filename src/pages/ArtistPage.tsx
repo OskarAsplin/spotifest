@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 },
             },
             '@media (max-width: 363px)': {
-                padding: theme.spacing(0, 1, 0, 1),
+                padding: theme.spacing(0, 2, 0, 2),
             },
         },
         paper2: {
@@ -126,6 +126,9 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'space-between',
+            '@media (max-width: 363px)': {
+                padding: theme.spacing(0, 1, 0, 1),
+            },
         },
         matchingPopularBox: {
             width: '100%',
