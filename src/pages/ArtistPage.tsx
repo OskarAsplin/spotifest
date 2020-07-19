@@ -72,14 +72,15 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: theme.spacing(0, 2, 0, 2),
             },
         },
-        paper2: {
+        button: {
             display: 'flex',
             flexDirection: 'column',
+            textTransform: 'none',
             '@media (min-width: 610px)': {
-                padding: theme.spacing(2, 4, 2, 4),
+                padding: theme.spacing(2, 2, 2, 2),
             },
             '@media (max-width: 609px)': {
-                padding: theme.spacing(2, 2, 2, 2),
+                padding: theme.spacing(1, 1, 1, 1),
             },
             marginBottom: theme.spacing(2),
             width: '100%',
@@ -173,6 +174,10 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (max-width: 689px)': {
                 width: '75px',
             },
+        },
+        festivalTitle: {
+            wordWrap: 'break-word',
+            textAlign: 'center'
         },
     }),
 );
@@ -522,12 +527,14 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             </Typography>
                             <Box className={classes.box2}>
                                 {artistInfo.festivalsPast.map((festival, idx) =>
-                                    <Button className={classes.paper2} key={'festivals artist attends: ' + festival.name + festival.year}
+                                    <Button className={classes.button} key={'festivals artist attends: ' + festival.name + festival.year}
                                         variant="outlined"
                                         onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}>
                                         <div className={classes.hundredWidth} key={'past festival: ' + festival.name + idx}>
-                                            <Typography variant="h4">
-                                                {festival.name}
+                                            <Typography variant={bigScreen ? "h3" : mediumScreen ? "h4" : "h5"} className={classes.festivalTitle}>
+                                                <Box fontWeight="fontWeightBold">
+                                                    {festival.name}
+                                                </Box>
                                             </Typography>
                                             {festival.cancelled ?
                                                 <Typography variant="subtitle1" color='secondary'>
