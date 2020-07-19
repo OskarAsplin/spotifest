@@ -441,8 +441,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									id="date-picker-dialog-from"
 									label="From (m/y)"
 									format="MM/yyyy"
-									maxDate={new Date('2021-12-31')}
-									minDate={new Date('2019-01-01')}
+									maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
+									minDate={new Date(new Date().getFullYear(), 0, 1)}
 									views={['month', 'year']}
 									value={matchSettings.fromDate}
 									autoOk
@@ -460,8 +460,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									id="date-picker-dialog-to"
 									label="To (m/y)"
 									format="MM/yyyy"
-									maxDate={new Date('2021-12-31')}
-									minDate={new Date('2019-01-01')}
+									maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
+									minDate={new Date(new Date().getFullYear(), 0, 1)}
 									views={['month', 'year']}
 									value={matchSettings.toDate}
 									autoOk
