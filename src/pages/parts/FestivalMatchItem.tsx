@@ -45,9 +45,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         festivalTitleCenter: {
             wordWrap: 'break-word',
-            '@media (max-width: 689px)': {
-                textAlign: 'center'
-            },
+            textAlign: 'center'
         },
         artistAvatarBox: {
             display: 'flex',
@@ -160,13 +158,16 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: '100%',
         },
         lineupImgButton: {
-            padding: '0px'
+            padding: '0px',
+            borderRadius: '0px',
         },
         flexRow: {
             display: 'flex',
             '@media (min-width: 690px)': {
                 marginTop: theme.spacing(1),
                 flexDirection: 'row',
+                justifyContent: 'space-between',
+
             },
             '@media (max-width: 689px)': {
                 flexDirection: 'column',
@@ -266,13 +267,13 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
         <Paper elevation={3} className={classes.root} key={festival.name}>
             <div className={classes.titleLine}>
                 <div className={clsx(classes.titleAndMatchBox, classes.addSidePadding)}>
-                    <div className={!showMatching && !bigScreen ? classes.growAlign : classes.grow}>
+                    <div className={!showMatching ? classes.growAlign : classes.grow}>
                         <Button
                             className={classes.button}
                             color="inherit"
                             onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}
                         >
-                            <Typography variant={bigScreen ? "h3" : mediumScreen ? "h4" : "h5"} className={!showMatching && !bigScreen ? classes.festivalTitleCenter : classes.festivalTitle}>
+                            <Typography variant={bigScreen ? "h3" : mediumScreen ? "h4" : "h5"} className={!showMatching ? classes.festivalTitleCenter : classes.festivalTitle}>
                                 <Box fontWeight="fontWeightBold">
                                     {festival.name}
                                 </Box>

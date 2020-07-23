@@ -221,7 +221,8 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         festivalImgButton: {
-            padding: '0px'
+            padding: '0px',
+            borderRadius: '0px',
         },
     }),
 );

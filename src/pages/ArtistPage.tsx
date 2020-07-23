@@ -106,7 +106,8 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: '#383838'
         },
         artistImgButton: {
-            padding: '0px'
+            padding: '0px',
+            borderRadius: '0px',
         },
         artistImg: {
             maxHeight: '350px',
@@ -334,8 +335,6 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     const smallScreen = useMediaQuery('(max-width:363px)');
     const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, mediumScreen, smallScreen, 6);
     const fillRelatedArtistsWidth = maxArtistsInWidth - relatedArtists.length % maxArtistsInWidth;
-    console.log(maxArtistsInWidth);
-    console.log(fillRelatedArtistsWidth);
 
     const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
