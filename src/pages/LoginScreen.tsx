@@ -267,7 +267,7 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                                     <div className={classes.paddingBottom}>
                                         This website was made with the intention of inspiring people to attend festivals to their liking.
-                                        It was made by a simple minded Norwegian guy wanting to do some good in the world.
+                                        It was made by a simple Norwegian guy wanting to do some good in the world.
                                         This Norwegian guy takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point.
                                         Special thanks to Spotify and MusicFestivalWizard for their available information about artists and festivals, making this site possible to make.
         		                    </div>
