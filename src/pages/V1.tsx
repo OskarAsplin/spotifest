@@ -22,7 +22,12 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(0, 2, 0, 2),
+            '@media (min-width: 400px)': {
+                padding: theme.spacing(0, 2, 0, 2),
+            },
+            '@media (max-width: 399px)': {
+                padding: theme.spacing(0, 1, 0, 1),
+            },
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'

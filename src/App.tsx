@@ -28,17 +28,15 @@ const App: React.FC = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <IntlProvider defaultLocale={language} locale={language} messages={texts[language]}>
-          <div className="informasjon-side">
-            <Router>
-              <Switch>
-                <Route exact path="/" component={V1} />
-                <Route exact path="/login" component={LoginScreen} />
-                <Route exact path="/artist" component={ArtistPage} />
-                <Route exact path="/festival" component={FestivalPage} />
-                <Route exact path="/about" component={AboutPage} />
-              </Switch>
-            </Router>
-          </div>
+          <Router>
+            <Switch>
+              <Route exact path="/" component={V1} />
+              <Route exact path="/login" component={LoginScreen} />
+              <Route exact path="/artist" component={ArtistPage} />
+              <Route exact path="/festival" component={FestivalPage} />
+              <Route exact path="/about" component={AboutPage} />
+            </Switch>
+          </Router>
         </IntlProvider>
       </PersistGate>
     </Provider>

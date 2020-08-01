@@ -25,7 +25,12 @@ const useStyles = makeStyles((theme: Theme) =>
         root1: {
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(0, 4, 0, 4),
+            '@media (min-width: 334px)': {
+                padding: theme.spacing(0, 4, 0, 4),
+            },
+            '@media (max-width: 333px)': {
+                padding: theme.spacing(0, 1, 0, 1),
+            },
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%',
@@ -73,8 +78,9 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: theme.spacing(2, 4, 2, 4),
             },
             '@media (max-width: 609px)': {
-                padding: theme.spacing(2, 2, 2, 2),
+                padding: theme.spacing(1, 2, 1, 2),
             },
+            textTransform: 'none',
             marginBottom: theme.spacing(2),
             width: '100%',
             alignItems: 'center',
@@ -97,7 +103,12 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         box2: {
             width: '95%',
-            maxWidth: '663px'
+            '@media (min-width: 610px)': {
+                maxWidth: '480px',
+            },
+            '@media (max-width: 609px)': {
+                maxWidth: '280px'
+            },
         },
         title: {
             '@media (max-width: 357px)': {
@@ -122,13 +133,13 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            maxWidth: '900px',
             '@media (min-width: 610px)': {
-                maxWidth: '1112px',
+                margin: theme.spacing(0, 2, 0, 2),
             },
             '@media (max-width: 609px)': {
-                maxWidth: '95%',
+                margin: theme.spacing(0, 1, 0, 1),
             },
-            margin: theme.spacing(0, 4, 0, 4),
         },
         footerRight: {
             display: 'flex',

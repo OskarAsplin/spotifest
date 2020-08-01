@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (max-width: 689px)': {
                 width: '50px'
             },
-            '@media (max-width: 363px)': {
+            '@media (max-width: 399px)': {
                 paddingRight: theme.spacing(1)
             },
             userSelect: 'none'
@@ -58,11 +58,11 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: theme.spacing(0, 4, 0, 4),
             },
             '@media (max-width: 689px)': {
-                '@media (min-width: 364px)': {
+                '@media (min-width: 400px)': {
                     padding: theme.spacing(0, 2, 0, 2),
                 },
             },
-            '@media (max-width: 363px)': {
+            '@media (max-width: 399px)': {
                 padding: theme.spacing(0, 1, 0, 1),
             },
         },
@@ -187,12 +187,12 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
         },
         paddingSmall: {
-            '@media (max-width: 363px)': {
+            '@media (max-width: 399px)': {
                 padding: theme.spacing(0, 2, 0, 2),
             },
         },
         paddingSmallDiv: {
-            '@media (max-width: 363px)': {
+            '@media (max-width: 399px)': {
                 padding: theme.spacing(0, 1, 0, 1),
             },
         },
@@ -229,7 +229,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
 
     const bigScreen = useMediaQuery('(min-width:690px)');
     const mediumScreen = useMediaQuery('(min-width:610px)');
-    const smallScreen = useMediaQuery('(max-width:363px)');
+    const smallScreen = useMediaQuery('(max-width:399px)');
     const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, mediumScreen, smallScreen, 7);
     const fillMatchingArtistWidth = maxArtistsInWidth - matchingArtists.length % maxArtistsInWidth;
     const fillPopularArtistWidth = maxArtistsInWidth - matchingArtists.length % maxArtistsInWidth;
