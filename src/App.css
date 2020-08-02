@@ -41,7 +41,3 @@
 div.MuiInputAdornment-root.MuiInputAdornment-positionEnd.MuiInputAdornment-marginDense > button.MuiButtonBase-root.MuiIconButton-root {
   padding: 0 !important;
 }
-
-button.MuiButtonBase-root.MuiPaginationItem-root.MuiPaginationItem-page.MuiPaginationItem-sizeSmall.MuiPaginationItem-page {
-  transition: none !important;
-}

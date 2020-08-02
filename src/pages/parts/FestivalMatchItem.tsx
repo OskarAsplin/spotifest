@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            padding: theme.spacing(2, 0, 1, 0),
+            padding: theme.spacing(2, 0, 0, 0),
             marginBottom: theme.spacing(3),
             width: '100%',
         },
@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme: Theme) =>
             '@media (max-width: 689px)': {
                 width: '50px'
             },
-            '@media (max-width: 399px)': {
+            '@media (max-width: 439px)': {
                 paddingRight: theme.spacing(1)
             },
             userSelect: 'none'
@@ -58,16 +58,21 @@ const useStyles = makeStyles((theme: Theme) =>
                 padding: theme.spacing(0, 4, 0, 4),
             },
             '@media (max-width: 689px)': {
-                '@media (min-width: 400px)': {
+                '@media (min-width: 440px)': {
                     padding: theme.spacing(0, 2, 0, 2),
                 },
             },
-            '@media (max-width: 399px)': {
+            '@media (max-width: 439px)': {
                 padding: theme.spacing(0, 1, 0, 1),
             },
         },
         addSmallSidePadding: {
-            padding: theme.spacing(0, 1.5, 0, 2.5),
+            '@media (min-width: 440px)': {
+                padding: theme.spacing(0, 2, 0, 2),
+            },
+            '@media (max-width: 439px)': {
+                padding: theme.spacing(0, 1, 0, 1),
+            },
         },
         artistAvatarBoxFirstRow: {
             display: 'flex',
@@ -110,10 +115,10 @@ const useStyles = makeStyles((theme: Theme) =>
         button: {
             whiteSpace: 'normal',
             textTransform: 'none',
-            '@media (min-width: 364px)': {
+            '@media (min-width: 440px)': {
                 marginLeft: -theme.spacing(1.3),
             },
-            '@media (max-width: 363px)': {
+            '@media (max-width: 439px)': {
                 marginLeft: -theme.spacing(0.3),
             },
             textAlign: 'left',
@@ -187,14 +192,17 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
         },
         paddingSmall: {
-            '@media (max-width: 399px)': {
+            '@media (max-width: 439px)': {
                 padding: theme.spacing(0, 2, 0, 2),
             },
         },
         paddingSmallDiv: {
-            '@media (max-width: 399px)': {
+            '@media (max-width: 439px)': {
                 padding: theme.spacing(0, 1, 0, 1),
             },
+        },
+        paddingBottom: {
+            paddingBottom: theme.spacing(1)
         },
     }),
 );
@@ -228,11 +236,10 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     const { festival, showMatching, thememode, matchingMethod, popularArtists, matchingArtists } = props;
 
     const bigScreen = useMediaQuery('(min-width:690px)');
-    const mediumScreen = useMediaQuery('(min-width:610px)');
-    const smallScreen = useMediaQuery('(max-width:399px)');
-    const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, mediumScreen, smallScreen, 7);
+    const smallScreen = useMediaQuery('(max-width:439px)');
+    const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, smallScreen, 7);
     const fillMatchingArtistWidth = maxArtistsInWidth - matchingArtists.length % maxArtistsInWidth;
-    const fillPopularArtistWidth = maxArtistsInWidth - matchingArtists.length % maxArtistsInWidth;
+    const fillPopularArtistWidth = maxArtistsInWidth - popularArtists.length % maxArtistsInWidth;
 
     const [expanded, setExpanded] = React.useState(false);
     const [redirectFestival, setRedirectFestival] = React.useState('');
@@ -273,7 +280,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                             color="inherit"
                             onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}
                         >
-                            <Typography variant={bigScreen ? "h3" : mediumScreen ? "h4" : "h5"} className={!showMatching ? classes.festivalTitleCenter : classes.festivalTitle}>
+                            <Typography variant={bigScreen ? "h3" : "h5"} className={!showMatching ? classes.festivalTitleCenter : classes.festivalTitle}>
                                 <Box fontWeight="fontWeightBold">
                                     {festival.name}
                                 </Box>
@@ -362,7 +369,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                     </div>
                 }
                 {showMatching && !matchingNextToPicture &&
-                    <div className={clsx(classes.artistAvatarBox, classes.addSidePadding)}>
+                    <div className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding)}>
                         {matchingArtists.map((artist) => (
                             <ArtistBubble
                                 artist={artist}
@@ -393,7 +400,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                     </IconButton>
                 </div>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <div className={clsx(classes.artistAvatarBox, classes.addSidePadding)}>
+                    <div className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding, classes.paddingBottom)}>
                         {popularArtists.length > 0 &&
                             popularArtists.slice(0, maxArtistsInWidth > 4 ? maxArtistsInWidth * 2 : maxArtistsInWidth * 3).map((artist) => (
                                 <ArtistBubble

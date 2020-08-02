@@ -18,7 +18,12 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(0, 2, 0, 2),
+            '@media (min-width: 440px)': {
+                padding: theme.spacing(0, 2, 0, 2),
+            },
+            '@media (max-width: 439px)': {
+                padding: theme.spacing(0, 1, 0, 1),
+            },
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'
@@ -359,7 +364,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                     </div>
                     <div className={classes.verticalSpace} />
                     <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
-                        <Typography variant={bigScreen ? "h3" : "h5"} className={classes.title}>
+                        <Typography variant={bigScreen ? "h4" : "h5"} className={classes.title}>
                             Oskarito SpotiFest
                         </Typography>
                         <List>
@@ -399,7 +404,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <Box className={classes.box}>
                     <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
                         <div className={classes.rowFlexCenter}>
-                            <Typography variant={bigScreen ? "h3" : "h5"} onClick={() => setTechExpanded(!techExpanded)}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setTechExpanded(!techExpanded)}>
                                 Technical info
                             </Typography>
                             <IconButton
@@ -629,7 +634,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <Box className={classes.box}>
                     <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
                         <div className={classes.rowFlexCenter}>
-                            <Typography variant={bigScreen ? "h3" : "h5"} onClick={() => setAlgorithmExpanded(!algorithmExpanded)}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setAlgorithmExpanded(!algorithmExpanded)}>
                                 Matching algorithm
                             </Typography>
                             <IconButton
@@ -646,7 +651,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         <Collapse in={algorithmExpanded} timeout="auto" unmountOnExit>
                             <div className={classes.expandedDiv}>
                                 <Typography variant="body1" className={classes.textAlign}>
-                                    The "Match with" selector on top of the main page allows you to select a playlist or your most played artists as a match basis for festivals. The match score given to each festival is a combination of genre matching and artist matching to the selected match basis. The genre matching checks the genres of the match basis and checks how well these coincide with the genres of the festival. The artist score counts how many artists in the match basis are attending the festival. The more artists in the match basis, the more attending artists are needed for a high score. To see the individual genre and artist score for each festival you can hold the mouse pointer over the score circle on a pc or press and hold the the score circle on a touh screen.
+                                    The "Match with" selector on top of the main page allows you to select a playlist or your most played artists as a match basis for festivals. The match score given to each festival is a combination of genre matching and artist matching to the selected match basis. The genre matching finds the genres of the match basis and checks how well these coincide with the genres of the festival. The artist score counts how many artists in the match basis are attending the festival. The more artists in the match basis, the more attending artists are needed for a high score. To see the individual genre and artist score for each festival you can hold the mouse pointer over the score circle on a pc or press and hold the score circle on a touch screen.
                                 </Typography>
                             </div>
                         </Collapse>
@@ -655,7 +660,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <Box className={classes.box}>
                     <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
                         <div className={classes.rowFlexCenter}>
-                            <Typography variant={bigScreen ? "h3" : "h5"} onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}>
                                 Disclaimer
                             </Typography>
                             <IconButton
@@ -684,7 +689,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <Box className={classes.box2}>
                     <Paper elevation={3} className={clsx(classes.paper, classes.maxWidth400)}>
                         <div className={classes.flexColumn}>
-                            <Typography variant={bigScreen ? "h3" : "h5"} className={classes.title}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.title}>
                                 Created by
                             </Typography>
                             <img src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'} className={classes.creatorImage} alt="React-icon" />

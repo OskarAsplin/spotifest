@@ -13,16 +13,13 @@ import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
 		box: {
-			'@media (min-width: 610px)': {
-				width: '95%',
-			},
 			'@media (max-width: 609px)': {
-				width: '100%',
 				marginTop: theme.spacing(1)
 			},
 			'@media (min-width: 800px)': {
 				marginTop: theme.spacing(1)
 			},
+			width: '100%',
 			maxWidth: '764px',
 		},
 		align: {

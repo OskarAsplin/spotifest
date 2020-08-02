@@ -22,10 +22,10 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
             flexDirection: 'column',
-            '@media (min-width: 400px)': {
+            '@media (min-width: 440px)': {
                 padding: theme.spacing(0, 2, 0, 2),
             },
-            '@media (max-width: 399px)': {
+            '@media (max-width: 439px)': {
                 padding: theme.spacing(0, 1, 0, 1),
             },
             justifyContent: 'center',
@@ -122,8 +122,6 @@ const V1: React.FC<Props> = (props: Props) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    //const smallScreen = useMediaQuery('(max-width:610px)');
 
     const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({

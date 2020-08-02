@@ -28,17 +28,22 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(0, 2, 0, 2),
+            '@media (min-width: 440px)': {
+                padding: theme.spacing(0, 2, 0, 2),
+            },
+            '@media (max-width: 439px)': {
+                padding: theme.spacing(0, 1, 0, 1),
+            },
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'
         },
         verticalSpace: {
             display: 'flex',
-            '@media (min-width: 610px)': {
+            '@media (min-width: 690px)': {
                 padding: theme.spacing(2, 0, 2, 0),
             },
-            '@media (max-width: 609px)': {
+            '@media (max-width: 689px)': {
                 padding: theme.spacing(1, 0, 1, 0),
             },
             justifyContent: 'center',
@@ -57,29 +62,37 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'column',
             justifyContent: 'space-between',
             width: '100%',
-            padding: theme.spacing(2, 0, 1, 0),
+            padding: theme.spacing(2, 0, 0, 0),
         },
         addSidePadding: {
             '@media (min-width: 690px)': {
                 padding: theme.spacing(0, 4, 0, 4),
             },
             '@media (max-width: 689px)': {
-                '@media (min-width: 364px)': {
+                '@media (min-width: 440px)': {
                     padding: theme.spacing(0, 2, 0, 2),
                 },
             },
-            '@media (max-width: 363px)': {
+            '@media (max-width: 439px)': {
+                padding: theme.spacing(0, 1, 0, 1),
+            },
+        },
+        addSmallSidePadding: {
+            '@media (min-width: 440px)': {
                 padding: theme.spacing(0, 2, 0, 2),
+            },
+            '@media (max-width: 439px)': {
+                padding: theme.spacing(0, 1, 0, 1),
             },
         },
         button: {
             display: 'flex',
             flexDirection: 'column',
             textTransform: 'none',
-            '@media (min-width: 610px)': {
+            '@media (min-width: 690px)': {
                 padding: theme.spacing(2, 2, 2, 2),
             },
-            '@media (max-width: 609px)': {
+            '@media (max-width: 689px)': {
                 padding: theme.spacing(1, 1, 1, 1),
             },
             marginBottom: theme.spacing(2),
@@ -128,7 +141,7 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'row',
             flexWrap: 'wrap',
             justifyContent: 'space-between',
-            '@media (max-width: 363px)': {
+            '@media (max-width: 439px)': {
                 padding: theme.spacing(0, 1, 0, 1),
             },
         },
@@ -153,7 +166,7 @@ const useStyles = makeStyles((theme: Theme) =>
             textAlign: 'center'
         },
         prevAndFutureFestivalsTitle: {
-            '@media (max-width: 609px)': {
+            '@media (max-width: 689px)': {
                 textAlign: 'center'
             },
             marginBottom: theme.spacing(1)
@@ -179,6 +192,9 @@ const useStyles = makeStyles((theme: Theme) =>
         festivalTitle: {
             wordWrap: 'break-word',
             textAlign: 'center'
+        },
+        paddingBottom: {
+            paddingBottom: theme.spacing(1)
         },
     }),
 );
@@ -329,11 +345,10 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     const [isNetworkError, setIsNetworkError] = React.useState(false);
     const [isValidSpotifyId, setIsValidSpotifyId] = React.useState(true);
 
-    const mediumScreen = useMediaQuery('(min-width:610px)');
     const bigScreen = useMediaQuery('(min-width:690px)');
     const pcScreen = useMediaQuery('(min-width:1300px)');
-    const smallScreen = useMediaQuery('(max-width:363px)');
-    const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, mediumScreen, smallScreen, 6);
+    const smallScreen = useMediaQuery('(max-width:439px)');
+    const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, smallScreen, 6);
     const fillRelatedArtistsWidth = maxArtistsInWidth - relatedArtists.length % maxArtistsInWidth;
 
     const loaderOn = props.model.loaderOn;
@@ -444,7 +459,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                     <Box className={classes.box}>
                         <Paper elevation={10} className={classes.paper} key={'artistInfo:' + artistInfo.artist.name}>
                             <div className={classes.artistTitleBox}>
-                                <Typography variant={bigScreen ? "h3" : mediumScreen ? "h4" : "h5"} className={classes.artistTitle}>
+                                <Typography variant={bigScreen ? "h3" : "h5"} className={classes.artistTitle}>
                                     <Box fontWeight="fontWeightBold">
                                         {artistInfo.artist.name}
                                     </Box>
@@ -467,6 +482,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                         Open artist in spotify
                                     </Link>
                                 </MuiThemeProvider>}
+                            {relatedArtists.length === 0 && <div className={classes.paddingBottom}/>}
                             {relatedArtists.length > 0 &&
                                 <div className={clsx(classes.matchingPopularBox, classes.addSidePadding)}>
                                     <Typography variant="body1" color='primary' component="div" >
@@ -488,7 +504,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             }
                             {relatedArtists.length > 0 &&
                                 <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                    <div className={clsx(classes.artistAvatarBox, classes.addSidePadding)}>
+                                    <div className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding, classes.paddingBottom)}>
                                         {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
                                             <ArtistBubble
                                                 artist={artist}
@@ -507,7 +523,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                     {isArtistInDb && artistInfo.festivalsFuture.length !== 0 &&
                         <div className={classes.align}>
                             <div className={classes.verticalSpace} />
-                            <Typography variant={mediumScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
                                 Attending festivals
                             </Typography>
                             <Box className={classes.box2}>
@@ -521,7 +537,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                         <div className={classes.align}>
                             <div className={classes.verticalSpace} />
                             <div className={classes.verticalSpace} />
-                            <Typography variant={mediumScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.prevAndFutureFestivalsTitle}>
                                 Previously attended festivals
                             </Typography>
                             <Box className={classes.box2}>
@@ -530,7 +546,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                         variant="outlined"
                                         onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }}>
                                         <div className={classes.hundredWidth} key={'past festival: ' + festival.name + idx}>
-                                            <Typography variant={bigScreen ? "h3" : mediumScreen ? "h4" : "h5"} className={classes.festivalTitle}>
+                                            <Typography variant={bigScreen ? "h3" : "h5"} className={classes.festivalTitle}>
                                                 <Box fontWeight="fontWeightBold">
                                                     {festival.name}
                                                 </Box>
