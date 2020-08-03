@@ -179,6 +179,21 @@ const HtmlTooltip = withStyles((theme) => ({
 	},
 }))(Tooltip);
 
+const europeanRegions = ['Northern Europe', 'Eastern Europe', 'Central Europe', 'Southern Europe', 'British Isles'];
+const usRegions = ['US: West', 'US: Mid-West', 'US: South', 'US: North-East'];
+
+const regionMap: { [key: string]: string[]; } = {
+	'Northern Europe': ['NO', 'SE', 'FI', 'DK', 'IS', 'FO', 'AX'],
+	'Eastern Europe': ['EE', 'LV', 'LT', 'BY', 'RU', 'PL', 'CZ', 'SK', 'HU', 'HR', 'SI', 'BA', 'ME', 'MK', 'AL', 'RS', 'BG', 'RO', 'MD', 'UA'],
+	'Central Europe': ['DE', 'NL', 'BE', 'LU', 'AT', 'LI', 'CH', 'FR', 'MC'],
+	'Southern Europe': ['PT', 'ES', 'GI', 'AD', 'VA', 'SM', 'IT', 'MT', 'GR'],
+	'British Isles': ['GB', 'IM', 'IE', 'GB-ENG', 'GB-NIR', 'GB-SCT', 'GB-WLS'],
+	'US: West': ['WA', 'MT', 'OR', 'ID', 'WY', 'CA', 'NV', 'UT', 'CO', 'AZ', 'NM', 'AK', 'HI'],
+	'US: Mid-West': ['ND', 'SD', 'MN', 'WI', 'MI', 'NE', 'IA', 'IL', 'IN', 'OH', 'KS', 'MO'],
+	'US: South': ['OK', 'AR', 'TX', 'LA', 'MS', 'AL', 'GA', 'FL', 'SC', 'TN', 'NC', 'KY', 'WV', 'VA', 'MD', 'DE', 'DC'],
+	'US: North-East': ['PA', 'NJ', 'NY', 'CT', 'RI', 'MA', 'VT', 'NH', 'ME']
+}
+
 const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	useEffect(() => {
@@ -226,10 +241,16 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		const isTopArtists: boolean = chosenPlaylistName === '__your__top__artists__'
 		if (continents.find(continent => continent.isoCode === area.isoCode)) {
 			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
-				dispatch, dateFrom, dateTo, [area.isoCode], []);
+				dispatch, dateFrom, dateTo, [area.isoCode], [], []);
+		} else if (europeanRegions.find(region => region === area.isoCode)) {
+			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
+				dispatch, dateFrom, dateTo, [], regionMap[area.isoCode], []);
+		} else if (usRegions.find(region => region === area.isoCode)) {
+			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
+				dispatch, dateFrom, dateTo, [], ['US'], regionMap[area.isoCode]);
 		} else {
             testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
-				dispatch, dateFrom, dateTo, [], [area.isoCode]);
+				dispatch, dateFrom, dateTo, [], [area.isoCode], []);
 		}
 	}
 
@@ -420,6 +441,18 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								{continents.sort((a, b) => a.name > b.name ? 1 : -1).map((continent) =>
 									<MenuItem key={continent.isoCode} value={continent.isoCode} style={{ minWidth: 200 }}>
 										{continent.name}
+									</MenuItem>
+								)}
+								<ListSubheader disableSticky disableGutters>European regions</ListSubheader>
+								{europeanRegions.map((region) =>
+									<MenuItem key={region} value={region}>
+										{region}
+									</MenuItem>
+								)}
+								<ListSubheader disableSticky disableGutters>US regions</ListSubheader>
+								{usRegions.map((region) =>
+									<MenuItem key={region} value={region}>
+										{region}
 									</MenuItem>
 								)}
 								<ListSubheader disableSticky disableGutters>Countries</ListSubheader>

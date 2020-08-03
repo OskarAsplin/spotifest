@@ -188,7 +188,8 @@ export const testFestivalMatches = (
     dateFrom: Date,
     dateTo: Date,
     continents?: string[],
-    countries?: string[]
+    countries?: string[],
+    states?: string[]
 ) => {
     dispatch(turnOnLoader());
     dateFrom.setUTCHours(0);
@@ -203,7 +204,8 @@ export const testFestivalMatches = (
         dateFrom: getShortDateISOString(dateFrom),
         dateTo: getShortDateISOString(dateTo),
         continents: continents ? continents : [],
-        countries: countries ? countries : []
+        countries: countries ? countries : [],
+        states: states ? states : []
     }
     fetch(getApiBaseUrl() + '/onTour/festivalMatches', {
         method: 'POST',

@@ -249,7 +249,8 @@ export interface MatchRequest {
     dateFrom: string,
     dateTo: string,
     continents: string[],
-    countries: string[]
+    countries: string[],
+    states: string[]
 }
 
 export interface FestivalMatch {
