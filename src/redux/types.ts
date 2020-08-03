@@ -21,6 +21,7 @@ export interface Model {
     playlists: Playlist[];
     topArtistsLoaded: boolean;
     playlistsLoaded: boolean;
+    countTopArtists: number;
     selectedPlaylistArtists: Artist[];
     festivalMatches: FestivalMatch[];
     popularArtists: PopularArtistsDict;
@@ -146,6 +147,7 @@ export interface SetShowPlaylistModal {
 export interface SetTopArtists {
     type: ActionTypeKeys.SET_TOP_ARTISTS;
     artists: Artist[];
+    countTopArtists: number;
 }
 
 export interface SetPlaylists {

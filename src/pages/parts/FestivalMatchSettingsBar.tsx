@@ -263,15 +263,14 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 			return;
 		}
 		if (playlistName === '__your__top__artists__') {
-            const countTopArtists = topArtists.length * (3 * topArtists.length + 1) / 2;  // n(3n+1)/2
-            dispatch(setMatchSettings({ ...matchSettings, matchBasis: playlistName, numTracks: countTopArtists }));
+            dispatch(setMatchSettings({ ...matchSettings, matchBasis: playlistName, numTracks: props.model.countTopArtists }));
 			testMatchesWithGivenSettings(
 				matchSettings.area,
 				new Date(Date.parse(matchSettings.fromDate)),
 				new Date(Date.parse(matchSettings.toDate)),
 				playlistName,
 				selectedPlaylistArtists,
-                countTopArtists);
+				props.model.countTopArtists);
 			return;
 		}
 
@@ -582,15 +581,14 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									className={classes.button}
 									onClick={() => {
 										dispatch(setShowPlaylistModal(false));
-                                        const countTopArtists = topArtists.length * (3 * topArtists.length + 1) / 2;  // n(3n+1)/2
-                                    	dispatch(setMatchSettings({ ...matchSettings, matchBasis: '__your__top__artists__', numTracks: countTopArtists }));
+                                    	dispatch(setMatchSettings({ ...matchSettings, matchBasis: '__your__top__artists__', numTracks: props.model.countTopArtists }));
 										testMatchesWithGivenSettings(
 											matchSettings.area,
 											new Date(Date.parse(matchSettings.fromDate)),
 											new Date(Date.parse(matchSettings.toDate)),
 											'__your__top__artists__',
 											selectedPlaylistArtists,
-											countTopArtists);
+											props.model.countTopArtists);
 									}}>
 									<Typography variant={smallScreen ? "h6" : "h4"}>
 										Go

@@ -90,10 +90,11 @@ export const setShowPlaylistModal = (show: boolean): Action => {
     }
 };
 
-export const setTopArtists = (artists: Artist[]): Action => {
+export const setTopArtists = (artists: Artist[], countTopArtists: number): Action => {
     return {
         type: ActionTypeKeys.SET_TOP_ARTISTS,
-        artists: artists
+        artists: artists,
+        countTopArtists: countTopArtists
     }
 };
 
@@ -229,6 +230,25 @@ export const testFestivalMatches = (
     }).finally(() => dispatch(turnOffLoader()));
 };
 
+const mapTopArtistToArtistObject = (artist: SpotifyApi.ArtistObjectFull, idx: number, totalTopArtists: number) => {
+    return {
+        name: artist.name,
+        spotifyId: artist.id,
+        hasSpotifyId: true,
+        iconPicture: getIconPicture(artist.images),
+        bigPicture: getBigPicture(artist.images),
+        popularity: artist.popularity,
+        userPopularity: totalTopArtists * 2 - idx,
+        genres: artist.genres
+    } as Artist;
+}
+
+const topArtistsCount = (numArtists: number) => {
+    return numArtists * (3 * numArtists + 1) / 2;  // n(3n+1)/2
+};
+
+Object.values = Object.values || function(o: any) { return Object.keys(o).map(function(k) { return o[k] }) };
+
 export const initializeSite = (
     token: string,
     dispatch: Dispatch
@@ -259,30 +279,39 @@ export const initializeSite = (
 
             dispatch(setUserInfo(userInfo));
 
+            const userContinent: string = getMe.country in (countries_list as any).countries ?
+                (countries_list as any).countries[getMe.country].continent : '';
+            const isRegisteredContinent = continents.find(continent => continent.isoCode === userContinent);
+            if (isRegisteredContinent) {
+                dispatch(setMatchSettings({ ...initialModel.matchSettings, area: isRegisteredContinent }));
+            }
+
             dispatch(setSiteInitialized());
 
-            spotifyApi.getMyTopArtists({ limit: 50 })
-                .then((response: SpotifyApi.UsersTopArtistsResponse) => {
-                    const topArtists: Artist[] = response.items.map((artist, idx) => {
-                        return {
-                            name: artist.name,
-                            spotifyId: artist.id,
-                            hasSpotifyId: true,
-                            iconPicture: getIconPicture(artist.images),
-                            bigPicture: getBigPicture(artist.images),
-                            popularity: artist.popularity,
-                            userPopularity: response.items.length * 2 - idx,
-                            genres: artist.genres
-                        } as Artist;
+            Promise.all([
+                spotifyApi.getMyTopArtists({ limit: 50, time_range: 'long_term' }),
+                spotifyApi.getMyTopArtists({ limit: 50, time_range: 'medium_term' }),
+                spotifyApi.getMyTopArtists({ limit: 50, time_range: 'short_term' })
+                ]).then(([responseLongTerm, responseMediumTerm, responseShortTerm]) => {
+                    const topArtistsLongTerm: Artist[] = responseLongTerm.items.map((artist, idx) => mapTopArtistToArtistObject(artist, idx, responseLongTerm.items.length));
+                    const topArtistsMediumTerm: Artist[] = responseMediumTerm.items.map((artist, idx) => mapTopArtistToArtistObject(artist, idx, responseMediumTerm.items.length));
+                    const topArtistsShortTerm: Artist[] = responseShortTerm.items.map((artist, idx) => mapTopArtistToArtistObject(artist, idx, responseShortTerm.items.length));
+                    const countTopArtists = topArtistsCount(responseLongTerm.items.length) + topArtistsCount(responseMediumTerm.items.length) + topArtistsCount(responseShortTerm.items.length);
+                    console.log(topArtistsLongTerm);
+                    console.log(topArtistsMediumTerm);
+                    console.log(topArtistsShortTerm);
+                    console.log(countTopArtists);
+
+                    const tempDict: {[id: string]: Artist} = {};
+                    [...topArtistsLongTerm, ...topArtistsMediumTerm, ...topArtistsShortTerm].forEach((artist) => {
+                        if (artist.spotifyId! in tempDict) {
+                            tempDict[artist.spotifyId!].userPopularity! += artist.userPopularity!;
+                        } else {
+                            tempDict[artist.spotifyId!] = artist;
+                        }
                     });
 
-                    dispatch(setTopArtists(topArtists));
-                    const userContinent: string = getMe.country in (countries_list as any).countries ?
-                        (countries_list as any).countries[getMe.country].continent : '';
-                    const isRegisteredContinent = continents.find(continent => continent.isoCode === userContinent);
-                    if (isRegisteredContinent) {
-                        dispatch(setMatchSettings({ ...initialModel.matchSettings, area: isRegisteredContinent }));
-                    }
+                    dispatch(setTopArtists(Object.values(tempDict), countTopArtists));
                 })
                 .catch((error) => {
                     console.log(error);

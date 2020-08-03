@@ -31,7 +31,10 @@ const useStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
         },
         customizeToolbar: {
-            minHeight: 36
+            minHeight: 36,
+            '@media (max-width: 439px)': {
+                padding: theme.spacing(0, 1, 0, 1)
+            },
         },
         profileImg: {
             height: 28,
@@ -97,8 +100,13 @@ const useStyles = makeStyles((theme: Theme) =>
                     marginRight: '44px'
                 },
             },
-            '@media (max-width: 589px)': {
-                marginRight: '36px'
+            '@media (min-width: 440px)': {
+                '@media (max-width: 589px)': {
+                    marginRight: '36px'
+                },
+            },
+            '@media (max-width: 439px)': {
+                marginRight: '28px'
             },
         },
         marginTop: {
@@ -408,7 +416,9 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             onClick={() => { window.open(getBaseUrl(), '_self') }}
                         >
                             <Typography variant="h6">
-                                {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
+                                <Box fontWeight="fontWeightBold">
+                                    {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
+                                </Box>
                             </Typography>
                         </Button>
                         <div className={classes.grow}>

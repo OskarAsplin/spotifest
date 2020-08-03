@@ -28,6 +28,7 @@ export const initialModel: Model = {
     playlists: [],
     topArtistsLoaded: false,
     playlistsLoaded: false,
+    countTopArtists: 0,
     selectedPlaylistArtists: [],
     festivalMatches: [],
     popularArtists: {},
@@ -80,8 +81,8 @@ const reducer: Reducer<Model, Action> = (
             return { ...state, showPlaylistModal: show }
         }
         case ActionTypeKeys.SET_TOP_ARTISTS: {
-            const { artists } = action;
-            return { ...state, topArtists: artists, topArtistsLoaded: true }
+            const { artists, countTopArtists } = action;
+            return { ...state, topArtists: artists, topArtistsLoaded: true, countTopArtists: countTopArtists }
         }
         case ActionTypeKeys.SET_PLAYLISTS: {
             const { playlists } = action;

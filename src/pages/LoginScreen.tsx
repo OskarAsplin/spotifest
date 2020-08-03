@@ -15,14 +15,22 @@ import { lightBlue, pink } from "@material-ui/core/colors";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
+            position: 'fixed',
             display: 'flex',
             flexDirection: 'column',
-            padding: theme.spacing(0, 3, 0, 3),
+            '@media (min-width: 400px)': {
+                padding: theme.spacing(0, 3, 0, 3),
+            },
+            '@media (max-width: 399px)': {
+                padding: theme.spacing(0, 1, 0, 1),
+            },
             justifyContent: 'center',
             alignItems: 'center',
+            top: '15%',
             width: '100%',
         },
         root1: {
+            position: 'fixed',
             display: 'flex',
             flexDirection: 'column',
             '@media (min-width: 334px)': {
@@ -33,6 +41,7 @@ const useStyles = makeStyles((theme: Theme) =>
             },
             justifyContent: 'center',
             alignItems: 'center',
+            top: '40%',
             width: '100%',
         },
         background: {
@@ -111,9 +120,6 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         title: {
-            '@media (max-width: 357px)': {
-                maxWidth: '220px'
-            },
             textAlign: 'center',
             borderRadius: '15%',
             backgroundColor: 'rgba(0, 0, 0, 0.5)',
@@ -195,6 +201,7 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
     const bigWidth = useMediaQuery('(min-width:610px)');
     const bigHeight = useMediaQuery('(min-height:500px)');
     const bigScreen = bigWidth && bigHeight;
+    const verySmallScreen = useMediaQuery('(max-width:330px)');
     const { thememode } = props;
     const [expanded, setExpanded] = React.useState(false);
 
@@ -229,22 +236,15 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
         <div className={classes.background}>
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
-                <div className={classes.verticalSpace} />
-                <div className={classes.verticalSpace} />
 
                 <div className={classes.root}>
                     <Box className={classes.box}>
-                        <Typography variant={bigScreen ? "h2" : "h4"} className={classes.title}>
+                        <Typography variant={bigScreen ? "h2" : verySmallScreen ? "h5" : "h4"} className={classes.title}>
                             Oskarito SpotiFest
                         </Typography>
                     </Box>
                 </div>
                 <div className={classes.root1}>
-                    <div className={classes.verticalSpace} />
-                    {!(bigWidth && !bigHeight) &&
-                        <div className={classes.verticalSpace} />}
-                    {!(bigWidth && !bigHeight) &&
-                        <div className={classes.verticalSpace} />}
                     <Box className={classes.box2}>
                         <Button className={classes.button} key={'Login to spotify button'}
                             variant="outlined"
@@ -257,56 +257,56 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
 	                        </Typography>
                         </Button>
                     </Box>
-                    <Box className={classes.footerBox}>
-                        <Box className={classes.footer}>
-                            <Paper className={classes.paper} key={'disclaimer paper'}>
-                                <div className={classes.rowFlex}>
-                                    <Typography variant={"subtitle2"} onClick={() => setExpanded(!expanded)}>
-                                        Disclaimer
-        	                        </Typography>
-                                    <IconButton
-                                        className={clsx(classes.expand, {
-                                            [classes.expandOpen]: expanded,
-                                        })}
-                                        onClick={() => setExpanded(!expanded)}
-                                        aria-expanded={expanded}
-                                        aria-label="show more"
-                                    >
-                                        <ExpandMoreIcon />
-                                    </IconButton>
-                                </div>
-                                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                    <div className={classes.paddingBottom}>
-                                        This website was made with the intention of inspiring people to attend festivals to their liking.
-                                        It was made by a simple Norwegian guy wanting to do some good in the world.
-                                        This Norwegian guy takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point.
-                                        Special thanks to Spotify and MusicFestivalWizard for their available information about artists and festivals, making this site possible to make.
-        		                    </div>
-                                </Collapse>
-                            </Paper>
-                        </Box>
-                        <Box className={classes.footerRight}>
-                            <div className={classes.attributionShadow}>
-                                <Link color={'primary'}
-                                    href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/"
-                                    target={"_blank"}
-                                    rel="noopener noreferrer">
-                                    Photo
-                                </Link> by <Link color={'primary'}
-                                    href="https://www.flickr.com/photos/149801000@N05/"
-                                    target={"_blank"}
-                                    rel="noopener noreferrer">
-                                    veldmusicfestival
-                                </Link> / <Link color={'primary'}
-                                    href="https://creativecommons.org/licenses/by-sa/2.0/"
-                                    target={"_blank"}
-                                    rel="noopener noreferrer">
-                                    CC BY-SA 2.0
-                                </Link>
-                            </div>
-                        </Box>
-                    </Box>
                 </div>
+                <Box className={classes.footerBox}>
+                    <Box className={classes.footer}>
+                        <Paper className={classes.paper} key={'disclaimer paper'}>
+                            <div className={classes.rowFlex}>
+                                <Typography variant={"subtitle2"} onClick={() => setExpanded(!expanded)}>
+                                    Disclaimer
+    	                        </Typography>
+                                <IconButton
+                                    className={clsx(classes.expand, {
+                                        [classes.expandOpen]: expanded,
+                                    })}
+                                    onClick={() => setExpanded(!expanded)}
+                                    aria-expanded={expanded}
+                                    aria-label="show more"
+                                >
+                                    <ExpandMoreIcon />
+                                </IconButton>
+                            </div>
+                            <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                <div className={classes.paddingBottom}>
+                                    This website was made with the intention of inspiring people to attend festivals to their liking.
+                                    It was made by a simple Norwegian guy wanting to do some good in the world.
+                                    This Norwegian guy takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point.
+                                    Special thanks to Spotify and MusicFestivalWizard for their available information about artists and festivals, making this site possible to make.
+    		                    </div>
+                            </Collapse>
+                        </Paper>
+                    </Box>
+                    <Box className={classes.footerRight}>
+                        <div className={classes.attributionShadow}>
+                            <Link color={'primary'}
+                                href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/"
+                                target={"_blank"}
+                                rel="noopener noreferrer">
+                                Photo
+                            </Link> by <Link color={'primary'}
+                                href="https://www.flickr.com/photos/149801000@N05/"
+                                target={"_blank"}
+                                rel="noopener noreferrer">
+                                veldmusicfestival
+                            </Link> / <Link color={'primary'}
+                                href="https://creativecommons.org/licenses/by-sa/2.0/"
+                                target={"_blank"}
+                                rel="noopener noreferrer">
+                                CC BY-SA 2.0
+                            </Link>
+                        </div>
+                    </Box>
+                </Box>
             </MuiThemeProvider>
         </div>
         //</SplashScreen>
