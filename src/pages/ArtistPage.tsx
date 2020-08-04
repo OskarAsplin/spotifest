@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'column',
             justifyContent: 'space-between',
             width: '100%',
-            padding: theme.spacing(2, 0, 0, 0),
+            padding: theme.spacing(1, 0, 0, 0),
         },
         addSidePadding: {
             '@media (min-width: 690px)': {
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 },
             },
             '@media (max-width: 439px)': {
-                padding: theme.spacing(0, 1, 0, 1),
+                padding: theme.spacing(0, 2, 0, 2),
             },
         },
         addSmallSidePadding: {

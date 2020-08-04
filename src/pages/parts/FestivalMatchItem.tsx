@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: 'space-between',
             flexDirection: 'column',
-            padding: theme.spacing(2, 0, 0, 0),
+            padding: theme.spacing(1, 0, 0, 0),
             marginBottom: theme.spacing(3),
             width: '100%',
         },
@@ -33,10 +33,12 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: '60px'
             },
             '@media (max-width: 689px)': {
-                width: '50px'
+                '@media (min-width: 440px)': {
+                    width: '50px'
+                },
             },
             '@media (max-width: 439px)': {
-                paddingRight: theme.spacing(1)
+                width: '40px'
             },
             userSelect: 'none'
         },
@@ -63,7 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 },
             },
             '@media (max-width: 439px)': {
-                padding: theme.spacing(0, 1, 0, 1),
+                padding: theme.spacing(0, 2, 0, 2),
             },
         },
         addSmallSidePadding: {
@@ -115,15 +117,9 @@ const useStyles = makeStyles((theme: Theme) =>
         button: {
             whiteSpace: 'normal',
             textTransform: 'none',
-            '@media (min-width: 440px)': {
-                marginLeft: -theme.spacing(1.3),
-            },
-            '@media (max-width: 439px)': {
-                marginLeft: -theme.spacing(0.3),
-            },
+            marginLeft: -theme.spacing(1.25),
             textAlign: 'left',
-            paddingBottom: theme.spacing(0),
-            paddingTop: theme.spacing(0),
+            padding: theme.spacing(0, 1, 0, 1),
         },
         grow: {
             flexGrow: 1,
@@ -190,16 +186,6 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-        },
-        paddingSmall: {
-            '@media (max-width: 439px)': {
-                padding: theme.spacing(0, 2, 0, 2),
-            },
-        },
-        paddingSmallDiv: {
-            '@media (max-width: 439px)': {
-                padding: theme.spacing(0, 1, 0, 1),
-            },
         },
         paddingBottom: {
             paddingBottom: theme.spacing(1)
@@ -272,6 +258,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
 
     return (
         <Paper elevation={3} className={classes.root} key={festival.name}>
+            {showMatching && <div className={classes.paddingBottom}/>}
             <div className={classes.titleLine}>
                 <div className={clsx(classes.titleAndMatchBox, classes.addSidePadding)}>
                     <div className={!showMatching ? classes.growAlign : classes.grow}>
@@ -320,21 +307,21 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                 <div id={'details_and_matching_artists_and_lineup'} className={classes.flexRow}>
                     <div id={'details_and_matching_artists'} className={classes.detailsAndMatching}>
                         {festival.cancelled ?
-                            <Typography variant="subtitle2" color='secondary' className={clsx(classes.paddingSmall, classes.addSidePadding)}>
+                            <Typography variant="subtitle2" color='secondary' className={classes.addSidePadding}>
                                 {'CANCELLED' + (festival.date ? ' (' + festival.date + ', ' + festival.year + ')' : '')}
                             </Typography> :
-                            <Typography variant="subtitle2" className={clsx(classes.paddingSmall, classes.addSidePadding)}>
+                            <Typography variant="subtitle2" className={classes.addSidePadding}>
                                 {festival.date + ', ' + festival.year}
                             </Typography>}
-                        <Typography variant="subtitle2" className={clsx(classes.paddingSmall, classes.addSidePadding)}>
+                        <Typography variant="subtitle2" className={classes.addSidePadding}>
                             {festival.locationText}
                         </Typography>
-                        <Typography variant="subtitle2" className={clsx(classes.paddingSmall, classes.addSidePadding)} noWrap>
+                        <Typography variant="subtitle2" className={classes.addSidePadding} noWrap>
                             {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}
                         </Typography>
                         {showMatching && matchingNextToPicture &&
                             <div className={classes.matchingPopularBoxFirstRow}>
-                            <Typography variant="body1" color='primary' component="div" className={clsx(classes.paddingSmallDiv, classes.addSidePadding)}>
+                            <Typography variant="body1" color='primary' component="div" className={classes.addSidePadding}>
                                     <Box fontWeight="fontWeightBold">
                                         {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
                                     </Box>
@@ -361,7 +348,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                 </div>
                 {showMatching && !matchingNextToPicture &&
                     <div className={clsx(classes.matchingPopularBox, classes.addSidePadding)}>
-                        <Typography variant="body1" color='primary' component="div" className={classes.paddingSmallDiv}>
+                        <Typography variant="body1" color='primary' component="div">
                             <Box fontWeight="fontWeightBold">
                                 {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
                             </Box>
@@ -383,7 +370,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                     </div>
                 }
                 <div className={clsx(classes.matchingPopularBox, classes.addSidePadding)}>
-                    <Typography variant="body1" color='primary' component="div" className={classes.paddingSmallDiv}>
+                    <Typography variant="body1" color='primary' component="div">
                         <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
                             Popular artists at this festival
                         </Box>

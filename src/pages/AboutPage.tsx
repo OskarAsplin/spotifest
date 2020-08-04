@@ -42,6 +42,23 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
             width: '100%'
         },
+        paperTop: {
+            display: 'flex',
+            flexDirection: 'column',
+            '@media (min-width: 610px)': {
+                padding: theme.spacing(1, 2, 1, 2),
+            },
+            '@media (max-width: 609px)': {
+                '@media (min-width: 440px)': {
+                    padding: theme.spacing(1, 1, 1, 1),
+                },
+            },
+            '@media (max-width: 439px)': {
+                padding: theme.spacing(1, 0, 1, 0),
+            },
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
         paper: {
             display: 'flex',
             flexDirection: 'column',
@@ -292,6 +309,9 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
             margin: theme.spacing(1),
         },
+        noPadding: {
+            padding: 0
+        }
     }),
 );
 
@@ -363,11 +383,11 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </Typography>
                     </div>
                     <div className={classes.verticalSpace} />
-                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
+                    <Paper elevation={3} className={clsx(classes.paperTop, classes.minWidth650)}>
                         <Typography variant={bigScreen ? "h4" : "h5"} className={classes.title}>
                             Oskarito SpotiFest
                         </Typography>
-                        <List>
+                        <List className={classes.noPadding}>
                             <ListItem>
                                 <ListItemIcon>
                                     <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>

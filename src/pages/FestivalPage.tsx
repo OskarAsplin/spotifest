@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
             flexDirection: 'column',
             justifyContent: 'space-between',
             width: '100%',
-            padding: theme.spacing(2, 0, 1, 0),
+            padding: theme.spacing(1, 0, 1, 0),
         },
         paper2: {
             display: 'flex',
