@@ -416,9 +416,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             onClick={() => { window.open(getBaseUrl(), '_self') }}
                         >
                             <Typography variant="h6">
-                                <Box fontWeight="fontWeightBold">
-                                    {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
-                                </Box>
+                                {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
                             </Typography>
                         </Button>
                         <div className={classes.grow}>
