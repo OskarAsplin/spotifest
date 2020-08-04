@@ -15,7 +15,7 @@ import { lightBlue, pink } from "@material-ui/core/colors";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            position: 'fixed',
+            position: 'absolute',
             display: 'flex',
             flexDirection: 'column',
             '@media (min-width: 400px)': {
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
         },
         root1: {
-            position: 'fixed',
+            position: 'absolute',
             display: 'flex',
             flexDirection: 'column',
             '@media (min-width: 334px)': {
