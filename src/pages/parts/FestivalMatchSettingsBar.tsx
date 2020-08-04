@@ -591,7 +591,9 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 											props.model.countTopArtists);
 									}}>
 									<Typography variant={smallScreen ? "h6" : "h4"}>
-										Go
+										<Box fontWeight="fontWeightBold">
+											Go
+										</Box>
 		                        	</Typography>
 								</Button>
 							</Box>}
