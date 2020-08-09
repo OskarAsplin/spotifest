@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { blueGrey } from "@material-ui/core/colors";
 import MusicNote from '@material-ui/icons/MusicNote';
 import { Redirect } from 'react-router-dom';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,6 +33,9 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: 60,
             },
         },
+        clickable: {
+            boxShadow: theme.shadows[3],
+        },
         artistAvatar: {
             '@media (max-width: 689px)': {
                 padding: '6px',
@@ -43,14 +47,6 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            '@media (min-width: 690px)': {
-                height: 80,
-                width: 80,
-            },
-            '@media (max-width: 689px)': {
-                height: 60,
-                width: 60,
-            },
         },
         circleIconDark: {
             background: blueGrey[700],
@@ -58,15 +54,15 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            '@media (min-width: 690px)': {
-                height: 80,
-                width: 80,
-            },
-            '@media (max-width: 689px)': {
-                height: 60,
-                width: 60,
-            },
         },
+        circleShadow: {
+            width: '150px',
+            height: '150px',
+            border: 'solid 1px #555',
+            backgroundColor: '#eed',
+            boxShadow: '10px - 10px  rgba(0, 0, 0, 0.6)',
+            borderRadius: '100px'
+        }
     }),
 );
 
@@ -96,11 +92,14 @@ const ArtistBubble: React.FC<Props> = (props: Props) => {
                 color="inherit"
                 onClick={() => { if (artist.hasSpotifyId) setRedirectArtist(encodeURIComponent(useSpotifyId ? artist.spotifyId! : artist.name)) }}
                 className={classes.artistAvatar}
+                disabled={!artist.hasSpotifyId}
             >
                 {artist.iconPicture ?
-                    <Avatar src={artist.iconPicture} alt={artist.name} className={classes.artistAvatarImg}
+                    <Avatar src={artist.iconPicture} alt={artist.name} className={clsx(classes.artistAvatarImg, artist.hasSpotifyId ? classes.clickable : undefined)}
                         key={key} />
-                    : <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
+                    : <div className={clsx(classes.artistAvatarImg,
+                        thememode === 'light' ? classes.circleIconLight : classes.circleIconDark,
+                        artist.hasSpotifyId ? classes.clickable : undefined)}>
                         <MusicNote fontSize={'large'} />
                     </div>}
             </IconButton>

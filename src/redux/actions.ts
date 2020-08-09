@@ -297,10 +297,6 @@ export const initializeSite = (
                     const topArtistsMediumTerm: Artist[] = responseMediumTerm.items.map((artist, idx) => mapTopArtistToArtistObject(artist, idx, responseMediumTerm.items.length));
                     const topArtistsShortTerm: Artist[] = responseShortTerm.items.map((artist, idx) => mapTopArtistToArtistObject(artist, idx, responseShortTerm.items.length));
                     const countTopArtists = topArtistsCount(responseLongTerm.items.length) + topArtistsCount(responseMediumTerm.items.length) + topArtistsCount(responseShortTerm.items.length);
-                    console.log(topArtistsLongTerm);
-                    console.log(topArtistsMediumTerm);
-                    console.log(topArtistsShortTerm);
-                    console.log(countTopArtists);
 
                     const tempDict: {[id: string]: Artist} = {};
                     [...topArtistsLongTerm, ...topArtistsMediumTerm, ...topArtistsShortTerm].forEach((artist) => {

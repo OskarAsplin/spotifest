@@ -158,6 +158,7 @@ const useStyles = makeStyles((theme: Theme) =>
         lineup: {
             maxHeight: 260,
             maxWidth: '100%',
+            boxShadow: theme.shadows[3],
         },
         lineupImgButton: {
             padding: '0px',
