@@ -10,7 +10,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import { isDev } from "../utils/restUtils";
-import { lightBlue, pink } from "@material-ui/core/colors";
+import { lightBlue } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -80,25 +80,32 @@ const useStyles = makeStyles((theme: Theme) =>
             },
             width: '100%'
         },
+        spotifyIconBig: {
+            height: '50px',
+            marginRight: theme.spacing(2)
+        },
+        spotifyIconSmall: {
+            height: '35px',
+            marginRight: theme.spacing(1.5)
+        },
         button: {
             display: 'flex',
-            flexDirection: 'column',
-            '@media (min-width: 610px)': {
-                padding: theme.spacing(2, 4, 2, 4),
-            },
-            '@media (max-width: 609px)': {
-                padding: theme.spacing(1, 2, 1, 2),
-            },
+            flexDirection: 'row',
             textTransform: 'none',
-            marginBottom: theme.spacing(2),
-            width: '100%',
             alignItems: 'center',
-            //borderRadius: '50%',
-            backgroundColor: 'rgba(0, 0, 0, 0.65)',
-            boxShadow: '0 0 2rem rgba(0, 0, 1)',
+            backgroundColor: '#1DB954',
+            boxShadow: theme.shadows[3],
             "&:hover": {
-                backgroundColor: 'rgba(0, 0, 0, 0.8)'
+                backgroundColor: 'rgb(29, 185, 84)'
             }
+        },
+        buttonSizeBig: {
+            padding: theme.spacing(2, 5, 2, 5),
+            borderRadius: 15,
+        },
+        buttonSizeSmall: {
+            padding: theme.spacing(1, 2.5, 1, 1.5),
+            borderRadius: 25,
         },
         rowFlex: {
             display: 'flex',
@@ -111,6 +118,10 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(0, 2, 2, 2),
         },
         box2: {
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
             width: '95%',
             '@media (min-width: 610px)': {
                 maxWidth: '480px',
@@ -199,7 +210,7 @@ export const authorizeHref = `${authEndpoint}?client_id=${clientId}&redirect_uri
 const LoginScreen: React.FC<Props> = (props: Props) => {
 
     const bigWidth = useMediaQuery('(min-width:610px)');
-    const bigHeight = useMediaQuery('(min-height:500px)');
+    const bigHeight = useMediaQuery('(min-height:610px)');
     const bigScreen = bigWidth && bigHeight;
     const verySmallScreen = useMediaQuery('(max-width:330px)');
     const { thememode } = props;
@@ -221,9 +232,9 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                 dark: lightBlue[700]
             },
             secondary: {
-                light: pink[300],
-                main: pink[500],
-                dark: pink[700]
+                light: '#fefefe',
+                main: '#fefefe',
+                dark: '#fefefe',
             },
             type: thememode
         }
@@ -246,14 +257,16 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                 </div>
                 <div className={classes.root1}>
                     <Box className={classes.box2}>
-                        <Button className={classes.button} key={'Login to spotify button'}
-                            variant="outlined"
+                        <Button className={clsx(classes.button, bigScreen ? classes.buttonSizeBig : classes.buttonSizeSmall)} key={'Log in with spotify button'}
+                            variant="contained"
                             onClick={() => {
                                 props.dispatch(setLoggedIn());
                                 window.open(authorizeHref, '_self');
                             }}>
-                            <Typography variant={bigScreen ? "h4" : "h6"}>
-                                Log in with Spotify to see your festival matches
+                            <img src={process.env.PUBLIC_URL + '/techIcons/Spotify-Icon-White.png'}
+                                className={bigScreen ? classes.spotifyIconBig : classes.spotifyIconSmall} alt="Spotify-icon" />
+                            <Typography variant={bigScreen ? "h4" : "h6"} color={'secondary'}>
+                                Log in with Spotify
 	                        </Typography>
                         </Button>
                     </Box>
