@@ -259,6 +259,7 @@ export interface FestivalMatch {
     lineup_id: string,
     name: string,
     locationText: string,
+    country: string,
     date: string,
     year: number,
     cancelled: boolean,
@@ -281,6 +282,7 @@ export interface FestivalMatchExtended extends FestivalMatch {
 export interface FestivalInfo {
     name: string,
     locationText: string,
+    country: string,
     genres: string[],
     festivalImg: string,
     webpage: string,
@@ -310,7 +312,7 @@ export interface MatchSettings {
 }
 
 export interface SearchResponse {
-    festivals: { name: string, location: string }[],
+    festivals: { name: string, location: string, country: string, }[],
     artists: { name: string }[]
 }
 

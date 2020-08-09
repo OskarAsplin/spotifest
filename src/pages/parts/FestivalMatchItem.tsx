@@ -11,6 +11,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { Redirect } from 'react-router-dom';
 import ArtistBubble from './ArtistBubble';
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import ReactCountryFlag from "react-country-flag";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -314,7 +315,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                 {festival.date + ', ' + festival.year}
                             </Typography>}
                         <Typography variant="subtitle2" className={classes.addSidePadding}>
-                            {festival.locationText}
+                            {festival.locationText} <ReactCountryFlag countryCode={festival.country} svg style={{ marginLeft: '8px' }} />
                         </Typography>
                         <Typography variant="subtitle2" className={classes.addSidePadding} noWrap>
                             {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}

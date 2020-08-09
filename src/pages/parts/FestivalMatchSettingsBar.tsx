@@ -14,6 +14,8 @@ import {
 	KeyboardDatePicker,
 } from '@material-ui/pickers';
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import ReactCountryFlag from "react-country-flag";
+
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -457,7 +459,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								<ListSubheader disableSticky disableGutters>Countries</ListSubheader>
 								{countries.sort((a, b) => a.name > b.name ? 1 : -1).map((country) =>
 									<MenuItem key={country.isoCode} value={country.isoCode}>
-										{country.name}
+                                        {country.name} <ReactCountryFlag countryCode={country.isoCode} svg style={{marginLeft: '8px'}} />
 									</MenuItem>
 								)}
 							</Select>

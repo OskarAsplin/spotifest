@@ -20,6 +20,7 @@ import { Redirect } from 'react-router-dom';
 import { getApiBaseUrl } from '../utils/restUtils';
 import ReactPlayer from 'react-player';
 import clsx from 'clsx';
+import ReactCountryFlag from "react-country-flag";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -420,7 +421,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                     </Button>
                                 </Box>
                                 <Typography variant="subtitle1" className={classes.addSidePadding}>
-                                    {festivalInfo.locationText}
+                                    {festivalInfo.locationText} <ReactCountryFlag countryCode={festivalInfo.country} svg style={{ marginLeft: '8px' }} />
                                 </Typography>
                                 <Typography variant="subtitle1" className={classes.addSidePadding}>
                                     {'Genres: ' + festivalInfo.genres.slice(0, 5).join(", ")}
