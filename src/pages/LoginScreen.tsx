@@ -73,10 +73,10 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         paddingBottom: {
             '@media (min-width: 610px)': {
-                padding: theme.spacing(0, 4, 2, 2),
+                padding: theme.spacing(0, 2, 1, 1),
             },
             '@media (max-width: 609px)': {
-                padding: theme.spacing(0, 2, 2, 0),
+                padding: theme.spacing(0, 1, 1, 0),
             },
             width: '100%'
         },
