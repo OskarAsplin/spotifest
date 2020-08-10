@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) =>
         paper: {
             display: 'flex',
             flexDirection: 'column',
-            paddingLeft: theme.spacing(2),
+            paddingLeft: theme.spacing(1),
             justifyContent: 'space-between',
         },
         paddingBottom: {
@@ -171,6 +171,7 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(1),
         },
         expand: {
+            padding: theme.spacing(0.5),
             transform: 'rotate(180deg)',
             transition: theme.transitions.create('transform', {
                 duration: theme.transitions.duration.shortest,
