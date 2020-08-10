@@ -18,9 +18,10 @@ import SwipeableViews from 'react-swipeable-views';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import { Redirect } from 'react-router-dom';
 import { getApiBaseUrl } from '../utils/restUtils';
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player/lazy';
 import clsx from 'clsx';
 import ReactCountryFlag from "react-country-flag";
+import CookieConsent from "react-cookie-consent";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -240,6 +241,9 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: '75px',
             },
         },
+        cookies: {
+            boxShadow: theme.shadows[3],
+        },
     }),
 );
 
@@ -449,7 +453,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                         {festivalInfo.video &&
                             <Box className={classes.videoBox}>
                                 <Paper elevation={3} className={classes.paperVideo} key={'festival video:' + festivalInfo.name}>
-                                    <ReactPlayer url={festivalInfo.video} controls
+                                <ReactPlayer url={festivalInfo.video} controls data-cookiescript="accepted" data-cookiecategory="functionality"
                                         width={videoSizeMax ? undefined : mediumScreen ? 496 : videoSizeSmall ? '100%' : 400}
                                         height={videoSizeMax ? undefined : mediumScreen ? 279 : videoSizeSmall ? '100%' : 225} />
                                 </Paper>
@@ -536,6 +540,13 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                 <div hidden={!loaderOn} className={classes.progressBar}>
                     <CircularProgress size={100} thickness={3} color={'secondary'} />
                 </div>
+                {festivalInfo.video && <CookieConsent
+                    location="bottom"
+                    buttonText="I understand"
+                    containerClasses={classes.cookies}
+                >
+                    The youtube videos on this site use cookies.
+                </CookieConsent>}
 
             </MuiThemeProvider>
         );
