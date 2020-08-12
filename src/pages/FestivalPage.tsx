@@ -241,8 +241,23 @@ const useStyles = makeStyles((theme: Theme) =>
                 width: '75px',
             },
         },
-        cookies: {
+        cookiesContainer: {
             boxShadow: theme.shadows[3],
+            color: 'rgb(64, 64, 64) !important',
+            backgroundColor: 'rgb(200, 200, 200) !important',
+            fontSize: '16px !important',
+            '@media (max-width: 460px)': {
+                justifyContent: 'center !important',
+                textAlign: 'center !important',
+            },
+        },
+        cookiesButton: {
+            color: '#fefefe !important',
+            backgroundColor: 'rgb(118, 175, 73) !important', // rgb(180, 237, 134)
+            borderRadius: '5px !important',
+            topMargin: '0px !important',
+            fontWeight: 700,
+            padding: theme.spacing(1.5, 3, 1.5, 3) + '!important',
         },
     }),
 );
@@ -542,8 +557,9 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                 </div>
                 {festivalInfo.video && <CookieConsent
                     location="bottom"
-                    buttonText="I understand"
-                    containerClasses={classes.cookies}
+                    buttonText="Got it!"
+                    containerClasses={classes.cookiesContainer}
+                    buttonClasses={classes.cookiesButton}
                 >
                     The youtube videos on this site use cookies.
                 </CookieConsent>}
