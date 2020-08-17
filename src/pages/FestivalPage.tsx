@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps, FestivalInfo } from "../redux/types";
 import { turnOnLoader, turnOffLoader } from "../redux/actions";
-import { getMaxArtistsInFullLineupWidth } from "../utils/utils";
+import { getMaxArtistsInFullLineupWidth, displayedLocationName } from "../utils/utils";
 import { connect } from "react-redux";
 import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, Paper, Box, Link, Button, Tabs, Tab, PaletteType, Switch, useTheme, IconButton } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -440,7 +440,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                     </Button>
                                 </Box>
                                 <Typography variant="subtitle1" className={classes.addSidePadding}>
-                                    {festivalInfo.locationText} <ReactCountryFlag countryCode={festivalInfo.country} svg style={{ marginLeft: '8px' }} />
+                                    {displayedLocationName(festivalInfo.locationText)} <ReactCountryFlag countryCode={festivalInfo.country} svg style={{ marginLeft: '8px' }} />
                                 </Typography>
                                 <Typography variant="subtitle1" className={classes.addSidePadding}>
                                     {'Genres: ' + festivalInfo.genres.slice(0, 5).join(", ")}

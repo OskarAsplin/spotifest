@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, Model } from "../../redux/types";
 import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, setShowPlaylistModal } from "../../redux/actions";
-import { getIconPicture, getBigPicture } from "../../utils/utils";
+import { getIconPicture, getBigPicture, displayedLocationName } from "../../utils/utils";
 import { connect } from "react-redux";
 import { createStyles, Theme, Typography, Box, Paper, Grid, Tooltip, PaletteType, InputLabel, MenuItem, FormControl, Select, ListSubheader, Modal, Fade, Backdrop, Link, MuiThemeProvider, CircularProgress, Button } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -469,7 +469,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								<ListSubheader disableSticky disableGutters>Countries</ListSubheader>
 								{countries.sort((a, b) => a.name > b.name ? 1 : -1).map((country) =>
 									<MenuItem key={country.isoCode} value={country.isoCode}>
-                                        {country.name} <ReactCountryFlag countryCode={country.isoCode} svg style={{marginLeft: '8px'}} />
+                                        <ReactCountryFlag countryCode={country.isoCode} svg style={{ marginRight: '8px' }} /> {displayedLocationName(country.name)}
 									</MenuItem>
 								)}
 							</Select>

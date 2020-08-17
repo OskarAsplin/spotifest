@@ -16,7 +16,11 @@ export const getIconPicture = (images: SpotifyApi.ImageObject[]): string => {
 }
 
 export const getBigPicture = (images: SpotifyApi.ImageObject[]): string => {
-    return images.length > 0 ? images[0].url : ''
+    return images.length > 0 ? images[0].url : '';
+}
+
+export const displayedLocationName = (location: string): string => {
+    return location.search('United States of America') !== -1 ? location.replace('United States of America', 'United States') : location;
 }
 
 export const getMaxArtistsInWidth = (bigScreen: boolean, smallScreen: boolean, maxBigScreen: number) => {

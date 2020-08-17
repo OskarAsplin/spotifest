@@ -1,6 +1,6 @@
 import React from 'react';
 import { AppState, DispatchProps, FestivalMatch, MatchingMethod, Artist } from "../../redux/types";
-import { getMaxArtistsInWidth } from "../../utils/utils";
+import { getMaxArtistsInWidth, displayedLocationName } from "../../utils/utils";
 import { connect } from "react-redux";
 import { createStyles,  Theme, Paper, IconButton, Button, Collapse, Typography, Box, PaletteType, Tooltip } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
@@ -315,7 +315,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
                                 {festival.date + ', ' + festival.year}
                             </Typography>}
                         <Typography variant="subtitle2" className={classes.addSidePadding}>
-                            {festival.locationText} <ReactCountryFlag countryCode={festival.country} svg style={{ marginLeft: '8px' }} />
+                            {displayedLocationName(festival.locationText)} <ReactCountryFlag countryCode={festival.country} svg style={{ marginLeft: '8px' }} />
                         </Typography>
                         <Typography variant="subtitle2" className={classes.addSidePadding} noWrap>
                             {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}
