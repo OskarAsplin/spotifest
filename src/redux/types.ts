@@ -273,10 +273,7 @@ export interface FestivalMatch {
 }
 
 export interface FestivalMatchExtended extends FestivalMatch {
-    popular_artists: Artist[],
-    webpage: string,
-    ticketWebpage: string,
-    video: string
+    popular_artists: Artist[]
 }
 
 export interface FestivalInfo {

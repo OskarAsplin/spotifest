@@ -346,7 +346,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
             },
             secondary: {
                 light: pink[300],
-                main: pink[500],
+                main: pink[400],
                 dark: pink[700]
             },
             type: thememode
