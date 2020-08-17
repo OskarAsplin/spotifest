@@ -240,20 +240,26 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		artistsFromPlaylist: Artist[],
 		numTracks: number
 	) => {
-		const isTopArtists: boolean = chosenPlaylistName === '__your__top__artists__'
-		if (continents.find(continent => continent.isoCode === area.isoCode)) {
-			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
-				dispatch, dateFrom, dateTo, [area.isoCode], [], []);
-		} else if (europeanRegions.find(region => region === area.isoCode)) {
-			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
-				dispatch, dateFrom, dateTo, [], regionMap[area.isoCode], []);
-		} else if (usRegions.find(region => region === area.isoCode)) {
-			testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
-				dispatch, dateFrom, dateTo, [], ['US'], regionMap[area.isoCode]);
-		} else {
-            testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
-				dispatch, dateFrom, dateTo, [], [area.isoCode], []);
+		const isTopArtists: boolean = chosenPlaylistName === '__your__top__artists__';
+		let continentFilter: string[] = [];
+		let countryFilter: string[] = [];
+		let stateFilter: string[] = [];
+
+		if (area.isoCode !== 'XXX') {
+			if (continents.find(continent => continent.isoCode === area.isoCode)) {
+				continentFilter = [area.isoCode];
+			} else if (europeanRegions.find(region => region === area.isoCode)) {
+				countryFilter = regionMap[area.isoCode];
+			} else if (usRegions.find(region => region === area.isoCode)) {
+				countryFilter = ['US']
+				stateFilter = regionMap[area.isoCode];
+			} else {
+				countryFilter = [area.isoCode];
+			}
 		}
+
+		testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
+			dispatch, dateFrom, dateTo, continentFilter, countryFilter, stateFilter);
 	}
 
 	const handlePlaylistChange = async (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -439,6 +445,10 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								onChange={handleAreaChange}
 								label="Area"
 							>
+								<MenuItem key={'XXX'} value={'XXX'} style={{ minWidth: 200 }}>
+									Worldwide
+								</MenuItem>
+								<ListSubheader disableSticky disableGutters>Continents</ListSubheader>
 								{continents.sort((a, b) => a.name > b.name ? 1 : -1).map((continent) =>
 									<MenuItem key={continent.isoCode} value={continent.isoCode} style={{ minWidth: 200 }}>
 										{continent.name}

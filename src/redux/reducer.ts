@@ -37,7 +37,7 @@ export const initialModel: Model = {
     continents: [],
     matchSettings: {
         matchBasis: '',
-        area: { name: 'Europe', isoCode: 'EU' },
+        area: { name: 'Worldwide', isoCode: 'XXX' },
         fromDate: (new Date()).toISOString(),
         toDate: initialToDate.toISOString(),
         numTracks: 0
