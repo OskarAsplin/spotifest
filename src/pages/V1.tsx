@@ -11,7 +11,7 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { deepOrange, indigo, pink, lightBlue } from "@material-ui/core/colors";
 import { Model } from "../redux/types";
-import { authorizeHref } from "./LoginScreen";
+import { getAuthorizeHref } from "./LoginScreen";
 //import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
 import { Redirect } from 'react-router-dom';
@@ -114,7 +114,7 @@ const V1: React.FC<Props> = (props: Props) => {
                     props.dispatch(setLoggedOff());
                 } else if (unixTimeNow > unixTimeExpiry - tenMinMilliseconds) {
                     props.dispatch(setAccessToken(''));
-                    window.open(authorizeHref, '_self');
+                    window.open(getAuthorizeHref(), '_self');
                 }
             }
         } else {

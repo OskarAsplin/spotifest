@@ -197,7 +197,6 @@ type Props = DispatchProps & StoreProps;
 const authEndpoint = 'https://accounts.spotify.com/authorize';
 
 
-const clientId = '***REMOVED***';
 const redirectUri = isDev() ? 'http://localhost:3000' : 'https://www.spotifest.app';
 const scopes = [
     'user-read-private',
@@ -206,7 +205,10 @@ const scopes = [
     'playlist-read-collaborative',
 ];
 
-export const authorizeHref = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token`;
+export const getAuthorizeHref = (): string => {
+    const clientId = process.env.REACT_APP_SPOTIFEST_CLIENT_ID;
+    return `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token`;
+}
 
 const LoginScreen: React.FC<Props> = (props: Props) => {
 
@@ -262,7 +264,7 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                             variant="contained"
                             onClick={() => {
                                 props.dispatch(setLoggedIn());
-                                window.open(authorizeHref, '_self');
+                                window.open(getAuthorizeHref(), '_self');
                             }}>
                             <img src={process.env.PUBLIC_URL + '/techIcons/Spotify-Icon-White.png'}
                                 className={bigScreen ? classes.spotifyIconBig : classes.spotifyIconSmall} alt="Spotify-icon" />
