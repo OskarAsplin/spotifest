@@ -1,5 +1,6 @@
 # Oskarito SpotiFest
 Find music festivals that match your Spotify profile. Use your most played artists or one of your playlists to see matching festivals.
+
 Check it out at [spotifest.app](https://spotifest.app/)
 
 ## Features
