@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react';
 import { AppState, DispatchProps } from "../redux/types";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Button, IconButton, Collapse, Link, PaletteType } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Typography, Button, Link, PaletteType } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { setLoggedIn, setLoggedOff } from "../redux/actions";
 import 'react-circular-progressbar/dist/styles.css';
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import { isDev } from "../utils/restUtils";
 import { lightBlue } from "@material-ui/core/colors";
@@ -161,11 +160,11 @@ const useStyles = makeStyles((theme: Theme) =>
         footerRight: {
             display: 'flex',
             width: '100%',
-            '@media (min-width: 610px)': {
+            '@media (min-width: 860px)': {
                 flexDirection: 'row-reverse',
                 paddingRight: theme.spacing(1)
             },
-            '@media (max-width: 609px)': {
+            '@media (max-width: 859px)': {
                 justifyContent: 'center'
             },
             margin: theme.spacing(1),
@@ -182,8 +181,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         attributionShadow: {
             textAlign: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            boxShadow: '0 0 5rem rgba(0, 0, 0, 1)',
+            //backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            //boxShadow: '0 0 5rem rgba(0, 0, 0, 1)',
         },
     }),
 );
@@ -217,7 +216,6 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
     const bigScreen = bigWidth && bigHeight;
     const verySmallScreen = useMediaQuery('(max-width:330px)');
     const { thememode } = props;
-    const [expanded, setExpanded] = React.useState(false);
 
     useEffect(() => {
         props.dispatch(setLoggedOff());
@@ -275,33 +273,19 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                     </Box>
                 </div>
                 <Box className={classes.footerBox}>
-                    <Box className={classes.footer}>
-                        <Paper className={classes.paper} key={'disclaimer paper'}>
-                            <div className={classes.rowFlex}>
-                                <Typography variant={"subtitle2"} onClick={() => setExpanded(!expanded)}>
-                                    Disclaimer
-    	                        </Typography>
-                                <IconButton
-                                    className={clsx(classes.expand, {
-                                        [classes.expandOpen]: expanded,
-                                    })}
-                                    onClick={() => setExpanded(!expanded)}
-                                    aria-expanded={expanded}
-                                    aria-label="show more"
-                                >
-                                    <ExpandMoreIcon />
-                                </IconButton>
-                            </div>
-                            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                                <div className={classes.paddingBottom}>
-                                    This website was made with the intention of inspiring people to attend festivals to their liking.
-                                    It was made by a simple Norwegian guy wanting to do some good in the world.
-                                    This Norwegian guy takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point.
-                                    Special thanks to Spotify and MusicFestivalWizard for their available information about artists and festivals, making this site possible to make.
-    		                    </div>
-                            </Collapse>
-                        </Paper>
-                    </Box>
+                    <div>
+                        Created by <Link color={'primary'}
+                            href={'https://github.com/OskarAsplin'}
+                            target={"_blank"}
+                            rel="noopener noreferrer">
+                            Oskar Asplin
+                            </Link>, code on <Link color={'primary'}
+                            href={'https://github.com/OskarAsplin/spotifest'}
+                            target={"_blank"}
+                            rel="noopener noreferrer">
+                            GitHub
+                            </Link>
+                    </div>
                     <Box className={classes.footerRight}>
                         <div className={classes.attributionShadow}>
                             <Link color={'primary'}

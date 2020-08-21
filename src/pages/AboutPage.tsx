@@ -526,7 +526,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.flexEnd}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                MusicFestivalWizard for lineup and festival information.
+                                                Music Festival Wizard for lineup and festival information.
                                             </Typography>
                                         </div>
                                     </Grid>
@@ -697,7 +697,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         <Collapse in={disclaimerExpanded} timeout="auto" unmountOnExit>
                             <div className={classes.expandedDiv}>
                                 <Typography variant="body1" className={classes.textAlign}>
-                                    The creator of Oskarito SpotiFest takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by using this site. When logging out or going to /login, all browser data linked to the site is deleted.
+                                    The creator of Oskarito SpotiFest takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages collect cookies. When logging out or going to /login, all browser data linked to the site is deleted.
                                 </Typography>
                             </div>
                         </Collapse>
