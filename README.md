@@ -5,7 +5,7 @@ Check it out at [spotifest.app](https://spotifest.app/)
 
 ## Features
 * Festival matching with more than 500 festivals worldwide.
-* A full festival page for each festival with current and prevoius lineups. Also with relevant links and a youtube video.
+* A festival page for each festival with current and prevoius lineups. Also with relevant links and a youtube video.
 * An artist page for each artist to see which festivals an artist is attending and has attended the last few years.
 * Adjustable matching parameters: Playlist selector, area, time frame.
 * Search bar to search up artists and festivals.
