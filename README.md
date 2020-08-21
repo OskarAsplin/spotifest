@@ -1,48 +1,27 @@
-# ontour-frontend
-Frontend of OnTour written in React with Typescript
+# Oskarito SpotiFest
+Find music festivals that match your Spotify profile. Use your most played artists or one of your playlists to see matching festivals.
+Check it out at [spotifest.app](https://spotifest.app/)
 
-## Created using craco
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Features
+* Festival matching with more than 500 festivals worldwide.
+* A full festival page for each festival with current and prevoius lineups. Also with relevant links and a youtube video.
+* An artist page for each artist to see which festivals an artist is attending and has attended the last few years.
+* Adjustable matching parameters: Playlist selector, area, time frame.
+* Search bar to search up artists and festivals.
+* Simple and intuitive UI. Click a festival title or image to see the festival page. Click an artist icon to see the artist page.
 
-## Available Scripts
+## How to use it
+The website is very simple to use. Choose to match with your most played artists or one of your playlists and immediately get a list of the best matching festivals. Each festival match displays which artists in your playlist are in the festival's lineup, as well as showing you a score percentage. The score is a combination of how many matching artists you have with the festival and how well the genres of your playlist fit the genres of the festival. Each festival also have a dropdown menu to see the most popular artists attending the festival to give you a quick overview of the lineup.
 
-In the project directory, you can run:
+By clicking a festival title or festival image you are taken to the corresponding festival page. There you can see current and prevoius lineups, links to official festival website and ticket website (if available), and see a youtube video of the festival (if available).
 
-### `npm start`
+By clicking an artist icon you are taken to the corresponding artist page. There you can see which festivals the artist is attending in the future and which festivals the artist has attended the last few years. The artist page also shows you which genres Spotify has registered for the artist. 
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
 
-### `npm test`
+## Built with
+* [React](https://reactjs.org/) with [Typescript](https://www.typescriptlang.org/) and [Redux store](https://redux.js.org/).
+* [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Lineup and festival information
+* [Music Festival Wizard](https://www.musicfestivalwizard.com/)
