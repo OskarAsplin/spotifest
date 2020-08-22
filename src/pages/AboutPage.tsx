@@ -6,12 +6,13 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
-import { lightBlue, pink, blueGrey } from "@material-ui/core/colors";
+import { lightBlue, pink } from "@material-ui/core/colors";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import MusicNote from '@material-ui/icons/MusicNote';
 import { Redirect } from 'react-router-dom';
+import StarIcon from '@material-ui/icons/Star';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -133,24 +134,6 @@ const useStyles = makeStyles((theme: Theme) =>
             position: 'absolute',
             top: theme.spacing(8),
             left: theme.spacing(2),
-        },
-        circleIconLight: {
-            background: blueGrey[300],
-            borderRadius: '50%',
-            width: 40,
-            height: 40,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        },
-        circleIconDark: {
-            background: blueGrey[700],
-            borderRadius: '50%',
-            width: 40,
-            height: 40,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
         },
         rowFlexCenter: {
             display: 'flex',
@@ -310,8 +293,19 @@ const useStyles = makeStyles((theme: Theme) =>
             margin: theme.spacing(1),
         },
         noPadding: {
-            padding: 0
-        }
+            padding: 0,
+        },
+        starIcon: {
+            marginLeft: '4px',
+            marginRight: '4px'
+        },
+        listIconSmallWidth: {
+            minWidth: '40px'
+        },
+        adjustTextForStar: {
+            display: 'flex',
+            alignItems: 'center'
+        },
     }),
 );
 
@@ -328,8 +322,10 @@ const AboutPage: React.FC<Props> = (props: Props) => {
     const bigPcScreen = useMediaQuery('(min-width:1300px)');
 
     const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
-    const [algorithmExpanded, setAlgorithmExpanded] = React.useState(false);
+    const [usageExpanded, setUsageExpanded] = React.useState(false);
     const [techExpanded, setTechExpanded] = React.useState(false);
+    const [supportExpanded, setSupportExpanded] = React.useState(false);
+    const [algorithmExpanded, setAlgorithmExpanded] = React.useState(false);
     const [disclaimerExpanded, setDisclaimerExpanded] = React.useState(false);
 
     const { thememode } = props;
@@ -390,35 +386,61 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         <List className={classes.noPadding}>
                             <ListItem>
                                 <ListItemIcon>
-                                    <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
-                                        <MusicNote fontSize={'large'} />
-                                    </div>
+                                    <MusicNote fontSize={'large'} />
                                 </ListItemIcon>
                                 <ListItemText
-                                    primary="Discover new festivals suited specifically to your listening habits"
+                                    primary="Festival matching with more than 500 festivals worldwide"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemIcon>
-                                    <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
-                                        <MusicNote fontSize={'large'} />
-                                    </div>
+                                    <MusicNote fontSize={'large'} />
                                 </ListItemIcon>
                                 <ListItemText
-                                    primary="See where your favorite artists are headed"
+                                    primary="Festival pages with current and previous lineups"
                                 />
                             </ListItem>
                             <ListItem>
                                 <ListItemIcon>
-                                    <div className={thememode === 'light' ? classes.circleIconLight : classes.circleIconDark}>
-                                        <MusicNote fontSize={'large'} />
-                                    </div>
+                                    <MusicNote fontSize={'large'} />
                                 </ListItemIcon>
                                 <ListItemText
-                                    primary="View entire lineups for future and past festivals"
+                                    primary="Artist pages to see which festivals each artist is attending"
                                 />
                             </ListItem>
                         </List>
+                    </Paper>
+                </Box>
+                <Box className={classes.box}>
+                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
+                        <div className={classes.rowFlexCenter}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setUsageExpanded(!usageExpanded)}>
+                                How to use
+                            </Typography>
+                            <IconButton
+                                className={clsx(classes.expand, {
+                                    [classes.expandOpen]: usageExpanded,
+                                })}
+                                onClick={() => setUsageExpanded(!usageExpanded)}
+                                aria-expanded={usageExpanded}
+                                aria-label="show more"
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
+                        </div>
+                        <Collapse in={usageExpanded} timeout="auto" unmountOnExit>
+                            <div className={classes.expandedDiv}>
+                                <Typography variant="body1" className={classes.textAlign}>
+                                    Select your match settings on the top of the main page. Choose to match with your most played artists or one of your playlists and immediately get a list of the best matching festivals. You can also change area and time frame. Each festival match displays which artists in your playlist are in the festival's lineup, as well as showing you a score percentage. The score is a combination of how many matching artists you have with the festival and how well the genres of your playlist fit the genres of the festival. Each festival also have a dropdown menu to see the most popular artists attending the festival to give you a quick overview of the lineup.
+                                    <br/>
+                                    <br/>
+                                    By clicking a festival title or festival image you are taken to the corresponding festival page. There you can see current and prevoius lineups, links to official festival website and ticket website (if available), and see a youtube video of the festival (if available).
+                                    <br/>
+                                    <br/>
+                                    By clicking an artist icon you are taken to the corresponding artist page. There you can see which festivals the artist is attending in the future and which festivals the artist has attended the last few years. The artist page also shows you which genres Spotify has registered for the artist.
+                                </Typography>
+                            </div>
+                        </Collapse>
                     </Paper>
                 </Box>
                 <Box className={classes.box}>
@@ -648,6 +670,61 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </Link>
                                 </div>
                             </Box>
+                        </Collapse>
+                    </Paper>
+                </Box>
+                <Box className={classes.box}>
+                    <Paper elevation={3} className={clsx(classes.paperTop, classes.minWidth650)}>
+                        <div className={classes.rowFlexCenter}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setSupportExpanded(!supportExpanded)}>
+                                Ways to support
+                            </Typography>
+                            <IconButton
+                                className={clsx(classes.expand, {
+                                    [classes.expandOpen]: supportExpanded,
+                                })}
+                                onClick={() => setSupportExpanded(!supportExpanded)}
+                                aria-expanded={supportExpanded}
+                                aria-label="show more"
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
+                        </div>
+                        <Collapse in={supportExpanded} timeout="auto" unmountOnExit>
+                            <div className={classes.expandedDiv}>
+                                <List className={classes.noPadding}>
+                                    <ListItem>
+                                        <ListItemIcon>
+                                            <MusicNote fontSize={'large'} />
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary="Spread the word! Tell everyone about Oskarito SpotiFest"
+                                        />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemIcon>
+                                            <MusicNote fontSize={'large'} />
+                                        </ListItemIcon>
+                                        <ListItemText
+                                            primary="Buy your festival tickets through the ticket links on the site"
+                                        />
+                                    </ListItem>
+                                    <ListItem>
+                                        <ListItemIcon>
+                                            <MusicNote fontSize={'large'} />
+                                        </ListItemIcon>
+                                        <ListItemText disableTypography className={classes.adjustTextForStar}>
+                                            <Typography variant="body1">Give the code a </Typography><StarIcon className={classes.starIcon} />
+                                            <Typography variant="body1"> on <Link color={'primary'}
+                                                href="https://github.com/OskarAsplin/spotifest"
+                                                target={"_blank"}
+                                                rel="noopener noreferrer">
+                                                GitHub
+                                                </Link></Typography>
+                                        </ListItemText>
+                                    </ListItem>
+                                </List>
+                            </div>
                         </Collapse>
                     </Paper>
                 </Box>
