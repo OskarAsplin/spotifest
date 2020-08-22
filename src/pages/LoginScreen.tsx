@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { AppState, DispatchProps } from "../redux/types";
+import { DispatchProps } from "../redux/types";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Typography, Button, Link, PaletteType } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Typography, Button, Link } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { setLoggedIn, setLoggedOff } from "../redux/actions";
@@ -124,11 +124,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface StoreProps {
-    thememode: PaletteType
-}
-
-type Props = DispatchProps & StoreProps;
+type Props = DispatchProps;
 
 const authEndpoint = 'https://accounts.spotify.com/authorize';
 
@@ -152,7 +148,6 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
     const bigHeight = useMediaQuery('(min-height:610px)');
     const bigScreen = bigWidth && bigHeight;
     const verySmallScreen = useMediaQuery('(max-width:330px)');
-    const { thememode } = props;
 
     useEffect(() => {
         props.dispatch(setLoggedOff());
@@ -174,14 +169,13 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                 main: '#fefefe',
                 dark: '#fefefe',
             },
-            type: thememode
+            type: 'dark'
         }
     });
 
     const classes = useStyles();
 
     return (
-        //<SplashScreen>
         <div className={classes.background}>
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
@@ -247,13 +241,8 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                 </Box>
             </MuiThemeProvider>
         </div>
-        //</SplashScreen>
     );
 };
-
-const mapStateToProps = (state: AppState) => ({
-    thememode: state.model.thememode
-});
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
@@ -262,6 +251,5 @@ const mapDispatchToProps = (dispatch: any) => {
 };
 
 export default connect(
-    mapStateToProps,
     mapDispatchToProps
 )(LoginScreen);
