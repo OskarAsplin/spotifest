@@ -7,7 +7,7 @@ Check it out at [spotifest.app](https://spotifest.app/)
 * Festival matching with more than 500 festivals worldwide
 * Festival pages with current and previous lineups
 * Artist pages to see which festivals each artist is attending
-* Adjustable matching parameters: Playlist selector, area, time frame
+* Adjustable matching parameters: playlist selector, area, time frame
 * Search bar to search up artists and festivals
 * Simple and intuitive UI
 
