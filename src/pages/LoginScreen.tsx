@@ -5,7 +5,6 @@ import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Typography, Bu
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import { setLoggedIn, setLoggedOff } from "../redux/actions";
-import 'react-circular-progressbar/dist/styles.css';
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import clsx from 'clsx';
 import { isDev } from "../utils/restUtils";
@@ -50,35 +49,6 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundSize: 'cover',
             backgroundPosition: 'center center'
         },
-        progressBar: {
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            marginTop: '-50px',
-            marginLeft: '-50px'
-        },
-        verticalSpace: {
-            display: 'flex',
-            padding: theme.spacing(2, 0, 2, 0),
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%'
-        },
-        paper: {
-            display: 'flex',
-            flexDirection: 'column',
-            paddingLeft: theme.spacing(1),
-            justifyContent: 'space-between',
-        },
-        paddingBottom: {
-            '@media (min-width: 610px)': {
-                padding: theme.spacing(0, 2, 1, 1),
-            },
-            '@media (max-width: 609px)': {
-                padding: theme.spacing(0, 1, 1, 0),
-            },
-            width: '100%'
-        },
         spotifyIconBig: {
             height: '50px',
             marginRight: theme.spacing(2)
@@ -106,12 +76,6 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(1, 2.5, 1, 1.5),
             borderRadius: 25,
         },
-        rowFlex: {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
         box: {
             maxWidth: '1112px',
             margin: theme.spacing(0, 2, 2, 2),
@@ -132,8 +96,14 @@ const useStyles = makeStyles((theme: Theme) =>
         title: {
             textAlign: 'center',
             borderRadius: '15%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            boxShadow: '0 0 2rem rgba(0, 0, 0, 1)',
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            '@media (min-width: 610px)': {
+                '@media (min-height: 610px)': {
+                    boxShadow: '0 -2px 20px 20px rgba(0, 0, 0, 0.4)',
+                }
+            },
+            boxShadow: '0 -1px 10px 10px rgba(0, 0, 0, 0.4)',
+            textShadow: '1px 1px 2px black'
         },
         footerBox: {
             position: 'absolute',
@@ -144,45 +114,12 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
             justifyContent: 'center'
         },
-        footer: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            maxWidth: '900px',
-            '@media (min-width: 610px)': {
-                margin: theme.spacing(0, 2, 0, 2),
-            },
-            '@media (max-width: 609px)': {
-                margin: theme.spacing(0, 1, 0, 1),
-            },
-        },
-        footerRight: {
-            display: 'flex',
-            width: '100%',
-            '@media (min-width: 860px)': {
-                flexDirection: 'row-reverse',
-                paddingRight: theme.spacing(1)
-            },
-            '@media (max-width: 859px)': {
-                justifyContent: 'center'
-            },
-            margin: theme.spacing(1),
-        },
-        expand: {
-            padding: theme.spacing(0.5),
-            transform: 'rotate(180deg)',
-            transition: theme.transitions.create('transform', {
-                duration: theme.transitions.duration.shortest,
-            }),
-        },
-        expandOpen: {
-            transform: 'rotate(0deg)',
-        },
         attributionShadow: {
             textAlign: 'center',
-            //backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            //boxShadow: '0 0 5rem rgba(0, 0, 0, 1)',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            marginBottom: theme.spacing(1),
+            padding: theme.spacing(1, 2, 1, 2),
+            boxShadow: '0 -1px 50px 50px rgba(0, 0, 0, 0.6)'
         },
     }),
 );
@@ -251,7 +188,7 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
 
                 <div className={classes.root}>
                     <Box className={classes.box}>
-                        <Typography variant={bigScreen ? "h2" : verySmallScreen ? "h5" : "h4"} className={classes.title}>
+                        <Typography variant={bigScreen ? "h2" : verySmallScreen ? "h5" : "h4"} color={'secondary'} className={classes.title}>
                             Oskarito SpotiFest
                         </Typography>
                     </Box>
@@ -272,40 +209,41 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                         </Button>
                     </Box>
                 </div>
-                <Box className={classes.footerBox}>
+                <Box className={clsx(classes.footerBox, classes.attributionShadow)}>
                     <div>
-                        Created by <Link color={'primary'}
+                        A festival finder created by <Link color={'primary'}
                             href={'https://github.com/OskarAsplin'}
                             target={"_blank"}
                             rel="noopener noreferrer">
                             Oskar Asplin
-                            </Link>, code on <Link color={'primary'}
+                            </Link>
+                    </div>
+                    <div>
+                        Code on <Link color={'primary'}
                             href={'https://github.com/OskarAsplin/spotifest'}
                             target={"_blank"}
                             rel="noopener noreferrer">
                             GitHub
                             </Link>
                     </div>
-                    <Box className={classes.footerRight}>
-                        <div className={classes.attributionShadow}>
-                            <Link color={'primary'}
-                                href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/"
-                                target={"_blank"}
-                                rel="noopener noreferrer">
-                                Photo
+                    <div>
+                        <Link color={'primary'}
+                            href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/"
+                            target={"_blank"}
+                            rel="noopener noreferrer">
+                            Photo
                             </Link> by <Link color={'primary'}
-                                href="https://www.flickr.com/photos/149801000@N05/"
-                                target={"_blank"}
-                                rel="noopener noreferrer">
-                                veldmusicfestival
+                            href="https://www.flickr.com/photos/149801000@N05/"
+                            target={"_blank"}
+                            rel="noopener noreferrer">
+                            veldmusicfestival
                             </Link> / <Link color={'primary'}
-                                href="https://creativecommons.org/licenses/by-sa/2.0/"
-                                target={"_blank"}
-                                rel="noopener noreferrer">
-                                CC BY-SA 2.0
+                            href="https://creativecommons.org/licenses/by-sa/2.0/"
+                            target={"_blank"}
+                            rel="noopener noreferrer">
+                            CC BY-SA 2.0
                             </Link>
-                        </div>
-                    </Box>
+                    </div>
                 </Box>
             </MuiThemeProvider>
         </div>
