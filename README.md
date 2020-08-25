@@ -7,7 +7,7 @@ Check it out at [spotifest.app](https://spotifest.app)
 
 Login screen                                       |  Match with selector                          |  Festival matches
 :-------------------------------------------------:|:---------------------------------------------:|:----------------------------------------:
-![login-screen.png](screenshots/login-screen.png)  | ![match-with.png](screenshots/match-with.png) | ![matches.png](screenshots/matches.png)
+![login-screen.png](https://github.com/OskarAsplin/spotifest/raw/master/screenshots/login-screen.png)  | ![match-with.png](https://github.com/OskarAsplin/spotifest/raw/master/screenshots/match-with.png) | ![matches.png](https://github.com/OskarAsplin/spotifest/raw/master/screenshots/matches.png)
 
 ## Features
 * Festival matching with more than 500 festivals worldwide
