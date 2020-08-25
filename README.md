@@ -1,7 +1,7 @@
 # Oskarito SpotiFest
 Find music festivals that match your Spotify profile. Use your most played artists or one of your playlists to see matching festivals.
 
-Check it out at [spotifest.app](https://spotifest.app/)
+Check it out at [spotifest.app](https://spotifest.app)
 
 ## Features
 * Festival matching with more than 500 festivals worldwide
@@ -21,8 +21,10 @@ By clicking an artist icon you are taken to the corresponding artist page. There
 
 
 ## Built with
-* [React](https://reactjs.org/) with [Typescript](https://www.typescriptlang.org/) and [Redux store](https://redux.js.org/).
-* [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
+* [React](https://reactjs.org/) with [Typescript](https://www.typescriptlang.org/) and [Redux store](https://redux.js.org).
+* [Spotify Web API](https://developer.spotify.com/documentation/web-api)
+
+Everything used to build, run and host Oskarito SpotiFest is listed on [spotifest.app/about](https://spotifest.app/about)
 
 ## Lineup and festival information
-* [Music Festival Wizard](https://www.musicfestivalwizard.com/)
+* [Music Festival Wizard](https://www.musicfestivalwizard.com)
