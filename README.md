@@ -3,6 +3,12 @@ Find music festivals that match your Spotify profile. Use your most played artis
 
 Check it out at [spotifest.app](https://spotifest.app)
 
+## Screenshots
+
+Login screen                                       |  Match with selector                          |  Festival matches
+:-------------------------------------------------:|:---------------------------------------------:|:----------------------------------------:
+![login-screen.png](screenshots/login-screen.png)  | ![match-with.png](screenshots/match-with.png) | ![matches.png](screenshots/matches.png)
+
 ## Features
 * Festival matching with more than 500 festivals worldwide
 * Festival pages with current and previous lineups
