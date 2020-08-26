@@ -30,7 +30,7 @@ By clicking an artist icon you are taken to the corresponding artist page. There
 * [React](https://reactjs.org/) with [Typescript](https://www.typescriptlang.org/) and [Redux store](https://redux.js.org).
 * [Spotify Web API](https://developer.spotify.com/documentation/web-api)
 
-Everything used to build, run and host Oskarito SpotiFest is listed on [spotifest.app/about](https://spotifest.app/about)
+Full technology stack on [spotifest.app/about](https://spotifest.app/about)
 
 ## Lineup and festival information
 * [Music Festival Wizard](https://www.musicfestivalwizard.com)
