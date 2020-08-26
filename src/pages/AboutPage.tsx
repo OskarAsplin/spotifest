@@ -371,40 +371,8 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <Box className={classes.box}>
                     <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
                         <div className={classes.rowFlexCenter}>
-                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setUsageExpanded(!usageExpanded)}>
-                                How to use
-                            </Typography>
-                            <IconButton
-                                className={clsx(classes.expand, {
-                                    [classes.expandOpen]: usageExpanded,
-                                })}
-                                onClick={() => setUsageExpanded(!usageExpanded)}
-                                aria-expanded={usageExpanded}
-                                aria-label="show more"
-                            >
-                                <ExpandMoreIcon />
-                            </IconButton>
-                        </div>
-                        <Collapse in={usageExpanded} timeout="auto" unmountOnExit>
-                            <div className={classes.expandedDiv}>
-                                <Typography variant="body1" className={classes.textAlign}>
-                                    Select your match settings on the top of the main page. Choose to match with your most played artists or one of your playlists and immediately get a list of the best matching festivals. You can also change area and time frame. Each festival match displays which artists in your playlist are in the festival's lineup, as well as showing you a score percentage. The score is a combination of how many matching artists you have with the festival and how well the genres of your playlist fit the genres of the festival. Each festival also have a dropdown menu to see the most popular artists attending the festival to give you a quick overview of the lineup.
-                                    <br/>
-                                    <br/>
-                                    By clicking a festival title or festival image you are taken to the corresponding festival page. There you can see current and prevoius lineups, links to official festival website and ticket website (if available), and see a youtube video of the festival (if available).
-                                    <br/>
-                                    <br/>
-                                    By clicking an artist icon you are taken to the corresponding artist page. There you can see which festivals the artist is attending in the future and which festivals the artist has attended the last few years. The artist page also shows you which genres Spotify has registered for the artist.
-                                </Typography>
-                            </div>
-                        </Collapse>
-                    </Paper>
-                </Box>
-                <Box className={classes.box}>
-                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
-                        <div className={classes.rowFlexCenter}>
                             <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setTechExpanded(!techExpanded)}>
-                                Technical info
+                                Technology stack
                             </Typography>
                             <IconButton
                                 className={clsx(classes.expand, {
@@ -687,6 +655,38 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                         </ListItemText>
                                     </ListItem>
                                 </List>
+                            </div>
+                        </Collapse>
+                    </Paper>
+                </Box>
+                <Box className={classes.box}>
+                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
+                        <div className={classes.rowFlexCenter}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setUsageExpanded(!usageExpanded)}>
+                                How to use
+                            </Typography>
+                            <IconButton
+                                className={clsx(classes.expand, {
+                                    [classes.expandOpen]: usageExpanded,
+                                })}
+                                onClick={() => setUsageExpanded(!usageExpanded)}
+                                aria-expanded={usageExpanded}
+                                aria-label="show more"
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
+                        </div>
+                        <Collapse in={usageExpanded} timeout="auto" unmountOnExit>
+                            <div className={classes.expandedDiv}>
+                                <Typography variant="body1" className={classes.textAlign}>
+                                    Select your match settings on the top of the main page. Choose to match with your most played artists or one of your playlists and immediately get a list of the best matching festivals. You can also change area and time frame. Each festival match displays which artists in your playlist are in the festival's lineup, as well as showing you a score percentage. The score is a combination of how many matching artists you have with the festival and how well the genres of your playlist fit the genres of the festival. Each festival also have a dropdown menu to see the most popular artists attending the festival to give you a quick overview of the lineup.
+                                    <br />
+                                    <br />
+                                    By clicking a festival title or festival image you are taken to the corresponding festival page. There you can see current and prevoius lineups, links to official festival website and ticket website (if available), and see a youtube video of the festival (if available).
+                                    <br />
+                                    <br />
+                                    By clicking an artist icon you are taken to the corresponding artist page. There you can see which festivals the artist is attending in the future and which festivals the artist has attended the last few years. The artist page also shows you which genres Spotify has registered for the artist.
+                                </Typography>
                             </div>
                         </Collapse>
                     </Paper>
