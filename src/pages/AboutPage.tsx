@@ -263,6 +263,33 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '26px',
             height: '26px'
         },
+        usageImg: {
+            width: '100%',
+            maxWidth: '288px',
+            marginBottom: theme.spacing(1),
+            '@media (min-width: 1040px)': {
+                marginLeft: theme.spacing(4)
+            },
+        },
+        topBarImg: {
+            maxHeight: '44px'
+        },
+        usagePart: {
+            display: 'flex',
+            '@media (min-width: 1040px)': {
+                flexDirection: 'row-reverse',
+                justifyContent: 'space-between',
+            },
+            '@media (max-width: 1039px)': {
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+            },
+        },
+        usageBox: {
+            display: 'flex',
+            flexDirection: 'column'
+        }
     }),
 );
 
@@ -678,15 +705,34 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </div>
                         <Collapse in={usageExpanded} timeout="auto" unmountOnExit>
                             <div className={classes.expandedDiv}>
-                                <Typography variant="body1" className={classes.textAlign}>
-                                    Select your match settings on the top of the main page. Choose to match with your most played artists or one of your playlists and immediately get a list of the best matching festivals. You can also change area and time frame. Each festival match displays which artists in your playlist are in the festival's lineup, as well as showing you a score percentage. The score is a combination of how many matching artists you have with the festival and how well the genres of your playlist fit the genres of the festival. Each festival also have a dropdown menu to see the most popular artists attending the festival to give you a quick overview of the lineup.
-                                    <br />
-                                    <br />
-                                    By clicking a festival title or festival image you are taken to the corresponding festival page. There you can see current and prevoius lineups, links to official festival website and ticket website (if available), and see a youtube video of the festival (if available).
-                                    <br />
-                                    <br />
-                                    By clicking an artist icon you are taken to the corresponding artist page. There you can see which festivals the artist is attending in the future and which festivals the artist has attended the last few years. The artist page also shows you which genres Spotify has registered for the artist.
-                                </Typography>
+                                <div className={classes.usageBox}>
+                                    <div className={classes.usagePart}>
+                                        <img src={process.env.PUBLIC_URL + '/usageImages/matches-settings.png'} className={classes.usageImg} alt="match-settings-box" />
+                                        <Typography variant="body1" className={classes.textAlign}>
+                                            Adjust the match settings on the main page to get your festival matches.
+                                        </Typography>
+                                    </div>
+                                    <div className={classes.verticalSpace} />
+                                    <div className={classes.verticalSpace} />
+                                    <div className={classes.verticalSpace} />
+                                    <div className={classes.verticalSpace} />
+                                    <div className={classes.usagePart}>
+                                        <img src={process.env.PUBLIC_URL + '/usageImages/festival-match-marked.png'} className={classes.usageImg} alt="festival-match-marked" />
+                                        <Typography variant="body1" className={classes.textAlign}>
+                                            Click on a festival title or image to see full lineups and more. Click on an artist icon to see the artist's future and past festivals and more. Click on 'popular artists at this festival' to see the most popular artists in the festival lineup.
+                                        </Typography>
+                                    </div>
+                                    <div className={classes.verticalSpace} />
+                                    <div className={classes.verticalSpace} />
+                                    <div className={classes.verticalSpace} />
+                                    <div className={classes.verticalSpace} />
+                                    <div className={classes.usagePart}>
+                                        <img src={process.env.PUBLIC_URL + '/usageImages/top-bar.png'} className={clsx(classes.usageImg, classes.topBarImg)} alt="top-bar" />
+                                        <Typography variant="body1" className={classes.textAlign}>
+                                            Clicking 'Oskarito SpotiFest' takes you back to the festival matching. Click the search icon to search for festivals and artists. Click the account avatar to log out. Click the hamburger menu to get to the about page or to switch between dark/light mode.
+                                        </Typography>
+                                    </div>
+                                </div>
                             </div>
                         </Collapse>
                     </Paper>
