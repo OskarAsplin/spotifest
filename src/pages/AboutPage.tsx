@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppState, DispatchProps } from "../redux/types";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, IconButton, Collapse, List, ListItem, ListItemIcon, ListItemText, Grid, PaletteType, Button } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, IconButton, Collapse, List, ListItem, ListItemIcon, ListItemText, Grid, PaletteType } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
 import makeStyles from "@material-ui/core/styles/makeStyles";
@@ -32,13 +32,6 @@ const useStyles = makeStyles((theme: Theme) =>
         verticalSpace: {
             display: 'flex',
             padding: theme.spacing(1, 0, 0, 0),
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: '100%'
-        },
-        verticalSpace2: {
-            display: 'flex',
-            padding: theme.spacing(4, 0, 0, 0),
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'
@@ -116,15 +109,17 @@ const useStyles = makeStyles((theme: Theme) =>
         expandOpen: {
             transform: 'rotate(180deg)',
         },
+        expandedDiv: {
+            paddingBottom: theme.spacing(2),
+            paddingTop: theme.spacing(2),
+            width: '100%'
+        },
         textAlign: {
             '@media (max-width: 609px)': {
                 textAlign: 'center'
             },
         },
         title: {
-            '@media (max-width: 609px)': {
-                textAlign: 'center'
-            },
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -141,43 +136,25 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             alignItems: 'center',
         },
-        rowFlex: {
+        iconsContainer: {
             display: 'flex',
-            '@media (min-width: 1040px)': {
-                flexDirection: 'row',
-            },
+            flexDirection: 'row',
+            alignItems: 'center',
             '@media (max-width: 1039px)': {
                 justifyContent: 'center',
-                alignItems: 'center',
-            },
-        },
-        expandedDiv: {
-            paddingBottom: theme.spacing(2),
-            paddingTop: theme.spacing(2),
-            width: '100%'
-        },
-        full: {
-            height: '40px',
-            '@media (min-width: 500px)': {
-                marginLeft: theme.spacing(5),
-            },
-            '@media (max-width: 499px)': {
-                marginLeft: theme.spacing(3),
-            },
-            '@media (max-width: 1039px)': {
                 marginBottom: theme.spacing(5),
             },
-        },
-        fullFirst: {
-            height: '40px',
             '@media (min-width: 1040px)': {
                 marginLeft: theme.spacing(5),
             },
-            '@media (max-width: 1039px)': {
-                marginBottom: theme.spacing(5),
-            },
         },
-        leftMargin: {
+        noMarginBottom: {
+            marginBottom: theme.spacing(0) + '!important',
+        },
+        iconDefaultHeight: {
+            height: '40px',
+        },
+        iconMarginLeft: {
             '@media (min-width: 500px)': {
                 marginLeft: theme.spacing(5),
             },
@@ -185,78 +162,45 @@ const useStyles = makeStyles((theme: Theme) =>
                 marginLeft: theme.spacing(3),
             },
         },
-        fullNginx: {
+        mediumSize: {
             '@media (min-width: 500px)': {
-                marginLeft: theme.spacing(5),
+                height: '40px',
+            },
+            '@media (max-width: 499px)': {
+                height: '35px',
+            },
+        },
+        smallSize: {
+            '@media (min-width: 500px)': {
                 height: '32px',
-                marginTop: theme.spacing(1),
-                marginBottom: theme.spacing(1),
+                marginTop: '4px',
+                marginBottom: '4px'
             },
             '@media (max-width: 499px)': {
-                marginLeft: theme.spacing(3),
-                height: '23px',
-            },
-            '@media (max-width: 1039px)': {
-                marginBottom: theme.spacing(5),
+                height: '24px',
             },
         },
-        fullDjango: {
-            height: '40px',
-            '@media (min-width: 500px)': {
-                marginLeft: theme.spacing(3),
-            },
-            '@media (max-width: 499px)': {
-                marginLeft: theme.spacing(1),
-            },
-            '@media (max-width: 1039px)': {
-                marginBottom: theme.spacing(5),
-            },
+        reactIconSize: {
+            height: '54px',
+            marginTop: '-7px',
+            marginBottom: '-7px',
         },
-        fullFirstMedium: {
-            '@media (min-width: 500px)': {
-                height: '40px',
-            },
-            '@media (max-width: 499px)': {
-                height: '35px',
-            },
-            '@media (min-width: 1040px)': {
-                marginLeft: theme.spacing(5),
-            },
-            '@media (max-width: 1039px)': {
-                marginBottom: theme.spacing(5),
-            },
+        djangoIconSize: {
+            height: '50px',
+            marginTop: '-5px',
+            marginBottom: '-5px',
         },
-        fullLastRow: {
-            '@media (min-width: 500px)': {
-                height: '40px',
-            },
-            '@media (max-width: 499px)': {
-                height: '35px',
-            },
-            '@media (min-width: 1040px)': {
-                marginLeft: theme.spacing(5),
-            },
+        pythonRemoveRightSpace: {
+            marginRight: '-10px',
         },
-        fullNoMargin: {
-            height: '40px',
-        },
-        lightBackground: {
-            background: '#e0e0e0',
-        },
-        width40marginLeft: {
+        restrainIconDimensions: {
             width: '40px',
             height: '100%',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            '@media (min-width: 1040px)': {
-                marginLeft: theme.spacing(5),
-            },
-            '@media (max-width: 1039px)': {
-                marginBottom: theme.spacing(5),
-            },
         },
-        flexEnd: {
+        techInfoText: {
             display: 'flex',
             '@media (min-width: 1040px)': {
                 flexDirection: 'row-reverse',
@@ -277,17 +221,6 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '90%',
             borderRadius: '5%',
         },
-        fullCreatorButton: {
-            height: '40px',
-        },
-        fullCreatorButtonLeftMargin: {
-            height: '40px',
-            marginLeft: theme.spacing(1)
-        },
-        fullCreatorButtonRightMargin: {
-            height: '40px',
-            marginRight: theme.spacing(1)
-        },
         licenses: {
             width: '100%',
             margin: theme.spacing(1),
@@ -299,12 +232,36 @@ const useStyles = makeStyles((theme: Theme) =>
             marginLeft: '4px',
             marginRight: '4px'
         },
-        listIconSmallWidth: {
-            minWidth: '40px'
-        },
         adjustTextForStar: {
             display: 'flex',
             alignItems: 'center'
+        },
+        socialButtonBackground: {
+            height: '54px',
+            width: '54px',
+            borderRadius: '50%',
+            padding: theme.spacing(1),
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxShadow: theme.shadows[3],
+        },
+        linkedInSocialButton: {
+            backgroundColor: '#2867b2',  //'#0069bb'
+        },
+        githubSocialButtonDark: {
+            backgroundColor: '#ffffff'
+        },
+        githubSocialButtonLight: {
+            backgroundColor: '#000000'
+        },
+        githubSocialBug: {
+            width: '34px',
+            height: '34px'
+        },
+        linkeidInSocialBug: {
+            width: '26px',
+            height: '26px'
         },
     }),
 );
@@ -374,13 +331,13 @@ const AboutPage: React.FC<Props> = (props: Props) => {
             <div className={classes.root}>
                 <Box className={classes.box}>
                     <div className={classes.root}>
-                        <Typography variant={bigScreen ? "h2" : "h4"} className={classes.title}>
+                        <Typography variant={bigScreen ? "h2" : "h4"} className={clsx(classes.title, classes.textAlign)}>
                             About
                         </Typography>
                     </div>
                     <div className={classes.verticalSpace} />
                     <Paper elevation={3} className={clsx(classes.paperTop, classes.minWidth650)}>
-                        <Typography variant={bigScreen ? "h4" : "h5"} className={classes.title}>
+                        <Typography variant={bigScreen ? "h4" : "h5"} className={clsx(classes.title, classes.textAlign)}>
                             Oskarito SpotiFest
                         </Typography>
                         <List className={classes.noPadding}>
@@ -464,136 +421,142 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                             <div className={classes.expandedDiv}>
                                 <Grid container spacing={pcScreen ? 3 : 1} justify="center" alignItems="center">
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.flexEnd}>
+                                        <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Frontend written in React with Typescript and Redux store.
+                                                Frontend written in React with Typescript and Redux store
                                             </Typography>
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.rowFlex}>
-                                            <div className={classes.width40marginLeft}>
-                                                <img src={process.env.PUBLIC_URL + '/techIcons/React-icon.svg'} className={classes.fullNoMargin} alt="React-icon" />
+                                        <div className={classes.iconsContainer}>
+                                            <div className={classes.restrainIconDimensions}>
+                                                <img src={process.env.PUBLIC_URL + '/techIcons/React-icon.svg'} className={classes.reactIconSize} alt="React-icon" />
                                             </div>
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/typescript.svg'} className={classes.full} alt="Typescript-icon" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/redux.svg'} className={classes.full} alt="Redux-icon" />
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/typescript.svg'} className={clsx(classes.iconDefaultHeight, classes.iconMarginLeft)} alt="Typescript-icon" />
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/redux.svg'} className={clsx(classes.iconDefaultHeight, classes.iconMarginLeft)} alt="Redux-icon" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.flexEnd}>
+                                        <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Frontend hosted on Netlify.
+                                                Frontend hosted on Netlify
                                             </Typography>
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.rowFlex}>
+                                        <div className={classes.iconsContainer}>
                                             <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/full-netlify-logo-light.svg' : process.env.PUBLIC_URL + '/techIcons/full-netlify-logo-dark.svg'}
-                                                className={classes.fullFirst} alt="Netlify-icon" />
+                                                className={classes.iconDefaultHeight} alt="Netlify-icon" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.flexEnd}>
+                                        <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Backend written in Python with Django and SqlLite as database.
+                                                Backend written in Python with Django and SqlLite as database
                                             </Typography>
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.rowFlex}>
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/python-logo-generic.svg'} className={classes.fullFirst} alt="Python-logo" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/django-icon.svg'} className={classes.fullDjango} alt="Django-icon" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/SQLite.svg'} className={thememode === 'light' ? classes.full : clsx(classes.full, classes.lightBackground)} alt="Sqlite-icon" />
+                                        <div className={classes.iconsContainer}>
+                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/python-logo-generic.svg' : process.env.PUBLIC_URL + '/techIcons/python-logo-generic-white.svg'}
+                                                className={clsx(classes.iconDefaultHeight, classes.pythonRemoveRightSpace)} alt="Python-logo" />
+                                            <div className={clsx(classes.restrainIconDimensions, classes.iconMarginLeft)}>
+                                                <img src={process.env.PUBLIC_URL + '/techIcons/django-icon.svg'} className={classes.djangoIconSize} alt="Django-icon" />
+                                            </div>
+                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/SQLite.svg' : process.env.PUBLIC_URL + '/techIcons/SQLite-white.png'}
+                                                className={thememode === 'light' ? clsx(classes.iconDefaultHeight, classes.iconMarginLeft) : clsx(classes.iconDefaultHeight, classes.iconMarginLeft)} alt="Sqlite-icon" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.flexEnd}>
+                                        <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Django server set up with Gunicorn and Nginx.
+                                                Django server set up with Gunicorn and Nginx
                                             </Typography>
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.rowFlex}>
+                                        <div className={classes.iconsContainer}>
                                             <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/large_gunicorn.png' : process.env.PUBLIC_URL + '/techIcons/large_gunicorn_white.png'}
-                                                className={classes.fullFirstMedium} alt="Gunicorn-logo" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/Nginx_logo.svg'} className={classes.fullNginx} alt="Nginx-logo" />
+                                                className={classes.mediumSize} alt="Gunicorn-logo" />
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/Nginx_logo.svg'} className={clsx(classes.smallSize, classes.iconMarginLeft)} alt="Nginx-logo" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.flexEnd}>
+                                        <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Backend hosted on a DigitalOcean Droplet running Ubuntu 20.04
+                                                Backend hosted on DigitalOcean running Ubuntu 20.04
                                             </Typography>
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.rowFlex}>
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/digitalocean.svg'} className={classes.fullFirstMedium} alt="Digitalocean-icon" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/ubuntu-icon.svg'} className={classes.full} alt="Ubuntu-icon" />
+                                        <div className={classes.iconsContainer}>
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/digitalocean.svg'} className={classes.mediumSize} alt="Digitalocean-icon" />
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/ubuntu-icon.svg'} className={clsx(classes.iconDefaultHeight, classes.iconMarginLeft)} alt="Ubuntu-icon" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.flexEnd}>
+                                        <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Spotify for artist and playlist information.
+                                                Playlists and artists from Spotify using OAuth 2.0 authorization
                                             </Typography>
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.rowFlex}>
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/Spotify-Logo-Green.png'} className={classes.fullFirst} alt="Spotify-logo" />
+                                        <div className={classes.iconsContainer}>
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/Spotify-Logo-Green.png'} className={classes.iconDefaultHeight} alt="Spotify-logo" />
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/oauth-2.png'} className={clsx(classes.iconDefaultHeight, classes.iconMarginLeft)} alt="Oauth-2-icon" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.flexEnd}>
+                                        <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Music Festival Wizard for lineup and festival information.
+                                                Lineup and festival information from Music Festival Wizard
                                             </Typography>
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.rowFlex}>
+                                        <div className={classes.iconsContainer}>
                                             <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/MFW-logo-black.png' : process.env.PUBLIC_URL + '/techIcons/MFW-logo.png'}
-                                                className={classes.fullFirst} alt="MusicFestivalWizard-logo" />
+                                                className={classes.iconDefaultHeight} alt="MusicFestivalWizard-logo" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.flexEnd}>
+                                        <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Code version control on GitHub.
+                                                Code version control on GitHub
                                             </Typography>
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.rowFlex}>
+                                        <div className={classes.iconsContainer}>
                                             <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Logo.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Logo-White.png'}
-                                                className={classes.fullFirst} alt="GitHub-logo" />
+                                                className={classes.smallSize} alt="GitHub-logo" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.flexEnd}>
+                                        <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Atlassian Jira board for task administration.
+                                                Task administration on Atlassian Jira board
                                             </Typography>
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.rowFlex}>
+                                        <div className={classes.iconsContainer}>
                                             <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/jira-logo-blue.svg' : process.env.PUBLIC_URL + '/techIcons/jira-logo-white.svg'}
-                                                className={classes.fullFirst} alt="Jira-logo" />
+                                                className={classes.iconDefaultHeight} alt="Jira-logo" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.flexEnd}>
+                                        <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
                                                 Domain bought on NameCheap.
                                             </Typography>
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.rowFlex}>
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/Namecheap-Logo.svg'} className={classes.fullLastRow} alt="Namecheap-logo" />
+                                        <div className={clsx(classes.iconsContainer, classes.noMarginBottom)}>
+                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/Namecheap-Logo.svg' : process.env.PUBLIC_URL + '/techIcons/Namecheap-Logo-white.png'}
+                                                className={classes.mediumSize} alt="Namecheap-logo" />
                                         </div>
                                     </Grid>
                                 </Grid>
@@ -786,23 +749,27 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <Box className={classes.box2}>
                     <Paper elevation={3} className={clsx(classes.paper, classes.maxWidth400)}>
                         <div className={classes.flexColumn}>
-                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.title}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} className={clsx(classes.title, classes.textAlign)}>
                                 Created by
                             </Typography>
-                            <img src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'} className={classes.creatorImage} alt="React-icon" />
+                            <img src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'} className={classes.creatorImage} alt="Creator" />
                             <Typography variant="h6" className={classes.textAlign}>
                                 Oskar Asplin
                             </Typography>
                             <div className={classes.verticalSpace} />
-                            <Button onClick={() => window.open("https://www.linkedin.com/in/oskar-buset-asplin-22796314a", '_blank')}>
-                                <img src={process.env.PUBLIC_URL + '/techIcons/LinkedIn-Logo.png'} className={classes.fullCreatorButtonLeftMargin} alt="LinkedIn" />
-                            </Button>
-                            <Button onClick={() => window.open("https://github.com/OskarAsplin", '_blank')}>
-                                <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Logo.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Logo-White.png'}
-                                    className={classes.fullCreatorButton} alt="GitHub-logo" />
-                                <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Mark.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Mark-Light.png'}
-                                    className={classes.fullCreatorButtonRightMargin} alt="" />
-                            </Button>
+                            <div className={classes.rowFlexCenter}>
+                                <IconButton onClick={() => window.open("https://www.linkedin.com/in/oskar-buset-asplin-22796314a", '_blank')}>
+                                    <div className={clsx(classes.socialButtonBackground, classes.linkedInSocialButton)}>
+                                        <img src={process.env.PUBLIC_URL + '/techIcons/LI-In-Bug-white.png'} className={classes.linkeidInSocialBug} alt="LinkedIn" />
+                                    </div>
+                                </IconButton>
+                                <IconButton onClick={() => window.open("https://github.com/OskarAsplin", '_blank')}>
+                                    <div className={clsx(classes.socialButtonBackground, thememode === 'light' ? classes.githubSocialButtonLight : classes.githubSocialButtonDark)}>
+                                        <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Mark-Light.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Mark.png'}
+                                            className={classes.githubSocialBug} alt="GitHub" />
+                                    </div>
+                                </IconButton>
+                            </div>
                             <div className={classes.verticalSpace} />
                         </div>
                     </Paper>
