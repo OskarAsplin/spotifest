@@ -783,7 +783,12 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         <Collapse in={disclaimerExpanded} timeout="auto" unmountOnExit>
                             <div className={classes.expandedDiv}>
                                 <Typography variant="body1" className={classes.textAlign}>
-                                    The creator of Oskarito SpotiFest takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages collect cookies. When logging out or going to /login, all browser data linked to the site is deleted.
+                                    The creator of Oskarito SpotiFest takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages collect cookies. When logging out or going to <Link color={'primary'}
+                                        href="https://www.spotifest.app/login"
+                                        target={"_blank"}
+                                        rel="noopener noreferrer">
+                                        spotifest.app/login
+                                        </Link>, all browser data linked to the site is deleted.
                                 </Typography>
                             </div>
                         </Collapse>
