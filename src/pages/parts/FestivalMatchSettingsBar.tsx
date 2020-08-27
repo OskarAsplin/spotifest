@@ -15,6 +15,7 @@ import {
 } from '@material-ui/pickers';
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import ReactCountryFlag from "react-country-flag";
+import { europeanRegions, usRegions, regionMap } from "../../utils/regionUtils";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -181,25 +182,13 @@ const HtmlTooltip = withStyles((theme) => ({
 	},
 }))(Tooltip);
 
-const europeanRegions = ['Northern Europe', 'Eastern Europe', 'Central Europe', 'Southern Europe', 'British Isles'];
-const usRegions = ['US: West', 'US: Mid-West', 'US: South', 'US: North-East'];
-
-const regionMap: { [key: string]: string[]; } = {
-	'Northern Europe': ['NO', 'SE', 'FI', 'DK', 'IS', 'FO', 'AX'],
-	'Eastern Europe': ['EE', 'LV', 'LT', 'BY', 'RU', 'PL', 'CZ', 'SK', 'HU', 'HR', 'SI', 'BA', 'ME', 'MK', 'AL', 'RS', 'BG', 'RO', 'MD', 'UA'],
-	'Central Europe': ['DE', 'NL', 'BE', 'LU', 'AT', 'LI', 'CH', 'FR', 'MC'],
-	'Southern Europe': ['PT', 'ES', 'GI', 'AD', 'VA', 'SM', 'IT', 'MT', 'GR'],
-	'British Isles': ['GB', 'IM', 'IE', 'GB-ENG', 'GB-NIR', 'GB-SCT', 'GB-WLS'],
-	'US: West': ['WA', 'MT', 'OR', 'ID', 'WY', 'CA', 'NV', 'UT', 'CO', 'AZ', 'NM', 'AK', 'HI'],
-	'US: Mid-West': ['ND', 'SD', 'MN', 'WI', 'MI', 'NE', 'IA', 'IL', 'IN', 'OH', 'KS', 'MO'],
-	'US: South': ['OK', 'AR', 'TX', 'LA', 'MS', 'AL', 'GA', 'FL', 'SC', 'TN', 'NC', 'KY', 'WV', 'VA', 'MD', 'DE', 'DC'],
-	'US: North-East': ['PA', 'NJ', 'NY', 'CT', 'RI', 'MA', 'VT', 'NH', 'ME']
-}
+const topArtistsChoice = '__your__top__artists__';
 
 const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	useEffect(() => {
-		if (!props.model.isDbOnline && selectedPlaylistArtists.length !== 0) {
+		const matchRequestIsValid = matchSettings.matchBasis === topArtistsChoice ? topArtists.length !== 0 : selectedPlaylistArtists.length !== 0;
+		if (!props.model.isDbOnline && matchRequestIsValid) {
 			testMatchesWithGivenSettings(
 				matchSettings.area,
 				new Date(Date.parse(matchSettings.fromDate)),
@@ -240,7 +229,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		artistsFromPlaylist: Artist[],
 		numTracks: number
 	) => {
-		const isTopArtists: boolean = chosenPlaylistName === '__your__top__artists__';
+		const isTopArtists: boolean = chosenPlaylistName === topArtistsChoice;
 		let continentFilter: string[] = [];
 		let countryFilter: string[] = [];
 		let stateFilter: string[] = [];
@@ -270,7 +259,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 		if (playlistName === matchSettings.matchBasis) {
 			return;
 		}
-		if (playlistName === '__your__top__artists__') {
+		if (playlistName === topArtistsChoice) {
             dispatch(setMatchSettings({ ...matchSettings, matchBasis: playlistName, numTracks: props.model.countTopArtists }));
 			testMatchesWithGivenSettings(
 				matchSettings.area,
@@ -423,7 +412,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								onChange={handlePlaylistChange}
 								label="Match with"
 							>
-								{topArtists.length !== 0 && <MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
+								{topArtists.length !== 0 && <MenuItem key={topArtistsChoice} value={topArtistsChoice}>
 									Your most played artists
 								</MenuItem>}
 								{topArtists.length !== 0 && playlists.length !== 0 && <ListSubheader disableSticky disableGutters>or choose a playlist below</ListSubheader>}
@@ -565,14 +554,14 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									<Select
 										labelId="choose-initial-playlist-label"
 										id="choose-initial-playlist"
-										value={topArtists.length !== 0 ? '__your__top__artists__' : '' }
+										value={topArtists.length !== 0 ? topArtistsChoice : '' }
 										label={topArtists.length === 0 ? "Playlist" : undefined}
 										onChange={async (event: React.ChangeEvent<{ value: unknown }>) => {
 											dispatch(setShowPlaylistModal(false));
 											handlePlaylistChange(event);
 										}}
 									>
-										{topArtists.length !== 0 && <MenuItem key={'__your__top__artists__'} value={'__your__top__artists__'}>
+										{topArtists.length !== 0 && <MenuItem key={topArtistsChoice} value={topArtistsChoice}>
 											Your most played artists
 										</MenuItem>}
 										{topArtists.length !== 0 && playlists.length !== 0 && <ListSubheader disableSticky disableGutters>or choose a playlist below</ListSubheader>}
@@ -593,12 +582,12 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									className={classes.button}
 									onClick={() => {
 										dispatch(setShowPlaylistModal(false));
-                                    	dispatch(setMatchSettings({ ...matchSettings, matchBasis: '__your__top__artists__', numTracks: props.model.countTopArtists }));
+                                    	dispatch(setMatchSettings({ ...matchSettings, matchBasis: topArtistsChoice, numTracks: props.model.countTopArtists }));
 										testMatchesWithGivenSettings(
 											matchSettings.area,
 											new Date(Date.parse(matchSettings.fromDate)),
 											new Date(Date.parse(matchSettings.toDate)),
-											'__your__top__artists__',
+											topArtistsChoice,
 											selectedPlaylistArtists,
 											props.model.countTopArtists);
 									}}>

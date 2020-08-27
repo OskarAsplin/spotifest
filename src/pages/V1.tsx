@@ -11,9 +11,10 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { deepOrange, indigo, pink, lightBlue } from "@material-ui/core/colors";
 import { Model } from "../redux/types";
-import { getAuthorizeHref } from "./LoginScreen";
+import { getAuthorizeHref } from "../oauthConfig";
 import 'react-circular-progressbar/dist/styles.css';
 import { Redirect } from 'react-router-dom';
+import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -61,33 +62,10 @@ interface StoreProps {
 
 type Props = DispatchProps & StoreProps;
 
-// Get the hash of the url
-const getAccessTokenFromHashParams = () => {
-    var e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    e = r.exec(q);
-    while (e) {
-        if (e[1] === 'access_token') {
-            return decodeURIComponent(e[2]);
-        }
-    }
-    return '';
-};
-
-const getExpiresInFromUrl = () => {
-    const url = window.location.href;
-    const expire_pos = url.search('expires_in');
-    if (expire_pos !== -1) {
-        return url.slice(expire_pos + 11);
-    } else {
-        return '';
-    }
-};
-
-const expires_in = getExpiresInFromUrl();
-const token = getAccessTokenFromHashParams();
-
-window.history.pushState("", document.title, window.location.pathname + window.location.search);
+const hashParams = getHashParams();
+const token = hashParams.access_token;
+const expires_in = hashParams.expires_in;
+removeHashParamsFromUrl();
 
 const V1: React.FC<Props> = (props: Props) => {
 
@@ -165,7 +143,6 @@ const V1: React.FC<Props> = (props: Props) => {
         return <Redirect push to='/login' />
     }
     return (
-        //<SplashScreen>
         <MuiThemeProvider theme={muiTheme}>
             <CssBaseline />
             <AppBarView />
@@ -187,9 +164,7 @@ const V1: React.FC<Props> = (props: Props) => {
                     <CircularProgress size={100} thickness={3} color={'secondary'} />
                 </MuiThemeProvider>
             </div>
-
         </MuiThemeProvider>
-        //</SplashScreen>
     );
 };
 

@@ -1,4 +1,3 @@
-//import 'whatwg-fetch'
 
 export function isDev(): boolean {
     const url = window.location.href;
@@ -6,11 +5,7 @@ export function isDev(): boolean {
 }
 
 export function getApiBaseUrl(): string {
-    if (isDev()) {
-        return "http://127.0.0.1:8000";
-    } else {
-        return "https://www.spotifest-api.xyz"
-    }
+    return process.env.REACT_APP_BACKEND_URL!;
 }
 
 enum RequestMethod {
@@ -18,13 +13,6 @@ enum RequestMethod {
     POST = "POST",
     PUT = "PUT",
     DELETE = "DELETE"
-}
-
-export enum REST_STATUS {
-    OK = "OK",
-    FEILET = "FEILET",
-    PENDING = "PENDING",
-    INITIALISERT = "INITIALISERT"
 }
 
 const getHeaders = (): Headers => {
@@ -44,7 +32,7 @@ export const serverRequest = (method: string, urlPath: string, body: string|null
     return new Promise((resolve, reject) => {
         fetch(urlPath, OPTIONS)
             .then((response: Response) => {
-                sjekkStatuskode(response);
+                checkStatusCode(response);
                 const jsonResponse = toJson(response);
                 resolve(jsonResponse);
             })
@@ -59,7 +47,7 @@ export function toJson<T>(response: Response): Promise<T> {
     return response.json();
 }
 
-function sjekkStatuskode(response: Response) {
+function checkStatusCode(response: Response) {
     if (response.status === 401){
         console.warn("Bruker er ikke logget inn.");
         return response;
@@ -88,5 +76,5 @@ export function fetchDelete(urlPath: string) {
         headers: getHeaders(),
         method: RequestMethod.DELETE
     };
-    return fetch(getApiBaseUrl() + urlPath, OPTIONS).then(sjekkStatuskode);
+    return fetch(getApiBaseUrl() + urlPath, OPTIONS).then(checkStatusCode);
 }

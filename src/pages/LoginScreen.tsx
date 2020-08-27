@@ -7,8 +7,8 @@ import makeStyles from "@material-ui/core/styles/makeStyles";
 import { setLoggedIn, setLoggedOff } from "../redux/actions";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import clsx from 'clsx';
-import { isDev } from "../utils/restUtils";
 import { lightBlue } from "@material-ui/core/colors";
+import { getAuthorizeHref } from '../oauthConfig';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -132,22 +132,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 type Props = DispatchProps;
-
-const authEndpoint = 'https://accounts.spotify.com/authorize';
-
-
-const redirectUri = isDev() ? 'http://localhost:3000' : 'https://www.spotifest.app';
-const scopes = [
-    'user-read-private',
-    'user-top-read',
-    'playlist-read-private',
-    'playlist-read-collaborative',
-];
-
-export const getAuthorizeHref = (): string => {
-    const clientId = process.env.REACT_APP_SPOTIFEST_CLIENT_ID;
-    return `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token`;
-}
 
 const LoginScreen: React.FC<Props> = (props: Props) => {
 
