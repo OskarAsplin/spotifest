@@ -25,6 +25,9 @@ import { getMaxArtistsInWidth } from "../utils/utils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        appBarSpace: {
+            paddingBottom: theme.spacing(6),
+        },
         root: {
             display: 'flex',
             flexDirection: 'column',
@@ -404,6 +407,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={indigoOrangeMuiTheme}>
                 <CssBaseline />
                 <AppBarView />
+                <div className={classes.appBarSpace} />
                 {pcScreen && <div className={classes.topLeft}>
                     <IconButton
                         onClick={() => {
@@ -443,6 +447,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 <AppBarView />
+                <div className={classes.appBarSpace} />
                 {pcScreen && <div className={classes.topLeft}>
                     <IconButton
                         onClick={() => {

@@ -25,6 +25,9 @@ import CookieConsent from "react-cookie-consent";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        appBarSpace: {
+            paddingBottom: theme.spacing(6),
+        },
         root: {
             display: 'flex',
             flexDirection: 'column',
@@ -382,6 +385,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 <AppBarView />
+                <div className={classes.appBarSpace} />
                 <div className={classes.align}>
                     <div className={classes.verticalSpace} />
                     <div className={classes.verticalSpace} />
@@ -411,6 +415,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 <AppBarView />
+                <div className={classes.appBarSpace} />
                 {pcScreen && <div className={classes.topLeft}>
                     <IconButton
                         onClick={() => {

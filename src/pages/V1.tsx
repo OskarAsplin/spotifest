@@ -12,13 +12,14 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { deepOrange, indigo, pink, lightBlue } from "@material-ui/core/colors";
 import { Model } from "../redux/types";
 import { getAuthorizeHref } from "./LoginScreen";
-//import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import 'react-circular-progressbar/dist/styles.css';
 import { Redirect } from 'react-router-dom';
-//import SplashScreen from "../components/splashScreen";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        appBarSpace: {
+            paddingBottom: theme.spacing(6),
+        },
         root: {
             display: 'flex',
             flexDirection: 'column',
@@ -168,6 +169,7 @@ const V1: React.FC<Props> = (props: Props) => {
         <MuiThemeProvider theme={muiTheme}>
             <CssBaseline />
             <AppBarView />
+            <div className={classes.appBarSpace} />
             <div className={classes.verticalSpace} />
             <div className={classes.root}>
                 <FestivalMatchSettingsBar />

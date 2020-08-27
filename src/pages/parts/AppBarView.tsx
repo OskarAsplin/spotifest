@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createStyles, makeStyles, Theme, createMuiTheme } from '@material-ui/core/styles';
-import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider, Button, InputAdornment, TextField, Paper, Box, CircularProgress, ClickAwayListener, Drawer } from '@material-ui/core';
+import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider, Button, InputAdornment, TextField, Paper, Box, CircularProgress, ClickAwayListener, Drawer, Slide, useScrollTrigger } from '@material-ui/core';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Brightness2, Brightness4 } from "@material-ui/icons";
 import { Model, AppState, DispatchProps, SearchResponse } from "../../redux/types";
@@ -198,6 +198,8 @@ const AppBarView: React.FC<Props> = (props: Props) => {
     const [showSearchFieldSmallScreen, setShowSearchFieldSmallScreen] = useState(false);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [redirectAboutPage, setRedirectAboutPage] = useState(false);
+
+    const trigger = useScrollTrigger({ threshold: 30 });
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -408,83 +410,93 @@ const AppBarView: React.FC<Props> = (props: Props) => {
     return (
         <div className={classes.root}>
             <MuiThemeProvider theme={lightBluePinkMuiTheme}>
-                <AppBar position="static" id="oskarito-appbar" color="secondary">
-                    <Toolbar className={classes.customizeToolbar}>
-                        <Button
-                            className={classes.button}
-                            color="inherit"
-                            onClick={() => { window.open(getBaseUrl(), '_self') }}
-                        >
-                            <Typography variant="h6">
-                                {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
-                            </Typography>
-                        </Button>
-                        <div className={classes.grow}>
-                        </div>
-                        {bigScreen && getSearchFieldAndResults()}
-                        {!bigScreen &&
+                <Slide appear={false} direction="down" in={!trigger}>
+                    <AppBar id="oskarito-appbar" color="secondary">
+                        <Toolbar className={classes.customizeToolbar}>
+                            <Button
+                                className={classes.button}
+                                color="inherit"
+                                onClick={() => {
+                                    const url = window.location.href;
+                                    if (url.endsWith('spotifest.app') || url.endsWith('spotifest.app/')
+                                        || url.endsWith('localhost:3000') || url.endsWith('localhost:3000/')) {
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                    } else {
+                                        window.open(getBaseUrl(), '_self');
+                                    }
+                                }}
+                            >
+                                <Typography variant="h6">
+                                    {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
+                                </Typography>
+                            </Button>
+                            <div className={classes.grow}>
+                            </div>
+                            {bigScreen && getSearchFieldAndResults()}
+                            {!bigScreen &&
+                                <MuiThemeProvider theme={lightBluePinkDarkMuiTheme}>
+                                    <IconButton onClick={() => { setShowSearchFieldSmallScreen(!showSearchFieldSmallScreen); setInputText(''); }}>
+                                        <SearchIcon />
+                                    </IconButton>
+                                </MuiThemeProvider>}
                             <MuiThemeProvider theme={lightBluePinkDarkMuiTheme}>
-                                <IconButton onClick={() => { setShowSearchFieldSmallScreen(!showSearchFieldSmallScreen); setInputText(''); }}>
-                                    <SearchIcon />
+                                <IconButton
+                                    color="inherit"
+                                    aria-describedby={id}
+                                    onClick={handleClick}
+                                    className={props.model.userInfo?.profilePictureUrl ? classes.profilePicture : classes.marginLeft}
+                                >
+                                    {props.model.userInfo?.profilePictureUrl ?
+                                        <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
+                                        : <AccountCircleIcon />}
                                 </IconButton>
-                            </MuiThemeProvider>}
-                        <MuiThemeProvider theme={lightBluePinkDarkMuiTheme}>
+                            </MuiThemeProvider>
+                            <Popover
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}
+                                onClose={handleClose}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'center',
+                                }}
+                            >
+                                <div className={classes.popover}>
+                                    {props.model.userInfo?.displayName &&
+                                        <Typography variant="body1" className={classes.bottomMargin}>
+                                            {props.model.userInfo.displayName}
+                                        </Typography>
+                                    }
+                                    {props.model.userInfo && props.model.userInfo.spotifyUrl &&
+                                        <Link color={'primary'}
+                                            href={props.model.userInfo.spotifyUrl}
+                                            target={"_blank"}
+                                            rel="noopener noreferrer"
+                                            className={classes.bottomMargin}>
+                                            View profile in Spotify
+                                        </Link>}
+                                    {props.model.loggedIn && < Link color={'primary'}
+                                        href={`https://accounts.spotify.com/en/logout`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={() => dispatch(setLoggedOff())}>
+                                        Log out
+                                    </Link>}
+                                </div>
+                            </Popover>
                             <IconButton
                                 color="inherit"
-                                aria-describedby={id}
-                                onClick={handleClick}
-                                className={props.model.userInfo?.profilePictureUrl ? classes.profilePicture : classes.marginLeft}
+                                onClick={toggleDrawer(true)}
                             >
-                                {props.model.userInfo?.profilePictureUrl ?
-                                    <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
-                                    : <AccountCircleIcon />}
+                                <MenuIcon />
                             </IconButton>
-                        </MuiThemeProvider>
-                        <Popover
-                            id={id}
-                            open={open}
-                            anchorEl={anchorEl}
-                            onClose={handleClose}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center',
-                            }}
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center',
-                            }}
-                        >
-                            <div className={classes.popover}>
-                                {props.model.userInfo?.displayName &&
-                                    <Typography variant="body1" className={classes.bottomMargin}>
-                                        {props.model.userInfo.displayName}
-                                    </Typography>
-                                }
-                                {props.model.userInfo && props.model.userInfo.spotifyUrl &&
-                                    <Link color={'primary'}
-                                        href={props.model.userInfo.spotifyUrl}
-                                        target={"_blank"}
-                                        rel="noopener noreferrer"
-                                        className={classes.bottomMargin}>
-                                        View profile in Spotify
-                                    </Link>}
-                                {props.model.loggedIn && < Link color={'primary'}
-                                    href={`https://accounts.spotify.com/en/logout`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onClick={() => dispatch(setLoggedOff())}>
-                                    Log out
-                                </Link>}
-                            </div>
-                        </Popover>
-                        <IconButton
-                            color="inherit"
-                            onClick={toggleDrawer(true)}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
+                        </Toolbar>
+                    </AppBar>
+                </Slide>
                 <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
                     <div
                         className={classes.drawerList}

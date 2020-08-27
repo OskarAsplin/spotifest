@@ -16,6 +16,9 @@ import StarIcon from '@material-ui/icons/Star';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        appBarSpace: {
+            paddingBottom: theme.spacing(6),
+        },
         root: {
             display: 'flex',
             flexDirection: 'column',
@@ -343,6 +346,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
         <MuiThemeProvider theme={muiTheme}>
             <CssBaseline />
             <AppBarView />
+            <div className={classes.appBarSpace} />
             {bigPcScreen && <div className={classes.topLeft}>
                 <IconButton
                     onClick={() => {
@@ -544,7 +548,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Domain bought on NameCheap.
+                                                Domain bought on NameCheap
                                             </Typography>
                                         </div>
                                     </Grid>
