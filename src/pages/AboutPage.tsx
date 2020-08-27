@@ -434,6 +434,19 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
+                                                UI based on Material-UI
+                                            </Typography>
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
+                                        <div className={classes.iconsContainer}>
+                                            <img src={process.env.PUBLIC_URL + '/techIcons/mui-logo.svg'}
+                                                className={classes.iconDefaultHeight} alt="MUI-logo" />
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
+                                        <div className={classes.techInfoText}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Frontend hosted on Netlify
                                             </Typography>
                                         </div>
@@ -526,19 +539,6 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                         <div className={classes.iconsContainer}>
                                             <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Logo.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Logo-White.png'}
                                                 className={classes.smallSize} alt="GitHub-logo" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Task administration on Atlassian Jira board
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/jira-logo-blue.svg' : process.env.PUBLIC_URL + '/techIcons/jira-logo-white.svg'}
-                                                className={classes.iconDefaultHeight} alt="Jira-logo" />
                                         </div>
                                     </Grid>
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
