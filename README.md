@@ -17,7 +17,7 @@ Login screen                                       |  Match with selector       
 * Search bar to search up artists and festivals
 * Simple and intuitive UI
 
-## How to use
+## How it works
 Choose to match with your most played artists or one of your playlists and immediately get a list of the best matching festivals. You can also change area and time frame. Each festival match displays which artists in your playlist are in the festival's lineup, as well as showing you a score percentage. The score is a combination of how many matching artists you have with the festival and how well the genres of your playlist fit the genres of the festival. Each festival also have a dropdown menu to see the most popular artists attending the festival to give you a quick overview of the lineup.
 
 By clicking a festival title or festival image you are taken to the corresponding festival page. There you can see current and prevoius lineups, links to official festival website and ticket website (if available), and see a youtube video of the festival (if available).
