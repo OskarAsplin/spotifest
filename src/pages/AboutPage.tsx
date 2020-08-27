@@ -265,7 +265,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         usageImg: {
             width: '100%',
-            maxWidth: '288px',
+            maxWidth: '315px',
             marginBottom: theme.spacing(1),
             '@media (min-width: 1040px)': {
                 marginLeft: theme.spacing(4)
@@ -707,7 +707,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                             <div className={classes.expandedDiv}>
                                 <div className={classes.usageBox}>
                                     <div className={classes.usagePart}>
-                                        <img src={process.env.PUBLIC_URL + '/usageImages/matches-settings.png'} className={classes.usageImg} alt="match-settings-box" />
+                                        <img src={process.env.PUBLIC_URL + '/usageImages/match-settings.jpg'} className={classes.usageImg} alt="match-settings-box" />
                                         <Typography variant="body1" className={classes.textAlign}>
                                             Adjust the match settings on the main page to get your festival matches.
                                         </Typography>
@@ -717,7 +717,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     <div className={classes.verticalSpace} />
                                     <div className={classes.verticalSpace} />
                                     <div className={classes.usagePart}>
-                                        <img src={process.env.PUBLIC_URL + '/usageImages/festival-match-marked.png'} className={classes.usageImg} alt="festival-match-marked" />
+                                        <img src={process.env.PUBLIC_URL + '/usageImages/festival-match-marked.jpg'} className={classes.usageImg} alt="festival-match-marked" />
                                         <Typography variant="body1" className={classes.textAlign}>
                                             Click on a festival title or image to see full lineups and more. Click on an artist icon to see the artist's future and past festivals and more. Click on 'popular artists at this festival' to see the most popular artists in the festival lineup.
                                         </Typography>
@@ -727,7 +727,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     <div className={classes.verticalSpace} />
                                     <div className={classes.verticalSpace} />
                                     <div className={classes.usagePart}>
-                                        <img src={process.env.PUBLIC_URL + '/usageImages/top-bar.png'} className={clsx(classes.usageImg, classes.topBarImg)} alt="top-bar" />
+                                        <img src={process.env.PUBLIC_URL + '/usageImages/top-bar.jpg'} className={clsx(classes.usageImg, classes.topBarImg)} alt="top-bar" />
                                         <Typography variant="body1" className={classes.textAlign}>
                                             Clicking 'Oskarito SpotiFest' takes you back to the festival matching. Click the search icon to search for festivals and artists. Click the account avatar to log out. Click the hamburger menu to get to the about page or to switch between dark/light mode.
                                         </Typography>
