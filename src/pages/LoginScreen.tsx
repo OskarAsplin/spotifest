@@ -121,6 +121,13 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: theme.spacing(1, 2, 1, 2),
             boxShadow: '0 -1px 50px 50px rgba(0, 0, 0, 0.6)'
         },
+        footerFontSize: {
+            '@media (min-width: 610px)': {
+                '@media (min-height: 610px)': {
+                    fontSize: '1.25rem'
+                }
+            },
+        }
     }),
 );
 
@@ -204,23 +211,23 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                     </Box>
                 </div>
                 <Box className={clsx(classes.footerBox, classes.attributionShadow)}>
-                    <div>
+                    <Typography variant={bigScreen ? "body1" : "body2"} color={'secondary'} className={classes.footerFontSize}>
                         A festival finder created by <Link color={'primary'}
                             href={'https://github.com/OskarAsplin'}
                             target={"_blank"}
                             rel="noopener noreferrer">
                             Oskar Asplin
                             </Link>
-                    </div>
-                    <div>
+                    </Typography>
+                    <Typography variant={bigScreen ? "body1" : "body2"} color={'secondary'} className={classes.footerFontSize}>
                         Code on <Link color={'primary'}
                             href={'https://github.com/OskarAsplin/spotifest'}
                             target={"_blank"}
                             rel="noopener noreferrer">
                             GitHub
                             </Link>
-                    </div>
-                    <div>
+                    </Typography>
+                    <Typography variant={bigScreen ? "body1" : "body2"} color={'secondary'} className={classes.footerFontSize}>
                         <Link color={'primary'}
                             href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/"
                             target={"_blank"}
@@ -237,7 +244,7 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                             rel="noopener noreferrer">
                             CC BY-SA 2.0
                             </Link>
-                    </div>
+                    </Typography>
                 </Box>
             </MuiThemeProvider>
         </div>
