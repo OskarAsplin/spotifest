@@ -68,6 +68,13 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             alignItems: 'center',
         },
+        creatorPaper: {
+            display: 'flex',
+            flexDirection: 'column',
+            padding: theme.spacing(1, 0, 1, 0),
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
         maxWidth400: {
             width: '100%',
             maxWidth: '400px'
@@ -213,15 +220,21 @@ const useStyles = makeStyles((theme: Theme) =>
                 alignItems: 'center',
             },
         },
+        creatorImgBox: {
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: theme.spacing(1, 0, 1, 0),
+        },
+        darkerBackground: {
+            backgroundColor: '#383838'
+        },
         creatorImage: {
-            '@media (min-width: 610px)': {
-                marginTop: theme.spacing(3),
-            },
-            '@media (max-width: 609px)': {
-                marginTop: theme.spacing(2),
-            },
-            marginBottom: theme.spacing(1),
-            width: '90%',
+            width: '75%',
+            maxWidth: '300px'
+        },
+        roundedCorners: {
             borderRadius: '5%',
         },
         licenses: {
@@ -292,7 +305,7 @@ const useStyles = makeStyles((theme: Theme) =>
         usageBox: {
             display: 'flex',
             flexDirection: 'column'
-        }
+        },
     }),
 );
 
@@ -802,16 +815,17 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <div className={classes.verticalSpace} />
                 <div className={classes.verticalSpace} />
                 <Box className={classes.box2}>
-                    <Paper elevation={3} className={clsx(classes.paper, classes.maxWidth400)}>
+                    <Paper elevation={3} className={clsx(classes.creatorPaper, classes.maxWidth400)}>
                         <div className={classes.flexColumn}>
-                            <Typography variant={bigScreen ? "h4" : "h5"} className={clsx(classes.title, classes.textAlign)}>
+                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.textAlign}>
                                 Created by
                             </Typography>
-                            <img src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'} className={classes.creatorImage} alt="Creator" />
+                            <Box className={thememode === 'light' ? clsx(classes.creatorImgBox, classes.roundedCorners) : clsx(classes.creatorImgBox, classes.darkerBackground)}>
+                                <img src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'} className={classes.creatorImage} alt="Creator" />
+                            </Box>
                             <Typography variant="h6" className={classes.textAlign}>
                                 Oskar Asplin
                             </Typography>
-                            <div className={classes.verticalSpace} />
                             <div className={classes.rowFlexCenter}>
                                 <IconButton onClick={() => window.open("https://www.linkedin.com/in/oskar-buset-asplin-22796314a", '_blank')}>
                                     <div className={clsx(classes.socialButtonBackground, classes.linkedInSocialButton)}>
@@ -825,7 +839,6 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </div>
                                 </IconButton>
                             </div>
-                            <div className={classes.verticalSpace} />
                         </div>
                     </Paper>
                 </Box>
