@@ -254,7 +254,7 @@ const FestivalMatchItem: React.FC<Props> = (props: Props) => {
     const matchingNextToPicture = twoArtistsNextToPicture || threeArtistsNextToPicture;
 
     if (redirectFestival) {
-        return <Redirect push to={'/festival?' + redirectFestival} />
+        return <Redirect push to={'/festival/' + redirectFestival} />
     }
 
     return (

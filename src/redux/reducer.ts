@@ -15,11 +15,7 @@ export const initialModel: Model = {
     loggedIn: true,
     siteInitialized: false,
     isDbOnline: true,
-
-    // Visnings
     thememode: 'dark',
-
-    //Logikk
     accessToken: '',
     tokenExpiryDate: '',
     userInfo: undefined,

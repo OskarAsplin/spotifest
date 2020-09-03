@@ -22,6 +22,7 @@ import ReactPlayer from 'react-player/lazy';
 import clsx from 'clsx';
 import ReactCountryFlag from "react-country-flag";
 import CookieConsent from "react-cookie-consent";
+import { RouteComponentProps } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -276,7 +277,14 @@ interface StoreProps {
     thememode: PaletteType
 }
 
-type Props = DispatchProps & StoreProps;
+interface MatchParams {
+    festivalId: string;
+}
+
+interface MatchProps extends RouteComponentProps<MatchParams> {
+}
+
+type Props = DispatchProps & StoreProps & MatchProps;
 
 const FestivalPage: React.FC<Props> = (props: Props) => {
 
@@ -293,9 +301,8 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     const maxArtistsInLineupsWidth = getMaxArtistsInFullLineupWidth(bigScreen, smallScreen, 11);
 
     useEffect(() => {
-        let festival = window.location.search.substring(1);
         props.dispatch(turnOnLoader());
-        fetchToJson(getApiBaseUrl() + '/onTour/festivalInfo/?q=' + festival)
+        fetchToJson(getApiBaseUrl() + '/onTour/festivalInfo/?q=' + props.match.params.festivalId)
             .then((response: any) => {
                 setFestivalInfo(response as FestivalInfo);
             }).catch((error) => {
@@ -399,7 +406,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                             Could not find festival.
                         </Typography>
                     }
-                    {!isNetworkError && !window.location.search.substring(1) &&
+                    {!isNetworkError && !props.match.params.festivalId &&
                         <Typography variant="subtitle1" >
                             Invalid URL.
                         </Typography>

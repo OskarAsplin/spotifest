@@ -22,6 +22,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import { getMaxArtistsInWidth } from "../utils/utils";
+import { RouteComponentProps } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -206,7 +207,14 @@ interface StoreProps {
     model: Model;
 }
 
-type Props = DispatchProps & StoreProps;
+interface MatchParams {
+    artistId: string;
+}
+
+interface MatchProps extends RouteComponentProps<MatchParams> {
+}
+
+type Props = DispatchProps & StoreProps & MatchProps;
 
 const ArtistPage: React.FC<Props> = (props: Props) => {
 
@@ -214,9 +222,8 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
         setIsValidSpotifyId(true);
         setIsArtistInDb(true);
         setArtistInfo(undefined);
-        const queryString = window.location.search;
-        if (queryString.indexOf('spotifyId=') !== -1) {
-            let spotifyId = window.location.search.substring('spotifyId='.length + 1);
+        if (props.match.params.artistId.indexOf('spotifyId=') !== -1) {
+            const spotifyId = props.match.params.artistId.substring('spotifyId='.length);
             props.dispatch(turnOnLoader());
             fetchToJson(getApiBaseUrl() + '/onTour/artistInfo/?spotifyId=' + spotifyId)
                 .then((response: any) => {
@@ -289,7 +296,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                     });
             }
         } else {
-            let artistName = window.location.search.substring(1);
+            const artistName = props.match.params.artistId;
             if (artistName) {
                 props.dispatch(turnOnLoader());
                 fetchToJson(getApiBaseUrl() + '/onTour/artistInfo/?q=' + artistName)
@@ -337,7 +344,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [window.location.search.substring(1)]);
+    }, [props.match.params.artistId]);
 
     const [artistInfo, setArtistInfo] = React.useState<ArtistInfo | undefined>(undefined);
     const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
@@ -395,7 +402,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     const classes = useStyles();
 
     if (redirectFestival) {
-        return <Redirect push to={'/festival?' + redirectFestival} />
+        return <Redirect push to={'/festival/' + redirectFestival} />
     }
 
     if (redirectHome) {
@@ -431,7 +438,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             Could not find artist.
                         </Typography>
                     }
-                    {!isNetworkError && !window.location.search.substring(1) &&
+                    {!isNetworkError && !props.match.params.artistId &&
                         <Typography variant="subtitle1" >
                             Invalid URL.
                         </Typography>

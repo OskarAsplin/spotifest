@@ -32,8 +32,8 @@ const App: React.FC = () => {
             <Switch>
               <Route exact path="/" component={V1} />
               <Route exact path="/login" component={LoginScreen} />
-              <Route exact path="/artist" component={ArtistPage} />
-              <Route exact path="/festival" component={FestivalPage} />
+              <Route exact path="/artist/:artistId" component={ArtistPage} />
+              <Route exact path="/festival/:festivalId" component={FestivalPage} />
               <Route exact path="/about" component={AboutPage} />
             </Switch>
           </Router>

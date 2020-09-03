@@ -313,10 +313,10 @@ const AppBarView: React.FC<Props> = (props: Props) => {
         const url = window.location.href;
         const spotifest_pos = url.search('spotifest.app');
         if (spotifest_pos !== -1) {
-            return url.slice(0, spotifest_pos) + 'spotifest.app/festival?' + encodeURIComponent(festivalName);
+            return url.slice(0, spotifest_pos) + 'spotifest.app/festival/' + encodeURIComponent(festivalName);
         } else {
             const localhost_pos = url.search('localhost:3000');
-            return url.slice(0, localhost_pos) + 'localhost:3000/festival?' + encodeURIComponent(festivalName);
+            return url.slice(0, localhost_pos) + 'localhost:3000/festival/' + encodeURIComponent(festivalName);
         }
     }
 
@@ -324,10 +324,10 @@ const AppBarView: React.FC<Props> = (props: Props) => {
         const url = window.location.href;
         const spotifest_pos = url.search('spotifest.app');
         if (spotifest_pos !== -1) {
-            return url.slice(0, spotifest_pos) + 'spotifest.app/artist?' + encodeURIComponent(artistName);
+            return url.slice(0, spotifest_pos) + 'spotifest.app/artist/' + encodeURIComponent(artistName);
         } else {
             const localhost_pos = url.search('localhost:3000');
-            return url.slice(0, localhost_pos) + 'localhost:3000/artist?' + encodeURIComponent(artistName);
+            return url.slice(0, localhost_pos) + 'localhost:3000/artist/' + encodeURIComponent(artistName);
         }
     }
 
