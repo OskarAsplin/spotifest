@@ -23,6 +23,7 @@ import clsx from 'clsx';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import { getMaxArtistsInWidth } from "../utils/utils";
 import { RouteComponentProps } from 'react-router';
+import MusicNote from '@material-ui/icons/MusicNote';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -199,6 +200,19 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         paddingBottom: {
             paddingBottom: theme.spacing(1)
+        },
+        noBigPicture: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingBottom: theme.spacing(3),
+            paddingTop: theme.spacing(3),
+            '@media (min-width: 690px)': {
+                fontSize: '150px'
+            },
+            '@media (max-width: 689px)': {
+                fontSize: '80px'
+            },
         },
     }),
 );
@@ -478,12 +492,16 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                 </Typography>
                             </div>
                             <Box className={props.model.thememode === 'light' ? classes.buttonBox : clsx(classes.buttonBox, classes.darkerBackground)}>
-                                <Button onClick={() => window.open(artistInfo.artist.bigPicture, '_blank')} className={classes.artistImgButton}>
-                                    <img className={classes.artistImg} src={artistInfo.artist.bigPicture} alt="" />
-                                </Button>
+                                {artistInfo.artist.bigPicture ?
+                                    <Button onClick={() => window.open(artistInfo.artist.bigPicture, '_blank')} className={classes.artistImgButton}>
+                                        <img className={classes.artistImg} src={artistInfo.artist.bigPicture} alt="" />
+                                    </Button>
+                                    : <div className={classes.noBigPicture}>
+                                        <MusicNote fontSize={'inherit'} />
+                                    </div>}
                             </Box>
                             <Typography variant="subtitle1" className={classes.addSidePadding}>
-                                {'Genres: ' + artistInfo.artist.genres.join(", ")}
+                                {artistInfo.artist.genres.length > 0 ? 'Genres: ' + artistInfo.artist.genres.join(", ") : 'No registered genres'}
                             </Typography>
                             {artistInfo.artist.spotifyId &&
                                 <MuiThemeProvider theme={indigoOrangeMuiTheme}>
