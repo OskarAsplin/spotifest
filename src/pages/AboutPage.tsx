@@ -382,7 +382,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                     <div className={classes.verticalSpace} />
                     <Paper elevation={3} className={clsx(classes.paperTop, classes.minWidth650)}>
                         <Typography variant={bigScreen ? "h4" : "h5"} className={clsx(classes.title, classes.textAlign)}>
-                            Oskarito SpotiFest
+                            Features
                         </Typography>
                         <List className={classes.noPadding}>
                             <ListItem>
