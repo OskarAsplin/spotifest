@@ -366,11 +366,14 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             </Paper>
                         </ClickAwayListener>}
                     {searchResults.error && <div>Error: {searchResults.error.message}</div>}
-                    {searchResults.result &&
-                        (searchResults.result.festivals.length > 0 || searchResults.result.artists.length > 0) && (
+                    {searchResults.result && inputText && (
                             <ClickAwayListener onClickAway={() => handleSearchBlur(1, true)}>
                                 <Paper elevation={10} className={classes.fixed}>
                                     <div className={classes.flexColumn}>
+                                    {searchResults.result.festivals.length === 0 && searchResults.result.artists.length === 0 &&
+                                            <Typography color='secondary' component="div">
+                                                No results
+                                            </Typography>}
                                         {searchResults.result.festivals.length > 0 &&
                                             <Typography className={classes.marginBottom} color='secondary' component="div">
                                                 <Box fontWeight="fontWeightBold">Festivals:</Box>
