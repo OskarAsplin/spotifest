@@ -196,19 +196,14 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                 </div>
                 <Box className={clsx(classes.footerBox, classes.attributionShadow)}>
                     <Typography variant={bigScreen ? "body1" : "body2"} color={'secondary'} className={classes.footerFontSize}>
+                        Match your playlists with music festivals
+                    </Typography>
+                    <Typography variant={bigScreen ? "body1" : "body2"} color={'secondary'} className={classes.footerFontSize}>
                         A festival finder created by <Link color={'primary'}
                             href={'https://github.com/OskarAsplin'}
                             target={"_blank"}
                             rel="noopener noreferrer">
                             Oskar Asplin
-                            </Link>
-                    </Typography>
-                    <Typography variant={bigScreen ? "body1" : "body2"} color={'secondary'} className={classes.footerFontSize}>
-                        Code on <Link color={'primary'}
-                            href={'https://github.com/OskarAsplin/spotifest'}
-                            target={"_blank"}
-                            rel="noopener noreferrer">
-                            GitHub
                             </Link>
                     </Typography>
                     <Typography variant={bigScreen ? "body1" : "body2"} color={'secondary'} className={classes.footerFontSize}>

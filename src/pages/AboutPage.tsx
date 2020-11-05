@@ -43,15 +43,15 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'column',
             '@media (min-width: 610px)': {
-                padding: theme.spacing(1, 2, 1, 2),
+                padding: theme.spacing(0.5, 2, 0.5, 2),
             },
             '@media (max-width: 609px)': {
                 '@media (min-width: 440px)': {
-                    padding: theme.spacing(1, 1, 1, 1),
+                    padding: theme.spacing(0.5, 1, 0.5, 1),
                 },
             },
             '@media (max-width: 439px)': {
-                padding: theme.spacing(1, 0, 1, 0),
+                padding: theme.spacing(0.5, 0, 0.5, 0),
             },
             justifyContent: 'center',
             alignItems: 'center',
@@ -60,10 +60,10 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             flexDirection: 'column',
             '@media (min-width: 610px)': {
-                padding: theme.spacing(1, 4, 1, 4),
+                padding: theme.spacing(0.5, 3, 0.5, 3),
             },
             '@media (max-width: 609px)': {
-                padding: theme.spacing(1, 2, 1, 2),
+                padding: theme.spacing(0.5, 2, 0.5, 2),
             },
             justifyContent: 'center',
             alignItems: 'center',
@@ -79,29 +79,46 @@ const useStyles = makeStyles((theme: Theme) =>
             width: '100%',
             maxWidth: '400px'
         },
-        minWidth650: {
-            '@media (min-width: 700px)': {
-                minWidth: '650px'
+        minWidth400: {
+            '@media (min-width: 550px)': {
+                minWidth: '400px'
             },
-            '@media (max-width: 699px)': {
+            '@media (max-width: 549px)': {
                 width: '100%'
             },
         },
         box: {
-            '@media (max-width: 699px)': {
+            '@media (max-width: 549px)': {
                 width: '100%'
             },
-            maxWidth: '1000px',
+            maxWidth: '650px',
             margin: theme.spacing(0, 2, 2, 2),
         },
         box2: {
             width: '100%',
-            maxWidth: '1000px',
+            maxWidth: '650px',
             margin: theme.spacing(0, 2, 2, 2),
             justifyContent: 'center',
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'column'
+        },
+        techBox: {
+            '@media (max-width: 549px)': {
+                width: '100%'
+            },
+            '@media (max-width: 1039px)': {
+                maxWidth: '650px',
+            },
+            '@media (min-width: 1040px)': {
+                maxWidth: '1000px',
+            },
+            margin: theme.spacing(0, 2, 2, 2),
+        },
+        supportExpandedBox: {
+            width: '100%',
+            maxWidth: '650px',
+            margin: theme.spacing(0, 2, 2, 2),
         },
         flexColumn: {
             display: 'flex',
@@ -120,9 +137,12 @@ const useStyles = makeStyles((theme: Theme) =>
             transform: 'rotate(180deg)',
         },
         expandedDiv: {
-            paddingBottom: theme.spacing(2),
-            paddingTop: theme.spacing(2),
-            width: '100%'
+            paddingBottom: theme.spacing(1),
+            paddingTop: theme.spacing(1),
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
         },
         textAlign: {
             '@media (max-width: 609px)': {
@@ -281,10 +301,13 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         usageImg: {
             width: '100%',
-            maxWidth: '315px',
             marginBottom: theme.spacing(1),
-            '@media (min-width: 1040px)': {
-                marginLeft: theme.spacing(4)
+            '@media (min-width: 720px)': {
+                marginLeft: theme.spacing(4),
+                maxWidth: '50%',
+            },
+            '@media (max-width: 719px)': {
+                maxWidth: '315px',
             },
         },
         topBarImg: {
@@ -292,11 +315,11 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         usagePart: {
             display: 'flex',
-            '@media (min-width: 1040px)': {
+            '@media (min-width: 720px)': {
                 flexDirection: 'row-reverse',
                 justifyContent: 'space-between',
             },
-            '@media (max-width: 1039px)': {
+            '@media (max-width: 719px)': {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -305,6 +328,11 @@ const useStyles = makeStyles((theme: Theme) =>
         usageBox: {
             display: 'flex',
             flexDirection: 'column'
+        },
+        usageText: {
+            '@media (min-width: 720px)': {
+                maxWidth: '50%'
+            },
         },
     }),
 );
@@ -318,6 +346,7 @@ type Props = DispatchProps & StoreProps;
 const AboutPage: React.FC<Props> = (props: Props) => {
 
     const bigScreen = useMediaQuery('(min-width:610px)');
+    const biggerScreen = useMediaQuery('(min-width:720px)');
     const pcScreen = useMediaQuery('(min-width:1040px)');
     const bigPcScreen = useMediaQuery('(min-width:1300px)');
 
@@ -325,7 +354,6 @@ const AboutPage: React.FC<Props> = (props: Props) => {
     const [usageExpanded, setUsageExpanded] = React.useState(false);
     const [techExpanded, setTechExpanded] = React.useState(false);
     const [supportExpanded, setSupportExpanded] = React.useState(false);
-    const [algorithmExpanded, setAlgorithmExpanded] = React.useState(false);
     const [disclaimerExpanded, setDisclaimerExpanded] = React.useState(false);
 
     const { thememode } = props;
@@ -371,51 +399,45 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 </IconButton>
             </div>}
             <div className={classes.verticalSpace} />
+            <div className={classes.verticalSpace} />
 
             <div className={classes.root}>
                 <Box className={classes.box}>
-                    <div className={classes.root}>
-                        <Typography variant={bigScreen ? "h2" : "h4"} className={clsx(classes.title, classes.textAlign)}>
-                            About
-                        </Typography>
-                    </div>
+                    <Typography variant={bigScreen ? "h4" : "h5"} className={clsx(classes.title, classes.textAlign)}>
+                        Oskarito SpotiFest features
+                    </Typography>
                     <div className={classes.verticalSpace} />
-                    <Paper elevation={3} className={clsx(classes.paperTop, classes.minWidth650)}>
-                        <Typography variant={bigScreen ? "h4" : "h5"} className={clsx(classes.title, classes.textAlign)}>
-                            Oskarito SpotiFest
-                        </Typography>
-                        <List className={classes.noPadding}>
-                            <ListItem>
-                                <ListItemIcon>
-                                    <MusicNote fontSize={'large'} />
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary="Festival matching with more than 500 festivals worldwide"
-                                />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemIcon>
-                                    <MusicNote fontSize={'large'} />
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary="Festival pages with current and previous lineups"
-                                />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemIcon>
-                                    <MusicNote fontSize={'large'} />
-                                </ListItemIcon>
-                                <ListItemText
-                                    primary="Artist pages to see which festivals each artist is attending"
-                                />
-                            </ListItem>
-                        </List>
-                    </Paper>
+                    <List className={classes.noPadding}>
+                        <ListItem>
+                            <ListItemIcon>
+                                <MusicNote fontSize={'large'} />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="Festival matching with more than 500 festivals worldwide"
+                            />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemIcon>
+                                <MusicNote fontSize={'large'} />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="Festival pages with current and previous lineups"
+                            />
+                        </ListItem>
+                        <ListItem>
+                            <ListItemIcon>
+                                <MusicNote fontSize={'large'} />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="Artist pages to see which festivals each artist is attending"
+                            />
+                        </ListItem>
+                    </List>
                 </Box>
-                <Box className={classes.box}>
-                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
+                <Box className={classes.techBox}>
+                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth400)}>
                         <div className={classes.rowFlexCenter}>
-                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setTechExpanded(!techExpanded)}>
+                            <Typography variant={"h5"} onClick={() => setTechExpanded(!techExpanded)}>
                                 Technology stack
                             </Typography>
                             <IconButton
@@ -648,10 +670,10 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </Collapse>
                     </Paper>
                 </Box>
-                <Box className={classes.box}>
-                    <Paper elevation={3} className={clsx(classes.paperTop, classes.minWidth650)}>
+                <Box className={biggerScreen && supportExpanded ? classes.supportExpandedBox: classes.box}>
+                    <Paper elevation={3} className={clsx(classes.paperTop, classes.minWidth400)}>
                         <div className={classes.rowFlexCenter}>
-                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setSupportExpanded(!supportExpanded)}>
+                            <Typography variant={"h5"} onClick={() => setSupportExpanded(!supportExpanded)}>
                                 Ways to support
                             </Typography>
                             <IconButton
@@ -704,9 +726,9 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                     </Paper>
                 </Box>
                 <Box className={classes.box}>
-                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
+                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth400)}>
                         <div className={classes.rowFlexCenter}>
-                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setUsageExpanded(!usageExpanded)}>
+                            <Typography variant={"h5"} onClick={() => setUsageExpanded(!usageExpanded)}>
                                 How to use
                             </Typography>
                             <IconButton
@@ -725,7 +747,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                 <div className={classes.usageBox}>
                                     <div className={classes.usagePart}>
                                         <img src={process.env.PUBLIC_URL + '/usageImages/match-settings.jpg'} className={classes.usageImg} alt="match-settings-box" />
-                                        <Typography variant="body1" className={classes.textAlign}>
+                                        <Typography variant="body1" className={clsx(classes.textAlign, classes.usageText)}>
                                             Adjust the match settings on the main page to get your festival matches.
                                         </Typography>
                                     </div>
@@ -735,7 +757,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     <div className={classes.verticalSpace} />
                                     <div className={classes.usagePart}>
                                         <img src={process.env.PUBLIC_URL + '/usageImages/festival-match-marked.jpg'} className={classes.usageImg} alt="festival-match-marked" />
-                                        <Typography variant="body1" className={classes.textAlign}>
+                                        <Typography variant="body1" className={clsx(classes.textAlign, classes.usageText)}>
                                             Click on a festival title or image to see full lineups and more. Click on an artist icon to see the artist's future and past festivals and more. Click on 'popular artists at this festival' to see the most popular artists in the festival lineup.
                                         </Typography>
                                     </div>
@@ -745,7 +767,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     <div className={classes.verticalSpace} />
                                     <div className={classes.usagePart}>
                                         <img src={process.env.PUBLIC_URL + '/usageImages/top-bar.jpg'} className={clsx(classes.usageImg, classes.topBarImg)} alt="top-bar" />
-                                        <Typography variant="body1" className={classes.textAlign}>
+                                        <Typography variant="body1" className={clsx(classes.textAlign, classes.usageText)}>
                                             Clicking 'Oskarito SpotiFest' takes you back to the festival matching. Click the search icon to search for festivals and artists. Click the account avatar to log out. Click the hamburger menu to get to the about page or to switch between dark/light mode.
                                         </Typography>
                                     </div>
@@ -755,35 +777,9 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                     </Paper>
                 </Box>
                 <Box className={classes.box}>
-                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
+                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth400)}>
                         <div className={classes.rowFlexCenter}>
-                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setAlgorithmExpanded(!algorithmExpanded)}>
-                                Matching algorithm
-                            </Typography>
-                            <IconButton
-                                className={clsx(classes.expand, {
-                                    [classes.expandOpen]: algorithmExpanded,
-                                })}
-                                onClick={() => setAlgorithmExpanded(!algorithmExpanded)}
-                                aria-expanded={algorithmExpanded}
-                                aria-label="show more"
-                            >
-                                <ExpandMoreIcon />
-                            </IconButton>
-                        </div>
-                        <Collapse in={algorithmExpanded} timeout="auto" unmountOnExit>
-                            <div className={classes.expandedDiv}>
-                                <Typography variant="body1" className={classes.textAlign}>
-                                    The "Match with" selector on top of the main page allows you to select a playlist or your most played artists as a match basis for festivals. The match score given to each festival is a combination of genre matching and artist matching to the selected match basis. The genre matching finds the genres of the match basis and checks how well these coincide with the genres of the festival. The artist score counts how many artists in the match basis are attending the festival. The more artists in the match basis, the more attending artists are needed for a high score. To see the individual genre and artist score for each festival you can hold the mouse pointer over the score circle on a pc or press and hold the score circle on a touch screen.
-                                </Typography>
-                            </div>
-                        </Collapse>
-                    </Paper>
-                </Box>
-                <Box className={classes.box}>
-                    <Paper elevation={3} className={clsx(classes.paper, classes.minWidth650)}>
-                        <div className={classes.rowFlexCenter}>
-                            <Typography variant={bigScreen ? "h4" : "h5"} onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}>
+                            <Typography variant={"h5"} onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}>
                                 Disclaimer
                             </Typography>
                             <IconButton
@@ -817,7 +813,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                 <Box className={classes.box2}>
                     <Paper elevation={3} className={clsx(classes.creatorPaper, classes.maxWidth400)}>
                         <div className={classes.flexColumn}>
-                            <Typography variant={bigScreen ? "h4" : "h5"} className={classes.textAlign}>
+                            <Typography variant={"h5"} className={classes.textAlign}>
                                 Created by
                             </Typography>
                             <Box className={thememode === 'light' ? clsx(classes.creatorImgBox, classes.roundedCorners) : clsx(classes.creatorImgBox, classes.darkerBackground)}>
