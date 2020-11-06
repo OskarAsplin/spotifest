@@ -499,7 +499,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
-                                                Backend written in Python with Django and SqlLite as database
+                                                Backend written in Python with Django and SQLite as database
                                             </Typography>
                                         </div>
                                     </Grid>
