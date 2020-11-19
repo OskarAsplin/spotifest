@@ -196,7 +196,7 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                 </div>
                 <Box className={clsx(classes.footerBox, classes.attributionShadow)}>
                     <Typography variant={bigScreen ? "body1" : "body2"} color={'secondary'} className={classes.footerFontSize}>
-                        Match your playlists with music festivals
+                        Find music festivals with your playlists
                     </Typography>
                     <Typography variant={bigScreen ? "body1" : "body2"} color={'secondary'} className={classes.footerFontSize}>
                         A festival finder created by <Link color={'primary'}
