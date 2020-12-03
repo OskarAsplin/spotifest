@@ -273,10 +273,9 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center'
         },
         socialButtonBackground: {
-            height: '54px',
-            width: '54px',
+            height: '46px',
+            width: '46px',
             borderRadius: '50%',
-            padding: theme.spacing(1),
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -292,12 +291,14 @@ const useStyles = makeStyles((theme: Theme) =>
             backgroundColor: '#000000'
         },
         githubSocialBug: {
+            margin: theme.spacing(1),
             width: '34px',
             height: '34px'
         },
         linkeidInSocialBug: {
-            width: '26px',
-            height: '26px'
+            margin: theme.spacing(0.75, 0.75, 1, 1),
+            width: '24px',
+            height: '24px'
         },
         usageImg: {
             width: '100%',
