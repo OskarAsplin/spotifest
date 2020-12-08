@@ -279,21 +279,13 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            boxShadow: theme.shadows[3],
         },
         linkedInSocialButton: {
             backgroundColor: '#2867b2',  //'#0069bb'
         },
-        githubSocialButtonDark: {
-            backgroundColor: '#ffffff'
-        },
-        githubSocialButtonLight: {
-            backgroundColor: '#000000'
-        },
         githubSocialBug: {
-            margin: theme.spacing(1),
-            width: '34px',
-            height: '34px'
+            width: '46px',
+            height: '46px'
         },
         linkeidInSocialBug: {
             margin: theme.spacing(0.75, 0.75, 1, 1),
@@ -830,8 +822,8 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     </div>
                                 </IconButton>
                                 <IconButton onClick={() => window.open("https://github.com/OskarAsplin", '_blank')}>
-                                    <div className={clsx(classes.socialButtonBackground, thememode === 'light' ? classes.githubSocialButtonLight : classes.githubSocialButtonDark)}>
-                                        <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Mark-Light.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Mark.png'}
+                                    <div className={classes.socialButtonBackground}>
+                                        <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Mark.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Mark-Light.png'}
                                             className={classes.githubSocialBug} alt="GitHub" />
                                     </div>
                                 </IconButton>
