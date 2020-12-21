@@ -524,6 +524,19 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                     <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
                                         <div className={classes.techInfoText}>
                                             <Typography variant="body1" className={classes.textAlign}>
+                                                Backend server environment contained with Docker
+                                            </Typography>
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
+                                        <div className={classes.iconsContainer}>
+                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/Docker-Logo-Blue.png' : process.env.PUBLIC_URL + '/techIcons/Docker-Logo-White.png'}
+                                            className={classes.mediumSize} alt="Digitalocean-icon" />
+                                        </div>
+                                    </Grid>
+                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
+                                        <div className={classes.techInfoText}>
+                                            <Typography variant="body1" className={classes.textAlign}>
                                                 Backend hosted on DigitalOcean running Ubuntu 20.04
                                             </Typography>
                                         </div>
@@ -613,7 +626,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                         target={"_blank"}
                                         rel="noopener noreferrer">
                                         Typescript Icon
-                                    </Link> on <Link color={'primary'}
+                                    </Link> by <Link color={'primary'}
                                         href="https://iconscout.com/contributors/icon-mafia"
                                         target={"_blank"}
                                         rel="noopener noreferrer">
