@@ -186,7 +186,7 @@ const LoginScreen: React.FC<Props> = (props: Props) => {
                                 props.dispatch(setLoggedIn());
                                 window.open(getAuthorizeHref(), '_self');
                             }}>
-                            <img src={process.env.PUBLIC_URL + '/techIcons/Spotify-Icon-White.png'}
+                            <img src={process.env.PUBLIC_URL + '/techIcons/Spotify-Mark-white.png'}
                                 className={bigScreen ? classes.spotifyIconBig : classes.spotifyIconSmall} alt="Spotify-icon" />
                             <Typography variant={bigScreen ? "h4" : "h6"} color={'secondary'}>
                                 Log in with Spotify

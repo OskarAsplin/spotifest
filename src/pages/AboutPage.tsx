@@ -1,9 +1,10 @@
 import React from 'react';
 import { AppState, DispatchProps } from "../redux/types";
 import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, IconButton, Collapse, List, ListItem, ListItemIcon, ListItemText, Grid, PaletteType } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, IconButton, Collapse, List, ListItem, ListItemIcon, ListItemText, PaletteType } from "@material-ui/core";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import AppBarView from "./parts/AppBarView";
+import TechStackContent from "./parts/TechStackContent";
 import makeStyles from "@material-ui/core/styles/makeStyles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import { lightBlue, pink } from "@material-ui/core/colors";
@@ -97,7 +98,7 @@ const useStyles = makeStyles((theme: Theme) =>
         box2: {
             width: '100%',
             maxWidth: '650px',
-            margin: theme.spacing(0, 2, 2, 2),
+            margin: theme.spacing(3, 2, 2, 2),
             justifyContent: 'center',
             alignItems: 'center',
             display: 'flex',
@@ -166,80 +167,6 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             alignItems: 'center',
         },
-        iconsContainer: {
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            '@media (max-width: 1039px)': {
-                justifyContent: 'center',
-                marginBottom: theme.spacing(5),
-            },
-            '@media (min-width: 1040px)': {
-                marginLeft: theme.spacing(5),
-            },
-        },
-        noMarginBottom: {
-            marginBottom: theme.spacing(0) + '!important',
-        },
-        iconDefaultHeight: {
-            height: '40px',
-        },
-        iconMarginLeft: {
-            '@media (min-width: 500px)': {
-                marginLeft: theme.spacing(5),
-            },
-            '@media (max-width: 499px)': {
-                marginLeft: theme.spacing(3),
-            },
-        },
-        mediumSize: {
-            '@media (min-width: 500px)': {
-                height: '40px',
-            },
-            '@media (max-width: 499px)': {
-                height: '35px',
-            },
-        },
-        smallSize: {
-            '@media (min-width: 500px)': {
-                height: '32px',
-                marginTop: '4px',
-                marginBottom: '4px'
-            },
-            '@media (max-width: 499px)': {
-                height: '24px',
-            },
-        },
-        reactIconSize: {
-            height: '54px',
-            marginTop: '-7px',
-            marginBottom: '-7px',
-        },
-        djangoIconSize: {
-            height: '50px',
-            marginTop: '-5px',
-            marginBottom: '-5px',
-        },
-        pythonRemoveRightSpace: {
-            marginRight: '-10px',
-        },
-        restrainIconDimensions: {
-            width: '40px',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-        },
-        techInfoText: {
-            display: 'flex',
-            '@media (min-width: 1040px)': {
-                flexDirection: 'row-reverse',
-            },
-            '@media (max-width: 1039px)': {
-                justifyContent: 'center',
-                alignItems: 'center',
-            },
-        },
         creatorImgBox: {
             width: '100%',
             display: 'flex',
@@ -256,10 +183,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         roundedCorners: {
             borderRadius: '5%',
-        },
-        licenses: {
-            width: '100%',
-            margin: theme.spacing(1),
         },
         noPadding: {
             padding: 0,
@@ -317,6 +240,10 @@ const useStyles = makeStyles((theme: Theme) =>
                 justifyContent: 'center',
                 alignItems: 'center',
             },
+            marginBottom: theme.spacing(4),
+            '&:last-child': {
+                marginBottom: 0,
+            }
         },
         usageBox: {
             display: 'flex',
@@ -336,6 +263,11 @@ interface StoreProps {
 
 type Props = DispatchProps & StoreProps;
 
+interface TechInfoRow {
+    text: string;
+    icons: { path: string, class: string }[];
+}
+
 const AboutPage: React.FC<Props> = (props: Props) => {
 
     const bigScreen = useMediaQuery('(min-width:610px)');
@@ -350,6 +282,8 @@ const AboutPage: React.FC<Props> = (props: Props) => {
     const [disclaimerExpanded, setDisclaimerExpanded] = React.useState(false);
 
     const { thememode } = props;
+
+    const lightMode: boolean = thememode === 'light';
 
     const muiTheme = createMuiTheme({
         typography: {
@@ -401,30 +335,18 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                     </Typography>
                     <div className={classes.verticalSpace} />
                     <List className={classes.noPadding}>
-                        <ListItem>
-                            <ListItemIcon>
-                                <MusicNote fontSize={'large'} />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="Festival matching with more than 500 festivals worldwide"
-                            />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemIcon>
-                                <MusicNote fontSize={'large'} />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="Festival pages with current and previous lineups"
-                            />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemIcon>
-                                <MusicNote fontSize={'large'} />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="Artist pages to see which festivals each artist is attending"
-                            />
-                        </ListItem>
+                        {["Festival matching with more than 500 festivals worldwide",
+                        "Festival pages with current and previous lineups",
+                        "Artist pages to see which festivals each artist is attending"].map((text, i) => {
+                            return (<ListItem key={'feature:' + i}>
+                                <ListItemIcon>
+                                    <MusicNote fontSize={'large'} />
+                                </ListItemIcon>
+                                <ListItemText
+                                    primary={text}
+                                />
+                            </ListItem>);
+                        })}
                     </List>
                 </Box>
                 <Box className={classes.techBox}>
@@ -445,234 +367,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                             </IconButton>
                         </div>
                         <Collapse in={techExpanded} timeout="auto" unmountOnExit>
-                            <div className={classes.expandedDiv}>
-                                <Grid container spacing={pcScreen ? 3 : 1} justify="center" alignItems="center">
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Frontend written in React with Typescript and Redux store
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <div className={classes.restrainIconDimensions}>
-                                                <img src={process.env.PUBLIC_URL + '/techIcons/React-icon.svg'} className={classes.reactIconSize} alt="React-icon" />
-                                            </div>
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/typescript.svg'} className={clsx(classes.iconDefaultHeight, classes.iconMarginLeft)} alt="Typescript-icon" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/redux.svg'} className={clsx(classes.iconDefaultHeight, classes.iconMarginLeft)} alt="Redux-icon" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                UI based on Material-UI
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/mui-logo.svg'}
-                                                className={classes.iconDefaultHeight} alt="MUI-logo" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Frontend hosted on Netlify
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/full-netlify-logo-light.svg' : process.env.PUBLIC_URL + '/techIcons/full-netlify-logo-dark.svg'}
-                                                className={classes.iconDefaultHeight} alt="Netlify-icon" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Backend written in Python with Django and SQLite as database
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/python-logo-generic.svg' : process.env.PUBLIC_URL + '/techIcons/python-logo-generic-white.svg'}
-                                                className={clsx(classes.iconDefaultHeight, classes.pythonRemoveRightSpace)} alt="Python-logo" />
-                                            <div className={clsx(classes.restrainIconDimensions, classes.iconMarginLeft)}>
-                                                <img src={process.env.PUBLIC_URL + '/techIcons/django-icon.svg'} className={classes.djangoIconSize} alt="Django-icon" />
-                                            </div>
-                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/SQLite.svg' : process.env.PUBLIC_URL + '/techIcons/SQLite-white.png'}
-                                                className={thememode === 'light' ? clsx(classes.iconDefaultHeight, classes.iconMarginLeft) : clsx(classes.iconDefaultHeight, classes.iconMarginLeft)} alt="Sqlite-icon" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Django server set up with Gunicorn and Nginx
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/large_gunicorn.png' : process.env.PUBLIC_URL + '/techIcons/large_gunicorn_white.png'}
-                                                className={classes.mediumSize} alt="Gunicorn-logo" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/Nginx_logo.svg'} className={clsx(classes.smallSize, classes.iconMarginLeft)} alt="Nginx-logo" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Backend server environment contained with Docker
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/Docker-Logo-Blue.png' : process.env.PUBLIC_URL + '/techIcons/Docker-Logo-White.png'}
-                                            className={classes.mediumSize} alt="Digitalocean-icon" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Backend hosted on DigitalOcean running Ubuntu 20.04
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/digitalocean.svg'} className={classes.mediumSize} alt="Digitalocean-icon" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/ubuntu-icon.svg'} className={clsx(classes.iconDefaultHeight, classes.iconMarginLeft)} alt="Ubuntu-icon" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Playlists and artists from Spotify using OAuth 2.0 authorization
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/Spotify-Logo-Green.png'} className={classes.iconDefaultHeight} alt="Spotify-logo" />
-                                            <img src={process.env.PUBLIC_URL + '/techIcons/oauth-2.png'} className={clsx(classes.iconDefaultHeight, classes.iconMarginLeft)} alt="Oauth-2-icon" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Lineup and festival information from Music Festival Wizard
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/MFW-logo-black.png' : process.env.PUBLIC_URL + '/techIcons/MFW-logo.png'}
-                                                className={classes.iconDefaultHeight} alt="MusicFestivalWizard-logo" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Code version control on GitHub
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.iconsContainer}>
-                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Logo.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Logo-White.png'}
-                                                className={classes.smallSize} alt="GitHub-logo" />
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={classes.techInfoText}>
-                                            <Typography variant="body1" className={classes.textAlign}>
-                                                Domain bought on NameCheap
-                                            </Typography>
-                                        </div>
-                                    </Grid>
-                                    <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-                                        <div className={clsx(classes.iconsContainer, classes.noMarginBottom)}>
-                                            <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/Namecheap-Logo.svg' : process.env.PUBLIC_URL + '/techIcons/Namecheap-Logo-white.png'}
-                                                className={classes.mediumSize} alt="Namecheap-logo" />
-                                        </div>
-                                    </Grid>
-                                </Grid>
-                            </div>
-                            <Box className={classes.licenses}>
-                                <div className={classes.verticalSpace} />
-                                <div className={classes.verticalSpace} />
-                                <div>
-                                    Icon licenses
-                                </div>
-                                <div>
-                                    Facebook, <Link color={'primary'}
-                                        href="https://commons.wikimedia.org/wiki/File:React-icon.svg"
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-                                        React-icon
-                                    </Link> / <Link color={'primary'}
-                                        href="https://creativecommons.org/licenses/by-sa/1.0/legalcode"
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-                                        CC BY-SA 1.0
-                                    </Link>
-                                </div>
-                                <div>
-                                    <Link color={'primary'}
-                                        href="https://iconscout.com/icons/typescript"
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-                                        Typescript Icon
-                                    </Link> by <Link color={'primary'}
-                                        href="https://iconscout.com/contributors/icon-mafia"
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-                                        Icon Mafia
-                                    </Link>
-                                </div>
-                                <div>
-                                    <Link color={'primary'}
-                                        href="https://iconscout.com/icons/redux"
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-                                        Redux Logo Icon
-                                    </Link> by <Link color={'primary'}
-                                        href="https://iconscout.com/contributors/icon-mafia"
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-                                        Icon Mafia
-                                    </Link>
-                                </div>
-                                <div>
-                                    <Link color={'primary'}
-                                        href="https://www.python.org/community/logos/"
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-                                        Python-logo
-                                    </Link> / <Link color={'primary'}
-                                        href="https://www.python.org/psf/trademarks/"
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-                                        PSF Trademark Usage Policy
-                                    </Link>
-                                </div>
-                                <div>
-                                    <Link color={'primary'}
-                                        href="https://icon-icons.com/icon/file-type-django/130645"
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-                                        Django Icon
-                                    </Link> / <Link color={'primary'}
-                                        href="https://creativecommons.org/licenses/by/4.0/"
-                                        target={"_blank"}
-                                        rel="noopener noreferrer">
-                                        CC BY 4.0
-                                    </Link>
-                                </div>
-                            </Box>
+                            <TechStackContent pcScreen={pcScreen} lightMode={lightMode}/>
                         </Collapse>
                     </Paper>
                 </Box>
@@ -757,20 +452,12 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                             Adjust the match settings on the main page to get your festival matches.
                                         </Typography>
                                     </div>
-                                    <div className={classes.verticalSpace} />
-                                    <div className={classes.verticalSpace} />
-                                    <div className={classes.verticalSpace} />
-                                    <div className={classes.verticalSpace} />
                                     <div className={classes.usagePart}>
                                         <img src={process.env.PUBLIC_URL + '/usageImages/festival-match-marked.jpg'} className={classes.usageImg} alt="festival-match-marked" />
                                         <Typography variant="body1" className={clsx(classes.textAlign, classes.usageText)}>
                                             Click on a festival title or image to see full lineups and more. Click on an artist icon to see the artist's future and past festivals and more. Click on 'popular artists at this festival' to see the most popular artists in the festival lineup.
                                         </Typography>
                                     </div>
-                                    <div className={classes.verticalSpace} />
-                                    <div className={classes.verticalSpace} />
-                                    <div className={classes.verticalSpace} />
-                                    <div className={classes.verticalSpace} />
                                     <div className={classes.usagePart}>
                                         <img src={process.env.PUBLIC_URL + '/usageImages/top-bar.jpg'} className={clsx(classes.usageImg, classes.topBarImg)} alt="top-bar" />
                                         <Typography variant="body1" className={clsx(classes.textAlign, classes.usageText)}>
@@ -813,16 +500,13 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </Collapse>
                     </Paper>
                 </Box>
-                <div className={classes.verticalSpace} />
-                <div className={classes.verticalSpace} />
-                <div className={classes.verticalSpace} />
                 <Box className={classes.box2}>
                     <Paper elevation={3} className={clsx(classes.creatorPaper, classes.maxWidth400)}>
                         <div className={classes.flexColumn}>
                             <Typography variant={"h5"} className={classes.textAlign}>
                                 Created by
                             </Typography>
-                            <Box className={thememode === 'light' ? clsx(classes.creatorImgBox, classes.roundedCorners) : clsx(classes.creatorImgBox, classes.darkerBackground)}>
+                            <Box className={lightMode ? clsx(classes.creatorImgBox, classes.roundedCorners) : clsx(classes.creatorImgBox, classes.darkerBackground)}>
                                 <img src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'} className={classes.creatorImage} alt="Creator" />
                             </Box>
                             <Typography variant="h6" className={classes.textAlign}>
@@ -831,12 +515,12 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                             <div className={classes.rowFlexCenter}>
                                 <IconButton onClick={() => window.open("https://www.linkedin.com/in/oskar-buset-asplin-22796314a", '_blank')}>
                                     <div className={clsx(classes.socialButtonBackground, classes.linkedInSocialButton)}>
-                                        <img src={process.env.PUBLIC_URL + '/techIcons/LI-In-Bug-white.png'} className={classes.linkeidInSocialBug} alt="LinkedIn" />
+                                        <img src={process.env.PUBLIC_URL + '/techIcons/LinkedIn-Bug.png'} className={classes.linkeidInSocialBug} alt="LinkedIn" />
                                     </div>
                                 </IconButton>
                                 <IconButton onClick={() => window.open("https://github.com/OskarAsplin", '_blank')}>
                                     <div className={classes.socialButtonBackground}>
-                                        <img src={thememode === 'light' ? process.env.PUBLIC_URL + '/techIcons/GitHub-Mark.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Mark-Light.png'}
+                                        <img src={lightMode ? process.env.PUBLIC_URL + '/techIcons/GitHub-Mark.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Mark-white.png'}
                                             className={classes.githubSocialBug} alt="GitHub" />
                                     </div>
                                 </IconButton>
