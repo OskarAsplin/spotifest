@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, Model } from "../../redux/types";
+import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, UserInfo } from "../../redux/types";
 import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, setShowPlaylistModal } from "../../redux/actions";
 import { getIconPicture, getBigPicture, displayedLocationName } from "../../utils/utils";
 import { connect } from "react-redux";
@@ -156,7 +156,6 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface StoreProps {
-	model: Model;
 	thememode: PaletteType,
 	matchingMethod: MatchingMethod,
 	playlists: Playlist[],
@@ -167,7 +166,10 @@ interface StoreProps {
 	matchSettings: MatchSettings,
 	showPlaylistModal: boolean,
 	topArtistsLoaded: boolean,
-	playlistsLoaded: boolean
+	playlistsLoaded: boolean,
+	isDbOnline: boolean,
+	userInfo?: UserInfo,
+	countTopArtists: number
 }
 
 type Props = DispatchProps & StoreProps;
@@ -186,9 +188,12 @@ const topArtistsChoice = '__your__top__artists__';
 
 const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
+	const { thememode, playlists, topArtists, selectedPlaylistArtists, countries, continents, dispatch, matchSettings, showPlaylistModal } = props;
+	const { topArtistsLoaded, playlistsLoaded, isDbOnline, userInfo, countTopArtists } = props;
+
 	useEffect(() => {
 		const matchRequestIsValid = matchSettings.matchBasis === topArtistsChoice ? topArtists.length !== 0 : selectedPlaylistArtists.length !== 0;
-		if (!props.model.isDbOnline && matchRequestIsValid) {
+		if (!isDbOnline && matchRequestIsValid) {
 			testMatchesWithGivenSettings(
 				matchSettings.area,
 				new Date(Date.parse(matchSettings.fromDate)),
@@ -203,8 +208,6 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	const smallScreen = useMediaQuery('(max-width:610px)');
 	const pcScreen = useMediaQuery('(min-width:1200px)');
 
-	const { thememode, playlists, topArtists, selectedPlaylistArtists, countries, continents, dispatch, matchSettings, showPlaylistModal, topArtistsLoaded, playlistsLoaded } = props;
-
 	const indigoOrangeMuiTheme = createMuiTheme({
 		palette: {
 			primary: {
@@ -217,7 +220,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 				main: deepOrange[500],
 				dark: deepOrange[700]
 			},
-			type: props.model.thememode
+			type: thememode
 		}
 	});
 
@@ -260,14 +263,14 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 			return;
 		}
 		if (playlistName === topArtistsChoice) {
-            dispatch(setMatchSettings({ ...matchSettings, matchBasis: playlistName, numTracks: props.model.countTopArtists }));
+            dispatch(setMatchSettings({ ...matchSettings, matchBasis: playlistName, numTracks: countTopArtists }));
 			testMatchesWithGivenSettings(
 				matchSettings.area,
 				new Date(Date.parse(matchSettings.fromDate)),
 				new Date(Date.parse(matchSettings.toDate)),
 				playlistName,
 				selectedPlaylistArtists,
-				props.model.countTopArtists);
+				countTopArtists);
 			return;
 		}
 
@@ -392,7 +395,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 
 	const classes = useStyles();
 
-	if (!props.model.isDbOnline) {
+	if (!isDbOnline) {
 		return (<div />);
 	}
 
@@ -582,14 +585,14 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									className={classes.button}
 									onClick={() => {
 										dispatch(setShowPlaylistModal(false));
-                                    	dispatch(setMatchSettings({ ...matchSettings, matchBasis: topArtistsChoice, numTracks: props.model.countTopArtists }));
+                                    	dispatch(setMatchSettings({ ...matchSettings, matchBasis: topArtistsChoice, numTracks: countTopArtists }));
 										testMatchesWithGivenSettings(
 											matchSettings.area,
 											new Date(Date.parse(matchSettings.fromDate)),
 											new Date(Date.parse(matchSettings.toDate)),
 											topArtistsChoice,
 											selectedPlaylistArtists,
-											props.model.countTopArtists);
+											countTopArtists);
 									}}>
 									<Typography variant={smallScreen ? "h6" : "h4"}>
 										<Box fontWeight="fontWeightBold">
@@ -599,8 +602,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 								</Button>
 							</Box>}
 						{topArtistsLoaded && playlistsLoaded && topArtists.length === 0 && playlists.length === 0 &&
-							<Typography>We can't find any listening habits or playlists to use for our festival matching. Go to your {(props.model.userInfo && props.model.userInfo.spotifyUrl) ? <Link color={'primary'}
-                                    href={props.model.userInfo.spotifyUrl}
+							<Typography>We can't find any listening habits or playlists to use for our festival matching. Go to your {(userInfo && userInfo.spotifyUrl) ? <Link color={'primary'}
+                                    href={userInfo.spotifyUrl}
                                     target={"_blank"}
                                     rel="noopener noreferrer">
 								Spotify profile
@@ -613,7 +616,6 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-	model: state.model,
 	thememode: state.model.thememode,
 	matchingMethod: state.model.matchingMethod,
 	playlists: state.model.playlists,
@@ -625,6 +627,9 @@ const mapStateToProps = (state: AppState) => ({
 	showPlaylistModal: state.model.showPlaylistModal,
 	topArtistsLoaded: state.model.topArtistsLoaded,
 	playlistsLoaded: state.model.playlistsLoaded,
+	isDbOnline: state.model.isDbOnline,
+	userInfo: state.model.userInfo,
+	countTopArtists: state.model.countTopArtists
 });
 
 const mapDispatchToProps = (dispatch: any) => {

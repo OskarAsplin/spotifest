@@ -1,6 +1,5 @@
 import React from 'react';
-import { DispatchProps, Artist } from "../../redux/types";
-import { connect } from "react-redux";
+import { Artist } from "../../redux/types";
 import { createStyles, Theme, Avatar, IconButton, Typography, PaletteType } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
 import { blueGrey } from "@material-ui/core/colors";
@@ -73,7 +72,7 @@ interface OwnProps {
     thememode: PaletteType,
 }
 
-type Props = DispatchProps & OwnProps;
+type Props = OwnProps;
 
 const ArtistBubble: React.FC<Props> = (props: Props) => {
 
@@ -110,12 +109,4 @@ const ArtistBubble: React.FC<Props> = (props: Props) => {
     );
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        dispatch
-    }
-};
-
-export default connect(
-    mapDispatchToProps
-)(ArtistBubble);
+export default ArtistBubble;

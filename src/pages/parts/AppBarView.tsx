@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { createStyles, makeStyles, Theme, createMuiTheme } from '@material-ui/core/styles';
-import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider, Button, InputAdornment, TextField, Paper, Box, CircularProgress, ClickAwayListener, Drawer, Slide, useScrollTrigger } from '@material-ui/core';
+import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider, Button, InputAdornment, TextField, Paper, Box, CircularProgress, ClickAwayListener, Drawer, Slide, useScrollTrigger, PaletteType } from '@material-ui/core';
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { Brightness2, Brightness4 } from "@material-ui/icons";
-import { Model, AppState, DispatchProps, SearchResponse } from "../../redux/types";
+import { UserInfo, AppState, DispatchProps, SearchResponse } from "../../redux/types";
 import { connect } from "react-redux";
 import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../../redux/actions";
 import { lightBlue, blueGrey } from "@material-ui/core/colors";
@@ -150,7 +150,9 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface StoreProps {
-    model: Model
+    thememode: PaletteType;
+    userInfo?: UserInfo;
+    loggedIn: boolean
 }
 
 type Props = StoreProps & DispatchProps;
@@ -197,7 +199,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
     const useSearchDb = () => useDebouncedSearch((text: any) => searchDatabase(text))
 
     const classes = useStyles();
-    const { dispatch } = props;
+    const { dispatch, thememode, userInfo, loggedIn } = props;
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const { inputText, setInputText, searchResults } = useSearchDb();
     const [searchBlur, setSearchBlur] = useState([false, false]);
@@ -255,10 +257,10 @@ const AppBarView: React.FC<Props> = (props: Props) => {
             },
             secondary: {
                 light: blueGrey[700],
-                main: props.model.thememode === 'dark' ? blueGrey[800] : blueGrey[700],
+                main: thememode === 'dark' ? blueGrey[800] : blueGrey[700],
                 dark: blueGrey[900],
             },
-            type: props.model.thememode
+            type: thememode
         }
     });
 
@@ -274,7 +276,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
             },
             secondary: {
                 light: blueGrey[700],
-                main: props.model.thememode === 'dark' ? blueGrey[800] : blueGrey[700],
+                main: thememode === 'dark' ? blueGrey[800] : blueGrey[700],
                 dark: blueGrey[900],
             },
             background: {
@@ -454,10 +456,10 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                         color="inherit"
                                         aria-describedby={id}
                                         onClick={handleClick}
-                                        className={props.model.userInfo?.profilePictureUrl ? classes.profilePicture : classes.marginLeft}
+                                        className={userInfo?.profilePictureUrl ? classes.profilePicture : classes.marginLeft}
                                     >
-                                        {props.model.userInfo?.profilePictureUrl ?
-                                            <Avatar src={props.model.userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
+                                        {userInfo?.profilePictureUrl ?
+                                            <Avatar src={userInfo.profilePictureUrl} alt="" className={classes.profileImg} />
                                             : <AccountCircleIcon />}
                                     </IconButton>
                                 </MuiThemeProvider>
@@ -476,20 +478,20 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                     }}
                                 >
                                     <div className={classes.popover}>
-                                        {props.model.userInfo?.displayName &&
+                                        {userInfo?.displayName &&
                                             <Typography variant="body1" className={classes.bottomMargin}>
-                                                {props.model.userInfo.displayName}
+                                                {userInfo.displayName}
                                             </Typography>
                                         }
-                                        {props.model.userInfo && props.model.userInfo.spotifyUrl &&
+                                        {userInfo && userInfo.spotifyUrl &&
                                             <Link color={'primary'}
-                                                href={props.model.userInfo.spotifyUrl}
+                                                href={userInfo.spotifyUrl}
                                                 target={"_blank"}
                                                 rel="noopener noreferrer"
                                                 className={classes.bottomMargin}>
                                                 View profile in Spotify
                                             </Link>}
-                                        {props.model.loggedIn && < Link color={'primary'}
+                                        {loggedIn && < Link color={'primary'}
                                             href={`https://accounts.spotify.com/en/logout`}
                                             target="_blank"
                                             rel="noopener noreferrer"
@@ -507,7 +509,7 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                             </Toolbar>
                         </AppBar>
                         {showSearchFieldSmallScreen && <div className={classes.fullWidthAndReverse}>
-                            <Paper className={clsx(classes.fixedWidthAbsolute, classes.searchBarMarginTop)} style={{ backgroundColor: props.model.thememode === 'dark' ? blueGrey[800] : blueGrey[700] }}>
+                            <Paper className={clsx(classes.fixedWidthAbsolute, classes.searchBarMarginTop)} style={{ backgroundColor: thememode === 'dark' ? blueGrey[800] : blueGrey[700] }}>
                                 {getSearchFieldAndResults()}
                             </Paper>
                         </div>}
@@ -526,11 +528,11 @@ const AppBarView: React.FC<Props> = (props: Props) => {
                                 <ListItemText primary='About' />
                             </ListItem>
                             <ListItem button key='Brightness' onClick={() => {
-                                props.model.thememode === 'light'
+                                thememode === 'light'
                                     ? dispatch(switchToDarkMode())
                                     : dispatch(switchToLightMode());
                             }}>
-                                <ListItemIcon>{props.model.thememode === 'light' ? <Brightness2 /> : <Brightness4 />}</ListItemIcon>
+                                <ListItemIcon>{thememode === 'light' ? <Brightness2 /> : <Brightness4 />}</ListItemIcon>
                                 <ListItemText primary='Brightness' />
                             </ListItem>
                         </List>
@@ -542,7 +544,9 @@ const AppBarView: React.FC<Props> = (props: Props) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    model: state.model,
+    thememode: state.model.thememode,
+    userInfo: state.model.userInfo,
+    loggedIn: state.model.loggedIn,
 });
 
 const mapDispatchToProps = (dispatch: any) => {
