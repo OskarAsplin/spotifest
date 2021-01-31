@@ -1,0 +1,266 @@
+@use 'base';
+
+$dis: base.$spacing;
+
+.appBarSpace {
+    padding-bottom: 6 * $dis;
+}
+
+.root {
+    display: flex;
+    flex-direction: column;
+    @media (min-width: 440px) {
+        padding: 0*$dis 2*$dis 0*$dis 2*$dis;
+    }
+    @media (max-width: 439px) {
+        padding: 0*$dis 1*$dis 0*$dis 1*$dis;
+    }
+    justify-content: center;
+    align-items: center;
+    width: 100%
+}
+
+.verticalSpace {
+    display: flex;
+    padding: 1*$dis 0*$dis 0*$dis 0*$dis;
+    justify-content: center;
+    align-items: center;
+    width: 100%
+}
+
+.paperTop {
+    display: flex;
+    flex-direction: column;
+    @media (min-width: 610px) {
+        padding: 0.5*$dis 2*$dis 0.5*$dis 2*$dis;
+    }
+    @media (max-width: 609px) {
+        @media (min-width: 440px) {
+            padding: 0.5*$dis 1*$dis 0.5*$dis 1*$dis;
+        }
+    }
+    @media (max-width: 439px) {
+        padding: 0.5*$dis 0*$dis 0.5*$dis 0*$dis;
+    }
+    justify-content: center;
+    align-items: center;
+}
+
+.paper {
+    display: flex;
+    flex-direction: column;
+    @media (min-width: 610px) {
+        padding: 0.5*$dis 3*$dis 0.5*$dis 3*$dis;
+    }
+    @media (max-width: 609px) {
+        padding: 0.5*$dis 2*$dis 0.5*$dis 2*$dis;
+    }
+    justify-content: center;
+    align-items: center;
+}
+
+.creatorPaper {
+    display: flex;
+    flex-direction: column;
+    padding: 1*$dis 0*$dis 1*$dis 0*$dis;
+    justify-content: center;
+    align-items: center;
+}
+
+.maxWidth400 {
+    width: 100%;
+    max-width: 400px
+}
+
+.minWidth400 {
+    @media (min-width: 550px) {
+        min-width: 400px
+    }
+    @media (max-width: 549px) {
+        width: 100%
+    }
+}
+
+.box {
+    @media (max-width: 549px) {
+        width: 100%
+    }
+    max-width: 650px;
+    margin: 0*$dis 2*$dis 2*$dis 2*$dis;
+}
+
+.box2 {
+    width: 100%;
+    max-width: 650px;
+    margin: 3*$dis 2*$dis 2*$dis 2*$dis;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column
+}
+
+.techBox {
+    @media (max-width: 549px) {
+        width: 100%
+    }
+    @media (max-width: 1039px) {
+        max-width: 650px;
+    }
+    @media (min-width: 1040px) {
+        max-width: 1000px;
+    }
+    margin: 0*$dis 2*$dis 2*$dis 2*$dis;
+}
+
+.supportExpandedBox {
+    width: 100%;
+    max-width: 650px;
+    margin: 0*$dis 2*$dis 2*$dis 2*$dis;
+}
+
+.flexColumn {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center
+}
+
+.expandedDiv {
+    padding-bottom: 1*$dis;
+    padding-top: 1*$dis;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.textAlign {
+    @media (max-width: 609px) {
+        text-align: center;
+    }
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+}
+
+.topLeft {
+    position: absolute;
+    top: 8*$dis;
+    left: 2*$dis;
+}
+
+.rowFlexCenter {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.creatorImgBox {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1*$dis 0*$dis 1*$dis 0*$dis;
+}
+
+.darkerBackground {
+    background-color: #383838
+}
+
+.creatorImage {
+    width: 75%;
+    max-width: 300px
+}
+
+.roundedCorners {
+    border-radius: 5%;
+}
+
+.noPadding {
+    padding: 0,
+}
+
+.starIcon {
+    margin-left: 4px;
+    margin-right: 4px
+}
+
+.adjustTextForStar {
+    display: flex;
+    align-items: center
+}
+
+.socialButtonBackground {
+    height: 46px;
+    width: 46px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.linkedInSocialButton {
+    background-color: #2867b2;  //#0069bb
+}
+
+.githubSocialBug {
+    width: 46px;
+    height: 46px
+}
+
+.linkeidInSocialBug {
+    margin: 0.75*$dis 0.75*$dis 1*$dis 1*$dis;
+    width: 24px;
+    height: 24px
+}
+
+.usageImg {
+    width: 100%;
+    margin-bottom: 1*$dis;
+    @media (min-width: 720px) {
+        margin-left: 4*$dis;
+        max-width: 50%;
+    }
+
+    @media (max-width: 719px) {
+        max-width: 315px;
+    }
+}
+
+.topBarImg {
+    max-height: 44px
+}
+
+.usagePart {
+    display: flex;
+    @media (min-width: 720px) {
+        flex-direction: row-reverse;
+        justify-content: space-between;
+    }
+    @media (max-width: 719px) {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    margin-bottom: 4*$dis;
+    last-child {
+        margin-bottom: 0,
+    }
+}
+
+.usageBox {
+    display: flex;
+    flex-direction: column
+}
+
+.usageText {
+    @media (min-width: 720px) {
+        max-width: 50%
+    }
+}
