@@ -1,0 +1,86 @@
+@use 'base';
+
+$dis: base.$spacing;
+
+.licenses {
+    width: 100%;
+    margin: 1*$dis;
+    padding-top: 2*$dis;
+}
+
+.iconsContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    @media (max-width: 1039px) {
+        justify-content: center;
+        margin-bottom: 5*$dis;
+    }
+    @media (min-width: 1040px) {
+        margin-left: 5*$dis;
+    }
+}
+
+.iconDefaultHeight {
+    height: 40px;
+}
+
+.iconMarginLeft {
+    @media (min-width: 500px) {
+        margin-left: 5*$dis;
+    }
+    @media (max-width: 499px) {
+        margin-left: 3*$dis;
+    }
+}
+
+.mediumSize {
+    @media (min-width: 500px) {
+        height: 40px;
+    }
+    @media (max-width: 499px) {
+        height: 35px;
+    }
+}
+
+.smallSize {
+    @media (min-width: 500px) {
+        height: 32px;
+        margin-top: 4px;
+        margin-bottom: 4px
+    }
+    @media (max-width: 499px) {
+        height: 24px;
+    }
+}
+
+.reactIconSize {
+    height: 54px;
+    margin-top: -7px;
+    margin-bottom: -7px;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.djangoIconSize {
+    height: 50px;
+    margin-top: -5px;
+    margin-bottom: -5px;
+    margin-right: -8px;
+}
+
+.pythonRemoveRightSpace {
+    margin-right: -18px; // -10 for python and -8 for Django
+    margin-bottom: -4px;
+}
+
+.techInfoText {
+    display: flex;
+    @media (min-width: 1040px) {
+        flex-direction: row-reverse;
+    }
+    @media (max-width: 1039px) {
+        justify-content: center;
+        align-items: center;
+    }
+}
