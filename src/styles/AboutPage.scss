@@ -1,18 +1,18 @@
 @use 'base';
 
 $dis: base.$spacing;
-
-.appBarSpace {
-    padding-bottom: 6 * $dis;
-}
+$mediumScreen: base.$mediumScreen;
+$bigScreen: base.$bigScreen;
+$biggerScreen: 720px;
+$fullTechView: 1040px;
 
 .root {
     display: flex;
     flex-direction: column;
-    @media (min-width: 440px) {
+    @media (min-width: $mediumScreen) {
         padding: 0*$dis 2*$dis 0*$dis 2*$dis;
     }
-    @media (max-width: 439px) {
+    @media (max-width: $mediumScreen - 1) {
         padding: 0*$dis 1*$dis 0*$dis 1*$dis;
     }
     justify-content: center;
@@ -31,15 +31,15 @@ $dis: base.$spacing;
 .paperTop {
     display: flex;
     flex-direction: column;
-    @media (min-width: 610px) {
+    @media (min-width: $bigScreen) {
         padding: 0.5*$dis 2*$dis 0.5*$dis 2*$dis;
     }
-    @media (max-width: 609px) {
-        @media (min-width: 440px) {
+    @media (max-width: $bigScreen - 1) {
+        @media (min-width: $mediumScreen) {
             padding: 0.5*$dis 1*$dis 0.5*$dis 1*$dis;
         }
     }
-    @media (max-width: 439px) {
+    @media (max-width: $mediumScreen - 1) {
         padding: 0.5*$dis 0*$dis 0.5*$dis 0*$dis;
     }
     justify-content: center;
@@ -49,10 +49,10 @@ $dis: base.$spacing;
 .paper {
     display: flex;
     flex-direction: column;
-    @media (min-width: 610px) {
+    @media (min-width: $bigScreen) {
         padding: 0.5*$dis 3*$dis 0.5*$dis 3*$dis;
     }
-    @media (max-width: 609px) {
+    @media (max-width: $bigScreen - 1) {
         padding: 0.5*$dis 2*$dis 0.5*$dis 2*$dis;
     }
     justify-content: center;
@@ -103,10 +103,10 @@ $dis: base.$spacing;
     @media (max-width: 549px) {
         width: 100%
     }
-    @media (max-width: 1039px) {
+    @media (max-width: $fullTechView - 1) {
         max-width: 650px;
     }
-    @media (min-width: 1040px) {
+    @media (min-width: $fullTechView) {
         max-width: 1000px;
     }
     margin: 0*$dis 2*$dis 2*$dis 2*$dis;
@@ -136,7 +136,7 @@ $dis: base.$spacing;
 }
 
 .textAlign {
-    @media (max-width: 609px) {
+    @media (max-width: $bigScreen - 1) {
         text-align: center;
     }
 }
@@ -223,12 +223,12 @@ $dis: base.$spacing;
 .usageImg {
     width: 100%;
     margin-bottom: 1*$dis;
-    @media (min-width: 720px) {
+    @media (min-width: $biggerScreen) {
         margin-left: 4*$dis;
         max-width: 50%;
     }
 
-    @media (max-width: 719px) {
+    @media (max-width: $biggerScreen - 1) {
         max-width: 315px;
     }
 }
@@ -243,7 +243,7 @@ $dis: base.$spacing;
         flex-direction: row-reverse;
         justify-content: space-between;
     }
-    @media (max-width: 719px) {
+    @media (max-width: $biggerScreen - 1) {
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -260,7 +260,7 @@ $dis: base.$spacing;
 }
 
 .usageText {
-    @media (min-width: 720px) {
+    @media (min-width: $biggerScreen) {
         max-width: 50%
     }
 }

@@ -1,14 +1,12 @@
-import React, { useEffect } from 'react';
-import { AppState, DispatchProps, FestivalMatch, Artist, PopularArtistsDict } from "../../redux/types";
-import { getPopularArtistsInLineups, setCurrentPage } from "../../redux/actions";
-import { connect } from "react-redux";
-import { createStyles, Theme, Typography } from "@material-ui/core";
-import Pagination from '@material-ui/lab/Pagination';
+import { createStyles, Theme, Typography, Box } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-import 'react-circular-progressbar/dist/styles.css';
-import Box from '@material-ui/core/Box';
-import FestivalMatchItem from './FestivalMatchItem';
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import Pagination from '@material-ui/lab/Pagination';
+import React, { useEffect } from 'react';
+import { connect } from "react-redux";
+import { getPopularArtistsInLineups, setCurrentPage } from "../../redux/actions";
+import { AppState, DispatchProps, FestivalMatch, Artist, PopularArtistsDict } from "../../redux/types";
+import FestivalMatchItem from './FestivalMatchItem';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({

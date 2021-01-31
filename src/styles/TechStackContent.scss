@@ -1,6 +1,9 @@
 @use 'base';
+@use 'AboutPage';
 
 $dis: base.$spacing;
+$fullRowViewWidth: AboutPage.$fullTechView;
+$bigMarginsWidth: 500px;
 
 .licenses {
     width: 100%;
@@ -12,11 +15,11 @@ $dis: base.$spacing;
     display: flex;
     flex-direction: row;
     align-items: center;
-    @media (max-width: 1039px) {
+    @media (max-width: $fullRowViewWidth - 1) {
         justify-content: center;
         margin-bottom: 5*$dis;
     }
-    @media (min-width: 1040px) {
+    @media (min-width: $fullRowViewWidth) {
         margin-left: 5*$dis;
     }
 }
@@ -26,30 +29,30 @@ $dis: base.$spacing;
 }
 
 .iconMarginLeft {
-    @media (min-width: 500px) {
+    @media (min-width: $bigMarginsWidth) {
         margin-left: 5*$dis;
     }
-    @media (max-width: 499px) {
+    @media (max-width: $bigMarginsWidth - 1) {
         margin-left: 3*$dis;
     }
 }
 
 .mediumSize {
-    @media (min-width: 500px) {
+    @media (min-width: $bigMarginsWidth) {
         height: 40px;
     }
-    @media (max-width: 499px) {
+    @media (max-width: $bigMarginsWidth - 1) {
         height: 35px;
     }
 }
 
 .smallSize {
-    @media (min-width: 500px) {
+    @media (min-width: $bigMarginsWidth) {
         height: 32px;
         margin-top: 4px;
         margin-bottom: 4px
     }
-    @media (max-width: 499px) {
+    @media (max-width: $bigMarginsWidth - 1) {
         height: 24px;
     }
 }
@@ -76,10 +79,10 @@ $dis: base.$spacing;
 
 .techInfoText {
     display: flex;
-    @media (min-width: 1040px) {
+    @media (min-width: $fullRowViewWidth) {
         flex-direction: row-reverse;
     }
-    @media (max-width: 1039px) {
+    @media (max-width: $fullRowViewWidth - 1) {
         justify-content: center;
         align-items: center;
     }

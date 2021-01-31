@@ -1,34 +1,27 @@
-import React, { useEffect } from 'react';
-import { AppState, DispatchProps, FestivalInfo } from "../redux/types";
-import { turnOnLoader, turnOffLoader } from "../redux/actions";
-import { getMaxArtistsInFullLineupWidth, displayedLocationName } from "../utils/utils";
-import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, Paper, Box, Link, Button, Tabs, Tab, PaletteType, Switch, useTheme, IconButton } from "@material-ui/core";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import AppBarView from "./parts/AppBarView";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, Paper, Box, Link, Button, Tabs, Tab, PaletteType, Switch, useTheme, IconButton, CircularProgress } from "@material-ui/core";
 import { deepOrange, indigo, lightBlue, pink } from "@material-ui/core/colors";
-import { Model } from "../redux/types";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
-import 'react-circular-progressbar/dist/styles.css';
-import { fetchToJson } from "../utils/restUtils";
-import ArtistBubble from './parts/ArtistBubble';
-import SwipeableViews from 'react-swipeable-views';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
-import { Redirect } from 'react-router-dom';
-import { getApiBaseUrl } from '../utils/restUtils';
-import ReactPlayer from 'react-player/lazy';
 import clsx from 'clsx';
-import ReactCountryFlag from "react-country-flag";
+import React, { useEffect } from 'react';
 import CookieConsent from "react-cookie-consent";
+import ReactCountryFlag from "react-country-flag";
+import ReactPlayer from 'react-player/lazy';
+import { connect } from "react-redux";
 import { RouteComponentProps } from 'react-router';
+import { Redirect } from 'react-router-dom';
+import SwipeableViews from 'react-swipeable-views';
+import { turnOnLoader, turnOffLoader } from "../redux/actions";
+import { AppState, DispatchProps, FestivalInfo, Model } from "../redux/types";
+import '../styles/base.scss';
+import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
+import { getMaxArtistsInFullLineupWidth, displayedLocationName } from "../utils/utils";
+import AppBarView from "./parts/AppBarView";
+import ArtistBubble from './parts/ArtistBubble';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        appBarSpace: {
-            paddingBottom: theme.spacing(6),
-        },
         root: {
             display: 'flex',
             flexDirection: 'column',
@@ -94,13 +87,6 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'
-        },
-        progressBar: {
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            marginTop: '-50px',
-            marginLeft: '-50px'
         },
         box: {
             width: '100%',
@@ -392,7 +378,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 <AppBarView />
-                <div className={classes.appBarSpace} />
+                <div className='appBarSpace' />
                 <div className={classes.align}>
                     <div className={classes.verticalSpace} />
                     <div className={classes.verticalSpace} />
@@ -412,7 +398,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                         </Typography>
                     }
                 </div>
-                <div hidden={!loaderOn} className={classes.progressBar}>
+                <div hidden={!loaderOn} className='progressBar'>
                     <CircularProgress size={100} thickness={3} color={'secondary'} />
                 </div>
             </MuiThemeProvider>
@@ -422,7 +408,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 <AppBarView />
-                <div className={classes.appBarSpace} />
+                <div className='appBarSpace' />
                 {pcScreen && <div className={classes.topLeft}>
                     <IconButton
                         onClick={() => {
@@ -564,7 +550,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                         </Box>
                     }
                 </div>
-                <div hidden={!loaderOn} className={classes.progressBar}>
+                <div hidden={!loaderOn} className='progressBar'>
                     <CircularProgress size={100} thickness={3} color={'secondary'} />
                 </div>
                 {festivalInfo.video && <CookieConsent

@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
-import { createStyles, makeStyles, Theme, createMuiTheme } from '@material-ui/core/styles';
-import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider, Button, InputAdornment, TextField, Paper, Box, CircularProgress, ClickAwayListener, Drawer, Slide, useScrollTrigger, PaletteType } from '@material-ui/core';
-import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { Brightness2, Brightness4 } from "@material-ui/icons";
-import { UserInfo, AppState, DispatchProps, SearchResponse } from "../../redux/types";
-import { connect } from "react-redux";
-import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../../redux/actions";
+import { IconButton, Typography, Toolbar, AppBar, Avatar, Popover, Link, MuiThemeProvider, Button } from '@material-ui/core';
+import { InputAdornment, TextField, Paper, Box, CircularProgress, ClickAwayListener, Drawer, Slide } from '@material-ui/core';
+import { useScrollTrigger, PaletteType, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { lightBlue, blueGrey } from "@material-ui/core/colors";
+import { createStyles, makeStyles, Theme, createMuiTheme } from '@material-ui/core/styles';
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import { Brightness2, Brightness4 } from "@material-ui/icons";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import InfoIcon from '@material-ui/icons/Info';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from "@material-ui/icons/Search";
-import InfoIcon from '@material-ui/icons/Info';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
-import useConstant from 'use-constant';
-import { useAsync } from 'react-async-hook';
-import { fetchToJson, getApiBaseUrl } from "../../utils/restUtils";
-import { Redirect } from 'react-router-dom';
 import clsx from 'clsx';
+import React, { useState } from 'react';
+import { useAsync } from 'react-async-hook';
+import { connect } from "react-redux";
+import { Redirect } from 'react-router-dom';
+import useConstant from 'use-constant';
+import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../../redux/actions";
+import { UserInfo, AppState, DispatchProps, SearchResponse } from "../../redux/types";
+import { fetchToJson, getApiBaseUrl } from "../../utils/restUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

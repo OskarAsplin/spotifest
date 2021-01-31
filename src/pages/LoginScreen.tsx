@@ -1,14 +1,13 @@
-import React, { useEffect } from 'react';
-import { DispatchProps } from "../redux/types";
-import { connect } from "react-redux";
 import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Typography, Button, Link } from "@material-ui/core";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import { setLoggedIn, setLoggedOff } from "../redux/actions";
+import { lightBlue } from "@material-ui/core/colors";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import clsx from 'clsx';
-import { lightBlue } from "@material-ui/core/colors";
+import React, { useEffect } from 'react';
+import { connect } from "react-redux";
 import { getAuthorizeHref } from '../oauthConfig';
+import { setLoggedIn, setLoggedOff } from "../redux/actions";
+import { DispatchProps } from "../redux/types";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

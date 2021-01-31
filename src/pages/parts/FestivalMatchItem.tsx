@@ -1,17 +1,17 @@
-import React from 'react';
-import { AppState, DispatchProps, FestivalMatch, MatchingMethod, Artist } from "../../redux/types";
-import { getMaxArtistsInWidth, displayedLocationName } from "../../utils/utils";
-import { connect } from "react-redux";
 import { createStyles,  Theme, Paper, IconButton, Button, Collapse, Typography, Box, PaletteType, Tooltip } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
+import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import clsx from 'clsx';
+import React from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import clsx from 'clsx';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import { Redirect } from 'react-router-dom';
-import ArtistBubble from './ArtistBubble';
-import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import ReactCountryFlag from "react-country-flag";
+import { connect } from "react-redux";
+import { Redirect } from 'react-router-dom';
+import { AppState, DispatchProps, FestivalMatch, MatchingMethod, Artist } from "../../redux/types";
+import { getMaxArtistsInWidth, displayedLocationName } from "../../utils/utils";
+import ArtistBubble from './ArtistBubble';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

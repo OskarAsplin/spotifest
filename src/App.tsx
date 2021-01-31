@@ -1,23 +1,16 @@
 import React from 'react';
-import './App.scss';
-
-import configureStore from "./configureStore";
-import { PersistGate } from 'redux-persist/integration/react';
-import { Provider } from "react-redux";
-//import { Route, Switch } from "react-router";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { IntlProvider } from "react-intl";
-import { texts } from "./texts/texts";
-//import './App.less';
-//import UserGuide from "./pages/UserGuide";
-//import NotFound from "./components/notFound";
-//import Example from "./pages/Example";
-import V1 from "./pages/V1";
-import LoginScreen from "./pages/LoginScreen";
+import { Provider } from "react-redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { PersistGate } from 'redux-persist/integration/react';
+import './App.scss';
+import configureStore from "./configureStore";
+import AboutPage from "./pages/AboutPage";
 import ArtistPage from "./pages/ArtistPage";
 import FestivalPage from "./pages/FestivalPage";
-import AboutPage from "./pages/AboutPage";
-
+import LoginScreen from "./pages/LoginScreen";
+import V1 from "./pages/V1";
+import { texts } from "./texts/texts";
 
 const { store, persistor } = configureStore();
 
@@ -44,35 +37,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-
-
-
-/*
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
-*/

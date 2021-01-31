@@ -1,11 +1,11 @@
-import React from 'react';
-import { Artist } from "../../redux/types";
 import { createStyles, Theme, Avatar, IconButton, Typography, PaletteType } from "@material-ui/core";
-import { makeStyles } from '@material-ui/core/styles';
 import { blueGrey } from "@material-ui/core/colors";
+import { makeStyles } from '@material-ui/core/styles';
 import MusicNote from '@material-ui/icons/MusicNote';
-import { Redirect } from 'react-router-dom';
 import clsx from 'clsx';
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { Artist } from "../../redux/types";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

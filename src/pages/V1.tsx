@@ -1,26 +1,20 @@
-import React, { useEffect } from 'react';
-import { AppState, DispatchProps } from "../redux/types";
-import { initializeSite, setAccessToken, setTokenExpiryDate, setLoggedOff, spotifyApi } from "../redux/actions";
-import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography } from "@material-ui/core";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import AppBarView from "./parts/AppBarView";
-import FestivalMatchView from "./parts/FestivalMatchView";
-import FestivalMatchSettingsBar from "./parts/FestivalMatchSettingsBar";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, CircularProgress } from "@material-ui/core";
 import { deepOrange, indigo, pink, lightBlue } from "@material-ui/core/colors";
-import { Model } from "../redux/types";
-import { getAuthorizeHref } from "../oauthConfig";
-import 'react-circular-progressbar/dist/styles.css';
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import React, { useEffect } from 'react';
+import { connect } from "react-redux";
 import { Redirect } from 'react-router-dom';
+import { getAuthorizeHref } from "../oauthConfig";
+import { initializeSite, setAccessToken, setTokenExpiryDate, setLoggedOff, spotifyApi } from "../redux/actions";
+import { AppState, DispatchProps, Model } from "../redux/types";
+import '../styles/base.scss';
 import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
+import AppBarView from "./parts/AppBarView";
+import FestivalMatchSettingsBar from "./parts/FestivalMatchSettingsBar";
+import FestivalMatchView from "./parts/FestivalMatchView";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        appBarSpace: {
-            paddingBottom: theme.spacing(6),
-        },
         root: {
             display: 'flex',
             flexDirection: 'column',
@@ -45,13 +39,6 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'
-        },
-        progressBar: {
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            marginTop: '-50px',
-            marginLeft: '-50px'
         },
     }),
 );
@@ -146,7 +133,7 @@ const V1: React.FC<Props> = (props: Props) => {
         <MuiThemeProvider theme={muiTheme}>
             <CssBaseline />
             <AppBarView />
-            <div className={classes.appBarSpace} />
+            <div className='appBarSpace' />
             <div className={classes.verticalSpace} />
             <div className={classes.root}>
                 <FestivalMatchSettingsBar />
@@ -159,7 +146,7 @@ const V1: React.FC<Props> = (props: Props) => {
                         There seems to be some issue with connecting to our database. Try refreshing the page.
                     </Typography>
                 </div>}
-            <div hidden={!loaderOn} className={classes.progressBar}>
+            <div hidden={!loaderOn} className='progressBar'>
                 <MuiThemeProvider theme={indigoOrangeMuiTheme}>
                     <CircularProgress size={100} thickness={3} color={'secondary'} />
                 </MuiThemeProvider>

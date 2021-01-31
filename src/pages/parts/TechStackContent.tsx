@@ -1,7 +1,7 @@
+import { Box, Typography, Link, Grid } from "@material-ui/core";
+import React from 'react';
 import '../../styles/AboutPage.scss';
 import '../../styles/TechStackContent.scss';
-import React from 'react';
-import { Box, Typography, Link, Grid } from "@material-ui/core";
 
 interface OwnProps {
     pcScreen: boolean;
@@ -41,7 +41,7 @@ const TechStackContent: React.FC<Props> = (props: Props) => {
             icons: [
                 { path: lightMode ? 'Python.svg' : 'Python-white.svg', class: 'iconDefaultHeight pythonRemoveRightSpace' },
                 { path: 'Django.svg', class: 'djangoIconSize iconMarginLeft' },
-                { path: lightMode ? 'SQLite.svg' : 'SQLite-white.png', class: lightMode ? 'iconDefaultHeight iconMarginLeft' : 'iconDefaultHeight iconMarginLeft' }
+                { path: lightMode ? 'SQLite.svg' : 'SQLite-white.png', class: 'iconDefaultHeight iconMarginLeft' }
             ]
         },
         {

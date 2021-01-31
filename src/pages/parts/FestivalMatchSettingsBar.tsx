@@ -1,21 +1,17 @@
-import React, { useEffect } from 'react';
-import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, UserInfo } from "../../redux/types";
-import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, setShowPlaylistModal } from "../../redux/actions";
-import { getIconPicture, getBigPicture, displayedLocationName } from "../../utils/utils";
-import { connect } from "react-redux";
+import DateFnsUtils from '@date-io/date-fns';
 import { createStyles, Theme, Typography, Box, Paper, Grid, Tooltip, PaletteType, InputLabel, MenuItem, FormControl, Select, ListSubheader, Modal, Fade, Backdrop, Link, MuiThemeProvider, CircularProgress, Button } from "@material-ui/core";
-import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { deepOrange, indigo } from "@material-ui/core/colors";
+import { withStyles, makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import InfoIcon from '@material-ui/icons/Info';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-	MuiPickersUtilsProvider,
-	KeyboardDatePicker,
-} from '@material-ui/pickers';
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import { MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
+import React, { useEffect } from 'react';
 import ReactCountryFlag from "react-country-flag";
+import { connect } from "react-redux";
+import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, setShowPlaylistModal } from "../../redux/actions";
+import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, UserInfo } from "../../redux/types";
 import { europeanRegions, usRegions, regionMap } from "../../utils/regionUtils";
+import { getIconPicture, getBigPicture, displayedLocationName } from "../../utils/utils";
 
 
 const useStyles = makeStyles((theme: Theme) =>

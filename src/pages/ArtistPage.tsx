@@ -1,35 +1,25 @@
-import React, { useEffect } from 'react';
-import { AppState, DispatchProps, ArtistInfo, Artist } from "../redux/types";
-import { spotifyApi, turnOnLoader, turnOffLoader, setLoggedOff } from "../redux/actions";
-import { getIconPicture, getBigPicture } from "../utils/utils";
-import { connect } from "react-redux";
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, Button, IconButton, Collapse } from "@material-ui/core";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import AppBarView from "./parts/AppBarView";
-import makeStyles from "@material-ui/core/styles/makeStyles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import deepOrange from "@material-ui/core/colors/deepOrange";
-import indigo from "@material-ui/core/colors/indigo";
-import { Model } from "../redux/types";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, Button, IconButton, Collapse, CircularProgress } from "@material-ui/core";
+import { lightBlue, pink, deepOrange, indigo } from "@material-ui/core/colors";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
-import 'react-circular-progressbar/dist/styles.css';
-import { Redirect } from 'react-router-dom';
-import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
-import FestivalMatchItem from './parts/FestivalMatchItem';
-import ArtistBubble from './parts/ArtistBubble';
-import { lightBlue, pink } from "@material-ui/core/colors";
+import { ArrowBackOutlined, MusicNote } from '@material-ui/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
-import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
-import { getMaxArtistsInWidth } from "../utils/utils";
+import React, { useEffect } from 'react';
+import { connect } from "react-redux";
 import { RouteComponentProps } from 'react-router';
-import MusicNote from '@material-ui/icons/MusicNote';
+import { Redirect } from 'react-router-dom';
+import { spotifyApi, turnOnLoader, turnOffLoader, setLoggedOff } from "../redux/actions";
+import { AppState, DispatchProps, ArtistInfo, Artist, Model } from "../redux/types";
+import '../styles/base.scss';
+import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
+import { getIconPicture, getBigPicture, getMaxArtistsInWidth } from "../utils/utils";
+import AppBarView from "./parts/AppBarView";
+import ArtistBubble from './parts/ArtistBubble';
+import FestivalMatchItem from './parts/FestivalMatchItem';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        appBarSpace: {
-            paddingBottom: theme.spacing(6),
-        },
         root: {
             display: 'flex',
             flexDirection: 'column',
@@ -54,13 +44,6 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             alignItems: 'center',
             width: '100%'
-        },
-        progressBar: {
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            marginTop: '-50px',
-            marginLeft: '-50px'
         },
         paper: {
             display: 'flex',
@@ -428,7 +411,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={indigoOrangeMuiTheme}>
                 <CssBaseline />
                 <AppBarView />
-                <div className={classes.appBarSpace} />
+                <div className='appBarSpace' />
                 {pcScreen && <div className={classes.topLeft}>
                     <IconButton
                         onClick={() => {
@@ -458,7 +441,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                         </Typography>
                     }
                 </div>
-                <div hidden={!loaderOn} className={classes.progressBar}>
+                <div hidden={!loaderOn} className='progressBar'>
                     <CircularProgress size={100} thickness={3} color={'secondary'} />
                 </div>
             </MuiThemeProvider>
@@ -468,7 +451,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
             <MuiThemeProvider theme={muiTheme}>
                 <CssBaseline />
                 <AppBarView />
-                <div className={classes.appBarSpace} />
+                <div className='appBarSpace' />
                 {pcScreen && <div className={classes.topLeft}>
                     <IconButton
                         onClick={() => {
@@ -619,7 +602,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                 </div>
 
                 <MuiThemeProvider theme={indigoOrangeMuiTheme}>
-                    <div hidden={!loaderOn} className={classes.progressBar}>
+                    <div hidden={!loaderOn} className='progressBar'>
                         <CircularProgress size={100} thickness={3} color={'secondary'} />
                     </div>
                 </MuiThemeProvider>
