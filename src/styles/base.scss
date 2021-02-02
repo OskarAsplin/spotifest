@@ -11,6 +11,8 @@ $fullScreen: 690px;
     position: fixed;
     top: 50%;
     left: 50%;
-    margin-top: -50px;
-    margin-left: -50px;
+    margin: {
+        top: -50px;
+        left: -50px;
+    }
 }

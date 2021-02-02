@@ -35,11 +35,6 @@ interface StoreProps {
 
 type Props = DispatchProps & StoreProps;
 
-interface TechInfoRow {
-    text: string;
-    icons: { path: string, class: string }[];
-}
-
 const AboutPage: React.FC<Props> = (props: Props) => {
 
     const bigScreen = useMediaQuery('(min-width:610px)');
@@ -163,26 +158,9 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         <Collapse in={supportExpanded} timeout="auto" unmountOnExit>
                             <div className='expandedDiv'>
                                 <List className='noPadding'>
-                                    <ListItem>
-                                        <ListItemIcon>
-                                            <MusicNote fontSize={'large'} />
-                                        </ListItemIcon>
-                                        <ListItemText
-                                            primary="Spread the word! Tell everyone about Oskarito SpotiFest"
-                                        />
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemIcon>
-                                            <MusicNote fontSize={'large'} />
-                                        </ListItemIcon>
-                                        <ListItemText
-                                            primary="Buy your festival tickets through the ticket links on the site"
-                                        />
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemIcon>
-                                            <MusicNote fontSize={'large'} />
-                                        </ListItemIcon>
+                                    {[
+                                        <ListItemText primary="Spread the word! Tell everyone about Oskarito SpotiFest" />,
+                                        <ListItemText primary="Buy your festival tickets through the ticket links on the site" />,
                                         <ListItemText disableTypography className='adjustTextForStar'>
                                             <Typography variant="body1">Give the code a </Typography><StarIcon className='starIcon' />
                                             <Typography variant="body1"> on <Link color={'primary'}
@@ -192,7 +170,14 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                                                 GitHub
                                                 </Link></Typography>
                                         </ListItemText>
-                                    </ListItem>
+                                        ].map((listItemText, idx) => {
+                                            return (<ListItem key={'supportListItem: ' + idx}>
+                                                <ListItemIcon>
+                                                    <MusicNote fontSize={'large'} />
+                                                </ListItemIcon>
+                                                {listItemText}
+                                            </ListItem>);
+                                    })}
                                 </List>
                             </div>
                         </Collapse>
@@ -286,12 +271,12 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                             </Typography>
                             <div className='rowFlexCenter'>
                                 <IconButton onClick={() => window.open("https://www.linkedin.com/in/oskar-buset-asplin-22796314a", '_blank')}>
-                                    <div className='socialButtonBackground linkedInSocialButton'>
+                                    <div className='linkedInSocialButton'>
                                         <img src={process.env.PUBLIC_URL + '/techIcons/LinkedIn-Bug.png'} className='linkeidInSocialBug' alt="LinkedIn" />
                                     </div>
                                 </IconButton>
                                 <IconButton onClick={() => window.open("https://github.com/OskarAsplin", '_blank')}>
-                                    <div className='socialButtonBackground'>
+                                    <div className='socialButton'>
                                         <img src={lightMode ? process.env.PUBLIC_URL + '/techIcons/GitHub-Mark.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Mark-white.png'}
                                             className='githubSocialBug' alt="GitHub" />
                                     </div>

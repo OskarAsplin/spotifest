@@ -5,103 +5,94 @@ $mediumScreen: base.$mediumScreen;
 $bigScreen: base.$bigScreen;
 $biggerScreen: 720px;
 $fullTechView: 1040px;
+$socialButtonSize: 46px;
 
-.root {
+@mixin centeredFlex($direction) {
     display: flex;
-    flex-direction: column;
-    @media (min-width: $mediumScreen) {
-        padding: 0*$dis 2*$dis 0*$dis 2*$dis;
-    }
-    @media (max-width: $mediumScreen - 1) {
-        padding: 0*$dis 1*$dis 0*$dis 1*$dis;
-    }
+    flex-direction: $direction;
     justify-content: center;
     align-items: center;
-    width: 100%
+}
+
+
+.root {
+    @include centeredFlex(column);
+    width: 100%;
+    @media (min-width: $mediumScreen) {
+        padding: 0*$dis 2*$dis;
+    }
+    @media (max-width: $mediumScreen - 1) {
+        padding: 0*$dis 1*$dis;
+    }
 }
 
 .verticalSpace {
-    display: flex;
-    padding: 1*$dis 0*$dis 0*$dis 0*$dis;
-    justify-content: center;
-    align-items: center;
-    width: 100%
+    margin-top: 1*$dis;
 }
 
 .paperTop {
-    display: flex;
-    flex-direction: column;
+    @include centeredFlex(column);
+    width: 100%;
     @media (min-width: $bigScreen) {
-        padding: 0.5*$dis 2*$dis 0.5*$dis 2*$dis;
+        padding: 0.5*$dis 2*$dis;
     }
     @media (max-width: $bigScreen - 1) {
         @media (min-width: $mediumScreen) {
-            padding: 0.5*$dis 1*$dis 0.5*$dis 1*$dis;
+            padding: 0.5*$dis 1*$dis;
         }
     }
     @media (max-width: $mediumScreen - 1) {
-        padding: 0.5*$dis 0*$dis 0.5*$dis 0*$dis;
+        padding: 0.5*$dis 0*$dis;
     }
-    justify-content: center;
-    align-items: center;
 }
 
 .paper {
-    display: flex;
-    flex-direction: column;
+    @include centeredFlex(column);
     @media (min-width: $bigScreen) {
-        padding: 0.5*$dis 3*$dis 0.5*$dis 3*$dis;
+        padding: 0.5*$dis 3*$dis;
     }
     @media (max-width: $bigScreen - 1) {
-        padding: 0.5*$dis 2*$dis 0.5*$dis 2*$dis;
+        padding: 0.5*$dis 2*$dis;
     }
-    justify-content: center;
-    align-items: center;
 }
 
 .creatorPaper {
-    display: flex;
-    flex-direction: column;
-    padding: 1*$dis 0*$dis 1*$dis 0*$dis;
-    justify-content: center;
-    align-items: center;
+    @include centeredFlex(column);
+    padding: 1*$dis 0*$dis;
 }
 
 .maxWidth400 {
     width: 100%;
-    max-width: 400px
+    max-width: 400px;
 }
 
 .minWidth400 {
     @media (min-width: 550px) {
-        min-width: 400px
+        min-width: 400px;
     }
     @media (max-width: 549px) {
-        width: 100%
+        width: 100%;
     }
 }
 
 .box {
     @media (max-width: 549px) {
-        width: 100%
+        width: 100%;
     }
     max-width: 650px;
     margin: 0*$dis 2*$dis 2*$dis 2*$dis;
 }
 
 .box2 {
+    @include centeredFlex(column);
     width: 100%;
     max-width: 650px;
     margin: 3*$dis 2*$dis 2*$dis 2*$dis;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    flex-direction: column
 }
 
 .techBox {
     @media (max-width: 549px) {
-        width: 100%
+        width: 100%;
     }
     @media (max-width: $fullTechView - 1) {
         max-width: 650px;
@@ -119,20 +110,14 @@ $fullTechView: 1040px;
 }
 
 .flexColumn {
-    display: flex;
-    flex-direction: column;
+    @include centeredFlex(column);
     width: 100%;
-    justify-content: center;
-    align-items: center
 }
 
 .expandedDiv {
-    padding-bottom: 1*$dis;
-    padding-top: 1*$dis;
+    @include centeredFlex(column);
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 1*$dis 0;
 }
 
 .textAlign {
@@ -142,9 +127,7 @@ $fullTechView: 1040px;
 }
 
 .title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @include centeredFlex(column);
     min-height: 48px;
 }
 
@@ -155,18 +138,13 @@ $fullTechView: 1040px;
 }
 
 .rowFlexCenter {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+    @include centeredFlex(row);
 }
 
 .creatorImgBox {
+    @include centeredFlex(column);
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 1*$dis 0*$dis 1*$dis 0*$dis;
+    margin: 1*$dis 0*$dis;
 }
 
 .darkerBackground {
@@ -175,7 +153,7 @@ $fullTechView: 1040px;
 
 .creatorImage {
     width: 75%;
-    max-width: 300px
+    max-width: 300px;
 }
 
 .roundedCorners {
@@ -183,41 +161,46 @@ $fullTechView: 1040px;
 }
 
 .noPadding {
-    padding: 0,
+    padding: 0 !important;
 }
 
 .starIcon {
-    margin-left: 4px;
-    margin-right: 4px
+    margin: {
+        left: 4px;
+        right: 4px;
+    }
 }
 
 .adjustTextForStar {
     display: flex;
-    align-items: center
+    align-items: center;
 }
 
-.socialButtonBackground {
-    height: 46px;
-    width: 46px;
+@mixin socialButtonDimensions {
+    @include centeredFlex(column);
+    height: $socialButtonSize;
+    width: $socialButtonSize;
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+}
+
+.socialButton {
+    @include socialButtonDimensions;
 }
 
 .linkedInSocialButton {
+    @include socialButtonDimensions;
     background-color: #2867b2;  //#0069bb
 }
 
 .githubSocialBug {
-    width: 46px;
-    height: 46px
+    width: $socialButtonSize;
+    height: $socialButtonSize;
 }
 
 .linkeidInSocialBug {
     margin: 0.75*$dis 0.75*$dis 1*$dis 1*$dis;
     width: 24px;
-    height: 24px
+    height: 24px;
 }
 
 .usageImg {
@@ -234,33 +217,32 @@ $fullTechView: 1040px;
 }
 
 .topBarImg {
-    max-height: 44px
+    max-height: 44px;
 }
 
 .usagePart {
-    display: flex;
-    @media (min-width: 720px) {
+    @media (min-width: $biggerScreen) {
+        display: flex;
         flex-direction: row-reverse;
         justify-content: space-between;
     }
     @media (max-width: $biggerScreen - 1) {
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        @include centeredFlex(column);
     }
     margin-bottom: 4*$dis;
-    last-child {
-        margin-bottom: 0,
-    }
+}
+
+.usagePart:last-child {
+    margin-bottom: 0;
 }
 
 .usageBox {
     display: flex;
-    flex-direction: column
+    flex-direction: column;
 }
 
 .usageText {
     @media (min-width: $biggerScreen) {
-        max-width: 50%
+        max-width: 50%;
     }
 }
