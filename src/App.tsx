@@ -7,8 +7,8 @@ import configureStore from "./configureStore";
 import AboutPage from "./pages/AboutPage";
 import ArtistPage from "./pages/ArtistPage";
 import FestivalPage from "./pages/FestivalPage";
-import LoginScreen from "./pages/LoginScreen";
-import V1 from "./pages/V1";
+import LoginPage from "./pages/LoginPage";
+import MainPage from "./pages/MainPage";
 
 const { store, persistor } = configureStore();
 
@@ -18,8 +18,8 @@ const App: React.FC = () => {
       <PersistGate loading={null} persistor={persistor}>
         <Router>
           <Switch>
-            <Route exact path="/" component={V1} />
-            <Route exact path="/login" component={LoginScreen} />
+            <Route exact path="/" component={MainPage} />
+            <Route exact path="/login" component={LoginPage} />
             <Route exact path="/artist/:artistId" component={ArtistPage} />
             <Route exact path="/festival/:festivalId" component={FestivalPage} />
             <Route exact path="/about" component={AboutPage} />

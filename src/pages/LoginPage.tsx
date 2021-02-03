@@ -132,7 +132,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 type Props = DispatchProps;
 
-const LoginScreen: React.FC<Props> = (props: Props) => {
+const LoginPage: React.FC<Props> = (props: Props) => {
 
     const bigWidth = useMediaQuery('(min-width:610px)');
     const bigHeight = useMediaQuery('(min-height:610px)');
@@ -237,4 +237,4 @@ const mapDispatchToProps = (dispatch: any) => {
 
 export default connect(
     mapDispatchToProps
-)(LoginScreen);
+)(LoginPage);

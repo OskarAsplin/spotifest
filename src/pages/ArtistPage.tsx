@@ -16,7 +16,7 @@ import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 import { getIconPicture, getBigPicture, getMaxArtistsInWidth } from "../utils/utils";
 import AppBarView from "../components/AppBarView";
 import ArtistBubble from '../components/ArtistBubble';
-import FestivalMatchItem from '../components/FestivalMatchItem';
+import FestivalMatchCard from '../components/FestivalMatchCard';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -541,7 +541,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                             </Typography>
                             <Box className={classes.box2}>
                                 {artistInfo.festivalsFuture.map((festival, idx) =>
-                                    <FestivalMatchItem festival={festival} popularArtists={festival.popular_artists} matchingArtists={[]} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={false} />
+                                    <FestivalMatchCard festival={festival} popularArtists={festival.popular_artists} matchingArtists={[]} key={'FestivalMatchCard: ' + festival.name + festival.year} showMatching={false} />
                                 )}
                             </Box>
                         </div>

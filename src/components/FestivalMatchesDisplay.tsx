@@ -6,7 +6,7 @@ import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import { getPopularArtistsInLineups, setCurrentPage } from "../redux/actions";
 import { AppState, DispatchProps, FestivalMatch, Artist, PopularArtistsDict } from "../redux/types";
-import FestivalMatchItem from './FestivalMatchItem';
+import FestivalMatchCard from './FestivalMatchCard';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -79,7 +79,7 @@ interface StoreProps {
 
 type Props = DispatchProps & StoreProps;
 
-const FestivalMatchView: React.FC<Props> = (props: Props) => {
+const FestivalMatchesDisplay: React.FC<Props> = (props: Props) => {
 
 	const { festivalMatches, currentPage, dispatch, matchBasis, topArtists, selectedPlaylistArtists, popularArtistsDict } = props;
 	const classes = useStyles();
@@ -132,7 +132,7 @@ const FestivalMatchView: React.FC<Props> = (props: Props) => {
 				const matchingArtists = matchBasis === "__your__top__artists__" ?
 					topArtists.filter(artist => artist.spotifyId && festival.matching_artists.includes(artist.spotifyId)).sort((a, b) => a.userPopularity! < b.userPopularity! ? 1 : -1) :
 					selectedPlaylistArtists.filter(artist => artist.spotifyId && festival.matching_artists.includes(artist.spotifyId)).sort((a, b) => a.userPopularity! < b.userPopularity! ? 1 : -1);
-				return (<FestivalMatchItem festival={festival} popularArtists={popularArtists} matchingArtists={matchingArtists} key={'FestivalMatchItem: ' + festival.name + festival.year} showMatching={true} />)
+				return (<FestivalMatchCard festival={festival} popularArtists={popularArtists} matchingArtists={matchingArtists} key={'FestivalMatchCard: ' + festival.name + festival.year} showMatching={true} />)
 			})}
 			{showMatches.length > 0 &&
 				<div>
@@ -171,4 +171,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(FestivalMatchView);
+)(FestivalMatchesDisplay);

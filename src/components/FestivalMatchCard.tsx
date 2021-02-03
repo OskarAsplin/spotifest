@@ -219,7 +219,7 @@ interface StoreProps {
 
 type Props = DispatchProps & StoreProps & OwnProps;
 
-const FestivalMatchItem: React.FC<Props> = (props: Props) => {
+const FestivalMatchCard: React.FC<Props> = (props: Props) => {
     const { festival, showMatching, thememode, matchingMethod, popularArtists, matchingArtists } = props;
 
     const bigScreen = useMediaQuery('(min-width:690px)');
@@ -421,4 +421,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(FestivalMatchItem);
+)(FestivalMatchCard);

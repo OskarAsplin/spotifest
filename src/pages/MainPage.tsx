@@ -11,7 +11,7 @@ import '../styles/base.scss';
 import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
 import AppBarView from "../components/AppBarView";
 import FestivalMatchSettingsBar from "../components/FestivalMatchSettingsBar";
-import FestivalMatchView from "../components/FestivalMatchView";
+import FestivalMatchesDisplay from "../components/FestivalMatchesDisplay";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -54,7 +54,7 @@ const token = hashParams.access_token;
 const expires_in = hashParams.expires_in;
 removeHashParamsFromUrl();
 
-const V1: React.FC<Props> = (props: Props) => {
+const MainPage: React.FC<Props> = (props: Props) => {
 
     useEffect(() => {
         if (token) {
@@ -138,7 +138,7 @@ const V1: React.FC<Props> = (props: Props) => {
             <div className={classes.root}>
                 <FestivalMatchSettingsBar />
                 {props.model.isDbOnline &&
-                    <FestivalMatchView />}
+                    <FestivalMatchesDisplay />}
             </div>
             {!props.model.isDbOnline &&
                 <div className={classes.root}>
@@ -168,4 +168,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(V1);
+)(MainPage);
