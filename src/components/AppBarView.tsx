@@ -16,9 +16,9 @@ import { useAsync } from 'react-async-hook';
 import { connect } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import useConstant from 'use-constant';
-import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../../redux/actions";
-import { UserInfo, AppState, DispatchProps, SearchResponse } from "../../redux/types";
-import { fetchToJson, getApiBaseUrl } from "../../utils/restUtils";
+import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../redux/actions";
+import { UserInfo, AppState, DispatchProps, SearchResponse } from "../redux/types";
+import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

@@ -1,5 +1,5 @@
-@use 'base';
-@use 'AboutPage';
+@use '../styles/base';
+@use '../pages/AboutPage';
 
 $dis: base.$spacing;
 $fullRowViewWidth: AboutPage.$fullTechView;

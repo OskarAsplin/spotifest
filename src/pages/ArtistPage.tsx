@@ -14,9 +14,9 @@ import { AppState, DispatchProps, ArtistInfo, Artist, Model } from "../redux/typ
 import '../styles/base.scss';
 import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 import { getIconPicture, getBigPicture, getMaxArtistsInWidth } from "../utils/utils";
-import AppBarView from "./parts/AppBarView";
-import ArtistBubble from './parts/ArtistBubble';
-import FestivalMatchItem from './parts/FestivalMatchItem';
+import AppBarView from "../components/AppBarView";
+import ArtistBubble from '../components/ArtistBubble';
+import FestivalMatchItem from '../components/FestivalMatchItem';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

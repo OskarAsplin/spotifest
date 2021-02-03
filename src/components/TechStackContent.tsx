@@ -1,7 +1,7 @@
 import { Box, Typography, Link, Grid } from "@material-ui/core";
 import React from 'react';
-import '../../styles/AboutPage.scss';
-import '../../styles/TechStackContent.scss';
+import '../pages/AboutPage.scss';
+import './TechStackContent.scss';
 
 interface OwnProps {
     pcScreen: boolean;

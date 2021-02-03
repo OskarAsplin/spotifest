@@ -17,8 +17,8 @@ import { AppState, DispatchProps, FestivalInfo, Model } from "../redux/types";
 import '../styles/base.scss';
 import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 import { getMaxArtistsInFullLineupWidth, displayedLocationName } from "../utils/utils";
-import AppBarView from "./parts/AppBarView";
-import ArtistBubble from './parts/ArtistBubble';
+import AppBarView from "../components/AppBarView";
+import ArtistBubble from '../components/ArtistBubble';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

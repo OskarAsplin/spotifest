@@ -8,10 +8,10 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers
 import React, { useEffect } from 'react';
 import ReactCountryFlag from "react-country-flag";
 import { connect } from "react-redux";
-import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, setShowPlaylistModal } from "../../redux/actions";
-import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, UserInfo } from "../../redux/types";
-import { europeanRegions, usRegions, regionMap } from "../../utils/regionUtils";
-import { getIconPicture, getBigPicture, displayedLocationName } from "../../utils/utils";
+import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, setShowPlaylistModal } from "../redux/actions";
+import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, UserInfo } from "../redux/types";
+import { europeanRegions, usRegions, regionMap } from "../utils/regionUtils";
+import { getIconPicture, getBigPicture, displayedLocationName } from "../utils/utils";
 
 
 const useStyles = makeStyles((theme: Theme) =>

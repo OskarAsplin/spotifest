@@ -9,8 +9,8 @@ import 'react-circular-progressbar/dist/styles.css';
 import ReactCountryFlag from "react-country-flag";
 import { connect } from "react-redux";
 import { Redirect } from 'react-router-dom';
-import { AppState, DispatchProps, FestivalMatch, MatchingMethod, Artist } from "../../redux/types";
-import { getMaxArtistsInWidth, displayedLocationName } from "../../utils/utils";
+import { AppState, DispatchProps, FestivalMatch, MatchingMethod, Artist } from "../redux/types";
+import { getMaxArtistsInWidth, displayedLocationName } from "../utils/utils";
 import ArtistBubble from './ArtistBubble';
 
 const useStyles = makeStyles((theme: Theme) =>

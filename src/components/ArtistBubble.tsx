@@ -5,7 +5,7 @@ import MusicNote from '@material-ui/icons/MusicNote';
 import clsx from 'clsx';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { Artist } from "../../redux/types";
+import { Artist } from "../redux/types";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

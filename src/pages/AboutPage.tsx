@@ -10,10 +10,10 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import { AppState, DispatchProps } from "../redux/types";
-import '../styles/AboutPage.scss';
+import './AboutPage.scss';
 import '../styles/base.scss';
-import AppBarView from "./parts/AppBarView";
-import TechStackContent from "./parts/TechStackContent";
+import AppBarView from "../components/AppBarView";
+import TechStackContent from "../components/TechStackContent";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

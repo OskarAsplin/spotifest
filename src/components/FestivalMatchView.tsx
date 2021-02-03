@@ -4,8 +4,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import Pagination from '@material-ui/lab/Pagination';
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
-import { getPopularArtistsInLineups, setCurrentPage } from "../../redux/actions";
-import { AppState, DispatchProps, FestivalMatch, Artist, PopularArtistsDict } from "../../redux/types";
+import { getPopularArtistsInLineups, setCurrentPage } from "../redux/actions";
+import { AppState, DispatchProps, FestivalMatch, Artist, PopularArtistsDict } from "../redux/types";
 import FestivalMatchItem from './FestivalMatchItem';
 
 const useStyles = makeStyles((theme: Theme) =>

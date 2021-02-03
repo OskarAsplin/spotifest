@@ -9,9 +9,9 @@ import { initializeSite, setAccessToken, setTokenExpiryDate, setLoggedOff, spoti
 import { AppState, DispatchProps, Model } from "../redux/types";
 import '../styles/base.scss';
 import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
-import AppBarView from "./parts/AppBarView";
-import FestivalMatchSettingsBar from "./parts/FestivalMatchSettingsBar";
-import FestivalMatchView from "./parts/FestivalMatchView";
+import AppBarView from "../components/AppBarView";
+import FestivalMatchSettingsBar from "../components/FestivalMatchSettingsBar";
+import FestivalMatchView from "../components/FestivalMatchView";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
