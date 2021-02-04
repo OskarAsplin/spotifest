@@ -10,7 +10,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Redirect } from 'react-router-dom';
 import { AppState, DispatchProps } from "../redux/types";
-import './AboutPage.scss';
+import styles from './AboutPage.module.scss';
 import '../styles/base.scss';
 import AppBarView from "../components/AppBarView";
 import TechStackContent from "../components/TechStackContent";
@@ -82,7 +82,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
             <CssBaseline />
             <AppBarView />
             <div className='appBarSpace' />
-            {bigPcScreen && <div className='topLeft'>
+            {bigPcScreen && <div className={styles.topLeft}>
                 <IconButton
                     onClick={() => {
                         window.history.back();
@@ -92,16 +92,16 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                     <ArrowBackOutlined fontSize='large' />
                 </IconButton>
             </div>}
-            <div className='verticalSpace' />
-            <div className='verticalSpace' />
+            <div className={styles.verticalSpace} />
+            <div className={styles.verticalSpace} />
 
-            <div className='root'>
-                <Box className='box'>
-                    <Typography variant={bigScreen ? "h4" : "h5"} className='title textAlign'>
+            <div className={styles.root}>
+                <Box className={styles.box}>
+                    <Typography variant={bigScreen ? "h4" : "h5"} className={clsx(styles.title, styles.textAlign)}>
                         Oskarito SpotiFest features
                     </Typography>
-                    <div className='verticalSpace' />
-                    <List className='noPadding'>
+                    <div className={styles.verticalSpace} />
+                    <List className={styles.noPadding}>
                         {["Festival matching with more than 500 festivals worldwide",
                         "Festival pages with current and previous lineups",
                         "Artist pages to see which festivals each artist is attending"].map((text, i) => {
@@ -116,9 +116,9 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         })}
                     </List>
                 </Box>
-                <Box className='techBox'>
-                    <Paper elevation={3} className='paper minWidth400'>
-                        <div className='rowFlexCenter'>
+                <Box className={styles.techBox}>
+                    <Paper elevation={3} className={clsx(styles.paper, styles.minWidth400)}>
+                        <div className={styles.rowFlexCenter}>
                             <Typography variant={"h5"} onClick={() => setTechExpanded(!techExpanded)}>
                                 Technology stack
                             </Typography>
@@ -138,9 +138,9 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </Collapse>
                     </Paper>
                 </Box>
-                <Box className={biggerScreen && supportExpanded ? 'supportExpandedBox': 'box'}>
-                    <Paper elevation={3} className='paperTop minWidth400'>
-                        <div className='rowFlexCenter'>
+                <Box className={biggerScreen && supportExpanded ? styles.supportExpandedBox : styles.box}>
+                    <Paper elevation={3} className={clsx(styles.paperTop, styles.minWidth400)}>
+                        <div className={styles.rowFlexCenter}>
                             <Typography variant={"h5"} onClick={() => setSupportExpanded(!supportExpanded)}>
                                 Ways to support
                             </Typography>
@@ -156,13 +156,13 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                             </IconButton>
                         </div>
                         <Collapse in={supportExpanded} timeout="auto" unmountOnExit>
-                            <div className='expandedDiv'>
-                                <List className='noPadding'>
+                            <div className={styles.expandedDiv}>
+                                <List className={styles.noPadding}>
                                     {[
                                         <ListItemText primary="Spread the word! Tell everyone about Oskarito SpotiFest" />,
                                         <ListItemText primary="Buy your festival tickets through the ticket links on the site" />,
-                                        <ListItemText disableTypography className='adjustTextForStar'>
-                                            <Typography variant="body1">Give the code a </Typography><StarIcon className='starIcon' />
+                                        <ListItemText disableTypography className={styles.adjustTextForStar}>
+                                            <Typography variant="body1">Give the code a </Typography><StarIcon className={styles.starIcon} />
                                             <Typography variant="body1"> on <Link color={'primary'}
                                                 href="https://github.com/OskarAsplin/spotifest"
                                                 target={"_blank"}
@@ -183,9 +183,9 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </Collapse>
                     </Paper>
                 </Box>
-                <Box className='box'>
-                    <Paper elevation={3} className='paper minWidth400'>
-                        <div className='rowFlexCenter'>
+                <Box className={styles.box}>
+                    <Paper elevation={3} className={clsx(styles.paper, styles.minWidth400)}>
+                        <div className={styles.rowFlexCenter}>
                             <Typography variant={"h5"} onClick={() => setUsageExpanded(!usageExpanded)}>
                                 How to use
                             </Typography>
@@ -201,23 +201,23 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                             </IconButton>
                         </div>
                         <Collapse in={usageExpanded} timeout="auto" unmountOnExit>
-                            <div className='expandedDiv'>
-                                <div className='usageBox'>
-                                    <div className='usagePart'>
-                                        <img src={process.env.PUBLIC_URL + '/usageImages/match-settings.jpg'} className='usageImg' alt="match-settings-box" />
-                                        <Typography variant="body1" className='textAlign usageText'>
+                            <div className={styles.expandedDiv}>
+                                <div className={styles.usageBox}>
+                                    <div className={styles.usagePart}>
+                                        <img src={process.env.PUBLIC_URL + '/usageImages/match-settings.jpg'} className={styles.usageImg} alt="match-settings-box" />
+                                        <Typography variant="body1" className={clsx(styles.textAlign, styles.usageText)}>
                                             Adjust the match settings on the main page to get your festival matches.
                                         </Typography>
                                     </div>
-                                    <div className='usagePart'>
-                                        <img src={process.env.PUBLIC_URL + '/usageImages/festival-match-marked.jpg'} className='usageImg' alt="festival-match-marked" />
-                                        <Typography variant="body1" className='textAlign usageText'>
+                                    <div className={styles.usagePart}>
+                                        <img src={process.env.PUBLIC_URL + '/usageImages/festival-match-marked.jpg'} className={styles.usageImg} alt="festival-match-marked" />
+                                        <Typography variant="body1" className={clsx(styles.textAlign, styles.usageText)}>
                                             Click on a festival title or image to see full lineups and more. Click on an artist icon to see the artist's future and past festivals and more. Click on 'popular artists at this festival' to see the most popular artists in the festival lineup.
                                         </Typography>
                                     </div>
-                                    <div className='usagePart'>
-                                        <img src={process.env.PUBLIC_URL + '/usageImages/top-bar.jpg'} className='usageImg topBarImg' alt="top-bar" />
-                                        <Typography variant="body1" className='textAlign usageText'>
+                                    <div className={styles.usagePart}>
+                                        <img src={process.env.PUBLIC_URL + '/usageImages/top-bar.jpg'} className={clsx(styles.usageImg, styles.topBarImg)} alt="top-bar" />
+                                        <Typography variant="body1" className={clsx(styles.textAlign, styles.usageText)}>
                                             Clicking 'Oskarito SpotiFest' takes you back to the festival matching. Click the search icon to search for festivals and artists. Click the account avatar to log out. Click the hamburger menu to get to the about page or to switch between dark/light mode.
                                         </Typography>
                                     </div>
@@ -226,9 +226,9 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </Collapse>
                     </Paper>
                 </Box>
-                <Box className='box'>
-                    <Paper elevation={3} className='paper minWidth400'>
-                        <div className='rowFlexCenter'>
+                <Box className={styles.box}>
+                    <Paper elevation={3} className={clsx(styles.paper, styles.minWidth400)}>
+                        <div className={styles.rowFlexCenter}>
                             <Typography variant={"h5"} onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}>
                                 Disclaimer
                             </Typography>
@@ -244,8 +244,8 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                             </IconButton>
                         </div>
                         <Collapse in={disclaimerExpanded} timeout="auto" unmountOnExit>
-                            <div className='expandedDiv'>
-                                <Typography variant="body1" className='textAlign'>
+                            <div className={styles.expandedDiv}>
+                                <Typography variant="body1" className={styles.textAlign}>
                                     The creator of Oskarito SpotiFest takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages collect cookies. When logging out or going to <Link color={'primary'}
                                         href="https://www.spotifest.app/login"
                                         target={"_blank"}
@@ -257,28 +257,28 @@ const AboutPage: React.FC<Props> = (props: Props) => {
                         </Collapse>
                     </Paper>
                 </Box>
-                <Box className='box2'>
-                    <Paper elevation={3} className='creatorPaper maxWidth400'>
-                        <div className='flexColumn'>
-                            <Typography variant={"h5"} className='textAlign'>
+                <Box className={styles.box2}>
+                    <Paper elevation={3} className={clsx(styles.creatorPaper, styles.maxWidth400)}>
+                        <div className={styles.flexColumn}>
+                            <Typography variant={"h5"} className={styles.textAlign}>
                                 Created by
                             </Typography>
-                            <Box className={lightMode ? 'creatorImgBox roundedCorners' : 'creatorImgBox darkerBackground'}>
-                                <img src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'} className='creatorImage' alt="Creator" />
+                            <Box className={lightMode ? clsx(styles.creatorImgBox, styles.roundedCorners) : clsx(styles.creatorImgBox, styles.darkerBackground)}>
+                                <img src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'} className={styles.creatorImage} alt="Creator" />
                             </Box>
-                            <Typography variant="h6" className='textAlign'>
+                            <Typography variant="h6" className={styles.textAlign}>
                                 Oskar Asplin
                             </Typography>
-                            <div className='rowFlexCenter'>
+                            <div className={styles.rowFlexCenter}>
                                 <IconButton onClick={() => window.open("https://www.linkedin.com/in/oskar-buset-asplin-22796314a", '_blank')}>
-                                    <div className='linkedInSocialButton'>
-                                        <img src={process.env.PUBLIC_URL + '/techIcons/LinkedIn-Bug.png'} className='linkeidInSocialBug' alt="LinkedIn" />
+                                    <div className={styles.linkedInSocialButton}>
+                                        <img src={process.env.PUBLIC_URL + '/techIcons/LinkedIn-Bug.png'} className={styles.linkeidInSocialBug} alt="LinkedIn" />
                                     </div>
                                 </IconButton>
                                 <IconButton onClick={() => window.open("https://github.com/OskarAsplin", '_blank')}>
-                                    <div className='socialButton'>
+                                    <div className={styles.socialButton}>
                                         <img src={lightMode ? process.env.PUBLIC_URL + '/techIcons/GitHub-Mark.png' : process.env.PUBLIC_URL + '/techIcons/GitHub-Mark-white.png'}
-                                            className='githubSocialBug' alt="GitHub" />
+                                            className={styles.githubSocialBug} alt="GitHub" />
                                     </div>
                                 </IconButton>
                             </div>

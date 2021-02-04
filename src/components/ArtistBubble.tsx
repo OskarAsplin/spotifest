@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme: Theme) =>
 interface OwnProps {
     artist: Artist,
     useSpotifyId?: boolean,
-    key: string,
+    bubbleId: string,
     thememode: PaletteType,
 }
 
@@ -76,7 +76,7 @@ type Props = OwnProps;
 
 const ArtistBubble: React.FC<Props> = (props: Props) => {
 
-    const { artist, useSpotifyId, key, thememode } = props;
+    const { artist, useSpotifyId, bubbleId, thememode } = props;
     const [redirectArtist, setRedirectArtist] = React.useState('');
 
     const classes = useStyles();
@@ -86,7 +86,7 @@ const ArtistBubble: React.FC<Props> = (props: Props) => {
     }
 
     return (
-        <div className={classes.artistAvatarBox} key={'div_' + key} >
+        <div className={classes.artistAvatarBox} key={'div_' + bubbleId} >
             <IconButton
                 color="inherit"
                 onClick={() => { if (artist.hasSpotifyId) setRedirectArtist(encodeURIComponent(useSpotifyId ? artist.spotifyId! : artist.name)) }}
@@ -95,7 +95,7 @@ const ArtistBubble: React.FC<Props> = (props: Props) => {
             >
                 {artist.iconPicture ?
                     <Avatar src={artist.iconPicture} alt={artist.name} className={clsx(classes.artistAvatarImg, artist.hasSpotifyId ? classes.clickable : undefined)}
-                        key={key} />
+                        key={bubbleId} />
                     : <div className={clsx(classes.artistAvatarImg,
                         thememode === 'light' ? classes.circleIconLight : classes.circleIconDark,
                         artist.hasSpotifyId ? classes.clickable : undefined)}>

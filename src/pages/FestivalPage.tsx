@@ -530,6 +530,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                                                     <ArtistBubble
                                                                         artist={artist}
                                                                         key={'avatar_festival_lineup_artist_' + festivalInfo.name + lineup.year + artist.name}
+                                                                        bubbleId={'avatar_festival_lineup_artist_' + festivalInfo.name + lineup.year + artist.name}
                                                                         thememode={thememode} />
                                                                 )
                                                                 )}

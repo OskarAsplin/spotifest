@@ -1,5 +1,5 @@
 @use '../styles/base';
-@use '../pages/AboutPage';
+@use '../pages/AboutPage.module';
 
 $dis: base.$spacing;
 $fullRowViewWidth: AboutPage.$fullTechView;
@@ -49,7 +49,8 @@ $bigMarginsWidth: 500px;
 .smallSize {
     @media (min-width: $bigMarginsWidth) {
         height: 32px;
-        margin: 4px 0;
+        margin-top: 4px;
+        margin-bottom: 4px;
     }
     @media (max-width: $bigMarginsWidth - 1) {
         height: 24px;

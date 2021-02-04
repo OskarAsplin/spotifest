@@ -335,6 +335,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                                     <ArtistBubble
                                         artist={artist}
                                         key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                        bubbleId={'avatar_match_artist_' + festival.name + festival.year + artist.name}
                                         thememode={thememode} />
                                         )
                                 )}
@@ -362,6 +363,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                             <ArtistBubble
                                 artist={artist}
                                 key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                bubbleId={'avatar_match_artist_' + festival.name + festival.year + artist.name}
                                 thememode={thememode} />
                                 )
                         )}
@@ -394,6 +396,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                                 <ArtistBubble
                                     artist={artist}
                                     key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
+                                    bubbleId={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
                                     thememode={thememode} />
                             )
                             )}

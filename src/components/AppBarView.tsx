@@ -313,25 +313,11 @@ const AppBarView: React.FC<Props> = (props: Props) => {
     }
 
     const getFestivalUrl = (festivalName: string) => {
-        const url = window.location.href;
-        const spotifest_pos = url.search('spotifest.app');
-        if (spotifest_pos !== -1) {
-            return url.slice(0, spotifest_pos) + 'spotifest.app/festival/' + encodeURIComponent(festivalName);
-        } else {
-            const localhost_pos = url.search('localhost:3000');
-            return url.slice(0, localhost_pos) + 'localhost:3000/festival/' + encodeURIComponent(festivalName);
-        }
+        return getBaseUrl() + '/festival/' + encodeURIComponent(festivalName);
     }
 
     const getArtistUrl = (artistName: string) => {
-        const url = window.location.href;
-        const spotifest_pos = url.search('spotifest.app');
-        if (spotifest_pos !== -1) {
-            return url.slice(0, spotifest_pos) + 'spotifest.app/artist/' + encodeURIComponent(artistName);
-        } else {
-            const localhost_pos = url.search('localhost:3000');
-            return url.slice(0, localhost_pos) + 'localhost:3000/artist/' + encodeURIComponent(artistName);
-        }
+        return getBaseUrl() + '/artist/' + encodeURIComponent(artistName);
     }
 
     const getSearchFieldAndResults = () => {

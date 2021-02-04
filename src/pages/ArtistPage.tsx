@@ -523,6 +523,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                                 artist={artist}
                                                 useSpotifyId={true}
                                                 key={'avatar_rel_artist_' + artistInfo.artist.name + artist.name}
+                                                bubbleId={'avatar_rel_artist_' + artistInfo.artist.name + artist.name}
                                                 thememode={props.model.thememode} />
                                         ))}
                                         {relatedArtists.length > 0 &&
