@@ -9,6 +9,7 @@ import ArtistPage from "./pages/ArtistPage";
 import FestivalPage from "./pages/FestivalPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
+import PageNotFound from "./pages/PageNotFound";
 
 const { store, persistor } = configureStore();
 
@@ -23,6 +24,7 @@ const App: React.FC = () => {
             <Route exact path="/artist/:artistId" component={ArtistPage} />
             <Route exact path="/festival/:festivalId" component={FestivalPage} />
             <Route exact path="/about" component={AboutPage} />
+            <Route component={PageNotFound} />
           </Switch>
         </Router>
       </PersistGate>
