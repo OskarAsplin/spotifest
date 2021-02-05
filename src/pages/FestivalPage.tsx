@@ -1,4 +1,4 @@
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, Paper, Box, Link, Button, Tabs, Tab, PaletteType, Switch, useTheme, IconButton, CircularProgress } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, Paper, Box, Link, Button, Tabs, Tab, Switch, useTheme, IconButton, CircularProgress, PaletteType } from "@material-ui/core";
 import { deepOrange, indigo, lightBlue, pink } from "@material-ui/core/colors";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
@@ -8,17 +8,17 @@ import React, { useEffect } from 'react';
 import CookieConsent from "react-cookie-consent";
 import ReactCountryFlag from "react-country-flag";
 import ReactPlayer from 'react-player/lazy';
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Redirect } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
-import { turnOnLoader, turnOffLoader } from "../redux/actions";
-import { AppState, DispatchProps, FestivalInfo, Model } from "../redux/types";
+import AppBarView from "../components/AppBarView";
+import ArtistBubble from '../components/ArtistBubble';
+import { selectLoaderOn, selectThememode, turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
+import { FestivalInfo } from "../redux/types";
 import '../styles/base.scss';
 import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 import { getMaxArtistsInFullLineupWidth, displayedLocationName } from "../utils/utils";
-import AppBarView from "../components/AppBarView";
-import ArtistBubble from '../components/ArtistBubble';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -258,11 +258,6 @@ interface TabPanelProps {
     value: any;
 }
 
-interface StoreProps {
-    model: Model,
-    thememode: PaletteType
-}
-
 interface MatchParams {
     festivalId: string;
 }
@@ -270,7 +265,7 @@ interface MatchParams {
 interface MatchProps extends RouteComponentProps<MatchParams> {
 }
 
-type Props = DispatchProps & StoreProps & MatchProps;
+type Props = MatchProps;
 
 const FestivalPage: React.FC<Props> = (props: Props) => {
 
@@ -282,12 +277,16 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     const videoSizeMax = useMediaQuery('(min-width:770px)');
     const videoSizeSmall = useMediaQuery('(max-width:470px)');
 
+    const loaderOn: boolean = useSelector(selectLoaderOn);
+    const thememode: PaletteType = useSelector(selectThememode);
+    const dispatch = useDispatch();
+
     const limitLineups = !mediumScreen ? 4 : undefined;
 
     const maxArtistsInLineupsWidth = getMaxArtistsInFullLineupWidth(bigScreen, smallScreen, 11);
 
     useEffect(() => {
-        props.dispatch(turnOnLoader());
+        dispatch(turnOnLoader());
         fetchToJson(getApiBaseUrl() + '/onTour/festivalInfo/?q=' + props.match.params.festivalId)
             .then((response: any) => {
                 setFestivalInfo(response as FestivalInfo);
@@ -298,11 +297,10 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                 } else {
                     setIsFestivalInDb(false);
                 }
-            }).finally(() => props.dispatch(turnOffLoader()));
+            }).finally(() => dispatch(turnOffLoader()));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const { thememode } = props;
     const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
     const [festivalInfo, setFestivalInfo] = React.useState<FestivalInfo | undefined>(undefined);
     const [isFestivalInDb, setIsFestivalInDb] = React.useState(true);
@@ -310,7 +308,6 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     const [selectedLineup, setSelectedLineup] = React.useState(0);
     const [sortAlphabetically, setSortAlphabetically] = React.useState(false);
 
-    const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
         typography: {
             fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
@@ -326,7 +323,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                 main: deepOrange[500],
                 dark: deepOrange[700]
             },
-            type: props.model.thememode
+            type: thememode
         }
     });
 
@@ -568,18 +565,4 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     }
 };
 
-const mapStateToProps = (state: AppState) => ({
-    model: state.model,
-    thememode: state.model.thememode
-});
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        dispatch
-    }
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(FestivalPage);
+export default FestivalPage;

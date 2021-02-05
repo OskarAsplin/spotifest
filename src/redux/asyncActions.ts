@@ -1,170 +1,17 @@
-import { Action, ActionTypeKeys, Dispatch, Artist, ArtistMinimal, MatchRequest, FestivalMatch, Area, MatchSettings, MatchingMethod, UserInfo, Playlist, PopularArtistsDict } from "./types";
+import countries_list from 'countries-list/dist/data.json';
 import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 import { getShortDateISOString, getIconPicture, getBigPicture } from "../utils/utils";
-import countries_list from 'countries-list/dist/data.json';
-import { initialModel } from './reducer'
-
+import { setLoggedOff } from './reducers/authorizationSlice';
+import { turnOnLoader, turnOffLoader, setSiteInitialized, setDbIsOnline, setDbIsOffline } from './reducers/displaySlice';
+import { setMatchSettings, setPopularArtists, addFestivalMatches, addCountries, addContinents } from './reducers/festivalMatchingSlice';
+import { setUserInfo, setTopArtists, setPlaylists } from './reducers/spotifyAccountSlice';
+import { AppThunk } from './store';
+import { Artist, ArtistMinimal, MatchRequest, FestivalMatch, Area, UserInfo, Playlist, PopularArtistsDict } from "./types";
 
 import SpotifyWebApi from 'spotify-web-api-js';
 export const spotifyApi = new SpotifyWebApi();
 
-export const turnOnLoader = (): Action => {
-    return {
-        type: ActionTypeKeys.TURN_ON_LOADER
-    }
-};
-
-export const turnOffLoader = (): Action => {
-    return {
-        type: ActionTypeKeys.TURN_OFF_LOADER
-    }
-};
-
-export const setDbIsOnline = (): Action => {
-    return {
-        type: ActionTypeKeys.SET_DB_IS_ONLINE
-    }
-};
-
-export const setDbIsOffline = (): Action => {
-    return {
-        type: ActionTypeKeys.SET_DB_IS_OFFLINE
-    }
-};
-
-export const setLoggedIn = (): Action => {
-    return {
-        type: ActionTypeKeys.SET_LOGGED_IN
-    }
-};
-
-export const setLoggedOff = (): Action => {
-    return {
-        type: ActionTypeKeys.SET_LOGGED_OFF
-    }
-};
-
-export const setSiteInitialized = (): Action => {
-    return {
-        type: ActionTypeKeys.SET_SITE_INITIALIZED
-    }
-};
-
-export const switchToDarkMode = (): Action => {
-    return {
-        type: ActionTypeKeys.SWITCH_TO_DARK_MODE,
-    }
-};
-
-export const switchToLightMode = (): Action => {
-    return {
-        type: ActionTypeKeys.SWITCH_TO_LIGHT_MODE,
-    }
-};
-
-export const setAccessToken = (accessToken: string): Action => {
-    return {
-        type: ActionTypeKeys.SET_ACCESS_TOKEN,
-        accessToken: accessToken
-    }
-};
-
-export const setTokenExpiryDate = (expiresInSeconds: number): Action => {
-    return {
-        type: ActionTypeKeys.SET_TOKEN_EXPIRY_DATE,
-        expiresInSeconds: expiresInSeconds
-    }
-};
-
-export const setUserInfo = (info: UserInfo): Action => {
-    return {
-        type: ActionTypeKeys.SET_USER_INFO,
-        info: info
-    }
-};
-
-export const setShowPlaylistModal = (show: boolean): Action => {
-    return {
-        type: ActionTypeKeys.SET_SHOW_PLAYLIST_MODAL,
-        show: show
-    }
-};
-
-export const setTopArtists = (artists: Artist[], countTopArtists: number): Action => {
-    return {
-        type: ActionTypeKeys.SET_TOP_ARTISTS,
-        artists: artists,
-        countTopArtists: countTopArtists
-    }
-};
-
-export const setPlaylists = (playlists: Playlist[]): Action => {
-    return {
-        type: ActionTypeKeys.SET_PLAYLISTS,
-        playlists: playlists
-    }
-};
-
-export const setSelectedPlaylistArtists = (artists: Artist[]): Action => {
-    return {
-        type: ActionTypeKeys.SET_SELECTED_PLAYLIST_ARTISTS,
-        artists: artists
-    }
-};
-
-export const addCountries = (countries: Area[]): Action => {
-    return {
-        type: ActionTypeKeys.ADD_COUNTRIES,
-        countries: countries
-    }
-};
-
-export const addContinents = (continents: Area[]): Action => {
-    return {
-        type: ActionTypeKeys.ADD_CONTINENTS,
-        continents: continents
-    }
-};
-
-export const addFestivalMatches = (festivals: FestivalMatch[]): Action => {
-    return {
-        type: ActionTypeKeys.ADD_FESTIVAL_MATCHES,
-        festivals: festivals
-    }
-};
-
-export const setPopularArtists = (popularArtistsDict: PopularArtistsDict): Action => {
-    return {
-        type: ActionTypeKeys.SET_POPULAR_ARTISTS,
-        popularArtistsDict: popularArtistsDict
-    }
-};
-
-export const setMatchingMethod = (method: MatchingMethod): Action => {
-    return {
-        type: ActionTypeKeys.SET_MATCHING_METHOD,
-        method: method
-    }
-};
-
-export const setMatchSettings = (settings: MatchSettings): Action => {
-    return {
-        type: ActionTypeKeys.SET_MATCH_SETTINGS,
-        settings: settings
-    }
-};
-
-export const setCurrentPage = (page: number): Action => {
-    return {
-        type: ActionTypeKeys.SET_CURRENT_PAGE,
-        page: page
-    }
-};
-
-export const getPopularArtistsInLineups = (
-    lineups: string[],
-    dispatch: Dispatch
-) => {
+export const getPopularArtistsInLineups = (lineups: string[]): AppThunk => dispatch => {
     fetch(getApiBaseUrl() + '/onTour/popularArtistsInLineups', {
         method: 'POST',
         headers: {
@@ -185,13 +32,12 @@ export const testFestivalMatches = (
     artists: Artist[],
     numTracks: number,
     isTopArtists: Boolean,
-    dispatch: Dispatch,
     dateFrom: Date,
     dateTo: Date,
     continents?: string[],
     countries?: string[],
     states?: string[]
-) => {
+): AppThunk => dispatch => {
     dispatch(turnOnLoader());
     dateFrom.setUTCHours(0);
     dateFrom.setDate(1) // Frist day of month
@@ -222,7 +68,7 @@ export const testFestivalMatches = (
         dispatch(setDbIsOnline());
         if (festivalMatches.length > 0) {
             const firstPageLineups = festivalMatches.slice(0, 15).map(match => match.lineup_id);
-            getPopularArtistsInLineups(firstPageLineups, dispatch);
+            dispatch(getPopularArtistsInLineups(firstPageLineups));
         }
     }).catch((reason) => {
         console.log(reason);
@@ -250,9 +96,8 @@ const topArtistsCount = (numArtists: number) => {
 Object.values = Object.values || function(o: any) { return Object.keys(o).map(function(k) { return o[k] }) };
 
 export const initializeSite = (
-    token: string,
-    dispatch: Dispatch
-) => {
+    token: string
+): AppThunk => dispatch => {
     dispatch(setDbIsOnline());
     if (token) {
         spotifyApi.setAccessToken(token);
@@ -263,8 +108,9 @@ export const initializeSite = (
     Promise.all([spotifyApi.getMe(), getAvailableCountries, getAvailableContinents])
         .then(([responseGetMe, getAvailableCountriesReponse, getAvailableContinentsResponse]) => {
             const getMe: SpotifyApi.CurrentUsersProfileResponse = responseGetMe as SpotifyApi.CurrentUsersProfileResponse;
-            const countries: Area[] = getAvailableCountriesReponse as Area[];
-            const continents: Area[] = getAvailableContinentsResponse as Area[];
+            const availableCountries: Area[] = getAvailableCountriesReponse as Area[];
+            const countries: Area[] = [...availableCountries];
+            const continents: Area[] = [...getAvailableContinentsResponse as Area[]];
 
             dispatch(addCountries(countries));
             dispatch(addContinents(continents));
@@ -308,14 +154,14 @@ export const initializeSite = (
                         }
                     });
 
-                    dispatch(setTopArtists(Object.values(tempDict), countTopArtists));
+                    dispatch(setTopArtists({ artists: Object.values(tempDict), countTopArtists: countTopArtists }));
                 })
                 .catch((error) => {
                     console.log(error);
                     dispatch(setLoggedOff());
                 })
 
-            getAllPlaylists(getMe.id, 0, [], dispatch);
+            dispatch(getAllPlaylists(getMe.id, 0, []));
         })
         .catch((error) => {
             if (error instanceof XMLHttpRequest) {
@@ -334,9 +180,8 @@ export const initializeSite = (
 export const getAllPlaylists = (
     userId: string,
     offset: number,
-    allPlaylists: Playlist[],
-    dispatch: Dispatch
-) => {
+    allPlaylists: Playlist[]
+): AppThunk => dispatch => {
     spotifyApi.getUserPlaylists(userId, { limit: 50, offset: offset })
         .then((response: SpotifyApi.ListOfUsersPlaylistsResponse) => {
 
@@ -355,7 +200,7 @@ export const getAllPlaylists = (
             }).filter(Boolean) as Playlist[];
 
             if (response.total > offset + 50) {
-                getAllPlaylists(userId, offset + 50, allPlaylists.concat(playlists), dispatch);
+                dispatch(getAllPlaylists(userId, offset + 50, allPlaylists.concat(playlists)));
             } else {
                 allPlaylists = allPlaylists.concat(playlists);
                 dispatch(setPlaylists(allPlaylists));

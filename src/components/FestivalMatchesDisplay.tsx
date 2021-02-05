@@ -3,9 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import Pagination from '@material-ui/lab/Pagination';
 import React, { useEffect } from 'react';
-import { connect } from "react-redux";
-import { getPopularArtistsInLineups, setCurrentPage } from "../redux/actions";
-import { AppState, DispatchProps, FestivalMatch, Artist, PopularArtistsDict } from "../redux/types";
+import { useSelector, useDispatch } from 'react-redux';
+import { getPopularArtistsInLineups } from "../redux/asyncActions";
+import { selectFestivalMatches, selectPopularArtists, selectMatchSettings, selectSelectedPlaylistArtists, selectCurrentPage, setCurrentPage } from '../redux/reducers/festivalMatchingSlice';
+import { selectTopArtists } from '../redux/reducers/spotifyAccountSlice';
+import { FestivalMatch, Artist, PopularArtistsDict, MatchSettings } from "../redux/types";
 import FestivalMatchCard from './FestivalMatchCard';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -68,20 +70,16 @@ const useStyles = makeStyles((theme: Theme) =>
 	}),
 );
 
-interface StoreProps {
-	festivalMatches: FestivalMatch[],
-	currentPage: number,
-	matchBasis: string,
-	topArtists: Artist[],
-	selectedPlaylistArtists: Artist[],
-	popularArtistsDict: PopularArtistsDict
-}
+const FestivalMatchesDisplay = () => {
 
-type Props = DispatchProps & StoreProps;
+	const festivalMatches: FestivalMatch[] = useSelector(selectFestivalMatches);
+	const popularArtistsDict: PopularArtistsDict = useSelector(selectPopularArtists);
+	const matchSettings: MatchSettings = useSelector(selectMatchSettings);
+	const topArtists: Artist[] = useSelector(selectTopArtists);
+	const selectedPlaylistArtists: Artist[] = useSelector(selectSelectedPlaylistArtists);
+	const currentPage: number = useSelector(selectCurrentPage);
+	const dispatch = useDispatch();
 
-const FestivalMatchesDisplay: React.FC<Props> = (props: Props) => {
-
-	const { festivalMatches, currentPage, dispatch, matchBasis, topArtists, selectedPlaylistArtists, popularArtistsDict } = props;
 	const classes = useStyles();
 
 	const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
@@ -97,7 +95,7 @@ const FestivalMatchesDisplay: React.FC<Props> = (props: Props) => {
             dispatch(setCurrentPage(value));
             const currentPageLineups = festivalMatches.slice((value - 1) * 15, value * 15).map(match => match.lineup_id);
             if (currentPageLineups.length > 0) {
-                getPopularArtistsInLineups(currentPageLineups, dispatch);
+                dispatch(getPopularArtistsInLineups(currentPageLineups));
             }
             if (isBottomPagination) {
                 setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
@@ -129,7 +127,7 @@ const FestivalMatchesDisplay: React.FC<Props> = (props: Props) => {
 				</Box>}
 			{showMatches.map((festival: FestivalMatch, idx) => {
 				const popularArtists = festival.lineup_id in popularArtistsDict ? popularArtistsDict[festival.lineup_id] : [];
-				const matchingArtists = matchBasis === "__your__top__artists__" ?
+				const matchingArtists = matchSettings.matchBasis === "__your__top__artists__" ?
 					topArtists.filter(artist => artist.spotifyId && festival.matching_artists.includes(artist.spotifyId)).sort((a, b) => a.userPopularity! < b.userPopularity! ? 1 : -1) :
 					selectedPlaylistArtists.filter(artist => artist.spotifyId && festival.matching_artists.includes(artist.spotifyId)).sort((a, b) => a.userPopularity! < b.userPopularity! ? 1 : -1);
 				return (<FestivalMatchCard festival={festival} popularArtists={popularArtists} matchingArtists={matchingArtists} key={'FestivalMatchCard: ' + festival.name + festival.year} showMatching={true} />)
@@ -153,22 +151,4 @@ const FestivalMatchesDisplay: React.FC<Props> = (props: Props) => {
 	);
 };
 
-const mapStateToProps = (state: AppState) => ({
-	festivalMatches: state.model.festivalMatches,
-	currentPage: state.model.currentPage,
-	matchBasis: state.model.matchSettings.matchBasis,
-	topArtists: state.model.topArtists,
-	selectedPlaylistArtists: state.model.selectedPlaylistArtists,
-	popularArtistsDict: state.model.popularArtists,
-});
-
-const mapDispatchToProps = (dispatch: any) => {
-	return {
-		dispatch
-	}
-};
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(FestivalMatchesDisplay);
+export default FestivalMatchesDisplay;

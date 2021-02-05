@@ -1,4 +1,4 @@
-import { createStyles,  Theme, Paper, IconButton, Button, Collapse, Typography, Box, PaletteType, Tooltip } from "@material-ui/core";
+import { createStyles,  Theme, Paper, IconButton, Button, Collapse, Typography, Box, Tooltip, PaletteType } from "@material-ui/core";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -7,10 +7,13 @@ import React from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import ReactCountryFlag from "react-country-flag";
-import { connect } from "react-redux";
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { AppState, DispatchProps, FestivalMatch, MatchingMethod, Artist } from "../redux/types";
+import { selectThememode } from '../redux/reducers/displaySlice';
+import { selectMatchingMethod } from '../redux/reducers/festivalMatchingSlice';
+import { FestivalMatch, MatchingMethod, Artist } from "../redux/types";
 import { getMaxArtistsInWidth, displayedLocationName } from "../utils/utils";
+
 import ArtistBubble from './ArtistBubble';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -212,15 +215,13 @@ interface OwnProps {
     showMatching: boolean
 }
 
-interface StoreProps {
-    thememode: PaletteType,
-    matchingMethod: MatchingMethod
-}
-
-type Props = DispatchProps & StoreProps & OwnProps;
+type Props = OwnProps;
 
 const FestivalMatchCard: React.FC<Props> = (props: Props) => {
-    const { festival, showMatching, thememode, matchingMethod, popularArtists, matchingArtists } = props;
+    const { festival, showMatching, popularArtists, matchingArtists } = props;
+
+    const thememode: PaletteType = useSelector(selectThememode);
+    const matchingMethod: MatchingMethod = useSelector(selectMatchingMethod);
 
     const bigScreen = useMediaQuery('(min-width:690px)');
     const smallScreen = useMediaQuery('(max-width:439px)');
@@ -410,18 +411,4 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
     );
 };
 
-const mapStateToProps = (state: AppState) => ({
-    thememode: state.model.thememode,
-    matchingMethod: state.model.matchingMethod
-});
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        dispatch
-    }
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(FestivalMatchCard);
+export default FestivalMatchCard;

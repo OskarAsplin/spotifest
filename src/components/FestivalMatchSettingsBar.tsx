@@ -7,9 +7,13 @@ import InfoIcon from '@material-ui/icons/Info';
 import { MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import React, { useEffect } from 'react';
 import ReactCountryFlag from "react-country-flag";
-import { connect } from "react-redux";
-import { spotifyApi, setLoggedOff, testFestivalMatches, turnOnLoader, setMatchSettings, setSelectedPlaylistArtists, setShowPlaylistModal } from "../redux/actions";
-import { AppState, DispatchProps, MatchingMethod, Playlist, Artist, Area, MatchSettings, UserInfo } from "../redux/types";
+import { useSelector, useDispatch } from 'react-redux';
+import { spotifyApi, testFestivalMatches } from "../redux/asyncActions";
+import { setLoggedOff } from '../redux/reducers/authorizationSlice';
+import { selectThememode, selectIsDbOnline, selectShowPlaylistModal, turnOnLoader, setShowPlaylistModal } from '../redux/reducers/displaySlice';
+import { selectMatchSettings, selectSelectedPlaylistArtists, selectCountries, selectContinents, setMatchSettings, setSelectedPlaylistArtists } from '../redux/reducers/festivalMatchingSlice';
+import { selectUserInfo, selectPlaylists, selectTopArtists, selectTopArtistsLoaded, selectPlaylistsLoaded, selectCountTopArtists } from '../redux/reducers/spotifyAccountSlice';
+import { Playlist, Artist, Area, MatchSettings, UserInfo } from "../redux/types";
 import { europeanRegions, usRegions, regionMap } from "../utils/regionUtils";
 import { getIconPicture, getBigPicture, displayedLocationName } from "../utils/utils";
 
@@ -151,25 +155,6 @@ const useStyles = makeStyles((theme: Theme) =>
 	}),
 );
 
-interface StoreProps {
-	thememode: PaletteType,
-	matchingMethod: MatchingMethod,
-	playlists: Playlist[],
-	topArtists: Artist[],
-	selectedPlaylistArtists: Artist[],
-	countries: Area[],
-	continents: Area[],
-	matchSettings: MatchSettings,
-	showPlaylistModal: boolean,
-	topArtistsLoaded: boolean,
-	playlistsLoaded: boolean,
-	isDbOnline: boolean,
-	userInfo?: UserInfo,
-	countTopArtists: number
-}
-
-type Props = DispatchProps & StoreProps;
-
 const HtmlTooltip = withStyles((theme) => ({
 	tooltip: {
 		backgroundColor: '#f5f5f9',
@@ -182,10 +167,22 @@ const HtmlTooltip = withStyles((theme) => ({
 
 const topArtistsChoice = '__your__top__artists__';
 
-const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
+const FestivalMatchSettingsBar = () => {
 
-	const { thememode, playlists, topArtists, selectedPlaylistArtists, countries, continents, dispatch, matchSettings, showPlaylistModal } = props;
-	const { topArtistsLoaded, playlistsLoaded, isDbOnline, userInfo, countTopArtists } = props;
+	const thememode: PaletteType = useSelector(selectThememode);
+	const userInfo: UserInfo | undefined = useSelector(selectUserInfo);
+	const playlists: Playlist[] = useSelector(selectPlaylists);
+	const topArtists: Artist[] = useSelector(selectTopArtists);
+	const selectedPlaylistArtists: Artist[] = useSelector(selectSelectedPlaylistArtists);
+	const countries: Area[] = useSelector(selectCountries);
+	const continents: Area[] = useSelector(selectContinents);
+	const matchSettings: MatchSettings = useSelector(selectMatchSettings);
+	const showPlaylistModal: boolean = useSelector(selectShowPlaylistModal);
+	const topArtistsLoaded: boolean = useSelector(selectTopArtistsLoaded);
+	const playlistsLoaded: boolean = useSelector(selectPlaylistsLoaded);
+	const isDbOnline: boolean = useSelector(selectIsDbOnline);
+	const countTopArtists: number = useSelector(selectCountTopArtists);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		const matchRequestIsValid = matchSettings.matchBasis === topArtistsChoice ? topArtists.length !== 0 : selectedPlaylistArtists.length !== 0;
@@ -246,8 +243,8 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 			}
 		}
 
-		testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
-			dispatch, dateFrom, dateTo, continentFilter, countryFilter, stateFilter);
+		dispatch(testFestivalMatches(isTopArtists ? topArtists : artistsFromPlaylist, numTracks, isTopArtists,
+			dateFrom, dateTo, continentFilter, countryFilter, stateFilter));
 	}
 
 	const handlePlaylistChange = async (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -437,7 +434,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									Worldwide
 								</MenuItem>
 								<ListSubheader disableSticky disableGutters>Continents</ListSubheader>
-								{continents.sort((a, b) => a.name > b.name ? 1 : -1).map((continent) =>
+								{[...continents].sort((a, b) => a.name > b.name ? 1 : -1).map((continent) =>
 									<MenuItem key={continent.isoCode} value={continent.isoCode} style={{ minWidth: 200 }}>
 										{continent.name}
 									</MenuItem>
@@ -455,7 +452,7 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 									</MenuItem>
 								)}
 								<ListSubheader disableSticky disableGutters>Countries</ListSubheader>
-								{countries.sort((a, b) => a.name > b.name ? 1 : -1).map((country) =>
+								{[...countries].sort((a, b) => a.name > b.name ? 1 : -1).map((country) =>
 									<MenuItem key={country.isoCode} value={country.isoCode}>
                                         <ReactCountryFlag countryCode={country.isoCode} svg style={{ marginRight: '8px' }} /> {displayedLocationName(country.name)}
 									</MenuItem>
@@ -611,30 +608,4 @@ const FestivalMatchSettingsBar: React.FC<Props> = (props: Props) => {
 	);
 };
 
-const mapStateToProps = (state: AppState) => ({
-	thememode: state.model.thememode,
-	matchingMethod: state.model.matchingMethod,
-	playlists: state.model.playlists,
-	topArtists: state.model.topArtists,
-	selectedPlaylistArtists: state.model.selectedPlaylistArtists,
-	countries: state.model.countries,
-	continents: state.model.continents,
-	matchSettings: state.model.matchSettings,
-	showPlaylistModal: state.model.showPlaylistModal,
-	topArtistsLoaded: state.model.topArtistsLoaded,
-	playlistsLoaded: state.model.playlistsLoaded,
-	isDbOnline: state.model.isDbOnline,
-	userInfo: state.model.userInfo,
-	countTopArtists: state.model.countTopArtists
-});
-
-const mapDispatchToProps = (dispatch: any) => {
-	return {
-		dispatch
-	}
-};
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(FestivalMatchSettingsBar);
+export default FestivalMatchSettingsBar;

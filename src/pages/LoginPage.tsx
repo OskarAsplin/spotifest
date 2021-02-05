@@ -4,10 +4,9 @@ import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import { connect } from "react-redux";
+import { useDispatch } from 'react-redux';
 import { getAuthorizeHref } from '../oauthConfig';
-import { setLoggedIn, setLoggedOff } from "../redux/actions";
-import { DispatchProps } from "../redux/types";
+import { setLoggedIn, setLoggedOff } from '../redux/reducers/authorizationSlice';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -130,17 +129,17 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-type Props = DispatchProps;
-
-const LoginPage: React.FC<Props> = (props: Props) => {
+const LoginPage = () => {
 
     const bigWidth = useMediaQuery('(min-width:610px)');
     const bigHeight = useMediaQuery('(min-height:610px)');
     const bigScreen = bigWidth && bigHeight;
     const verySmallScreen = useMediaQuery('(max-width:330px)');
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
-        props.dispatch(setLoggedOff());
+        dispatch(setLoggedOff());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -182,7 +181,7 @@ const LoginPage: React.FC<Props> = (props: Props) => {
                         <Button className={clsx(classes.button, bigScreen ? classes.buttonSizeBig : classes.buttonSizeSmall)} key={'Log in with spotify button'}
                             variant="contained"
                             onClick={() => {
-                                props.dispatch(setLoggedIn());
+                                dispatch(setLoggedIn());
                                 window.open(getAuthorizeHref(), '_self');
                             }}>
                             <img src={process.env.PUBLIC_URL + '/techIcons/Spotify-Mark-white.png'}
@@ -229,12 +228,4 @@ const LoginPage: React.FC<Props> = (props: Props) => {
     );
 };
 
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        dispatch
-    }
-};
-
-export default connect(
-    mapDispatchToProps
-)(LoginPage);
+export default LoginPage;

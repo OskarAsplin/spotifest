@@ -3,15 +3,13 @@ import { Provider } from "react-redux";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { PersistGate } from 'redux-persist/integration/react';
 import './App.scss';
-import configureStore from "./configureStore";
+import { store, persistor } from "./redux/store";
 import AboutPage from "./pages/AboutPage";
 import ArtistPage from "./pages/ArtistPage";
 import FestivalPage from "./pages/FestivalPage";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import PageNotFound from "./pages/PageNotFound";
-
-const { store, persistor } = configureStore();
 
 const App: React.FC = () => {
   return (

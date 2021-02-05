@@ -1,17 +1,18 @@
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, CircularProgress } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Typography, CircularProgress, PaletteType } from "@material-ui/core";
 import { deepOrange, indigo, pink, lightBlue } from "@material-ui/core/colors";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import React, { useEffect } from 'react';
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import AppBarView from "../components/AppBarView";
+import FestivalMatchesDisplay from "../components/FestivalMatchesDisplay";
+import FestivalMatchSettingsBar from "../components/FestivalMatchSettingsBar";
 import { getAuthorizeHref } from "../oauthConfig";
-import { initializeSite, setAccessToken, setTokenExpiryDate, setLoggedOff, spotifyApi } from "../redux/actions";
-import { AppState, DispatchProps, Model } from "../redux/types";
+import { initializeSite, spotifyApi } from "../redux/asyncActions";
+import { selectLoggedIn, selectAccessToken, selectTokenExpiryDate, setAccessToken, setTokenExpiryDate, setLoggedOff } from '../redux/reducers/authorizationSlice';
+import { selectLoaderOn, selectThememode, selectIsDbOnline, selectSiteInitialized } from '../redux/reducers/displaySlice';
 import '../styles/base.scss';
 import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
-import AppBarView from "../components/AppBarView";
-import FestivalMatchSettingsBar from "../components/FestivalMatchSettingsBar";
-import FestivalMatchesDisplay from "../components/FestivalMatchesDisplay";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -43,53 +44,57 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface StoreProps {
-    model: Model;
-}
-
-type Props = DispatchProps & StoreProps;
-
 const hashParams = getHashParams();
 const token = hashParams.access_token;
 const expires_in = hashParams.expires_in;
 removeHashParamsFromUrl();
 
-const MainPage: React.FC<Props> = (props: Props) => {
+const MainPage = () => {
+
+    const loaderOn: boolean = useSelector(selectLoaderOn);
+    const thememode: PaletteType = useSelector(selectThememode);
+    const isDbOnline: boolean = useSelector(selectIsDbOnline);
+    const siteInitialized: boolean = useSelector(selectSiteInitialized);
+    const loggedIn: boolean = useSelector(selectLoggedIn);
+    const accessToken: string = useSelector(selectAccessToken);
+    const tokenExpiryDate: string = useSelector(selectTokenExpiryDate);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (token) {
-            props.dispatch(setAccessToken(token));
+            dispatch(setAccessToken(token));
             spotifyApi.setAccessToken(token);
-            if (!props.model.siteInitialized) {
-                initializeSite(token, props.dispatch);
+            if (!siteInitialized) {
+                dispatch(initializeSite(token));
             }
             if (expires_in) {
-                props.dispatch(setTokenExpiryDate(+expires_in));
+                dispatch(setTokenExpiryDate(+expires_in));
             }
-        } else if (props.model.accessToken) {
-            spotifyApi.setAccessToken(props.model.accessToken);
-            if (!props.model.siteInitialized) {
-                initializeSite(token, props.dispatch);
+        } else if (accessToken) {
+            console.log('else mainpage useeffect');
+            spotifyApi.setAccessToken(accessToken);
+            if (!siteInitialized) {
+                console.log('else mainpage useeffect - initializeSite');
+                dispatch(initializeSite(token));
             }
-            if (props.model.tokenExpiryDate !== '') {
+            if (tokenExpiryDate !== '') {
                 const unixTimeNow = new Date().getTime();
                 const tenMinMilliseconds = 600000;
                 const oneDayMilliseconds = 86400000;
-                const unixTimeExpiry = Date.parse(props.model.tokenExpiryDate);
+                const unixTimeExpiry = Date.parse(tokenExpiryDate);
                 if (unixTimeNow > unixTimeExpiry + oneDayMilliseconds) {
-                    props.dispatch(setLoggedOff());
+                    dispatch(setLoggedOff());
                 } else if (unixTimeNow > unixTimeExpiry - tenMinMilliseconds) {
-                    props.dispatch(setAccessToken(''));
+                    dispatch(setAccessToken(''));
                     window.open(getAuthorizeHref(), '_self');
                 }
             }
         } else {
-            props.dispatch(setLoggedOff());
+            dispatch(setLoggedOff());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
         typography: {
             fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
@@ -105,7 +110,7 @@ const MainPage: React.FC<Props> = (props: Props) => {
                 main: pink[400],
                 dark: pink[700]
             },
-            type: props.model.thememode
+            type: thememode
         }
     });
     const indigoOrangeMuiTheme = createMuiTheme({
@@ -120,13 +125,13 @@ const MainPage: React.FC<Props> = (props: Props) => {
                 main: deepOrange[500],
                 dark: deepOrange[700]
             },
-            type: props.model.thememode
+            type: thememode
         }
     });
 
     const classes = useStyles();
 
-    if (!props.model.loggedIn || (!token && !props.model.accessToken && !props.model.tokenExpiryDate)) {
+    if (!loggedIn || (!token && !accessToken && !tokenExpiryDate)) {
         return <Redirect push to='/login' />
     }
     return (
@@ -137,10 +142,10 @@ const MainPage: React.FC<Props> = (props: Props) => {
             <div className={classes.verticalSpace} />
             <div className={classes.root}>
                 <FestivalMatchSettingsBar />
-                {props.model.isDbOnline &&
+                {isDbOnline &&
                     <FestivalMatchesDisplay />}
             </div>
-            {!props.model.isDbOnline &&
+            {!isDbOnline &&
                 <div className={classes.root}>
                     <Typography variant="subtitle1" >
                         There seems to be some issue with connecting to our database. Try refreshing the page.
@@ -155,17 +160,4 @@ const MainPage: React.FC<Props> = (props: Props) => {
     );
 };
 
-const mapStateToProps = (state: AppState) => ({
-    model: state.model
-});
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        dispatch
-    }
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MainPage);
+export default MainPage;

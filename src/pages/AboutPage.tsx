@@ -7,13 +7,13 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import StarIcon from '@material-ui/icons/Star';
 import clsx from 'clsx';
 import React from 'react';
-import { connect } from "react-redux";
+import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { AppState, DispatchProps } from "../redux/types";
-import styles from './AboutPage.module.scss';
-import '../styles/base.scss';
 import AppBarView from "../components/AppBarView";
 import TechStackContent from "../components/TechStackContent";
+import { selectThememode } from '../redux/reducers/displaySlice';
+import '../styles/base.scss';
+import styles from './AboutPage.module.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -29,13 +29,7 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface StoreProps {
-    thememode: PaletteType
-}
-
-type Props = DispatchProps & StoreProps;
-
-const AboutPage: React.FC<Props> = (props: Props) => {
+const AboutPage = () => {
 
     const bigScreen = useMediaQuery('(min-width:610px)');
     const biggerScreen = useMediaQuery('(min-width:720px)');
@@ -48,7 +42,7 @@ const AboutPage: React.FC<Props> = (props: Props) => {
     const [supportExpanded, setSupportExpanded] = React.useState(false);
     const [disclaimerExpanded, setDisclaimerExpanded] = React.useState(false);
 
-    const { thememode } = props;
+    const thememode: PaletteType = useSelector(selectThememode);
 
     const lightMode: boolean = thememode === 'light';
 
@@ -290,17 +284,4 @@ const AboutPage: React.FC<Props> = (props: Props) => {
     );
 }
 
-const mapStateToProps = (state: AppState) => ({
-    thememode: state.model.thememode
-});
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        dispatch
-    }
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AboutPage);
+export default AboutPage;

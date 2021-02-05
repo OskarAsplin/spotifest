@@ -1,4 +1,4 @@
-import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, Button, IconButton, Collapse, CircularProgress } from "@material-ui/core";
+import { createStyles, CssBaseline, MuiThemeProvider, Theme, Box, Paper, Typography, Link, Button, IconButton, Collapse, CircularProgress, PaletteType } from "@material-ui/core";
 import { lightBlue, pink, deepOrange, indigo } from "@material-ui/core/colors";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery/useMediaQuery";
@@ -6,17 +6,19 @@ import { ArrowBackOutlined, MusicNote } from '@material-ui/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Redirect } from 'react-router-dom';
-import { spotifyApi, turnOnLoader, turnOffLoader, setLoggedOff } from "../redux/actions";
-import { AppState, DispatchProps, ArtistInfo, Artist, Model } from "../redux/types";
-import '../styles/base.scss';
-import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
-import { getIconPicture, getBigPicture, getMaxArtistsInWidth } from "../utils/utils";
 import AppBarView from "../components/AppBarView";
 import ArtistBubble from '../components/ArtistBubble';
 import FestivalMatchCard from '../components/FestivalMatchCard';
+import { spotifyApi } from "../redux/asyncActions";
+import { selectLoggedIn, selectAccessToken, setLoggedOff } from '../redux/reducers/authorizationSlice';
+import { selectLoaderOn, selectThememode, turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
+import { ArtistInfo, Artist } from "../redux/types";
+import '../styles/base.scss';
+import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
+import { getIconPicture, getBigPicture, getMaxArtistsInWidth } from "../utils/utils";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -200,10 +202,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface StoreProps {
-    model: Model;
-}
-
 interface MatchParams {
     artistId: string;
 }
@@ -211,9 +209,15 @@ interface MatchParams {
 interface MatchProps extends RouteComponentProps<MatchParams> {
 }
 
-type Props = DispatchProps & StoreProps & MatchProps;
+type Props = MatchProps;
 
 const ArtistPage: React.FC<Props> = (props: Props) => {
+
+    const loggedIn: boolean = useSelector(selectLoggedIn);
+    const accessToken: string = useSelector(selectAccessToken);
+    const loaderOn: boolean = useSelector(selectLoaderOn);
+    const thememode: PaletteType = useSelector(selectThememode);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setIsValidSpotifyId(true);
@@ -221,7 +225,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
         setArtistInfo(undefined);
         if (props.match.params.artistId.indexOf('spotifyId=') !== -1) {
             const spotifyId = props.match.params.artistId.substring('spotifyId='.length);
-            props.dispatch(turnOnLoader());
+            dispatch(turnOnLoader());
             fetchToJson(getApiBaseUrl() + '/onTour/artistInfo/?spotifyId=' + spotifyId)
                 .then((response: any) => {
                     const responseArtist = (response as ArtistInfo)
@@ -233,8 +237,8 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                     } else {
                         setIsArtistInDb(false);
                     }
-                    if (props.model.loggedIn && props.model.accessToken) {
-                        spotifyApi.setAccessToken(props.model.accessToken);
+                    if (loggedIn && accessToken) {
+                        spotifyApi.setAccessToken(accessToken);
                         spotifyApi.getArtist(spotifyId)
                             .then((spotifyArtistResponse: SpotifyApi.SingleArtistResponse) => {
                                 const bigPicture: string = getBigPicture(spotifyArtistResponse.images);
@@ -255,16 +259,16 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                 console.log(error);
                                 if (error.status === 401) {
                                     // TODO: check if renewal time and just renew token and redirect to same page.
-                                    props.dispatch(setLoggedOff());
+                                    dispatch(setLoggedOff());
                                 } else {
                                     setIsValidSpotifyId(false);
                                 }
                             });
                     }
 
-                }).finally(() => props.dispatch(turnOffLoader()));
-            if (props.model.loggedIn && props.model.accessToken) {
-                spotifyApi.setAccessToken(props.model.accessToken);
+                }).finally(() => dispatch(turnOffLoader()));
+            if (loggedIn && accessToken) {
+                spotifyApi.setAccessToken(accessToken);
                 spotifyApi.getArtistRelatedArtists(spotifyId)
                     .then((spotifyArtistResponse: SpotifyApi.ArtistsRelatedArtistsResponse) => {
                         if (spotifyArtistResponse.artists.length > 0) {
@@ -286,7 +290,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                         console.log(error);
                         if (error.status === 401) {
                             // TODO: check if renewal time and just renew token and redirect to same page.
-                            props.dispatch(setLoggedOff());
+                            dispatch(setLoggedOff());
                         } else {
                             setIsValidSpotifyId(false);
                         }
@@ -295,14 +299,14 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
         } else {
             const artistName = props.match.params.artistId;
             if (artistName) {
-                props.dispatch(turnOnLoader());
+                dispatch(turnOnLoader());
                 fetchToJson(getApiBaseUrl() + '/onTour/artistInfo/?q=' + artistName)
                     .then((response: any) => {
                         const responseArtist = (response as ArtistInfo)
                         setArtistInfo(responseArtist);
 
-                        if (responseArtist.artist.spotifyId && props.model.loggedIn && props.model.accessToken) {
-                            spotifyApi.setAccessToken(props.model.accessToken);
+                        if (responseArtist.artist.spotifyId && loggedIn && accessToken) {
+                            spotifyApi.setAccessToken(accessToken);
                             spotifyApi.getArtistRelatedArtists(responseArtist.artist.spotifyId)
                                 .then((spotifyArtistResponse: SpotifyApi.ArtistsRelatedArtistsResponse) => {
                                     if (spotifyArtistResponse.artists.length > 0) {
@@ -324,7 +328,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                     console.log(error);
                                     if (error.status === 401) {
                                         // TODO: check if renewal time and just renew token and redirect to same page.
-                                        props.dispatch(setLoggedOff());
+                                        dispatch(setLoggedOff());
                                     } else {
                                         setIsValidSpotifyId(false);
                                     }
@@ -337,7 +341,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                         } else {
                             setIsArtistInDb(false);
                         }
-                    }).finally(() => props.dispatch(turnOffLoader()));
+                    }).finally(() => dispatch(turnOffLoader()));
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -358,7 +362,6 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, smallScreen, 6);
     const fillRelatedArtistsWidth = maxArtistsInWidth - relatedArtists.length % maxArtistsInWidth;
 
-    const loaderOn = props.model.loaderOn;
     const muiTheme = createMuiTheme({
         typography: {
             fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
@@ -374,7 +377,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                 main: pink[400],
                 dark: pink[700]
             },
-            type: props.model.thememode
+            type: thememode
         }
     });
     const indigoOrangeMuiTheme = createMuiTheme({
@@ -392,7 +395,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                 main: deepOrange[500],
                 dark: deepOrange[700]
             },
-            type: props.model.thememode
+            type: thememode
         }
     });
 
@@ -474,7 +477,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                     </Box>
                                 </Typography>
                             </div>
-                            <Box className={props.model.thememode === 'light' ? classes.buttonBox : clsx(classes.buttonBox, classes.darkerBackground)}>
+                            <Box className={thememode === 'light' ? classes.buttonBox : clsx(classes.buttonBox, classes.darkerBackground)}>
                                 {artistInfo.artist.bigPicture ?
                                     <Button onClick={() => window.open(artistInfo.artist.bigPicture, '_blank')} className={classes.artistImgButton}>
                                         <img className={classes.artistImg} src={artistInfo.artist.bigPicture} alt="" />
@@ -524,7 +527,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
                                                 useSpotifyId={true}
                                                 key={'avatar_rel_artist_' + artistInfo.artist.name + artist.name}
                                                 bubbleId={'avatar_rel_artist_' + artistInfo.artist.name + artist.name}
-                                                thememode={props.model.thememode} />
+                                                thememode={thememode} />
                                         ))}
                                         {relatedArtists.length > 0 &&
                                             Array.from({ length: fillRelatedArtistsWidth }, (_, i) => <div className={classes.artistWidth} key={i} />)
@@ -612,17 +615,4 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     };
 }
 
-const mapStateToProps = (state: AppState) => ({
-    model: state.model
-});
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        dispatch
-    }
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ArtistPage);
+export default ArtistPage;

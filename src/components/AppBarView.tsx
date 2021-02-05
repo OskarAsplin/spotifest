@@ -13,11 +13,13 @@ import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useAsync } from 'react-async-hook';
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import useConstant from 'use-constant';
-import { switchToDarkMode, switchToLightMode, setLoggedOff } from "../redux/actions";
-import { UserInfo, AppState, DispatchProps, SearchResponse } from "../redux/types";
+import { selectLoggedIn, setLoggedOff } from '../redux/reducers/authorizationSlice';
+import { selectThememode, switchToDarkMode, switchToLightMode } from '../redux/reducers/displaySlice';
+import { selectUserInfo } from '../redux/reducers/spotifyAccountSlice';
+import { UserInfo, SearchResponse } from "../redux/types";
 import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -150,14 +152,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-interface StoreProps {
-    thememode: PaletteType;
-    userInfo?: UserInfo;
-    loggedIn: boolean
-}
-
-type Props = StoreProps & DispatchProps;
-
 const emptySearchResponse: SearchResponse = { festivals: [], artists: [] };
 
 // Generic reusable hook
@@ -193,14 +187,18 @@ const useDebouncedSearch = (searchFunction: any) => {
     };
 };
 
-const AppBarView: React.FC<Props> = (props: Props) => {
+const AppBarView = () => {
     const bigScreen = useMediaQuery('(min-width:610px)');
     const smallMobileScreen = useMediaQuery('(max-width:355px)');
+
+    const thememode: PaletteType = useSelector(selectThememode);
+    const loggedIn: boolean = useSelector(selectLoggedIn);
+    const userInfo: UserInfo = useSelector(selectUserInfo);
+    const dispatch = useDispatch();
 
     const useSearchDb = () => useDebouncedSearch((text: any) => searchDatabase(text))
 
     const classes = useStyles();
-    const { dispatch, thememode, userInfo, loggedIn } = props;
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const { inputText, setInputText, searchResults } = useSearchDb();
     const [searchBlur, setSearchBlur] = useState([false, false]);
@@ -530,19 +528,4 @@ const AppBarView: React.FC<Props> = (props: Props) => {
     );
 };
 
-const mapStateToProps = (state: AppState) => ({
-    thememode: state.model.thememode,
-    userInfo: state.model.userInfo,
-    loggedIn: state.model.loggedIn,
-});
-
-const mapDispatchToProps = (dispatch: any) => {
-    return {
-        dispatch
-    }
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AppBarView);
+export default AppBarView;
