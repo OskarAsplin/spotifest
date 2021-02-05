@@ -3,7 +3,7 @@ import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 import { getShortDateISOString, getIconPicture, getBigPicture } from "../utils/utils";
 import { setLoggedOff } from './reducers/authorizationSlice';
 import { turnOnLoader, turnOffLoader, setSiteInitialized, setDbIsOnline, setDbIsOffline } from './reducers/displaySlice';
-import { setMatchSettings, setPopularArtists, addFestivalMatches, addCountries, addContinents } from './reducers/festivalMatchingSlice';
+import { setMatchSettings, setPopularArtists, addFestivalMatches, addCountries, addContinents, initialMatchSettings } from './reducers/festivalMatchingSlice';
 import { setUserInfo, setTopArtists, setPlaylists } from './reducers/spotifyAccountSlice';
 import { AppThunk } from './store';
 import { Artist, ArtistMinimal, MatchRequest, FestivalMatch, Area, UserInfo, Playlist, PopularArtistsDict } from "./types";
@@ -130,7 +130,7 @@ export const initializeSite = (
             const isRegisteredContinent = continents.find(continent => continent.isoCode === userContinent);
             const isEuropeOrNorthAmerica = userContinent === 'EU' || userContinent === 'NA';
             if (isRegisteredContinent && isEuropeOrNorthAmerica) {
-                dispatch(setMatchSettings({ ...initialModel.matchSettings, area: isRegisteredContinent }));
+                dispatch(setMatchSettings({ ...initialMatchSettings, area: isRegisteredContinent }));
             }
 
             dispatch(setSiteInitialized());

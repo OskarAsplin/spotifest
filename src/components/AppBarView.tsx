@@ -193,7 +193,7 @@ const AppBarView = () => {
 
     const thememode: PaletteType = useSelector(selectThememode);
     const loggedIn: boolean = useSelector(selectLoggedIn);
-    const userInfo: UserInfo = useSelector(selectUserInfo);
+    const userInfo: UserInfo | undefined = useSelector(selectUserInfo);
     const dispatch = useDispatch();
 
     const useSearchDb = () => useDebouncedSearch((text: any) => searchDatabase(text))

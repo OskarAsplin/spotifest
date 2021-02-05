@@ -22,6 +22,14 @@ endOfNextYear.setUTCDate(31);
 endOfNextYear.setUTCHours(0);
 const initialToDate = afterApril ? endOfNextYear : oneYearFromNow;
 
+export const initialMatchSettings: MatchSettings = {
+    matchBasis: '',
+    area: { name: 'Worldwide', isoCode: 'XXX' },
+    fromDate: (new Date()).toISOString(),
+    toDate: initialToDate.toISOString(),
+    numTracks: 0,
+}
+
 const initialState: FestivalMatchingState = {
     selectedPlaylistArtists: [],
     festivalMatches: [],
@@ -29,13 +37,7 @@ const initialState: FestivalMatchingState = {
     matchingMethod: MatchingMethod.Genre,
     countries: [],
     continents: [],
-    matchSettings: {
-        matchBasis: '',
-        area: { name: 'Worldwide', isoCode: 'XXX' },
-        fromDate: (new Date()).toISOString(),
-        toDate: initialToDate.toISOString(),
-        numTracks: 0,
-    },
+    matchSettings: initialMatchSettings,
     currentPage: 1,
 };
 
