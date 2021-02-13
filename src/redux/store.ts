@@ -1,18 +1,25 @@
 import { configureStore, getDefaultMiddleware, ThunkAction, Action } from '@reduxjs/toolkit';
-import { combineReducers } from "redux";
+import { combineReducers, AnyAction, Reducer } from "redux";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
-import authorizationReducer from './reducers/authorizationSlice';
+import authorizationReducer, { setLoggedOff } from './reducers/authorizationSlice';
 import displayReducer from './reducers/displaySlice';
 import festivalMatchingReducer from './reducers/festivalMatchingSlice';
 import spotifyAccountReducer from './reducers/spotifyAccountSlice';
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
     display: displayReducer,
     authorization: authorizationReducer,
     spotifyAccount: spotifyAccountReducer,
     festivalMatching: festivalMatchingReducer,
 });
+
+const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
+    if (action.type === setLoggedOff.type) {
+        state = {} as RootState;
+    }
+    return appReducer(state, action)
+}
 
 const persistConfig = {
     key: 'root',
@@ -28,7 +35,8 @@ export const store = configureStore({
         serializableCheck: {
             ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
         }
-    })
+    }),
+    devTools: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? true : false,
 })
 
 export const persistor = persistStore(store);
