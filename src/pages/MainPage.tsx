@@ -71,10 +71,8 @@ const MainPage = () => {
                 dispatch(setTokenExpiryDate(+expires_in));
             }
         } else if (accessToken) {
-            console.log('else mainpage useeffect');
             spotifyApi.setAccessToken(accessToken);
             if (!siteInitialized) {
-                console.log('else mainpage useeffect - initializeSite');
                 dispatch(initializeSite(token));
             }
             if (tokenExpiryDate !== '') {

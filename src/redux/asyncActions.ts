@@ -3,7 +3,7 @@ import { fetchToJson, getApiBaseUrl } from "../utils/restUtils";
 import { getShortDateISOString, getIconPicture, getBigPicture } from "../utils/utils";
 import { setLoggedOff } from './reducers/authorizationSlice';
 import { turnOnLoader, turnOffLoader, setSiteInitialized, setDbIsOnline, setDbIsOffline } from './reducers/displaySlice';
-import { setMatchSettings, setPopularArtists, addFestivalMatches, addCountries, addContinents, initialMatchSettings } from './reducers/festivalMatchingSlice';
+import { setMatchSettings, setPopularArtists, setCurrentPage, addFestivalMatches, addCountries, addContinents, initialMatchSettings } from './reducers/festivalMatchingSlice';
 import { setUserInfo, setTopArtists, setPlaylists } from './reducers/spotifyAccountSlice';
 import { AppThunk } from './store';
 import { Artist, ArtistMinimal, MatchRequest, FestivalMatch, Area, UserInfo, Playlist, PopularArtistsDict } from "./types";
@@ -66,6 +66,7 @@ export const testFestivalMatches = (
         const festivalMatches = data as FestivalMatch[];
         dispatch(addFestivalMatches(festivalMatches));
         dispatch(setDbIsOnline());
+        dispatch(setCurrentPage(1));
         if (festivalMatches.length > 0) {
             const firstPageLineups = festivalMatches.slice(0, 15).map(match => match.lineup_id);
             dispatch(getPopularArtistsInLineups(firstPageLineups));
