@@ -250,9 +250,19 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
     const textColor = thememode === 'light' ? '#3FBF3F' : '#3de53d';
     const trailColor = thememode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
 
+    const noLineupRegistered = popularArtists.length === 0;
+
     const twoArtistsNextToPicture = bigScreen && matchingArtists.length <= 2;
     const threeArtistsNextToPicture = useMediaQuery('(min-width:810px)') && matchingArtists.length <= 3;
     const matchingNextToPicture = twoArtistsNextToPicture || threeArtistsNextToPicture;
+
+    const matchingArtistsText = (className:string = '') => {
+        return (<Typography variant="body1" color='primary' component="div" className={classes.addSidePadding}>
+                    <Box fontWeight="fontWeightBold">
+                        {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
+                    </Box>
+                </Typography>);
+    }
 
     if (redirectFestival) {
         return <Redirect push to={'/festival/' + redirectFestival} />
@@ -321,26 +331,22 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                         <Typography variant="subtitle2" className={classes.addSidePadding} noWrap>
                             {'Genres: ' + festival.top_genres.slice(0, 3).join(", ")}
                         </Typography>
-                        {showMatching && matchingNextToPicture &&
-                            <div className={classes.matchingPopularBoxFirstRow}>
-                            <Typography variant="body1" color='primary' component="div" className={classes.addSidePadding}>
-                                    <Box fontWeight="fontWeightBold">
-                                        {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
-                                    </Box>
-                                </Typography>
-                            </div>
-                        }
-                        {showMatching && matchingNextToPicture &&
-                            <div className={clsx(classes.artistAvatarBoxFirstRow, classes.addSmallSidePadding)}>
-                                {matchingArtists.map((artist) => (
-                                    <ArtistBubble
-                                        artist={artist}
-                                        key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
-                                        bubbleId={'avatar_match_artist_' + festival.name + festival.year + artist.name}
-                                        thememode={thememode} />
-                                        )
-                                )}
-                            </div>
+                        {showMatching && !noLineupRegistered && matchingNextToPicture &&
+                            <>
+                                <div className={classes.matchingPopularBoxFirstRow}>
+                                    {matchingArtistsText(classes.addSidePadding)}
+                                </div>
+                                <div className={clsx(classes.artistAvatarBoxFirstRow, classes.addSmallSidePadding)}>
+                                    {matchingArtists.map((artist) => (
+                                        <ArtistBubble
+                                            artist={artist}
+                                            key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                            bubbleId={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                            thememode={thememode} />
+                                            )
+                                    )}
+                                </div>
+                            </>
                         }
                     </div>
                     {festival.festivalImg && <div className={thememode === 'light' ? classes.lineupBox : clsx(classes.lineupBox, classes.darkerBackground)}>
@@ -349,63 +355,69 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                         </Button>
                     </div>}
                 </div>
-                {showMatching && !matchingNextToPicture &&
+                {showMatching && !noLineupRegistered && !matchingNextToPicture &&
+                    <>
+                        <div className={clsx(classes.matchingPopularBox, classes.addSidePadding)}>
+                            {matchingArtistsText()}
+                        </div>
+                        <div className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding)}>
+                            {matchingArtists.map((artist) => (
+                                <ArtistBubble
+                                    artist={artist}
+                                    key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                    bubbleId={'avatar_match_artist_' + festival.name + festival.year + artist.name}
+                                    thememode={thememode} />
+                                    )
+                            )}
+                            {matchingArtists.length > 0 &&
+                                Array.from({ length: fillMatchingArtistWidth }, (_, i) => <div className={classes.artistWidth} key={i} />)
+                            }
+                        </div>
+                    </>
+                }
+                {noLineupRegistered ?
                     <div className={clsx(classes.matchingPopularBox, classes.addSidePadding)}>
                         <Typography variant="body1" color='primary' component="div">
                             <Box fontWeight="fontWeightBold">
-                                {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
+                                No lineup registered yet
                             </Box>
                         </Typography>
                     </div>
-                }
-                {showMatching && !matchingNextToPicture &&
-                    <div className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding)}>
-                        {matchingArtists.map((artist) => (
-                            <ArtistBubble
-                                artist={artist}
-                                key={'avatar_match_artist_' + festival.name + festival.year + artist.name}
-                                bubbleId={'avatar_match_artist_' + festival.name + festival.year + artist.name}
-                                thememode={thememode} />
-                                )
-                        )}
-                        {matchingArtists.length > 0 &&
-                            Array.from({ length: fillMatchingArtistWidth }, (_, i) => <div className={classes.artistWidth} key={i} />)
-                        }
-                    </div>
-                }
-                <div className={clsx(classes.matchingPopularBox, classes.addSidePadding)}>
-                    <Typography variant="body1" color='primary' component="div">
-                        <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
-                            Popular artists at this festival
-                        </Box>
-                    </Typography>
-                    <IconButton
-                        className={clsx(classes.expand, {
-                            [classes.expandOpen]: expanded,
-                        })}
-                        onClick={() => setExpanded(!expanded)}
-                        aria-expanded={expanded}
-                        aria-label="show more"
-                    >
-                        <ExpandMoreIcon />
-                    </IconButton>
-                </div>
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <div className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding, classes.paddingBottom)}>
-                        {popularArtists.length > 0 &&
-                            popularArtists.slice(0, maxArtistsInWidth > 4 ? maxArtistsInWidth * 2 : maxArtistsInWidth * 3).map((artist) => (
-                                <ArtistBubble
-                                    artist={artist}
-                                    key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
-                                    bubbleId={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
-                                    thememode={thememode} />
-                            )
-                            )}
-                        {popularArtists.length > 0 &&
-                            Array.from({ length: fillPopularArtistWidth }, (_, i) => <div className={classes.artistWidth} key={i} />)
-                        }
-                    </div>
-                </Collapse>
+                    :<>
+                        <div className={clsx(classes.matchingPopularBox, classes.addSidePadding)}>
+                            <Typography variant="body1" color='primary' component="div">
+                                <Box fontWeight="fontWeightBold" onClick={() => setExpanded(!expanded)}>
+                                    Popular artists at this festival
+                                </Box>
+                            </Typography>
+                            <IconButton
+                                className={clsx(classes.expand, {
+                                    [classes.expandOpen]: expanded,
+                                })}
+                                onClick={() => setExpanded(!expanded)}
+                                aria-expanded={expanded}
+                                aria-label="show more"
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
+                        </div>
+                        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                            <div className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding, classes.paddingBottom)}>
+                                {popularArtists.length > 0 &&
+                                    popularArtists.slice(0, maxArtistsInWidth > 4 ? maxArtistsInWidth * 2 : maxArtistsInWidth * 3).map((artist) => (
+                                        <ArtistBubble
+                                            artist={artist}
+                                            key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
+                                            bubbleId={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
+                                            thememode={thememode} />
+                                    )
+                                    )}
+                                {popularArtists.length > 0 &&
+                                    Array.from({ length: fillPopularArtistWidth }, (_, i) => <div className={classes.artistWidth} key={i} />)
+                                }
+                            </div>
+                        </Collapse>
+                    </>}
             </div>
         </Paper>
     );
