@@ -257,7 +257,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
     const matchingNextToPicture = twoArtistsNextToPicture || threeArtistsNextToPicture;
 
     const matchingArtistsText = (className:string = '') => {
-        return (<Typography variant="body1" color='primary' component="div" className={classes.addSidePadding}>
+        return (<Typography variant="body1" color='primary' component="div" className={className}>
                     <Box fontWeight="fontWeightBold">
                         {matchingArtists.length > 0 ? 'Matching artists' : 'No matching artists'}
                     </Box>
