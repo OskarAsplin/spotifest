@@ -139,6 +139,20 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'center',
             flexGrow: 1,
         },
+        lineupBox: {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            '@media (min-width: 690px)': {
+                maxWidth: '55%',
+                marginTop: theme.spacing(0.5),
+                padding: theme.spacing(0, 4, 0, 0),
+            },
+            '@media (max-width: 689px)': {
+                width: '100%',
+                marginTop: theme.spacing(1),
+            },
+        },
         darkerBackground: {
             '@media (max-width: 689px)': {
                 backgroundColor: '#383838'
@@ -179,13 +193,6 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         paddingBottom: {
             paddingBottom: theme.spacing(1)
-        },
-        expandLine: {
-            display: 'flex',
-            justifyContent: 'center',
-        },
-        expandLineGradient: {
-            background: 'linear-gradient(#424242, #505050);'
         },
     }),
 );
@@ -342,6 +349,11 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                             </>
                         }
                     </div>
+                    {festival.festivalImg && <div className={thememode === 'light' ? classes.lineupBox : clsx(classes.lineupBox, classes.darkerBackground)}>
+                        <Button onClick={() => { setRedirectFestival(encodeURIComponent(festival.name)) }} className={classes.lineupImgButton} >
+                            <img className={classes.lineup} src={festival.festivalImg} alt="" />
+                        </Button>
+                    </div>}
                 </div>
                 {showMatching && !noLineupRegistered && !matchingNextToPicture &&
                     <>
@@ -378,25 +390,21 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                                     Popular artists at this festival
                                 </Box>
                             </Typography>
-                        </div>
-                        <div className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding, classes.paddingBottom)}>
-                            {popularArtists.length > 0 &&
-                                popularArtists.slice(0, maxArtistsInWidth).map((artist) => (
-                                    <ArtistBubble
-                                        artist={artist}
-                                        key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
-                                        bubbleId={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
-                                        thememode={thememode} />
-                                )
-                                )}
-                            {popularArtists.length > 0 &&
-                                Array.from({ length: fillPopularArtistWidth }, (_, i) => <div className={classes.artistWidth} key={i} />)
-                            }
+                            <IconButton
+                                className={clsx(classes.expand, {
+                                    [classes.expandOpen]: expanded,
+                                })}
+                                onClick={() => setExpanded(!expanded)}
+                                aria-expanded={expanded}
+                                aria-label="show more"
+                            >
+                                <ExpandMoreIcon />
+                            </IconButton>
                         </div>
                         <Collapse in={expanded} timeout="auto" unmountOnExit>
                             <div className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding, classes.paddingBottom)}>
                                 {popularArtists.length > 0 &&
-                                    popularArtists.slice(maxArtistsInWidth, maxArtistsInWidth > 4 ? maxArtistsInWidth * 2 : maxArtistsInWidth * 3).map((artist) => (
+                                    popularArtists.slice(0, maxArtistsInWidth > 4 ? maxArtistsInWidth * 2 : maxArtistsInWidth * 3).map((artist) => (
                                         <ArtistBubble
                                             artist={artist}
                                             key={'avatar_pop_artist_' + festival.name + festival.year + artist.name}
@@ -409,19 +417,6 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                                 }
                             </div>
                         </Collapse>
-                        {popularArtists.length > maxArtistsInWidth && 
-                            <div className={expanded ? classes.expandLine : clsx(classes.expandLine, classes.expandLineGradient)}>
-                                <IconButton
-                                    className={clsx(classes.expand, {
-                                        [classes.expandOpen]: expanded,
-                                    })}
-                                    onClick={() => setExpanded(!expanded)}
-                                    aria-expanded={expanded}
-                                    aria-label="show more"
-                                >
-                                    <ExpandMoreIcon />
-                                </IconButton>
-                            </div>}
                     </>}
             </div>
         </Paper>
