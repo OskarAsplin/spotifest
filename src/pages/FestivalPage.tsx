@@ -493,6 +493,11 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                     >
                                         {festivalInfo.lineups.slice(0, limitLineups).map((lineup, idx) =>
                                             <TabPanel value={selectedLineup} index={idx} key={'tabPanel: ' + festivalInfo.name + lineup.year}>
+                                                {lineup.artists.length === 0 ? <Box className={classes.lineupView}>
+                                                    <Typography variant="h6" className={classes.festivalTitle}>
+                                                        No lineup registered
+                                                    </Typography>
+                                                </Box>:
                                                 <Box className={classes.lineupView}>
                                                     {lineup.cancelled ?
                                                         <Typography variant="h6" color='secondary' className={classes.festivalTitle}>
@@ -508,7 +513,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                                             color={!sortAlphabetically ? 'primary' : 'default'}
                                                             onClick={() => setSortAlphabetically(false)}>
                                                             Popularity
-                                                    </Button>
+                                                        </Button>
                                                         <Switch checked={sortAlphabetically} color="default"
                                                             onChange={(evt: any) => setSortAlphabetically(evt.target.checked ? true : false)}
                                                             name="switchSortAlphabetically" />
@@ -516,7 +521,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                                             color={sortAlphabetically ? 'primary' : 'default'}
                                                             onClick={() => setSortAlphabetically(true)}>
                                                             Alphabetically
-                                                    </Button>
+                                                        </Button>
                                                     </Box>
                                                     <div className={classes.artistAvatarBox}>
                                                         {lineup.artists.length > 0 &&
@@ -540,7 +545,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
                                                             <img className={classes.lineupPoster} src={lineup.poster} alt="" />
                                                         </Button>
                                                     </div>}
-                                                </Box>
+                                                </Box>}
                                             </TabPanel>)}
                                     </SwipeableViews>
                                 </Paper>
