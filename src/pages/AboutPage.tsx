@@ -96,7 +96,7 @@ const AboutPage = () => {
                     </Typography>
                     <div className={styles.verticalSpace} />
                     <List className={styles.noPadding}>
-                        {["Festival matching with more than 500 festivals worldwide",
+                        {["Festival matching with more than 1000 festivals worldwide",
                         "Festival pages with current and previous lineups",
                         "Artist pages to see which festivals each artist is attending"].map((text, i) => {
                             return (<ListItem key={'feature:' + i}>
