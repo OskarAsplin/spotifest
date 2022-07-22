@@ -4,7 +4,7 @@ export const getHashParams = () => {
         .split("&")
         .reduce(function(initial: {[key: string]: any;}, item) {
             if (item) {
-                var parts = item.split("=");
+                const parts = item.split("=");
                 initial[parts[0]] = decodeURIComponent(parts[1]);
             }
             return initial;

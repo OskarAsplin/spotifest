@@ -34,8 +34,8 @@ export const spotifyAccountSlice = createSlice({
         },
         setPlaylists: (state, action: PayloadAction<Playlist[]>) => {
             const sortedPlaylists = action.payload.sort((a: Playlist, b: Playlist) => {
-                let aName = a.name.toUpperCase();
-                let bName = b.name.toUpperCase();
+                const aName = a.name.toUpperCase();
+                const bName = b.name.toUpperCase();
                 return (aName < bName) ? -1 : (aName > bName) ? 1 : 0;
             });
             state.playlists = sortedPlaylists;

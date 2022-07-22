@@ -295,10 +295,10 @@ const FestivalMatchSettingsBar = () => {
 				allArtistIdsRaw = allArtistIdsRaw.concat(artistIdsRaw);
 			}
 
-            let count: { [id: string]: number; } = {};
+            const count: { [id: string]: number; } = {};
             allArtistIdsRaw.forEach((val: string) => count[val] = (count[val] || 0) + 1);
 			const artistIds: string[] = [...new Set(allArtistIdsRaw)].filter(Boolean) as string[];
-			let newArtists: Artist[] = [];
+			const newArtists: Artist[] = [];
 
 			for (let index = 0; index < artistIds.length; index += 50) {
 				await spotifyApi.getArtists(artistIds.slice(index, index + 50))
