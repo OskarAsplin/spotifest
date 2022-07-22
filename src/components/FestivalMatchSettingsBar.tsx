@@ -841,8 +841,9 @@ const FestivalMatchSettingsBar = () => {
               topArtists.length === 0 &&
               playlists.length === 0 && (
                 <Typography>
-                  We can't find any listening habits or playlists to use for our
-                  festival matching. Go to your{' '}
+                  {
+                    "We can't find any listening habits or playlists to use for our festival matching. Go to your "
+                  }
                   {userInfo && userInfo.spotifyUrl ? (
                     <Link
                       color={'primary'}

@@ -1,3 +1,4 @@
+/* eslint-disable */
 declare module 'react-country-flag' {
   import * as React from 'react';
   export interface ReactCountryFlagProps<T>

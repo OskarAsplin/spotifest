@@ -156,7 +156,7 @@ const FestivalMatchesDisplay = () => {
           </Box>
         </Box>
       )}
-      {showMatches.map((festival: FestivalMatch, idx) => {
+      {showMatches.map((festival: FestivalMatch) => {
         const popularArtists =
           festival.lineup_id in popularArtistsDict
             ? popularArtistsDict[festival.lineup_id]
