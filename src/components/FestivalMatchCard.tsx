@@ -27,14 +27,14 @@ import { getMaxArtistsInWidth, displayedLocationName } from '../utils/utils';
 
 import ArtistBubble from './ArtistBubble';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
   createStyles({
     root: {
       display: 'flex',
       justifyContent: 'space-between',
       flexDirection: 'column',
-      padding: theme.spacing(1, 0, 0, 0),
-      marginBottom: theme.spacing(3),
+      padding: spacing(1, 0, 0, 0),
+      marginBottom: spacing(3),
       width: '100%',
     },
     root2: {
@@ -72,23 +72,23 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     addSidePadding: {
       '@media (min-width: 690px)': {
-        padding: theme.spacing(0, 4, 0, 4),
+        padding: spacing(0, 4, 0, 4),
       },
       '@media (max-width: 689px)': {
         '@media (min-width: 440px)': {
-          padding: theme.spacing(0, 2, 0, 2),
+          padding: spacing(0, 2, 0, 2),
         },
       },
       '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 2, 0, 2),
+        padding: spacing(0, 2, 0, 2),
       },
     },
     addSmallSidePadding: {
       '@media (min-width: 440px)': {
-        padding: theme.spacing(0, 2, 0, 2),
+        padding: spacing(0, 2, 0, 2),
       },
       '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
+        padding: spacing(0, 1, 0, 1),
       },
     },
     artistAvatarBoxFirstRow: {
@@ -119,8 +119,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     expand: {
       transform: 'rotate(0deg)',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
+      transition: transitions.create('transform', {
+        duration: transitions.duration.shortest,
       }),
     },
     expandOpen: {
@@ -132,9 +132,9 @@ const useStyles = makeStyles((theme: Theme) =>
     button: {
       whiteSpace: 'normal',
       textTransform: 'none',
-      marginLeft: -theme.spacing(1.25),
+      marginLeft: -spacing(1.25),
       textAlign: 'left',
-      padding: theme.spacing(0, 1, 0, 1),
+      padding: spacing(0, 1, 0, 1),
     },
     grow: {
       flexGrow: 1,
@@ -166,7 +166,7 @@ const useStyles = makeStyles((theme: Theme) =>
     flexRow: {
       display: 'flex',
       '@media (min-width: 690px)': {
-        marginTop: theme.spacing(1),
+        marginTop: spacing(1),
         flexDirection: 'row',
         justifyContent: 'space-between',
       },
@@ -188,25 +188,28 @@ const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
     },
     paddingBottom: {
-      paddingBottom: theme.spacing(1),
+      paddingBottom: spacing(1),
     },
     expandLine: {
       display: 'flex',
       justifyContent: 'center',
     },
     expandLineGradient: {
-      background: 'linear-gradient(#424242, #505050);',
+      background:
+        palette.type === 'dark'
+          ? `linear-gradient(${palette.grey[800]}, #505050);`
+          : undefined,
     },
   })
 );
 
-const HtmlTooltip = withStyles((theme) => ({
+const HtmlTooltip = withStyles(({ spacing, typography }) => ({
   tooltip: {
     backgroundColor: '#f5f5f9',
     color: 'rgba(0, 0, 0, 0.87)',
     maxWidth: 320,
-    margin: theme.spacing(0, 2, 0, 2),
-    fontSize: theme.typography.pxToRem(12),
+    margin: spacing(0, 2, 0, 2),
+    fontSize: typography.pxToRem(12),
     border: '1px solid #dadde9',
   },
 }))(Tooltip);
