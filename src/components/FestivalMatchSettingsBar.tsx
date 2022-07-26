@@ -22,11 +22,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { deepOrange, indigo } from '@material-ui/core/colors';
-import {
-  withStyles,
-  makeStyles,
-  createMuiTheme,
-} from '@material-ui/core/styles';
+import { withStyles, makeStyles, createTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import InfoIcon from '@material-ui/icons/Info';
 import {
@@ -263,7 +259,7 @@ const FestivalMatchSettingsBar = () => {
   const smallScreen = useMediaQuery('(max-width:610px)');
   const pcScreen = useMediaQuery('(min-width:1200px)');
 
-  const indigoOrangeMuiTheme = createMuiTheme({
+  const indigoOrangeMuiTheme = createTheme({
     palette: {
       primary: {
         light: indigo[300],
@@ -646,7 +642,7 @@ const FestivalMatchSettingsBar = () => {
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid
                 container
-                justify="space-around"
+                justifyContent="space-around"
                 className={classes.marginBottom}
               >
                 <KeyboardDatePicker
@@ -669,7 +665,7 @@ const FestivalMatchSettingsBar = () => {
               </Grid>
               <Grid
                 container
-                justify="space-around"
+                justifyContent="space-around"
                 className={classes.marginBottom}
               >
                 <KeyboardDatePicker
@@ -729,10 +725,10 @@ const FestivalMatchSettingsBar = () => {
           timeout: 500,
         }}
         open={showPlaylistModal}
-        onClose={() => {
+        onClose={(event, reason) => {
+          if (reason === 'backdropClick') return;
           dispatch(setShowPlaylistModal(false));
         }}
-        disableBackdropClick
         disableEscapeKeyDown
       >
         <Fade in={showPlaylistModal}>

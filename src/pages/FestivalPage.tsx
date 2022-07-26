@@ -17,7 +17,7 @@ import {
   PaletteType,
 } from '@material-ui/core';
 import { deepOrange, indigo, lightBlue, pink } from '@material-ui/core/colors';
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import { createTheme, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
 import clsx from 'clsx';
@@ -343,7 +343,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
   const [selectedLineup, setSelectedLineup] = React.useState(0);
   const [sortAlphabetically, setSortAlphabetically] = React.useState(false);
 
-  const muiTheme = createMuiTheme({
+  const muiTheme = createTheme({
     typography: {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
     },
@@ -362,7 +362,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     },
   });
 
-  const lightBluePinkMuiTheme = createMuiTheme({
+  const lightBluePinkMuiTheme = createTheme({
     typography: {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
     },

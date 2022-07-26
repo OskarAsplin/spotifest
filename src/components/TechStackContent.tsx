@@ -169,7 +169,7 @@ const TechStackContent: React.FC<Props> = (props: Props) => {
         <Grid
           container
           spacing={pcScreen ? 3 : 1}
-          justify="center"
+          justifyContent="center"
           alignItems="center"
         >
           {techInfoRows.map((techInfoRow) => insertTechInfoRow(techInfoRow))}

@@ -9,7 +9,7 @@ import {
   Link,
 } from '@material-ui/core';
 import { lightBlue } from '@material-ui/core/colors';
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import { createTheme, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
@@ -155,7 +155,7 @@ const LoginPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const muiTheme = createMuiTheme({
+  const muiTheme = createTheme({
     typography: {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
     },

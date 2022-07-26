@@ -8,7 +8,7 @@ import {
   PaletteType,
 } from '@material-ui/core';
 import { deepOrange, indigo, pink, lightBlue } from '@material-ui/core/colors';
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import { createTheme, makeStyles } from '@material-ui/core/styles';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -112,7 +112,7 @@ const MainPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const muiTheme = createMuiTheme({
+  const muiTheme = createTheme({
     typography: {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
     },
@@ -130,7 +130,7 @@ const MainPage = () => {
       type: thememode,
     },
   });
-  const indigoOrangeMuiTheme = createMuiTheme({
+  const indigoOrangeMuiTheme = createTheme({
     palette: {
       primary: {
         light: indigo[300],

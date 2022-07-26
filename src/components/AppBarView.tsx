@@ -32,7 +32,7 @@ import {
   createStyles,
   makeStyles,
   Theme,
-  createMuiTheme,
+  createTheme,
 } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import { Brightness2, Brightness4 } from '@material-ui/icons';
@@ -284,7 +284,7 @@ const AppBarView = () => {
       setDrawerOpen(open);
     };
 
-  const lightBluePinkMuiTheme = createMuiTheme({
+  const lightBluePinkMuiTheme = createTheme({
     typography: {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
     },
@@ -303,7 +303,7 @@ const AppBarView = () => {
     },
   });
 
-  const lightBluePinkDarkMuiTheme = createMuiTheme({
+  const lightBluePinkDarkMuiTheme = createTheme({
     typography: {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
     },

@@ -16,7 +16,7 @@ import {
   PaletteType,
 } from '@material-ui/core';
 import { lightBlue, pink } from '@material-ui/core/colors';
-import { createMuiTheme, makeStyles } from '@material-ui/core/styles';
+import { createTheme, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import { ArrowBackOutlined, MusicNote } from '@material-ui/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -61,7 +61,7 @@ const AboutPage = () => {
 
   const lightMode: boolean = thememode === 'light';
 
-  const muiTheme = createMuiTheme({
+  const muiTheme = createTheme({
     typography: {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
     },
