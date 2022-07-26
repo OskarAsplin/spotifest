@@ -19,7 +19,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import ReactCountryFlag from 'react-country-flag';
 import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { selectThememode } from '../redux/reducers/displaySlice';
 import { selectMatchingMethod } from '../redux/reducers/festivalMatchingSlice';
 import { FestivalMatch, MatchingMethod, Artist } from '../redux/types';
@@ -242,7 +242,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
     maxArtistsInWidth - (popularArtists.length % maxArtistsInWidth);
 
   const [expanded, setExpanded] = React.useState(false);
-  const [redirectFestival, setRedirectFestival] = React.useState('');
+  const [NavigateFestival, setNavigateFestival] = React.useState('');
 
   const classes = useStyles();
 
@@ -287,9 +287,8 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
     );
   };
 
-  if (redirectFestival) {
-    return <Redirect push to={'/festival/' + redirectFestival} />;
-  }
+  if (NavigateFestival)
+    return <Navigate to={`/festival/${NavigateFestival}`} />;
 
   return (
     <Paper elevation={3} className={classes.root} key={festival.name}>
@@ -301,7 +300,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
               className={classes.button}
               color="inherit"
               onClick={() => {
-                setRedirectFestival(encodeURIComponent(festival.name));
+                setNavigateFestival(encodeURIComponent(festival.name));
               }}
             >
               <Typography
@@ -457,7 +456,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
             >
               <Button
                 onClick={() => {
-                  setRedirectFestival(encodeURIComponent(festival.name));
+                  setNavigateFestival(encodeURIComponent(festival.name));
                 }}
                 className={classes.lineupImgButton}
               >

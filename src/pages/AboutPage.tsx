@@ -1,7 +1,5 @@
 import {
   createStyles,
-  CssBaseline,
-  MuiThemeProvider,
   Theme,
   Box,
   Paper,
@@ -15,8 +13,7 @@ import {
   ListItemText,
   PaletteType,
 } from '@material-ui/core';
-import { lightBlue, pink } from '@material-ui/core/colors';
-import { createTheme, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import { ArrowBackOutlined, MusicNote } from '@material-ui/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -24,8 +21,7 @@ import StarIcon from '@material-ui/icons/Star';
 import clsx from 'clsx';
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import AppBarView from '../components/AppBarView';
+import { Navigate } from 'react-router-dom';
 import TechStackContent from '../components/TechStackContent';
 import { selectThememode } from '../redux/reducers/displaySlice';
 import '../styles/base.scss';
@@ -51,7 +47,7 @@ const AboutPage = () => {
   const pcScreen = useMediaQuery('(min-width:1040px)');
   const bigPcScreen = useMediaQuery('(min-width:1300px)');
 
-  const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
+  const [navigateHome, setNavigateHome] = React.useState<boolean>(false);
   const [usageExpanded, setUsageExpanded] = React.useState(false);
   const [techExpanded, setTechExpanded] = React.useState(false);
   const [supportExpanded, setSupportExpanded] = React.useState(false);
@@ -61,42 +57,18 @@ const AboutPage = () => {
 
   const lightMode: boolean = thememode === 'light';
 
-  const muiTheme = createTheme({
-    typography: {
-      fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-    },
-    palette: {
-      primary: {
-        light: lightBlue[300],
-        main: lightBlue[500],
-        dark: lightBlue[700],
-      },
-      secondary: {
-        light: pink[300],
-        main: pink[400],
-        dark: pink[700],
-      },
-      type: thememode,
-    },
-  });
-
   const classes = useStyles();
 
-  if (redirectHome) {
-    return <Redirect push to={'/'} />;
-  }
+  if (navigateHome) return <Navigate to="/" />;
 
   return (
-    <MuiThemeProvider theme={muiTheme}>
-      <CssBaseline />
-      <AppBarView />
-      <div className="appBarSpace" />
+    <>
       {bigPcScreen && (
         <div className={styles.topLeft}>
           <IconButton
             onClick={() => {
               window.history.back();
-              setTimeout(() => setRedirectHome(true), 10);
+              setTimeout(() => setNavigateHome(true), 10);
             }}
           >
             <ArrowBackOutlined fontSize="large" />
@@ -430,7 +402,7 @@ const AboutPage = () => {
           </Paper>
         </Box>
       </div>
-    </MuiThemeProvider>
+    </>
   );
 };
 

@@ -1,18 +1,16 @@
 import {
   createStyles,
-  CssBaseline,
   MuiThemeProvider,
   Theme,
   Typography,
   CircularProgress,
   PaletteType,
 } from '@material-ui/core';
-import { deepOrange, indigo, pink, lightBlue } from '@material-ui/core/colors';
+import { deepOrange, indigo } from '@material-ui/core/colors';
 import { createTheme, makeStyles } from '@material-ui/core/styles';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import AppBarView from '../components/AppBarView';
+import { Navigate } from 'react-router-dom';
 import FestivalMatchesDisplay from '../components/FestivalMatchesDisplay';
 import FestivalMatchSettingsBar from '../components/FestivalMatchSettingsBar';
 import { getAuthorizeHref } from '../oauthConfig';
@@ -112,24 +110,6 @@ const MainPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const muiTheme = createTheme({
-    typography: {
-      fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-    },
-    palette: {
-      primary: {
-        light: lightBlue[300],
-        main: lightBlue[500],
-        dark: lightBlue[700],
-      },
-      secondary: {
-        light: pink[300],
-        main: pink[400],
-        dark: pink[700],
-      },
-      type: thememode,
-    },
-  });
   const indigoOrangeMuiTheme = createTheme({
     palette: {
       primary: {
@@ -149,13 +129,10 @@ const MainPage = () => {
   const classes = useStyles();
 
   if (!loggedIn || (!token && !accessToken && !tokenExpiryDate)) {
-    return <Redirect push to="/login" />;
+    return <Navigate to="/login" />;
   }
   return (
-    <MuiThemeProvider theme={muiTheme}>
-      <CssBaseline />
-      <AppBarView />
-      <div className="appBarSpace" />
+    <>
       <div className={classes.verticalSpace} />
       <div className={classes.root}>
         <FestivalMatchSettingsBar />
@@ -174,7 +151,7 @@ const MainPage = () => {
           <CircularProgress size={100} thickness={3} color={'secondary'} />
         </MuiThemeProvider>
       </div>
-    </MuiThemeProvider>
+    </>
   );
 };
 

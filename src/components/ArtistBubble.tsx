@@ -11,7 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import MusicNote from '@material-ui/icons/MusicNote';
 import clsx from 'clsx';
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { Artist } from '../redux/types';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -83,15 +83,14 @@ type Props = OwnProps;
 
 const ArtistBubble: React.FC<Props> = (props: Props) => {
   const { artist, useSpotifyId, bubbleId, thememode } = props;
-  const [redirectArtist, setRedirectArtist] = React.useState('');
+  const [navigateArtist, setNavigateArtist] = React.useState('');
 
   const classes = useStyles();
 
-  if (redirectArtist) {
+  if (navigateArtist) {
     return (
-      <Redirect
-        push
-        to={'/artist/' + (useSpotifyId ? 'spotifyId=' : '') + redirectArtist}
+      <Navigate
+        to={'/artist/' + (useSpotifyId ? 'spotifyId=' : '') + navigateArtist}
       />
     );
   }
@@ -102,7 +101,7 @@ const ArtistBubble: React.FC<Props> = (props: Props) => {
         color="inherit"
         onClick={() => {
           if (artist.hasSpotifyId)
-            setRedirectArtist(
+            setNavigateArtist(
               encodeURIComponent(useSpotifyId ? artist.spotifyId! : artist.name)
             );
         }}

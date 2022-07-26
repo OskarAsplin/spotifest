@@ -45,7 +45,7 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useAsync } from 'react-async-hook';
 import { useSelector, useDispatch } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useConstant from 'use-constant';
 import {
   selectLoggedIn,
@@ -240,7 +240,7 @@ const AppBarView = () => {
   const [showSearchFieldSmallScreen, setShowSearchFieldSmallScreen] =
     useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [redirectAboutPage, setRedirectAboutPage] = useState(false);
+  const navigate = useNavigate();
 
   const trigger = useScrollTrigger({ threshold: 30 });
 
@@ -493,10 +493,6 @@ const AppBarView = () => {
     );
   };
 
-  if (redirectAboutPage && !window.location.href.endsWith('/about')) {
-    return <Redirect push to={'/about'} />;
-  }
-
   return (
     <div className={classes.root}>
       <MuiThemeProvider theme={lightBluePinkMuiTheme}>
@@ -652,7 +648,10 @@ const AppBarView = () => {
               <ListItem
                 button
                 key="About"
-                onClick={() => setRedirectAboutPage(true)}
+                onClick={() => {
+                  if (!window.location.href.endsWith('/about'))
+                    navigate('/about');
+                }}
               >
                 <ListItemIcon>
                   <InfoIcon />

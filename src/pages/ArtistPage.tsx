@@ -1,6 +1,5 @@
 import {
   createStyles,
-  CssBaseline,
   MuiThemeProvider,
   Theme,
   Box,
@@ -13,7 +12,7 @@ import {
   CircularProgress,
   PaletteType,
 } from '@material-ui/core';
-import { lightBlue, pink, deepOrange, indigo } from '@material-ui/core/colors';
+import { deepOrange, indigo } from '@material-ui/core/colors';
 import { createTheme, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import { ArrowBackOutlined, MusicNote } from '@material-ui/icons';
@@ -21,9 +20,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
-import { Redirect } from 'react-router-dom';
-import AppBarView from '../components/AppBarView';
+import { Navigate, useParams } from 'react-router-dom';
 import ArtistBubble from '../components/ArtistBubble';
 import FestivalMatchCard from '../components/FestivalMatchCard';
 import { spotifyApi } from '../redux/asyncActions';
@@ -229,29 +226,20 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-interface MatchParams {
-  artistId: string;
-}
-
-interface MatchProps extends RouteComponentProps<MatchParams> {}
-
-type Props = MatchProps;
-
-const ArtistPage: React.FC<Props> = (props: Props) => {
+const ArtistPage = () => {
   const loggedIn: boolean = useSelector(selectLoggedIn);
   const accessToken: string = useSelector(selectAccessToken);
   const loaderOn: boolean = useSelector(selectLoaderOn);
   const thememode: PaletteType = useSelector(selectThememode);
   const dispatch = useDispatch();
+  const { artistId } = useParams();
 
   useEffect(() => {
     setIsValidSpotifyId(true);
     setIsArtistInDb(true);
     setArtistInfo(undefined);
-    if (props.match.params.artistId.indexOf('spotifyId=') !== -1) {
-      const spotifyId = props.match.params.artistId.substring(
-        'spotifyId='.length
-      );
+    if (artistId && artistId.indexOf('spotifyId=') !== -1) {
+      const spotifyId = artistId.substring('spotifyId='.length);
       dispatch(turnOnLoader());
       fetchToJson(
         getApiBaseUrl() + '/onTour/artistInfo/?spotifyId=' + spotifyId
@@ -343,10 +331,9 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
           });
       }
     } else {
-      const artistName = props.match.params.artistId;
-      if (artistName) {
+      if (artistId) {
         dispatch(turnOnLoader());
-        fetchToJson(getApiBaseUrl() + '/onTour/artistInfo/?q=' + artistName)
+        fetchToJson(getApiBaseUrl() + '/onTour/artistInfo/?q=' + artistId)
           .then((response: any) => {
             const responseArtist = response as ArtistInfo;
             setArtistInfo(responseArtist);
@@ -403,7 +390,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.match.params.artistId]);
+  }, [artistId]);
 
   const [artistInfo, setArtistInfo] = React.useState<ArtistInfo | undefined>(
     undefined
@@ -423,24 +410,6 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
   const fillRelatedArtistsWidth =
     maxArtistsInWidth - (relatedArtists.length % maxArtistsInWidth);
 
-  const muiTheme = createTheme({
-    typography: {
-      fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-    },
-    palette: {
-      primary: {
-        light: lightBlue[300],
-        main: lightBlue[500],
-        dark: lightBlue[700],
-      },
-      secondary: {
-        light: pink[300],
-        main: pink[400],
-        dark: pink[700],
-      },
-      type: thememode,
-    },
-  });
   const indigoOrangeMuiTheme = createTheme({
     typography: {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
@@ -463,19 +432,16 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
   const classes = useStyles();
 
   if (redirectFestival) {
-    return <Redirect push to={'/festival/' + redirectFestival} />;
+    return <Navigate to={'/festival/' + redirectFestival} />;
   }
 
   if (redirectHome) {
-    return <Redirect push to={'/'} />;
+    return <Navigate to={'/'} />;
   }
 
   if (!artistInfo) {
     return (
       <MuiThemeProvider theme={indigoOrangeMuiTheme}>
-        <CssBaseline />
-        <AppBarView />
-        <div className="appBarSpace" />
         {pcScreen && (
           <div className={classes.topLeft}>
             <IconButton
@@ -500,7 +466,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
           {!isNetworkError && (!isArtistInDb || !isValidSpotifyId) && (
             <Typography variant="subtitle1">Could not find artist.</Typography>
           )}
-          {!isNetworkError && !props.match.params.artistId && (
+          {!isNetworkError && !artistId && (
             <Typography variant="subtitle1">Invalid URL.</Typography>
           )}
         </div>
@@ -511,10 +477,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
     );
   } else {
     return (
-      <MuiThemeProvider theme={muiTheme}>
-        <CssBaseline />
-        <AppBarView />
-        <div className="appBarSpace" />
+      <>
         {pcScreen && (
           <div className={classes.topLeft}>
             <IconButton
@@ -774,7 +737,7 @@ const ArtistPage: React.FC<Props> = (props: Props) => {
             <CircularProgress size={100} thickness={3} color={'secondary'} />
           </div>
         </MuiThemeProvider>
-      </MuiThemeProvider>
+      </>
     );
   }
 };

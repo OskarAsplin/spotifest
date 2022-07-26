@@ -1,6 +1,5 @@
 import {
   createStyles,
-  CssBaseline,
   MuiThemeProvider,
   Theme,
   Typography,
@@ -16,7 +15,7 @@ import {
   CircularProgress,
   PaletteType,
 } from '@material-ui/core';
-import { deepOrange, indigo, lightBlue, pink } from '@material-ui/core/colors';
+import { deepOrange, indigo } from '@material-ui/core/colors';
 import { createTheme, makeStyles } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
@@ -26,10 +25,8 @@ import CookieConsent from 'react-cookie-consent';
 import ReactCountryFlag from 'react-country-flag';
 import ReactPlayer from 'react-player/lazy';
 import { useSelector, useDispatch } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
-import { Redirect } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
-import AppBarView from '../components/AppBarView';
 import ArtistBubble from '../components/ArtistBubble';
 import {
   selectLoaderOn,
@@ -44,6 +41,7 @@ import {
   getMaxArtistsInFullLineupWidth,
   displayedLocationName,
 } from '../utils/utils';
+import { lightBluePinkThemeOptions } from '../layouts/StandardLayout.styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -283,15 +281,7 @@ interface TabPanelProps {
   value: any;
 }
 
-interface MatchParams {
-  festivalId: string;
-}
-
-interface MatchProps extends RouteComponentProps<MatchParams> {}
-
-type Props = MatchProps;
-
-const FestivalPage: React.FC<Props> = (props: Props) => {
+const FestivalPage = () => {
   const boxForLineups = useMediaQuery('(min-width:1182px)');
   const mediumScreen = useMediaQuery('(min-width:610px)');
   const smallScreen = useMediaQuery('(max-width:440px)');
@@ -299,6 +289,8 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
   const pcScreen = useMediaQuery('(min-width:1300px)');
   const videoSizeMax = useMediaQuery('(min-width:770px)');
   const videoSizeSmall = useMediaQuery('(max-width:470px)');
+
+  const { festivalId } = useParams();
 
   const loaderOn: boolean = useSelector(selectLoaderOn);
   const thememode: PaletteType = useSelector(selectThememode);
@@ -314,11 +306,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
 
   useEffect(() => {
     dispatch(turnOnLoader());
-    fetchToJson(
-      getApiBaseUrl() +
-        '/onTour/festivalInfo/?q=' +
-        props.match.params.festivalId
-    )
+    fetchToJson(getApiBaseUrl() + '/onTour/festivalInfo/?q=' + festivalId)
       .then((response: any) => {
         setFestivalInfo(response as FestivalInfo);
       })
@@ -367,16 +355,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
     },
     palette: {
-      primary: {
-        light: lightBlue[300],
-        main: lightBlue[500],
-        dark: lightBlue[700],
-      },
-      secondary: {
-        light: pink[300],
-        main: pink[400],
-        dark: pink[700],
-      },
+      ...lightBluePinkThemeOptions,
       type: thememode,
     },
   });
@@ -401,16 +380,11 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
     );
   };
 
-  if (redirectHome) {
-    return <Redirect push to={'/'} />;
-  }
+  if (redirectHome) return <Navigate to="/" />;
 
   if (!festivalInfo) {
     return (
       <MuiThemeProvider theme={muiTheme}>
-        <CssBaseline />
-        <AppBarView />
-        <div className="appBarSpace" />
         <div className={classes.align}>
           <div className={classes.verticalSpace} />
           <div className={classes.verticalSpace} />
@@ -425,7 +399,7 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
               Could not find festival.
             </Typography>
           )}
-          {!isNetworkError && !props.match.params.festivalId && (
+          {!isNetworkError && !festivalId && (
             <Typography variant="subtitle1">Invalid URL.</Typography>
           )}
         </div>
@@ -437,9 +411,6 @@ const FestivalPage: React.FC<Props> = (props: Props) => {
   } else {
     return (
       <MuiThemeProvider theme={muiTheme}>
-        <CssBaseline />
-        <AppBarView />
-        <div className="appBarSpace" />
         {pcScreen && (
           <div className={classes.topLeft}>
             <IconButton
