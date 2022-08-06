@@ -1,14 +1,13 @@
 import {
-  createStyles,
   Theme,
   Avatar,
   IconButton,
   Typography,
-  PaletteType,
-} from '@material-ui/core';
-import { blueGrey } from '@material-ui/core/colors';
-import { makeStyles } from '@material-ui/core/styles';
-import MusicNote from '@material-ui/icons/MusicNote';
+  PaletteMode,
+} from '@mui/material';
+import { blueGrey } from '@mui/material/colors';
+import { createStyles, makeStyles } from '@mui/styles';
+import MusicNote from '@mui/icons-material/MusicNote';
 import clsx from 'clsx';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
@@ -76,7 +75,7 @@ interface OwnProps {
   artist: Artist;
   useSpotifyId?: boolean;
   bubbleId: string;
-  thememode: PaletteType;
+  thememode: PaletteMode;
 }
 
 type Props = OwnProps;

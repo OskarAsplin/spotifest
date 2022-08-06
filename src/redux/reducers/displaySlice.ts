@@ -1,4 +1,4 @@
-import { PaletteType } from '@material-ui/core';
+import { PaletteMode } from '@mui/material';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
@@ -6,7 +6,7 @@ interface DisplayState {
   siteInitialized: boolean;
   isDbOnline: boolean;
   loaderOn: boolean;
-  thememode: PaletteType;
+  thememode: PaletteMode;
   showPlaylistModal: boolean;
 }
 

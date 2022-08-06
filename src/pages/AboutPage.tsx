@@ -1,5 +1,4 @@
 import {
-  createStyles,
   Theme,
   Box,
   Paper,
@@ -11,13 +10,13 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  PaletteType,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import { ArrowBackOutlined, MusicNote } from '@material-ui/icons';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import StarIcon from '@material-ui/icons/Star';
+  PaletteMode,
+} from '@mui/material';
+import { makeStyles, createStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import StarIcon from '@mui/icons-material/Star';
 import clsx from 'clsx';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -53,7 +52,7 @@ const AboutPage = () => {
   const [supportExpanded, setSupportExpanded] = React.useState(false);
   const [disclaimerExpanded, setDisclaimerExpanded] = React.useState(false);
 
-  const thememode: PaletteType = useSelector(selectThememode);
+  const thememode: PaletteMode = useSelector(selectThememode);
 
   const lightMode: boolean = thememode === 'light';
 

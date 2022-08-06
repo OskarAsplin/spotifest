@@ -1,6 +1,5 @@
 import {
-  createStyles,
-  MuiThemeProvider,
+  ThemeProvider,
   Theme,
   Typography,
   Paper,
@@ -13,12 +12,13 @@ import {
   useTheme,
   IconButton,
   CircularProgress,
-  PaletteType,
-} from '@material-ui/core';
-import { deepOrange, indigo } from '@material-ui/core/colors';
-import { createTheme, makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
+  PaletteMode,
+} from '@mui/material';
+import { deepOrange, indigo } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import ArrowBackOutlined from '@mui/icons-material/ArrowBack';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import CookieConsent from 'react-cookie-consent';
@@ -293,7 +293,7 @@ const FestivalPage = () => {
   const { festivalId } = useParams();
 
   const loaderOn: boolean = useSelector(selectLoaderOn);
-  const thememode: PaletteType = useSelector(selectThememode);
+  const thememode: PaletteMode = useSelector(selectThememode);
   const dispatch = useDispatch();
 
   const limitLineups = !mediumScreen ? 4 : undefined;
@@ -346,7 +346,7 @@ const FestivalPage = () => {
         main: deepOrange[500],
         dark: deepOrange[700],
       },
-      type: thememode,
+      mode: thememode,
     },
   });
 
@@ -354,10 +354,7 @@ const FestivalPage = () => {
     typography: {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
     },
-    palette: {
-      ...lightBluePinkThemeOptions,
-      type: thememode,
-    },
+    palette: { ...lightBluePinkThemeOptions, mode: thememode },
   });
 
   const classes = useStyles();
@@ -384,7 +381,7 @@ const FestivalPage = () => {
 
   if (!festivalInfo) {
     return (
-      <MuiThemeProvider theme={muiTheme}>
+      <ThemeProvider theme={muiTheme}>
         <div className={classes.align}>
           <div className={classes.verticalSpace} />
           <div className={classes.verticalSpace} />
@@ -406,11 +403,11 @@ const FestivalPage = () => {
         <div hidden={!loaderOn} className="progressBar">
           <CircularProgress size={100} thickness={3} color={'secondary'} />
         </div>
-      </MuiThemeProvider>
+      </ThemeProvider>
     );
   } else {
     return (
-      <MuiThemeProvider theme={muiTheme}>
+      <ThemeProvider theme={muiTheme}>
         {pcScreen && (
           <div className={classes.topLeft}>
             <IconButton
@@ -553,7 +550,7 @@ const FestivalPage = () => {
           </div>
           {festivalInfo.lineups.length !== 0 && (
             <Box className={classes.box2}>
-              <MuiThemeProvider theme={lightBluePinkMuiTheme}>
+              <ThemeProvider theme={lightBluePinkMuiTheme}>
                 <Paper
                   square={!boxForLineups}
                   elevation={3}
@@ -644,7 +641,7 @@ const FestivalPage = () => {
                                   disableElevation
                                   className={classes.button}
                                   color={
-                                    !sortAlphabetically ? 'primary' : 'default'
+                                    !sortAlphabetically ? 'primary' : 'inherit'
                                   }
                                   onClick={() => setSortAlphabetically(false)}
                                 >
@@ -665,7 +662,7 @@ const FestivalPage = () => {
                                   disableElevation
                                   className={classes.button}
                                   color={
-                                    sortAlphabetically ? 'primary' : 'default'
+                                    sortAlphabetically ? 'primary' : 'inherit'
                                   }
                                   onClick={() => setSortAlphabetically(true)}
                                 >
@@ -739,7 +736,7 @@ const FestivalPage = () => {
                       ))}
                   </SwipeableViews>
                 </Paper>
-              </MuiThemeProvider>
+              </ThemeProvider>
             </Box>
           )}
         </div>
@@ -756,7 +753,7 @@ const FestivalPage = () => {
             The youtube videos on this site use cookies.
           </CookieConsent>
         )}
-      </MuiThemeProvider>
+      </ThemeProvider>
     );
   }
 };

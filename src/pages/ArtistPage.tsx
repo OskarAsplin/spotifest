@@ -1,6 +1,5 @@
 import {
-  createStyles,
-  MuiThemeProvider,
+  ThemeProvider,
   Theme,
   Box,
   Paper,
@@ -10,13 +9,14 @@ import {
   IconButton,
   Collapse,
   CircularProgress,
-  PaletteType,
-} from '@material-ui/core';
-import { deepOrange, indigo } from '@material-ui/core/colors';
-import { createTheme, makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import { ArrowBackOutlined, MusicNote } from '@material-ui/icons';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+  PaletteMode,
+} from '@mui/material';
+import { deepOrange, indigo } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import clsx from 'clsx';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
@@ -230,7 +230,7 @@ const ArtistPage = () => {
   const loggedIn: boolean = useSelector(selectLoggedIn);
   const accessToken: string = useSelector(selectAccessToken);
   const loaderOn: boolean = useSelector(selectLoaderOn);
-  const thememode: PaletteType = useSelector(selectThememode);
+  const thememode: PaletteMode = useSelector(selectThememode);
   const dispatch = useDispatch();
   const { artistId } = useParams();
 
@@ -425,7 +425,7 @@ const ArtistPage = () => {
         main: deepOrange[500],
         dark: deepOrange[700],
       },
-      type: thememode,
+      mode: thememode,
     },
   });
 
@@ -441,7 +441,7 @@ const ArtistPage = () => {
 
   if (!artistInfo) {
     return (
-      <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+      <ThemeProvider theme={indigoOrangeMuiTheme}>
         {pcScreen && (
           <div className={classes.topLeft}>
             <IconButton
@@ -473,7 +473,7 @@ const ArtistPage = () => {
         <div hidden={!loaderOn} className="progressBar">
           <CircularProgress size={100} thickness={3} color={'secondary'} />
         </div>
-      </MuiThemeProvider>
+      </ThemeProvider>
     );
   } else {
     return (
@@ -544,7 +544,7 @@ const ArtistPage = () => {
                   : 'No registered genres'}
               </Typography>
               {artistInfo.artist.spotifyId && (
-                <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+                <ThemeProvider theme={indigoOrangeMuiTheme}>
                   <Link
                     color={'secondary'}
                     variant="subtitle1"
@@ -558,7 +558,7 @@ const ArtistPage = () => {
                   >
                     Open artist in spotify
                   </Link>
-                </MuiThemeProvider>
+                </ThemeProvider>
               )}
               {relatedArtists.length === 0 && (
                 <div className={classes.paddingBottom} />
@@ -732,11 +732,11 @@ const ArtistPage = () => {
           )}
         </div>
 
-        <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+        <ThemeProvider theme={indigoOrangeMuiTheme}>
           <div hidden={!loaderOn} className="progressBar">
             <CircularProgress size={100} thickness={3} color={'secondary'} />
           </div>
-        </MuiThemeProvider>
+        </ThemeProvider>
       </>
     );
   }

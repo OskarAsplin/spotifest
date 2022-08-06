@@ -1,5 +1,5 @@
-import { ThemeOptions } from '@material-ui/core/styles';
-import { pink, lightBlue } from '@material-ui/core/colors';
+import { ThemeOptions } from '@mui/material/styles';
+import { pink, lightBlue } from '@mui/material/colors';
 
 export const lightBluePinkThemeOptions: ThemeOptions['palette'] = {
   primary: {

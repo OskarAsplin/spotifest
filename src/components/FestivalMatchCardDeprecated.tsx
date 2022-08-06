@@ -1,5 +1,4 @@
 import {
-  createStyles,
   Theme,
   Paper,
   IconButton,
@@ -8,11 +7,11 @@ import {
   Typography,
   Box,
   Tooltip,
-  PaletteType,
-} from '@material-ui/core';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+  PaletteMode,
+} from '@mui/material';
+import { createStyles, makeStyles, withStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import clsx from 'clsx';
 import React from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
@@ -230,7 +229,7 @@ type Props = OwnProps;
 const FestivalMatchCard: React.FC<Props> = (props: Props) => {
   const { festival, showMatching, popularArtists, matchingArtists } = props;
 
-  const thememode: PaletteType = useSelector(selectThememode);
+  const thememode: PaletteMode = useSelector(selectThememode);
   const matchingMethod: MatchingMethod = useSelector(selectMatchingMethod);
 
   const bigScreen = useMediaQuery('(min-width:690px)');
@@ -320,7 +319,6 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
               <Box className={classes.toolTip}>
                 <HtmlTooltip
                   placement="left-start"
-                  interactive
                   leaveTouchDelay={3000}
                   title={
                     <React.Fragment>

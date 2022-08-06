@@ -1,7 +1,7 @@
-import { createStyles, Theme, Typography, Box } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import Pagination from '@material-ui/lab/Pagination';
+import { Theme, Typography, Box } from '@mui/material';
+import { createStyles, makeStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import Pagination from '@mui/material/Pagination';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPopularArtistsInLineups } from '../redux/asyncActions';

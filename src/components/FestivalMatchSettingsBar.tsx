@@ -1,34 +1,31 @@
-import DateFnsUtils from '@date-io/date-fns';
 import {
-  createStyles,
   Theme,
   Typography,
   Box,
   Paper,
   Grid,
   Tooltip,
-  PaletteType,
+  PaletteMode,
   InputLabel,
   MenuItem,
   FormControl,
   Select,
+  SelectChangeEvent,
   ListSubheader,
   Modal,
   Fade,
   Backdrop,
   Link,
-  MuiThemeProvider,
+  ThemeProvider,
   CircularProgress,
   Button,
-} from '@material-ui/core';
-import { deepOrange, indigo } from '@material-ui/core/colors';
-import { withStyles, makeStyles, createTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import InfoIcon from '@material-ui/icons/Info';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+} from '@mui/material';
+import { deepOrange, indigo } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
+import { createStyles, makeStyles, withStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import InfoIcon from '@mui/icons-material/Info';
+import DatePicker from '@mui/lab/DatePicker';
 import React, { useEffect } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useSelector, useDispatch } from 'react-redux';
@@ -221,7 +218,7 @@ const HtmlTooltip = withStyles((theme) => ({
 const topArtistsChoice = '__your__top__artists__';
 
 const FestivalMatchSettingsBar = () => {
-  const thememode: PaletteType = useSelector(selectThememode);
+  const thememode: PaletteMode = useSelector(selectThememode);
   const userInfo: UserInfo | undefined = useSelector(selectUserInfo);
   const playlists: Playlist[] = useSelector(selectPlaylists);
   const topArtists: Artist[] = useSelector(selectTopArtists);
@@ -271,7 +268,7 @@ const FestivalMatchSettingsBar = () => {
         main: deepOrange[500],
         dark: deepOrange[700],
       },
-      type: thememode,
+      mode: thememode,
     },
   });
 
@@ -315,13 +312,10 @@ const FestivalMatchSettingsBar = () => {
     );
   };
 
-  const handlePlaylistChange = async (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    if (!event.target.value) {
-      return;
-    }
-    const playlistName = event.target.value as string;
+  const handlePlaylistChange = async (event: SelectChangeEvent) => {
+    if (!event.target.value) return;
+
+    const playlistName = event.target.value;
     if (playlistName === matchSettings.matchBasis) {
       return;
     }
@@ -344,9 +338,7 @@ const FestivalMatchSettingsBar = () => {
       return;
     }
 
-    const playlist = playlists.find((playlist) => {
-      return playlist.name === playlistName;
-    });
+    const playlist = playlists.find(({ name }) => name === playlistName);
 
     if (playlist) {
       dispatch(turnOnLoader());
@@ -434,12 +426,9 @@ const FestivalMatchSettingsBar = () => {
     }
   };
 
-  const handleAreaChange = async (
-    event: React.ChangeEvent<{ value: unknown; name?: string | undefined }>
-  ) => {
-    if (!event.target.value) {
-      return;
-    }
+  const handleAreaChange = async (event: SelectChangeEvent) => {
+    if (!event.target.value) return;
+
     const area: Area = {
       name: event.target.name ? event.target.name : '',
       isoCode: event.target.value as string,
@@ -639,60 +628,57 @@ const FestivalMatchSettingsBar = () => {
             </FormControl>
           </Box>
           <Box className={classes.alignItems2}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Grid
-                container
-                justifyContent="space-around"
-                className={classes.marginBottom}
-              >
-                <KeyboardDatePicker
-                  className={classes.datePickerFieldFrom}
-                  margin="dense"
-                  inputVariant="outlined"
-                  id="date-picker-dialog-from"
-                  label="From (m/y)"
-                  format="MM/yyyy"
-                  maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
-                  minDate={new Date(new Date().getFullYear(), 0, 1)}
-                  views={['month', 'year']}
-                  value={matchSettings.fromDate}
-                  autoOk
-                  onChange={handleFromDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </Grid>
-              <Grid
-                container
-                justifyContent="space-around"
-                className={classes.marginBottom}
-              >
-                <KeyboardDatePicker
-                  className={classes.datePickerFieldTo}
-                  margin="dense"
-                  inputVariant="outlined"
-                  id="date-picker-dialog-to"
-                  label="To (m/y)"
-                  format="MM/yyyy"
-                  maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
-                  minDate={new Date(new Date().getFullYear(), 0, 1)}
-                  views={['month', 'year']}
-                  value={matchSettings.toDate}
-                  autoOk
-                  onChange={handleToDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </Grid>
-            </MuiPickersUtilsProvider>
+            <Grid
+              container
+              justifyContent="space-around"
+              className={classes.marginBottom}
+            >
+              <DatePicker
+                className={classes.datePickerFieldFrom}
+                margin="dense"
+                inputVariant="outlined"
+                id="date-picker-dialog-from"
+                label="From (m/y)"
+                format="MM/yyyy"
+                maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
+                minDate={new Date(new Date().getFullYear(), 0, 1)}
+                views={['month', 'year']}
+                value={matchSettings.fromDate}
+                autoOk
+                onChange={handleFromDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </Grid>
+            <Grid
+              container
+              justifyContent="space-around"
+              className={classes.marginBottom}
+            >
+              <DatePicker
+                className={classes.datePickerFieldTo}
+                margin="dense"
+                inputVariant="outlined"
+                id="date-picker-dialog-to"
+                label="To (m/y)"
+                format="MM/yyyy"
+                maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
+                minDate={new Date(new Date().getFullYear(), 0, 1)}
+                views={['month', 'year']}
+                value={matchSettings.toDate}
+                autoOk
+                onChange={handleToDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+            </Grid>
           </Box>
           {pcScreen && (
             <Box className={classes.toolTip}>
               <HtmlTooltip
                 placement="right-start"
-                interactive
                 title={
                   <React.Fragment>
                     <Typography color="inherit" variant="h6">
@@ -734,14 +720,14 @@ const FestivalMatchSettingsBar = () => {
         <Fade in={showPlaylistModal}>
           <Paper className={classes.paper}>
             {!(topArtistsLoaded && playlistsLoaded) && (
-              <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+              <ThemeProvider theme={indigoOrangeMuiTheme}>
                 <CircularProgress
                   size={100}
                   thickness={3}
                   color={'secondary'}
                   className={classes.loadChoicesSpinner}
                 />
-              </MuiThemeProvider>
+              </ThemeProvider>
             )}
             {topArtistsLoaded && playlistsLoaded && (
               <Box className={classes.alignItems3}>
@@ -770,9 +756,7 @@ const FestivalMatchSettingsBar = () => {
                     id="choose-initial-playlist"
                     value={topArtists.length !== 0 ? topArtistsChoice : ''}
                     label={topArtists.length === 0 ? 'Playlist' : undefined}
-                    onChange={async (
-                      event: React.ChangeEvent<{ value: unknown }>
-                    ) => {
+                    onChange={async (event: SelectChangeEvent) => {
                       dispatch(setShowPlaylistModal(false));
                       handlePlaylistChange(event);
                     }}

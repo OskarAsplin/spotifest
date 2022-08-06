@@ -6,9 +6,9 @@ import {
   Avatar,
   Popover,
   Link,
-  MuiThemeProvider,
+  ThemeProvider,
   Button,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   InputAdornment,
   TextField,
@@ -18,28 +18,24 @@ import {
   ClickAwayListener,
   Drawer,
   Slide,
-} from '@material-ui/core';
+} from '@mui/material';
 import {
   useScrollTrigger,
-  PaletteType,
+  PaletteMode,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-} from '@material-ui/core';
-import { lightBlue, blueGrey } from '@material-ui/core/colors';
-import {
-  createStyles,
-  makeStyles,
-  Theme,
-  createTheme,
-} from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import { Brightness2, Brightness4 } from '@material-ui/icons';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import InfoIcon from '@material-ui/icons/Info';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
+} from '@mui/material';
+import { lightBlue, blueGrey } from '@mui/material/colors';
+import { Theme, createTheme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { Brightness2, Brightness4 } from '@mui/icons-material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import InfoIcon from '@mui/icons-material/Info';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import clsx from 'clsx';
 import React, { useState } from 'react';
@@ -225,7 +221,7 @@ const AppBarView = () => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
 
-  const thememode: PaletteType = useSelector(selectThememode);
+  const thememode: PaletteMode = useSelector(selectThememode);
   const loggedIn: boolean = useSelector(selectLoggedIn);
   const userInfo: UserInfo | undefined = useSelector(selectUserInfo);
   const dispatch = useDispatch();
@@ -299,7 +295,7 @@ const AppBarView = () => {
         main: thememode === 'dark' ? blueGrey[800] : blueGrey[700],
         dark: blueGrey[900],
       },
-      type: thememode,
+      mode: thememode,
     },
   });
 
@@ -324,7 +320,7 @@ const AppBarView = () => {
       text: {
         secondary: 'rgba(0, 0, 0, 0.87)',
       },
-      type: 'dark',
+      mode: 'dark',
     },
   });
 
@@ -363,7 +359,7 @@ const AppBarView = () => {
     return (
       <div className={classes.flexColumn}>
         {!bigScreen && <div className={classes.minHeight} />}
-        <MuiThemeProvider theme={lightBluePinkDarkMuiTheme}>
+        <ThemeProvider theme={lightBluePinkDarkMuiTheme}>
           <TextField
             variant="outlined"
             size="small"
@@ -488,14 +484,14 @@ const AppBarView = () => {
               </ClickAwayListener>
             )}
           </div>
-        </MuiThemeProvider>
+        </ThemeProvider>
       </div>
     );
   };
 
   return (
     <div className={classes.root}>
-      <MuiThemeProvider theme={lightBluePinkMuiTheme}>
+      <ThemeProvider theme={lightBluePinkMuiTheme}>
         <Slide
           appear={false}
           direction="down"
@@ -528,7 +524,7 @@ const AppBarView = () => {
                 <div className={classes.grow}></div>
                 {bigScreen && getSearchFieldAndResults()}
                 {!bigScreen && (
-                  <MuiThemeProvider theme={lightBluePinkDarkMuiTheme}>
+                  <ThemeProvider theme={lightBluePinkDarkMuiTheme}>
                     <IconButton
                       onClick={() => {
                         setShowSearchFieldSmallScreen(
@@ -539,9 +535,9 @@ const AppBarView = () => {
                     >
                       <SearchIcon />
                     </IconButton>
-                  </MuiThemeProvider>
+                  </ThemeProvider>
                 )}
-                <MuiThemeProvider theme={lightBluePinkDarkMuiTheme}>
+                <ThemeProvider theme={lightBluePinkDarkMuiTheme}>
                   <IconButton
                     color="inherit"
                     aria-describedby={id}
@@ -562,7 +558,7 @@ const AppBarView = () => {
                       <AccountCircleIcon />
                     )}
                   </IconButton>
-                </MuiThemeProvider>
+                </ThemeProvider>
                 <Popover
                   id={id}
                   open={open}
@@ -675,7 +671,7 @@ const AppBarView = () => {
             </List>
           </div>
         </Drawer>
-      </MuiThemeProvider>
+      </ThemeProvider>
     </div>
   );
 };

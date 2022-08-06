@@ -1,4 +1,4 @@
-import { Box, Typography, Link, Grid } from '@material-ui/core';
+import { Box, Typography, Link, Grid } from '@mui/material';
 import clsx from 'clsx';
 import React from 'react';
 import aboutPageStyles from '../pages/AboutPage.module.scss';

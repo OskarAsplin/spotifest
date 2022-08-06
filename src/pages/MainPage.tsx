@@ -1,13 +1,13 @@
 import {
-  createStyles,
-  MuiThemeProvider,
+  ThemeProvider,
   Theme,
   Typography,
   CircularProgress,
-  PaletteType,
-} from '@material-ui/core';
-import { deepOrange, indigo } from '@material-ui/core/colors';
-import { createTheme, makeStyles } from '@material-ui/core/styles';
+  PaletteMode,
+} from '@mui/material';
+import { deepOrange, indigo } from '@mui/material/colors';
+import { createTheme } from '@mui/material/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
@@ -69,7 +69,7 @@ removeHashParamsFromUrl();
 
 const MainPage = () => {
   const loaderOn: boolean = useSelector(selectLoaderOn);
-  const thememode: PaletteType = useSelector(selectThememode);
+  const thememode: PaletteMode = useSelector(selectThememode);
   const isDbOnline: boolean = useSelector(selectIsDbOnline);
   const siteInitialized: boolean = useSelector(selectSiteInitialized);
   const loggedIn: boolean = useSelector(selectLoggedIn);
@@ -122,7 +122,7 @@ const MainPage = () => {
         main: deepOrange[500],
         dark: deepOrange[700],
       },
-      type: thememode,
+      mode: thememode,
     },
   });
 
@@ -147,9 +147,9 @@ const MainPage = () => {
         </div>
       )}
       <div hidden={!loaderOn} className="progressBar">
-        <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+        <ThemeProvider theme={indigoOrangeMuiTheme}>
           <CircularProgress size={100} thickness={3} color={'secondary'} />
-        </MuiThemeProvider>
+        </ThemeProvider>
       </div>
     </>
   );
