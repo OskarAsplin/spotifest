@@ -1,3 +1,4 @@
+import { Fragment, useEffect } from 'react';
 import {
   Theme,
   Typography,
@@ -25,7 +26,6 @@ import { createStyles, makeStyles, withStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import InfoIcon from '@mui/icons-material/Info';
 import DatePicker from '@mui/lab/DatePicker';
-import React, { useEffect } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useSelector, useDispatch } from 'react-redux';
 import { spotifyApi, testFestivalMatches } from '../redux/asyncActions';
@@ -680,14 +680,14 @@ const FestivalMatchSettingsBar = () => {
               <HtmlTooltip
                 placement="right-start"
                 title={
-                  <React.Fragment>
+                  <Fragment>
                     <Typography color="inherit" variant="h6">
                       Matching algorithm
                     </Typography>
                     {
                       'The matching algorithm is a combination of artist and genre matching. The number of artists in your selected playlist attending a festival combined with how well the genres of the playlist fit the festival, determines the match score shown on each festival.'
                     }
-                  </React.Fragment>
+                  </Fragment>
                 }
               >
                 <InfoIcon

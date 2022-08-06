@@ -1,6 +1,6 @@
+import { Fragment } from 'react';
 import { Box, Typography, Grid } from '@mui/material';
 import clsx from 'clsx';
-import React from 'react';
 import aboutPageStyles from '../pages/AboutPage.module.scss';
 import styles from './TechStackContent.module.scss';
 import StandardLink from './StandardLink';
@@ -17,7 +17,7 @@ interface TechInfoRow {
   icons: { path: string; class: string }[];
 }
 
-const TechStackContent: React.FC<Props> = (props: Props) => {
+const TechStackContent = (props: Props) => {
   const { lightMode, pcScreen } = props;
 
   const techInfoRows: TechInfoRow[] = [
@@ -138,7 +138,7 @@ const TechStackContent: React.FC<Props> = (props: Props) => {
 
   const insertTechInfoRow = (techInfo: TechInfoRow) => {
     return (
-      <React.Fragment key={'techRow:' + techInfo.text}>
+      <Fragment key={'techRow:' + techInfo.text}>
         <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
           <div className={styles.techInfoText}>
             <Typography variant="body1" className={styles.textAlign}>
@@ -160,12 +160,12 @@ const TechStackContent: React.FC<Props> = (props: Props) => {
             })}
           </div>
         </Grid>
-      </React.Fragment>
+      </Fragment>
     );
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <div className={aboutPageStyles.expandedDiv}>
         <Grid
           container
@@ -225,7 +225,7 @@ const TechStackContent: React.FC<Props> = (props: Props) => {
           </StandardLink>
         </div>
       </Box>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

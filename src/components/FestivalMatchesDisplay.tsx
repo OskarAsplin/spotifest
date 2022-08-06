@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Theme, Typography, Box } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import Pagination from '@mui/material/Pagination';
-import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getPopularArtistsInLineups } from '../redux/asyncActions';
 import {
@@ -98,8 +98,8 @@ const FestivalMatchesDisplay = () => {
 
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
 
-  const [siteInitialized, setSiteInitialized] = React.useState(false);
-  const [isAnyMatch, setIsAnyMatch] = React.useState(true);
+  const [siteInitialized, setSiteInitialized] = useState(false);
+  const [isAnyMatch, setIsAnyMatch] = useState(true);
 
   const itemsPerPage = 15;
   const numPages = Math.ceil(festivalMatches.length / itemsPerPage);

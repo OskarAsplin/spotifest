@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   ThemeProvider,
   Theme,
@@ -19,7 +20,6 @@ import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import ArrowBackOutlined from '@mui/icons-material/ArrowBack';
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
 import CookieConsent from 'react-cookie-consent';
 import ReactCountryFlag from 'react-country-flag';
 import ReactPlayer from 'react-player/lazy';
@@ -322,14 +322,14 @@ const FestivalPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
-  const [festivalInfo, setFestivalInfo] = React.useState<
-    FestivalInfo | undefined
-  >(undefined);
-  const [isFestivalInDb, setIsFestivalInDb] = React.useState(true);
-  const [isNetworkError, setIsNetworkError] = React.useState(false);
-  const [selectedLineup, setSelectedLineup] = React.useState(0);
-  const [sortAlphabetically, setSortAlphabetically] = React.useState(false);
+  const [redirectHome, setRedirectHome] = useState<boolean>(false);
+  const [festivalInfo, setFestivalInfo] = useState<FestivalInfo | undefined>(
+    undefined
+  );
+  const [isFestivalInDb, setIsFestivalInDb] = useState(true);
+  const [isNetworkError, setIsNetworkError] = useState(false);
+  const [selectedLineup, setSelectedLineup] = useState(0);
+  const [sortAlphabetically, setSortAlphabetically] = useState(false);
 
   const muiTheme = createTheme({
     typography: {

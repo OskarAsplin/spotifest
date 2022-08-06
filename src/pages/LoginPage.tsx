@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   buttonClasses,
   CssBaseline,
@@ -8,7 +9,6 @@ import {
   styled,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getAuthorizeHref } from '../oauthConfig';
 import {

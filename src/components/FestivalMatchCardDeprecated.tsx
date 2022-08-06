@@ -1,3 +1,4 @@
+import { useState, Fragment } from 'react';
 import {
   Theme,
   Paper,
@@ -13,7 +14,6 @@ import { createStyles, makeStyles, withStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import clsx from 'clsx';
-import React from 'react';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import ReactCountryFlag from 'react-country-flag';
@@ -240,8 +240,8 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
   const fillPopularArtistWidth =
     maxArtistsInWidth - (popularArtists.length % maxArtistsInWidth);
 
-  const [expanded, setExpanded] = React.useState(false);
-  const [NavigateFestival, setNavigateFestival] = React.useState('');
+  const [expanded, setExpanded] = useState(false);
+  const [NavigateFestival, setNavigateFestival] = useState('');
 
   const classes = useStyles();
 
@@ -321,7 +321,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                   placement="left-start"
                   leaveTouchDelay={3000}
                   title={
-                    <React.Fragment>
+                    <Fragment>
                       <Typography
                         color="inherit"
                         variant={bigScreen ? 'subtitle2' : 'body2'}
@@ -346,7 +346,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                           Math.ceil(festival.matching_percent_combined) +
                           '%'}
                       </Typography>
-                    </React.Fragment>
+                    </Fragment>
                   }
                 >
                   <div className={classes.circleSize}>

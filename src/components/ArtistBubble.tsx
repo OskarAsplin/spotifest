@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Theme,
   Avatar,
@@ -9,7 +10,6 @@ import { blueGrey } from '@mui/material/colors';
 import { createStyles, makeStyles } from '@mui/styles';
 import MusicNote from '@mui/icons-material/MusicNote';
 import clsx from 'clsx';
-import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { Artist } from '../redux/types';
 
@@ -80,16 +80,16 @@ interface OwnProps {
 
 type Props = OwnProps;
 
-const ArtistBubble: React.FC<Props> = (props: Props) => {
+const ArtistBubble = (props: Props) => {
   const { artist, useSpotifyId, bubbleId, thememode } = props;
-  const [navigateArtist, setNavigateArtist] = React.useState('');
+  const [navigateArtist, setNavigateArtist] = useState('');
 
   const classes = useStyles();
 
   if (navigateArtist) {
     return (
       <Navigate
-        to={'/artist/' + (useSpotifyId ? 'spotifyId=' : '') + navigateArtist}
+        to={`/artist/${useSpotifyId ? 'spotifyId=' : ''}${navigateArtist}`}
       />
     );
   }

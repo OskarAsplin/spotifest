@@ -1,5 +1,3 @@
-import React from 'react';
-
 const imgStyle = {
   height: '100%',
   width: '100%',

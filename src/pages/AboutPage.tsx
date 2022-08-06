@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Theme,
   Box,
@@ -17,7 +18,6 @@ import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StarIcon from '@mui/icons-material/Star';
 import clsx from 'clsx';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import TechStackContent from '../components/TechStackContent';
@@ -46,11 +46,11 @@ const AboutPage = () => {
   const pcScreen = useMediaQuery('(min-width:1040px)');
   const bigPcScreen = useMediaQuery('(min-width:1300px)');
 
-  const [navigateHome, setNavigateHome] = React.useState<boolean>(false);
-  const [usageExpanded, setUsageExpanded] = React.useState(false);
-  const [techExpanded, setTechExpanded] = React.useState(false);
-  const [supportExpanded, setSupportExpanded] = React.useState(false);
-  const [disclaimerExpanded, setDisclaimerExpanded] = React.useState(false);
+  const [navigateHome, setNavigateHome] = useState<boolean>(false);
+  const [usageExpanded, setUsageExpanded] = useState(false);
+  const [techExpanded, setTechExpanded] = useState(false);
+  const [supportExpanded, setSupportExpanded] = useState(false);
+  const [disclaimerExpanded, setDisclaimerExpanded] = useState(false);
 
   const thememode: PaletteMode = useSelector(selectThememode);
 

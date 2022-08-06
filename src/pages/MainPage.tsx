@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   ThemeProvider,
   Theme,
@@ -8,7 +9,6 @@ import {
 import { deepOrange, indigo } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
-import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import FestivalMatchesDisplay from '../components/FestivalMatchesDisplay';

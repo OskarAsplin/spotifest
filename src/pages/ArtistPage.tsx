@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   ThemeProvider,
   Theme,
@@ -17,7 +18,6 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate, useParams } from 'react-router-dom';
 import ArtistBubble from '../components/ArtistBubble';
@@ -392,16 +392,16 @@ const ArtistPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [artistId]);
 
-  const [artistInfo, setArtistInfo] = React.useState<ArtistInfo | undefined>(
+  const [artistInfo, setArtistInfo] = useState<ArtistInfo | undefined>(
     undefined
   );
-  const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
-  const [redirectFestival, setRedirectFestival] = React.useState('');
-  const [relatedArtists, setRelatedArtists] = React.useState<Artist[]>([]);
-  const [expanded, setExpanded] = React.useState(false);
-  const [isArtistInDb, setIsArtistInDb] = React.useState(true);
-  const [isNetworkError, setIsNetworkError] = React.useState(false);
-  const [isValidSpotifyId, setIsValidSpotifyId] = React.useState(true);
+  const [redirectHome, setRedirectHome] = useState<boolean>(false);
+  const [redirectFestival, setRedirectFestival] = useState('');
+  const [relatedArtists, setRelatedArtists] = useState<Artist[]>([]);
+  const [expanded, setExpanded] = useState(false);
+  const [isArtistInDb, setIsArtistInDb] = useState(true);
+  const [isNetworkError, setIsNetworkError] = useState(false);
+  const [isValidSpotifyId, setIsValidSpotifyId] = useState(true);
 
   const bigScreen = useMediaQuery('(min-width:690px)');
   const pcScreen = useMediaQuery('(min-width:1300px)');

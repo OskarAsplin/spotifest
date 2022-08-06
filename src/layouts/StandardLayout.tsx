@@ -1,4 +1,3 @@
-import React from 'react';
 import { Outlet } from 'react-router-dom';
 import AppBarView from '../components/AppBarView';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
