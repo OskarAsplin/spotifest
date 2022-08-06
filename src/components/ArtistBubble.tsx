@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Theme,
   Avatar,
@@ -10,7 +9,7 @@ import { blueGrey } from '@mui/material/colors';
 import { createStyles, makeStyles } from '@mui/styles';
 import MusicNote from '@mui/icons-material/MusicNote';
 import clsx from 'clsx';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Artist } from '../redux/types';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -82,17 +81,11 @@ type Props = OwnProps;
 
 const ArtistBubble = (props: Props) => {
   const { artist, useSpotifyId, bubbleId, thememode } = props;
-  const [navigateArtist, setNavigateArtist] = useState('');
-
+  const navigate = useNavigate();
   const classes = useStyles();
 
-  if (navigateArtist) {
-    return (
-      <Navigate
-        to={`/artist/${useSpotifyId ? 'spotifyId=' : ''}${navigateArtist}`}
-      />
-    );
-  }
+  const navigateToArtist = (artistId: string) =>
+    navigate(`/artist/${useSpotifyId ? 'spotifyId=' : ''}${artistId}`);
 
   return (
     <div className={classes.artistAvatarBox} key={'div_' + bubbleId}>
@@ -100,7 +93,7 @@ const ArtistBubble = (props: Props) => {
         color="inherit"
         onClick={() => {
           if (artist.hasSpotifyId)
-            setNavigateArtist(
+            navigateToArtist(
               encodeURIComponent(useSpotifyId ? artist.spotifyId! : artist.name)
             );
         }}

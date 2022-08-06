@@ -17,7 +17,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import ReactCountryFlag from 'react-country-flag';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { selectThememode } from '../redux/reducers/displaySlice';
 import { selectMatchingMethod } from '../redux/reducers/festivalMatchingSlice';
 import { FestivalMatch, MatchingMethod, Artist } from '../redux/types';
@@ -225,7 +225,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
     maxArtistsInWidth - (popularArtists.length % maxArtistsInWidth);
 
   const [expanded, setExpanded] = useState(false);
-  const [NavigateFestival, setNavigateFestival] = useState('');
+  const navigate = useNavigate();
 
   const classes = useStyles();
 
@@ -270,8 +270,8 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
     );
   };
 
-  if (NavigateFestival)
-    return <Navigate to={'/festival/' + NavigateFestival} />;
+  const navigateToFestival = (festivalId: string) =>
+    navigate(`/festival/${festivalId}`);
 
   return (
     <Paper elevation={3} className={classes.root} key={festival.name}>
@@ -283,7 +283,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
               className={classes.button}
               color="inherit"
               onClick={() => {
-                setNavigateFestival(encodeURIComponent(festival.name));
+                navigateToFestival(encodeURIComponent(festival.name));
               }}
             >
               <Typography
