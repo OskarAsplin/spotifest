@@ -422,7 +422,6 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                         festival.year +
                         artist.name
                       }
-                      thememode={thememode}
                     />
                   ))}
                 </div>
@@ -461,7 +460,6 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                     festival.year +
                     artist.name
                   }
-                  thememode={thememode}
                 />
               ))}
               {matchingArtists.length > 0 &&
@@ -521,7 +519,6 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                         festival.year +
                         artist.name
                       }
-                      thememode={thememode}
                     />
                   ))}
               {popularArtists.length > 0 &&
@@ -560,7 +557,6 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
                           festival.year +
                           artist.name
                         }
-                        thememode={thememode}
                       />
                     ))}
                 {popularArtists.length > 0 &&

@@ -613,7 +613,6 @@ const ArtistPage = () => {
                             artistInfo.artist.name +
                             artist.name
                           }
-                          thememode={thememode}
                         />
                       ))}
                     {relatedArtists.length > 0 &&

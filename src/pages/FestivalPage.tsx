@@ -690,7 +690,6 @@ const FestivalPage = () => {
                                           lineup.year +
                                           artist.name
                                         }
-                                        thememode={thememode}
                                       />
                                     ))}
                                 {lineup.artists.length > 0 &&

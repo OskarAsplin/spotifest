@@ -6,8 +6,8 @@ import {
   Typography,
   typographyClasses,
   Button,
-  styled,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useDispatch } from 'react-redux';
 import { getAuthorizeHref } from '../oauthConfig';
