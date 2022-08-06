@@ -5,7 +5,6 @@ import {
   Box,
   Paper,
   Grid,
-  Tooltip,
   PaletteMode,
   InputLabel,
   MenuItem,
@@ -22,7 +21,7 @@ import {
 } from '@mui/material';
 import { deepOrange, indigo } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
-import { createStyles, makeStyles, withStyles } from '@mui/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import InfoIcon from '@mui/icons-material/Info';
 import DatePicker from '@mui/lab/DatePicker';
@@ -67,6 +66,7 @@ import {
   displayedLocationName,
 } from '../utils/utils';
 import StandardLink from './StandardLink';
+import HtmlTooltip from './HtmlTooltip';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -204,16 +204,6 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-
-const HtmlTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
-    maxWidth: 320,
-    fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
-  },
-}))(Tooltip);
 
 const topArtistsChoice = '__your__top__artists__';
 

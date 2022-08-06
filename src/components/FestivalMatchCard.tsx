@@ -7,10 +7,9 @@ import {
   Collapse,
   Typography,
   Box,
-  Tooltip,
   PaletteMode,
 } from '@mui/material';
-import { createStyles, makeStyles, withStyles } from '@mui/styles';
+import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import clsx from 'clsx';
@@ -24,6 +23,7 @@ import { selectMatchingMethod } from '../redux/reducers/festivalMatchingSlice';
 import { FestivalMatch, MatchingMethod, Artist } from '../redux/types';
 import { getMaxArtistsInWidth, displayedLocationName } from '../utils/utils';
 import ArtistBubble from './ArtistBubble';
+import HtmlTooltip from './HtmlTooltip';
 
 const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
   createStyles({
@@ -201,17 +201,6 @@ const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
   })
 );
 
-const HtmlTooltip = withStyles(({ spacing, typography }) => ({
-  tooltip: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
-    maxWidth: 320,
-    margin: spacing(0, 2, 0, 2),
-    fontSize: typography.pxToRem(12),
-    border: '1px solid #dadde9',
-  },
-}))(Tooltip);
-
 interface OwnProps {
   festival: FestivalMatch;
   popularArtists: Artist[];
@@ -313,6 +302,7 @@ const FestivalMatchCard: React.FC<Props> = (props: Props) => {
             <div>
               <Box className={classes.toolTip}>
                 <HtmlTooltip
+                  sx={{ mx: 2 }}
                   placement="left-start"
                   leaveTouchDelay={3000}
                   title={
