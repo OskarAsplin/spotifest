@@ -4,7 +4,6 @@ import {
   Typography,
   Paper,
   Box,
-  Link,
   Button,
   Tabs,
   Tab,
@@ -42,6 +41,7 @@ import {
   displayedLocationName,
 } from '../utils/utils';
 import { lightBluePinkThemeOptions } from '../layouts/StandardLayout.styles';
+import StandardLink from '../components/StandardLink';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -476,40 +476,34 @@ const FestivalPage = () => {
                   {'Genres: ' + festivalInfo.genres.slice(0, 5).join(', ')}
                 </Typography>
                 {festivalInfo.webpage && (
-                  <Link
+                  <StandardLink
                     color={'secondary'}
                     variant="subtitle1"
                     href={festivalInfo.webpage}
                     className={classes.addSidePadding}
-                    rel="noopener noreferrer"
-                    target="_blank"
                   >
                     Official webpage
-                  </Link>
+                  </StandardLink>
                 )}
                 {festivalInfo.ticketWebpage && (
-                  <Link
+                  <StandardLink
                     color={'secondary'}
                     variant="subtitle1"
                     href={festivalInfo.ticketWebpage}
                     className={classes.addSidePadding}
-                    rel="noopener noreferrer"
-                    target="_blank"
                   >
                     Ticket webpage
-                  </Link>
+                  </StandardLink>
                 )}
                 {festivalInfo.crawledWebpage && (
-                  <Link
+                  <StandardLink
                     color={'secondary'}
                     variant="subtitle1"
                     href={festivalInfo.crawledWebpage}
                     className={classes.addSidePadding}
-                    rel="noopener noreferrer"
-                    target="_blank"
                   >
                     View on Musicfestivalwizard.com
-                  </Link>
+                  </StandardLink>
                 )}
               </Paper>
             </Box>

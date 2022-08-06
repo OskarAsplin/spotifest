@@ -6,7 +6,6 @@ import {
   typographyClasses,
   Button,
   styled,
-  Link,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import React, { useEffect } from 'react';
@@ -16,6 +15,7 @@ import {
   setLoggedIn,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
+import StandardLink from '../components/StandardLink';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');
@@ -31,7 +31,7 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <StyledBackground>
+    <StyledBackgroundDiv>
       <CssBaseline />
       <Box
         sx={{
@@ -76,59 +76,36 @@ const LoginPage = () => {
               mr: bigScreen ? 2 : 1.5,
             }}
           />
-          <Typography
-            variant={bigScreen ? 'h4' : 'h6'}
-            color={({ palette }) => palette.text.primary}
-          >
+          <Typography variant={bigScreen ? 'h4' : 'h6'} color="textPrimary">
             Log in with Spotify
           </Typography>
         </StyledLoginButton>
       </Box>
-      <StyledFooterContainer>
+      <StyledFooterDiv>
         <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
           Find music festivals with your playlists
         </StyledFooterTypography>
         <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
-          A festival finder created by{' '}
-          <Link
-            color={'primary'}
-            href={'https://github.com/OskarAsplin'}
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          {'A festival finder created by '}
+          <StandardLink href={'https://github.com/OskarAsplin'}>
             Oskar Asplin
-          </Link>
+          </StandardLink>
         </StyledFooterTypography>
         <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
-          <Link
-            color={'primary'}
-            href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          <StandardLink href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/">
             Photo
-          </Link>{' '}
-          by{' '}
-          <Link
-            color={'primary'}
-            href="https://www.flickr.com/photos/149801000@N05/"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          </StandardLink>
+          {' by '}
+          <StandardLink href="https://www.flickr.com/photos/149801000@N05/">
             veldmusicfestival
-          </Link>{' '}
-          /{' '}
-          <Link
-            color={'primary'}
-            href="https://creativecommons.org/licenses/by-sa/2.0/"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          </StandardLink>
+          {' / '}
+          <StandardLink href="https://creativecommons.org/licenses/by-sa/2.0/">
             CC BY-SA 2.0
-          </Link>
+          </StandardLink>
         </StyledFooterTypography>
-      </StyledFooterContainer>
-    </StyledBackground>
+      </StyledFooterDiv>
+    </StyledBackgroundDiv>
   );
 };
 
@@ -181,7 +158,7 @@ const StyledTitleTypography = styled(Typography)(() => {
   };
 });
 
-const StyledBackground = styled('div')(() => {
+const StyledBackgroundDiv = styled('div')(() => {
   return {
     height: '100vh',
     backgroundImage:
@@ -192,7 +169,7 @@ const StyledBackground = styled('div')(() => {
   };
 });
 
-const StyledFooterContainer = styled('div')(({ theme: { spacing } }) => {
+const StyledFooterDiv = styled('div')(({ theme: { spacing } }) => {
   return {
     position: 'absolute',
     bottom: 0,

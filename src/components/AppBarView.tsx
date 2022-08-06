@@ -5,7 +5,6 @@ import {
   AppBar,
   Avatar,
   Popover,
-  Link,
   ThemeProvider,
   Button,
 } from '@mui/material';
@@ -55,6 +54,7 @@ import {
 import { selectUserInfo } from '../redux/reducers/spotifyAccountSlice';
 import { UserInfo, SearchResponse } from '../redux/types';
 import { fetchToJson, getApiBaseUrl } from '../utils/restUtils';
+import StandardLink from './StandardLink';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -425,7 +425,7 @@ const AppBarView = () => {
                     {searchResults.result.festivals
                       .slice(0, 5)
                       .map((festival: any) => (
-                        <Link
+                        <StandardLink
                           color={'textSecondary'}
                           key={'searchResult festival: ' + festival.name}
                           href={getFestivalUrl(festival.name)}
@@ -433,7 +433,7 @@ const AppBarView = () => {
                           className={classes.bottomMargin}
                         >
                           {festival.name + ': ' + festival.location}
-                        </Link>
+                        </StandardLink>
                       ))}
                     {searchResults.result.festivals.length > 5 && (
                       <Typography
@@ -460,7 +460,7 @@ const AppBarView = () => {
                     {searchResults.result.artists
                       .slice(0, 5)
                       .map((artist: any) => (
-                        <Link
+                        <StandardLink
                           color={'textSecondary'}
                           key={'searchResult artist: ' + artist.name}
                           href={getArtistUrl(artist.name)}
@@ -468,7 +468,7 @@ const AppBarView = () => {
                           className={classes.bottomMargin}
                         >
                           {artist.name}
-                        </Link>
+                        </StandardLink>
                       ))}
                     {searchResults.result.artists.length > 5 && (
                       <Typography
@@ -583,26 +583,20 @@ const AppBarView = () => {
                       </Typography>
                     )}
                     {userInfo && userInfo.spotifyUrl && (
-                      <Link
-                        color={'primary'}
+                      <StandardLink
                         href={userInfo.spotifyUrl}
-                        target={'_blank'}
-                        rel="noopener noreferrer"
                         className={classes.bottomMargin}
                       >
                         View profile in Spotify
-                      </Link>
+                      </StandardLink>
                     )}
                     {loggedIn && (
-                      <Link
-                        color={'primary'}
+                      <StandardLink
                         href={`https://accounts.spotify.com/en/logout`}
-                        target="_blank"
-                        rel="noopener noreferrer"
                         onClick={() => dispatch(setLoggedOff())}
                       >
                         Log out
-                      </Link>
+                      </StandardLink>
                     )}
                   </div>
                 </Popover>

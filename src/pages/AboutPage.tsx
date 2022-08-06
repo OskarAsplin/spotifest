@@ -3,7 +3,6 @@ import {
   Box,
   Paper,
   Typography,
-  Link,
   IconButton,
   Collapse,
   List,
@@ -25,6 +24,7 @@ import TechStackContent from '../components/TechStackContent';
 import { selectThememode } from '../redux/reducers/displaySlice';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
+import StandardLink from '../components/StandardLink';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -181,14 +181,9 @@ const AboutPage = () => {
                       <StarIcon className={styles.starIcon} />
                       <Typography variant="body1">
                         {' on '}
-                        <Link
-                          color={'primary'}
-                          href="https://github.com/OskarAsplin/spotifest"
-                          target={'_blank'}
-                          rel="noopener noreferrer"
-                        >
+                        <StandardLink href="https://github.com/OskarAsplin/spotifest">
                           GitHub
-                        </Link>
+                        </StandardLink>
                       </Typography>
                     </ListItemText>,
                   ].map((listItemText, idx) => {
@@ -319,14 +314,9 @@ const AboutPage = () => {
                   purely a hobby project at this point. No personal data is
                   collected by this site, but youtube videos showed on the
                   festival pages collect cookies. When logging out or going to{' '}
-                  <Link
-                    color={'primary'}
-                    href="https://www.spotifest.app/login"
-                    target={'_blank'}
-                    rel="noopener noreferrer"
-                  >
+                  <StandardLink href="https://www.spotifest.app/login">
                     spotifest.app/login
-                  </Link>
+                  </StandardLink>
                   , all browser data linked to the site is deleted.
                 </Typography>
               </div>

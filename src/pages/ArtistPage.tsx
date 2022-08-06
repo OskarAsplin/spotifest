@@ -4,7 +4,6 @@ import {
   Box,
   Paper,
   Typography,
-  Link,
   Button,
   IconButton,
   Collapse,
@@ -43,6 +42,7 @@ import {
   getBigPicture,
   getMaxArtistsInWidth,
 } from '../utils/utils';
+import StandardLink from '../components/StandardLink';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -545,7 +545,7 @@ const ArtistPage = () => {
               </Typography>
               {artistInfo.artist.spotifyId && (
                 <ThemeProvider theme={indigoOrangeMuiTheme}>
-                  <Link
+                  <StandardLink
                     color={'secondary'}
                     variant="subtitle1"
                     href={
@@ -553,11 +553,9 @@ const ArtistPage = () => {
                       artistInfo.artist.spotifyId
                     }
                     className={classes.addSidePadding}
-                    rel="noopener noreferrer"
-                    target="_blank"
                   >
                     Open artist in spotify
-                  </Link>
+                  </StandardLink>
                 </ThemeProvider>
               )}
               {relatedArtists.length === 0 && (

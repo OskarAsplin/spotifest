@@ -15,7 +15,6 @@ import {
   Modal,
   Fade,
   Backdrop,
-  Link,
   ThemeProvider,
   CircularProgress,
   Button,
@@ -67,6 +66,7 @@ import {
   getBigPicture,
   displayedLocationName,
 } from '../utils/utils';
+import StandardLink from './StandardLink';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -825,14 +825,9 @@ const FestivalMatchSettingsBar = () => {
                     "We can't find any listening habits or playlists to use for our festival matching. Go to your "
                   }
                   {userInfo && userInfo.spotifyUrl ? (
-                    <Link
-                      color={'primary'}
-                      href={userInfo.spotifyUrl}
-                      target={'_blank'}
-                      rel="noopener noreferrer"
-                    >
+                    <StandardLink href={userInfo.spotifyUrl}>
                       Spotify profile
-                    </Link>
+                    </StandardLink>
                   ) : (
                     'Spotify profile'
                   )}{' '}
