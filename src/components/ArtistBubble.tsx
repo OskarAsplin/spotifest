@@ -89,7 +89,7 @@ const StyledIconButton = styled(IconButton)(() => {
   };
 });
 
-const avatarSharedStyle = (isClickable: boolean, shadows: Shadows) => ({
+const sharedAvatarStyle = (isClickable: boolean, shadows: Shadows) => ({
   '@media (min-width: 690px)': {
     height: 80,
     width: 80,
@@ -104,16 +104,14 @@ const avatarSharedStyle = (isClickable: boolean, shadows: Shadows) => ({
 const StyledAvatar = styled(Avatar, {
   shouldForwardProp: (prop) => prop !== 'isClickable',
 })<{ isClickable: boolean }>(({ theme: { shadows }, isClickable }) => ({
-  [`&.${avatarClasses.root}`]: {
-    ...avatarSharedStyle(isClickable, shadows),
-  },
+  [`&.${avatarClasses.root}`]: sharedAvatarStyle(isClickable, shadows),
 }));
 
 const StyledAvatarDiv = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isClickable',
 })<{ isClickable: boolean }>(({ theme: { shadows, palette }, isClickable }) => {
   return {
-    ...avatarSharedStyle(isClickable, shadows),
+    ...sharedAvatarStyle(isClickable, shadows),
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
