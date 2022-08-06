@@ -24,7 +24,7 @@ import { createTheme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import InfoIcon from '@mui/icons-material/Info';
-import DatePicker from '@mui/lab/DatePicker';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ReactCountryFlag from 'react-country-flag';
 import { useSelector, useDispatch } from 'react-redux';
 import { spotifyApi, testFestivalMatches } from '../redux/asyncActions';
@@ -524,12 +524,12 @@ const FestivalMatchSettingsBar = () => {
             >
               <InputLabel id="choose-playlist-label">Match with</InputLabel>
               <Select
+                variant="standard"
                 labelId="choose-playlist-label"
                 id="choose-playlist"
                 value={matchSettings.matchBasis}
                 onChange={handlePlaylistChange}
-                label="Match with"
-              >
+                label="Match with">
                 {topArtists.length !== 0 && (
                   <MenuItem key={topArtistsChoice} value={topArtistsChoice}>
                     Your most played artists
@@ -560,12 +560,12 @@ const FestivalMatchSettingsBar = () => {
             >
               <InputLabel id="choose-countries-label">Area</InputLabel>
               <Select
+                variant="standard"
                 labelId="choose-countries-label"
                 id="choose-countries"
                 value={matchSettings.area.isoCode}
                 onChange={handleAreaChange}
-                label="Area"
-              >
+                label="Area">
                 <MenuItem key={'XXX'} value={'XXX'} style={{ minWidth: 200 }}>
                   Worldwide
                 </MenuItem>
@@ -742,6 +742,7 @@ const FestivalMatchSettingsBar = () => {
                     </InputLabel>
                   )}
                   <Select
+                    variant="standard"
                     labelId="choose-initial-playlist-label"
                     id="choose-initial-playlist"
                     value={topArtists.length !== 0 ? topArtistsChoice : ''}
@@ -749,8 +750,7 @@ const FestivalMatchSettingsBar = () => {
                     onChange={async (event: SelectChangeEvent) => {
                       dispatch(setShowPlaylistModal(false));
                       handlePlaylistChange(event);
-                    }}
-                  >
+                    }}>
                     {topArtists.length !== 0 && (
                       <MenuItem key={topArtistsChoice} value={topArtistsChoice}>
                         Your most played artists
