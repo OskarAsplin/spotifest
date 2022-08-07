@@ -64,3 +64,14 @@ export const getMaxArtistsInFullLineupWidth = (
     ? Math.min(maxBigScreen, Math.floor((0.99 * (vw - outerMargin)) / 100))
     : Math.max(3, Math.floor((0.99 * (vw - outerMargin)) / 75));
 };
+
+export const getBaseUrl = () => {
+  const url = window.location.href;
+  const spotifest_pos = url.search('spotifest.app');
+  if (spotifest_pos !== -1) {
+    return url.slice(0, spotifest_pos) + 'spotifest.app';
+  } else {
+    const localhost_pos = url.search('localhost:3000');
+    return url.slice(0, localhost_pos) + 'localhost:3000';
+  }
+};

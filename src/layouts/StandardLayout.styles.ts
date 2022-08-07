@@ -12,4 +12,8 @@ export const lightBluePinkThemeOptions: ThemeOptions['palette'] = {
     main: pink[400],
     dark: pink[700],
   },
+  background: {
+    default: '#202020',
+    paper: '#202020',
+  },
 };

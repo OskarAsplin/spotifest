@@ -132,7 +132,7 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1, 0, 1, 0),
     },
     darkerBackground: {
-      backgroundColor: '#383838',
+      backgroundColor: '#303030',
     },
     festivalImg: {
       '@media (min-width: 900px)': {

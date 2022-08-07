@@ -148,11 +148,6 @@ const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
       justifyContent: 'center',
       flexGrow: 1,
     },
-    darkerBackground: {
-      '@media (max-width: 689px)': {
-        backgroundColor: '#383838',
-      },
-    },
     lineup: {
       maxHeight: 260,
       maxWidth: '100%',
@@ -195,22 +190,20 @@ const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
     expandLineGradient: {
       background:
         palette.mode === 'dark'
-          ? `linear-gradient(${palette.grey[800]}, #505050);`
+          ? `linear-gradient(#313131, #404040);`
           : undefined,
     },
   })
 );
 
-interface OwnProps {
+interface Props {
   festival: FestivalMatch;
   popularArtists: Artist[];
   matchingArtists: Artist[];
   showMatching: boolean;
 }
 
-type Props = OwnProps;
-
-const FestivalMatchCard: React.FC<Props> = (props: Props) => {
+const FestivalMatchCard = (props: Props) => {
   const { festival, showMatching, popularArtists, matchingArtists } = props;
 
   const thememode: PaletteMode = useSelector(selectThememode);
