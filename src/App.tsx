@@ -10,7 +10,11 @@ import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import PageNotFound from './pages/PageNotFound';
 import { StandardLayout } from './layouts/StandardLayout';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import {
+  ThemeProvider,
+  createTheme,
+  StyledEngineProvider,
+} from '@mui/material/styles';
 import { lightBluePinkThemeOptions } from './layouts/StandardLayout.styles';
 
 const theme = createTheme({
@@ -20,29 +24,31 @@ const theme = createTheme({
   palette: { ...lightBluePinkThemeOptions, mode: 'dark' },
 });
 
-const App: React.FC = () => {
+const App = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <Router>
-            <Routes>
-              <Route path="/login" element={<LoginPage />} />
-              <Route element={<StandardLayout />}>
-                <Route path="/" element={<MainPage />} />
-                <Route path="/artist/:artistId" element={<ArtistPage />} />
-                <Route
-                  path="/festival/:festivalId"
-                  element={<FestivalPage />}
-                />
-                <Route path="/about" element={<AboutPage />} />
-              </Route>
-              <Route element={<PageNotFound />} />
-            </Routes>
-          </Router>
-        </PersistGate>
-      </Provider>
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <Router>
+              <Routes>
+                <Route path="/login" element={<LoginPage />} />
+                <Route element={<StandardLayout />}>
+                  <Route path="/" element={<MainPage />} />
+                  <Route path="/artist/:artistId" element={<ArtistPage />} />
+                  <Route
+                    path="/festival/:festivalId"
+                    element={<FestivalPage />}
+                  />
+                  <Route path="/about" element={<AboutPage />} />
+                </Route>
+                <Route element={<PageNotFound />} />
+              </Routes>
+            </Router>
+          </PersistGate>
+        </Provider>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 };
 

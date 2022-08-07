@@ -24,7 +24,6 @@ import { createTheme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import InfoIcon from '@mui/icons-material/Info';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ReactCountryFlag from 'react-country-flag';
 import { useSelector, useDispatch } from 'react-redux';
 import { spotifyApi, testFestivalMatches } from '../redux/asyncActions';
@@ -67,6 +66,7 @@ import {
 } from '../utils/utils';
 import StandardLink from './StandardLink';
 import HtmlTooltip from './HtmlTooltip';
+import SettingsBarDatePicker from './SettingsBarDatePicker';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -142,26 +142,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
       paddingBottom: theme.spacing(0.5),
-    },
-    datePickerFieldFrom: {
-      '@media (min-width: 800px)': {
-        marginRight: theme.spacing(0.5),
-        marginLeft: theme.spacing(1),
-      },
-      '@media (max-width: 799px)': {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-      },
-    },
-    datePickerFieldTo: {
-      '@media (min-width: 800px)': {
-        marginLeft: theme.spacing(0.5),
-        marginRight: theme.spacing(1),
-      },
-      '@media (max-width: 799px)': {
-        marginRight: theme.spacing(1),
-        marginLeft: theme.spacing(1),
-      },
     },
     spaceBetween: {
       display: 'flex',
@@ -529,7 +509,8 @@ const FestivalMatchSettingsBar = () => {
                 id="choose-playlist"
                 value={matchSettings.matchBasis}
                 onChange={handlePlaylistChange}
-                label="Match with">
+                label="Match with"
+              >
                 {topArtists.length !== 0 && (
                   <MenuItem key={topArtistsChoice} value={topArtistsChoice}>
                     Your most played artists
@@ -565,7 +546,8 @@ const FestivalMatchSettingsBar = () => {
                 id="choose-countries"
                 value={matchSettings.area.isoCode}
                 onChange={handleAreaChange}
-                label="Area">
+                label="Area"
+              >
                 <MenuItem key={'XXX'} value={'XXX'} style={{ minWidth: 200 }}>
                   Worldwide
                 </MenuItem>
@@ -623,22 +605,10 @@ const FestivalMatchSettingsBar = () => {
               justifyContent="space-around"
               className={classes.marginBottom}
             >
-              <DatePicker
-                className={classes.datePickerFieldFrom}
-                margin="dense"
-                inputVariant="outlined"
-                id="date-picker-dialog-from"
+              <SettingsBarDatePicker
                 label="From (m/y)"
-                format="MM/yyyy"
-                maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
-                minDate={new Date(new Date().getFullYear(), 0, 1)}
-                views={['month', 'year']}
                 value={matchSettings.fromDate}
-                autoOk
                 onChange={handleFromDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
               />
             </Grid>
             <Grid
@@ -646,22 +616,10 @@ const FestivalMatchSettingsBar = () => {
               justifyContent="space-around"
               className={classes.marginBottom}
             >
-              <DatePicker
-                className={classes.datePickerFieldTo}
-                margin="dense"
-                inputVariant="outlined"
-                id="date-picker-dialog-to"
+              <SettingsBarDatePicker
                 label="To (m/y)"
-                format="MM/yyyy"
-                maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
-                minDate={new Date(new Date().getFullYear(), 0, 1)}
-                views={['month', 'year']}
                 value={matchSettings.toDate}
-                autoOk
                 onChange={handleToDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
               />
             </Grid>
           </Box>
@@ -750,7 +708,8 @@ const FestivalMatchSettingsBar = () => {
                     onChange={async (event: SelectChangeEvent) => {
                       dispatch(setShowPlaylistModal(false));
                       handlePlaylistChange(event);
-                    }}>
+                    }}
+                  >
                     {topArtists.length !== 0 && (
                       <MenuItem key={topArtistsChoice} value={topArtistsChoice}>
                         Your most played artists
