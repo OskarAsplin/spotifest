@@ -497,11 +497,7 @@ const FestivalMatchSettingsBar = () => {
       <Paper>
         <Box className={classes.spaceBetween}>
           <Box className={classes.alignItems}>
-            <FormControl
-              className={classes.formControlPlaylist}
-              variant="outlined"
-              size="small"
-            >
+            <FormControl className={classes.formControlPlaylist} size="small">
               <InputLabel id="choose-playlist-label">Match with</InputLabel>
               <Select
                 variant="standard"
@@ -534,11 +530,7 @@ const FestivalMatchSettingsBar = () => {
             </FormControl>
           </Box>
           <Box className={classes.alignItems}>
-            <FormControl
-              className={classes.formControlArea}
-              variant="outlined"
-              size="small"
-            >
+            <FormControl className={classes.formControlArea} size="small">
               <InputLabel id="choose-countries-label">Area</InputLabel>
               <Select
                 variant="standard"
@@ -689,11 +681,7 @@ const FestivalMatchSettingsBar = () => {
                     ? 'Choose a playlist to start your matching'
                     : 'Match festivals with'}
                 </Typography>
-                <FormControl
-                  className={classes.formControl2}
-                  variant="outlined"
-                  size="small"
-                >
+                <FormControl className={classes.formControl2} size="small">
                   {topArtists.length === 0 && (
                     <InputLabel id="choose-initial-playlist-inputlabel">
                       Playlist

@@ -361,7 +361,6 @@ const AppBarView = () => {
         {!bigScreen && <div className={classes.minHeight} />}
         <ThemeProvider theme={lightBluePinkDarkMuiTheme}>
           <TextField
-            variant="outlined"
             size="small"
             autoFocus={bigScreen ? false : true}
             className={classes.fixedWidthAbsolute}
