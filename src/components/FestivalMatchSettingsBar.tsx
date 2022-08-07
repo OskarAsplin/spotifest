@@ -500,7 +500,6 @@ const FestivalMatchSettingsBar = () => {
             <FormControl className={classes.formControlPlaylist} size="small">
               <InputLabel id="choose-playlist-label">Match with</InputLabel>
               <Select
-                variant="standard"
                 labelId="choose-playlist-label"
                 id="choose-playlist"
                 value={matchSettings.matchBasis}
@@ -533,7 +532,6 @@ const FestivalMatchSettingsBar = () => {
             <FormControl className={classes.formControlArea} size="small">
               <InputLabel id="choose-countries-label">Area</InputLabel>
               <Select
-                variant="standard"
                 labelId="choose-countries-label"
                 id="choose-countries"
                 value={matchSettings.area.isoCode}
@@ -688,7 +686,6 @@ const FestivalMatchSettingsBar = () => {
                     </InputLabel>
                   )}
                   <Select
-                    variant="standard"
                     labelId="choose-initial-playlist-label"
                     id="choose-initial-playlist"
                     value={topArtists.length !== 0 ? topArtistsChoice : ''}

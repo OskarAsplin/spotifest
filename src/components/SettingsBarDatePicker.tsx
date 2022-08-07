@@ -21,6 +21,7 @@ const SettingsBarDatePicker = <TInputDate,>(
           <TextField
             {...params}
             margin="dense"
+            size="small"
             sx={{
               '@media (min-width: 800px)': { mr: 0.5, ml: 1 },
               '@media (max-width: 799px)': { mx: 1 },
