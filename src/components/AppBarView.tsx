@@ -38,6 +38,7 @@ import StandardLink from './StandardLink';
 import { getBaseUrl } from '../utils/utils';
 import SearchField from './SearchField';
 import { styled } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -82,11 +83,11 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  themeMode: PaletteMode;
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
 }
 
-const AppBarView = ({ themeMode, setThemeMode }: Props) => {
+const AppBarView = ({ setThemeMode }: Props) => {
+  const themeMode = useTheme().palette.mode;
   const bigScreen = useMediaQuery('(min-width:610px)');
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
 

@@ -21,8 +21,8 @@ import { PaletteMode, CssBaseline } from '@mui/material';
 
 const App = () => {
   const [mode, setMode] = useState<PaletteMode>('dark');
-
   const theme = useMemo(() => createTheme(getMainTheme(mode)), [mode]);
+
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
@@ -32,11 +32,7 @@ const App = () => {
             <Router>
               <Routes>
                 <Route path="/login" element={<LoginPage />} />
-                <Route
-                  element={
-                    <StandardLayout themeMode={mode} setThemeMode={setMode} />
-                  }
-                >
+                <Route element={<StandardLayout setThemeMode={setMode} />}>
                   <Route path="/" element={<MainPage />} />
                   <Route path="/artist/:artistId" element={<ArtistPage />} />
                   <Route
