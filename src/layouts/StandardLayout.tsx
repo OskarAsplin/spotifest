@@ -1,27 +1,18 @@
 import { Outlet } from 'react-router-dom';
 import AppBarView from '../components/AppBarView';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { useSelector } from 'react-redux';
-import { PaletteMode, CssBaseline } from '@mui/material';
-import { selectThememode } from '../redux/reducers/displaySlice';
-import { lightBluePinkThemeOptions } from './StandardLayout.styles';
+import { PaletteMode } from '@mui/material';
 
-export const StandardLayout = () => {
-  const thememode: PaletteMode = useSelector(selectThememode);
+interface Props {
+  themeMode: PaletteMode;
+  setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
+}
 
-  const muiTheme = createTheme({
-    typography: {
-      fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-    },
-    palette: { ...lightBluePinkThemeOptions, mode: thememode },
-  });
-
+export const StandardLayout = ({ themeMode, setThemeMode }: Props) => {
   return (
-    <ThemeProvider theme={muiTheme}>
-      <CssBaseline />
-      <AppBarView />
+    <>
+      <AppBarView themeMode={themeMode} setThemeMode={setThemeMode} />
       <div className="appBarSpace" />
       <Outlet />
-    </ThemeProvider>
+    </>
   );
 };

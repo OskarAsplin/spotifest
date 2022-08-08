@@ -32,11 +32,6 @@ import {
   selectLoggedIn,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import {
-  selectThememode,
-  switchToDarkMode,
-  switchToLightMode,
-} from '../redux/reducers/displaySlice';
 import { selectUserInfo } from '../redux/reducers/spotifyAccountSlice';
 import { UserInfo } from '../redux/types';
 import StandardLink from './StandardLink';
@@ -86,11 +81,15 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-const AppBarView = () => {
+interface Props {
+  themeMode: PaletteMode;
+  setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
+}
+
+const AppBarView = ({ themeMode, setThemeMode }: Props) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
 
-  const thememode: PaletteMode = useSelector(selectThememode);
   const loggedIn: boolean = useSelector(selectLoggedIn);
   const userInfo: UserInfo | undefined = useSelector(selectUserInfo);
   const dispatch = useDispatch();
@@ -279,14 +278,12 @@ const AppBarView = () => {
             <ListItem
               button
               key="Brightness"
-              onClick={() => {
-                thememode === 'light'
-                  ? dispatch(switchToDarkMode())
-                  : dispatch(switchToLightMode());
-              }}
+              onClick={() =>
+                setThemeMode(themeMode === 'light' ? 'dark' : 'light')
+              }
             >
               <ListItemIcon>
-                {thememode === 'light' ? <Brightness2 /> : <Brightness4 />}
+                {themeMode === 'light' ? <Brightness2 /> : <Brightness4 />}
               </ListItemIcon>
               <ListItemText primary="Brightness" />
             </ListItem>

@@ -4,7 +4,6 @@ import {
   Theme,
   Typography,
   CircularProgress,
-  PaletteMode,
 } from '@mui/material';
 import { deepOrange, indigo } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
@@ -25,7 +24,6 @@ import {
 } from '../redux/reducers/authorizationSlice';
 import {
   selectLoaderOn,
-  selectThememode,
   selectIsDbOnline,
   selectSiteInitialized,
 } from '../redux/reducers/displaySlice';
@@ -69,7 +67,6 @@ removeHashParamsFromUrl();
 
 const MainPage = () => {
   const loaderOn: boolean = useSelector(selectLoaderOn);
-  const thememode: PaletteMode = useSelector(selectThememode);
   const isDbOnline: boolean = useSelector(selectIsDbOnline);
   const siteInitialized: boolean = useSelector(selectSiteInitialized);
   const loggedIn: boolean = useSelector(selectLoggedIn);
@@ -122,7 +119,6 @@ const MainPage = () => {
         main: deepOrange[500],
         dark: deepOrange[700],
       },
-      mode: thememode,
     },
   });
 

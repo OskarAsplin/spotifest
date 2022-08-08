@@ -1,3 +1,4 @@
+import { useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -15,25 +16,27 @@ import {
   createTheme,
   StyledEngineProvider,
 } from '@mui/material/styles';
-import { lightBluePinkThemeOptions } from './layouts/StandardLayout.styles';
-
-const theme = createTheme({
-  typography: {
-    fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-  },
-  palette: { ...lightBluePinkThemeOptions, mode: 'dark' },
-});
+import { getMainTheme } from './layouts/StandardLayout.styles';
+import { PaletteMode, CssBaseline } from '@mui/material';
 
 const App = () => {
+  const [mode, setMode] = useState<PaletteMode>('dark');
+
+  const theme = useMemo(() => createTheme(getMainTheme(mode)), [mode]);
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
+        <CssBaseline />
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <Router>
               <Routes>
                 <Route path="/login" element={<LoginPage />} />
-                <Route element={<StandardLayout />}>
+                <Route
+                  element={
+                    <StandardLayout themeMode={mode} setThemeMode={setMode} />
+                  }
+                >
                   <Route path="/" element={<MainPage />} />
                   <Route path="/artist/:artistId" element={<ArtistPage />} />
                   <Route

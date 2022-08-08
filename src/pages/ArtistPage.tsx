@@ -9,7 +9,6 @@ import {
   IconButton,
   Collapse,
   CircularProgress,
-  PaletteMode,
 } from '@mui/material';
 import { deepOrange, indigo } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
@@ -30,7 +29,6 @@ import {
 } from '../redux/reducers/authorizationSlice';
 import {
   selectLoaderOn,
-  selectThememode,
   turnOnLoader,
   turnOffLoader,
 } from '../redux/reducers/displaySlice';
@@ -43,6 +41,7 @@ import {
   getMaxArtistsInWidth,
 } from '../utils/utils';
 import StandardLink from '../components/StandardLink';
+import { useTheme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -230,7 +229,7 @@ const ArtistPage = () => {
   const loggedIn: boolean = useSelector(selectLoggedIn);
   const accessToken: string = useSelector(selectAccessToken);
   const loaderOn: boolean = useSelector(selectLoaderOn);
-  const thememode: PaletteMode = useSelector(selectThememode);
+  const themeMode = useTheme().palette.mode;
   const dispatch = useDispatch();
   const { artistId } = useParams();
 
@@ -425,7 +424,6 @@ const ArtistPage = () => {
         main: deepOrange[500],
         dark: deepOrange[700],
       },
-      mode: thememode,
     },
   });
 
@@ -511,7 +509,7 @@ const ArtistPage = () => {
               </div>
               <Box
                 className={
-                  thememode === 'light'
+                  themeMode === 'light'
                     ? classes.buttonBox
                     : clsx(classes.buttonBox, classes.darkerBackground)
                 }

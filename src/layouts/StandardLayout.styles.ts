@@ -1,5 +1,6 @@
 import { ThemeOptions } from '@mui/material/styles';
 import { pink, lightBlue } from '@mui/material/colors';
+import { PaletteMode } from '@mui/material';
 
 export const lightBluePinkThemeOptions: ThemeOptions['palette'] = {
   primary: {
@@ -12,8 +13,22 @@ export const lightBluePinkThemeOptions: ThemeOptions['palette'] = {
     main: pink[400],
     dark: pink[700],
   },
-  background: {
-    default: '#202020',
-    paper: '#202020',
-  },
 };
+
+export const getMainTheme = (mode: PaletteMode) => ({
+  typography: {
+    fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+  },
+  palette: {
+    ...lightBluePinkThemeOptions,
+    mode,
+    ...(mode === 'dark'
+      ? {
+          background: {
+            default: '#202020',
+            paper: '#202020',
+          },
+        }
+      : {}),
+  },
+});

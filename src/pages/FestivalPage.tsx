@@ -9,10 +9,8 @@ import {
   Tabs,
   Tab,
   Switch,
-  useTheme,
   IconButton,
   CircularProgress,
-  PaletteMode,
 } from '@mui/material';
 import { deepOrange, indigo } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
@@ -29,7 +27,6 @@ import SwipeableViews from 'react-swipeable-views';
 import ArtistBubble from '../components/ArtistBubble';
 import {
   selectLoaderOn,
-  selectThememode,
   turnOnLoader,
   turnOffLoader,
 } from '../redux/reducers/displaySlice';
@@ -42,6 +39,7 @@ import {
 } from '../utils/utils';
 import { lightBluePinkThemeOptions } from '../layouts/StandardLayout.styles';
 import StandardLink from '../components/StandardLink';
+import { useTheme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -293,7 +291,8 @@ const FestivalPage = () => {
   const { festivalId } = useParams();
 
   const loaderOn: boolean = useSelector(selectLoaderOn);
-  const thememode: PaletteMode = useSelector(selectThememode);
+  const themeMode = useTheme().palette.mode;
+  const themeDirection = useTheme().direction;
   const dispatch = useDispatch();
 
   const limitLineups = !mediumScreen ? 4 : undefined;
@@ -346,7 +345,6 @@ const FestivalPage = () => {
         main: deepOrange[500],
         dark: deepOrange[700],
       },
-      mode: thememode,
     },
   });
 
@@ -354,11 +352,10 @@ const FestivalPage = () => {
     typography: {
       fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
     },
-    palette: { ...lightBluePinkThemeOptions, mode: thememode },
+    palette: lightBluePinkThemeOptions,
   });
 
   const classes = useStyles();
-  const theme = useTheme();
 
   const TabPanel = (props: TabPanelProps) => {
     const { children, value, index, ...other } = props;
@@ -440,7 +437,7 @@ const FestivalPage = () => {
                 </div>
                 <Box
                   className={
-                    thememode === 'light'
+                    themeMode === 'light'
                       ? classes.buttonBox
                       : clsx(classes.buttonBox, classes.darkerBackground)
                   }
@@ -578,7 +575,7 @@ const FestivalPage = () => {
                       ))}
                   </Tabs>
                   <SwipeableViews
-                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                    axis={themeDirection === 'rtl' ? 'x-reverse' : 'x'}
                     index={selectedLineup}
                     onChangeIndex={(newValue: number) =>
                       setSelectedLineup(newValue)

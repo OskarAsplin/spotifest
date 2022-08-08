@@ -10,7 +10,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  PaletteMode,
 } from '@mui/material';
 import { makeStyles, createStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
@@ -18,13 +17,12 @@ import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StarIcon from '@mui/icons-material/Star';
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import TechStackContent from '../components/TechStackContent';
-import { selectThememode } from '../redux/reducers/displaySlice';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
 import StandardLink from '../components/StandardLink';
+import { useTheme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -52,9 +50,9 @@ const AboutPage = () => {
   const [supportExpanded, setSupportExpanded] = useState(false);
   const [disclaimerExpanded, setDisclaimerExpanded] = useState(false);
 
-  const thememode: PaletteMode = useSelector(selectThememode);
+  const themeMode = useTheme().palette.mode;
 
-  const lightMode: boolean = thememode === 'light';
+  const lightMode: boolean = themeMode === 'light';
 
   const classes = useStyles();
 

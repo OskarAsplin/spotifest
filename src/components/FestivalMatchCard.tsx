@@ -7,7 +7,6 @@ import {
   Collapse,
   Typography,
   Box,
-  PaletteMode,
 } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
@@ -18,12 +17,12 @@ import 'react-circular-progressbar/dist/styles.css';
 import ReactCountryFlag from 'react-country-flag';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { selectThememode } from '../redux/reducers/displaySlice';
 import { selectMatchingMethod } from '../redux/reducers/festivalMatchingSlice';
 import { FestivalMatch, MatchingMethod, Artist } from '../redux/types';
 import { getMaxArtistsInWidth, displayedLocationName } from '../utils/utils';
 import ArtistBubble from './ArtistBubble';
 import HtmlTooltip from './HtmlTooltip';
+import { useTheme } from '@mui/material/styles';
 
 const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
   createStyles({
@@ -206,7 +205,7 @@ interface Props {
 const FestivalMatchCard = (props: Props) => {
   const { festival, showMatching, popularArtists, matchingArtists } = props;
 
-  const thememode: PaletteMode = useSelector(selectThememode);
+  const themeMode = useTheme().palette.mode;
   const matchingMethod: MatchingMethod = useSelector(selectMatchingMethod);
 
   const bigScreen = useMediaQuery('(min-width:690px)');
@@ -234,9 +233,9 @@ const FestivalMatchCard = (props: Props) => {
       break;
   }
   const textSize = smallScreen ? '28px' : '25px';
-  const pathColor = thememode === 'light' ? '#3FBF3F' : '#3de53d';
-  const textColor = thememode === 'light' ? '#3FBF3F' : '#3de53d';
-  const trailColor = thememode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
+  const pathColor = themeMode === 'light' ? '#3FBF3F' : '#3de53d';
+  const textColor = themeMode === 'light' ? '#3FBF3F' : '#3de53d';
+  const trailColor = themeMode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
 
   const noLineupRegistered = popularArtists.length === 0;
 

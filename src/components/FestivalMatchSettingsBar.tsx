@@ -5,7 +5,6 @@ import {
   Box,
   Paper,
   Grid,
-  PaletteMode,
   InputLabel,
   MenuItem,
   FormControl,
@@ -29,7 +28,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { spotifyApi, testFestivalMatches } from '../redux/asyncActions';
 import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import {
-  selectThememode,
   selectIsDbOnline,
   selectShowPlaylistModal,
   turnOnLoader,
@@ -67,6 +65,7 @@ import {
 import StandardLink from './StandardLink';
 import HtmlTooltip from './HtmlTooltip';
 import SettingsBarDatePicker from './SettingsBarDatePicker';
+import { useTheme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -188,7 +187,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const topArtistsChoice = '__your__top__artists__';
 
 const FestivalMatchSettingsBar = () => {
-  const thememode: PaletteMode = useSelector(selectThememode);
+  const themeMode = useTheme().palette.mode;
   const userInfo: UserInfo | undefined = useSelector(selectUserInfo);
   const playlists: Playlist[] = useSelector(selectPlaylists);
   const topArtists: Artist[] = useSelector(selectTopArtists);
@@ -238,7 +237,6 @@ const FestivalMatchSettingsBar = () => {
         main: deepOrange[500],
         dark: deepOrange[700],
       },
-      mode: thememode,
     },
   });
 
@@ -631,7 +629,7 @@ const FestivalMatchSettingsBar = () => {
                 <InfoIcon
                   color="primary"
                   style={{
-                    fill: thememode === 'light' ? indigo[500] : '#fcfcfe',
+                    fill: themeMode === 'light' ? indigo[500] : '#fcfcfe',
                   }}
                 />
               </HtmlTooltip>
