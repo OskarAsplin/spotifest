@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import {
   buttonClasses,
-  CssBaseline,
   Box,
   Typography,
   typographyClasses,
@@ -32,7 +31,6 @@ const LoginPage = () => {
 
   return (
     <StyledBackgroundDiv>
-      <CssBaseline />
       <Box
         sx={{
           position: 'absolute',
