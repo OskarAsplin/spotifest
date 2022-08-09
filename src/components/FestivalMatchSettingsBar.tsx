@@ -13,7 +13,6 @@ import {
   ListSubheader,
   Modal,
   Fade,
-  Backdrop,
   ThemeProvider,
   CircularProgress,
   Button,
@@ -95,16 +94,6 @@ const useStyles = makeStyles((theme: Theme) =>
       },
       alignItems: 'center',
     },
-    box: {
-      width: '100%',
-      '@media (min-width: 800px)': {
-        maxWidth: '1000px',
-      },
-      '@media (max-width: 799px)': {
-        maxWidth: '460px',
-      },
-      marginBottom: theme.spacing(2),
-    },
     formControlPlaylist: {
       margin: theme.spacing(1),
       '@media (min-width: 800px)': {
@@ -135,51 +124,6 @@ const useStyles = makeStyles((theme: Theme) =>
         minWidth: 150,
         maxWidth: 220,
       },
-    },
-    toolTip: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      paddingBottom: theme.spacing(0.5),
-    },
-    spaceBetween: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      flexDirection: 'row',
-      alignItems: 'center',
-      '@media (min-width: 800px)': {
-        justifyContent: 'space-between',
-      },
-      '@media (min-width: 1000px)': {
-        padding: theme.spacing(0.5, 2, 0, 2),
-      },
-      '@media (max-width: 999px)': {
-        padding: theme.spacing(0.5, 0.5, 0, 0.5),
-      },
-    },
-    marginBottom: {
-      marginBottom: '4px',
-    },
-    modal: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflowY: 'auto',
-    },
-    paper: {
-      padding: theme.spacing(2),
-      outline: 'none',
-    },
-    initialPlaylistTitle: {
-      textAlign: 'center',
-      marginBottom: theme.spacing(1),
-    },
-    button: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(1),
-    },
-    loadChoicesSpinner: {
-      margin: theme.spacing(3),
     },
   })
 );
@@ -486,182 +430,197 @@ const FestivalMatchSettingsBar = () => {
 
   const classes = useStyles();
 
-  if (!isDbOnline) {
-    return <div />;
-  }
+  if (!isDbOnline) return <div />;
 
   return (
-    <Box className={classes.box}>
-      <Paper>
-        <Box className={classes.spaceBetween}>
-          <Box className={classes.alignItems}>
-            <FormControl className={classes.formControlPlaylist} size="small">
-              <InputLabel id="choose-playlist-label">Match with</InputLabel>
-              <Select
-                labelId="choose-playlist-label"
-                id="choose-playlist"
-                value={matchSettings.matchBasis}
-                onChange={handlePlaylistChange}
-                label="Match with"
-              >
-                {topArtists.length !== 0 && (
-                  <MenuItem key={topArtistsChoice} value={topArtistsChoice}>
-                    Your most played artists
-                  </MenuItem>
-                )}
-                {topArtists.length !== 0 && playlists.length !== 0 && (
-                  <ListSubheader disableSticky disableGutters>
-                    or choose a playlist below
-                  </ListSubheader>
-                )}
-                {playlists.map((playlist) => (
-                  <MenuItem
-                    key={playlist.name}
-                    value={playlist.name}
-                    style={{ minWidth: 200, maxWidth: 400 }}
-                  >
-                    {playlist.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box className={classes.alignItems}>
-            <FormControl className={classes.formControlArea} size="small">
-              <InputLabel id="choose-countries-label">Area</InputLabel>
-              <Select
-                labelId="choose-countries-label"
-                id="choose-countries"
-                value={matchSettings.area.isoCode}
-                onChange={handleAreaChange}
-                label="Area"
-              >
-                <MenuItem key={'XXX'} value={'XXX'} style={{ minWidth: 200 }}>
-                  Worldwide
+    <>
+      <Paper
+        sx={{
+          width: '100%',
+          '@media (min-width: 800px)': {
+            maxWidth: '1000px',
+            justifyContent: 'space-between',
+          },
+          '@media (max-width: 799px)': {
+            maxWidth: '460px',
+          },
+          mb: 2,
+          display: 'flex',
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          alignItems: 'center',
+          '@media (min-width: 1000px)': { pt: 0.5, px: 2 },
+          '@media (max-width: 999px)': { pt: 0.5, px: 0.5 },
+        }}
+      >
+        <Box className={classes.alignItems}>
+          <FormControl className={classes.formControlPlaylist} size="small">
+            <InputLabel id="choose-playlist-label">Match with</InputLabel>
+            <Select
+              labelId="choose-playlist-label"
+              id="choose-playlist"
+              value={matchSettings.matchBasis}
+              onChange={handlePlaylistChange}
+              label="Match with"
+            >
+              {topArtists.length !== 0 && (
+                <MenuItem key={topArtistsChoice} value={topArtistsChoice}>
+                  Your most played artists
                 </MenuItem>
+              )}
+              {topArtists.length !== 0 && playlists.length !== 0 && (
                 <ListSubheader disableSticky disableGutters>
-                  Continents
+                  or choose a playlist below
                 </ListSubheader>
-                {[...continents]
-                  .sort((a, b) => (a.name > b.name ? 1 : -1))
-                  .map((continent) => (
-                    <MenuItem
-                      key={continent.isoCode}
-                      value={continent.isoCode}
-                      style={{ minWidth: 200 }}
-                    >
-                      {continent.name}
-                    </MenuItem>
-                  ))}
-                <ListSubheader disableSticky disableGutters>
-                  European regions
-                </ListSubheader>
-                {europeanRegions.map((region) => (
-                  <MenuItem key={region} value={region}>
-                    {region}
-                  </MenuItem>
-                ))}
-                <ListSubheader disableSticky disableGutters>
-                  US regions
-                </ListSubheader>
-                {usRegions.map((region) => (
-                  <MenuItem key={region} value={region}>
-                    {region}
-                  </MenuItem>
-                ))}
-                <ListSubheader disableSticky disableGutters>
-                  Countries
-                </ListSubheader>
-                {[...countries]
-                  .sort((a, b) => (a.name > b.name ? 1 : -1))
-                  .map((country) => (
-                    <MenuItem key={country.isoCode} value={country.isoCode}>
-                      <ReactCountryFlag
-                        countryCode={country.isoCode}
-                        svg
-                        style={{ marginRight: '8px' }}
-                      />{' '}
-                      {displayedLocationName(country.name)}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box className={classes.alignItems2}>
-            <Grid
-              container
-              justifyContent="space-around"
-              className={classes.marginBottom}
-            >
-              <SettingsBarDatePicker
-                label="From (m/y)"
-                value={matchSettings.fromDate}
-                onChange={handleFromDateChange}
-              />
-            </Grid>
-            <Grid
-              container
-              justifyContent="space-around"
-              className={classes.marginBottom}
-            >
-              <SettingsBarDatePicker
-                label="To (m/y)"
-                value={matchSettings.toDate}
-                onChange={handleToDateChange}
-              />
-            </Grid>
-          </Box>
-          {pcScreen && (
-            <Box className={classes.toolTip}>
-              <HtmlTooltip
-                placement="right-start"
-                title={
-                  <Fragment>
-                    <Typography color="inherit" variant="h6">
-                      Matching algorithm
-                    </Typography>
-                    {
-                      'The matching algorithm is a combination of artist and genre matching. The number of artists in your selected playlist attending a festival combined with how well the genres of the playlist fit the festival, determines the match score shown on each festival.'
-                    }
-                  </Fragment>
-                }
-              >
-                <InfoIcon
-                  color="primary"
-                  style={{
-                    fill: themeMode === 'light' ? indigo[500] : '#fcfcfe',
-                  }}
-                />
-              </HtmlTooltip>
-            </Box>
-          )}
+              )}
+              {playlists.map((playlist) => (
+                <MenuItem
+                  key={playlist.name}
+                  value={playlist.name}
+                  style={{ minWidth: 200, maxWidth: 400 }}
+                >
+                  {playlist.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
+        <Box className={classes.alignItems}>
+          <FormControl className={classes.formControlArea} size="small">
+            <InputLabel id="choose-countries-label">Area</InputLabel>
+            <Select
+              labelId="choose-countries-label"
+              id="choose-countries"
+              value={matchSettings.area.isoCode}
+              onChange={handleAreaChange}
+              label="Area"
+            >
+              <MenuItem key={'XXX'} value={'XXX'} style={{ minWidth: 200 }}>
+                Worldwide
+              </MenuItem>
+              <ListSubheader disableSticky disableGutters>
+                Continents
+              </ListSubheader>
+              {[...continents]
+                .sort((a, b) => (a.name > b.name ? 1 : -1))
+                .map((continent) => (
+                  <MenuItem
+                    key={continent.isoCode}
+                    value={continent.isoCode}
+                    style={{ minWidth: 200 }}
+                  >
+                    {continent.name}
+                  </MenuItem>
+                ))}
+              <ListSubheader disableSticky disableGutters>
+                European regions
+              </ListSubheader>
+              {europeanRegions.map((region) => (
+                <MenuItem key={region} value={region}>
+                  {region}
+                </MenuItem>
+              ))}
+              <ListSubheader disableSticky disableGutters>
+                US regions
+              </ListSubheader>
+              {usRegions.map((region) => (
+                <MenuItem key={region} value={region}>
+                  {region}
+                </MenuItem>
+              ))}
+              <ListSubheader disableSticky disableGutters>
+                Countries
+              </ListSubheader>
+              {[...countries]
+                .sort((a, b) => (a.name > b.name ? 1 : -1))
+                .map((country) => (
+                  <MenuItem key={country.isoCode} value={country.isoCode}>
+                    <ReactCountryFlag
+                      countryCode={country.isoCode}
+                      svg
+                      style={{ marginRight: '8px' }}
+                    />{' '}
+                    {displayedLocationName(country.name)}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Box className={classes.alignItems2}>
+          <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
+            <SettingsBarDatePicker
+              label="From (m/y)"
+              value={matchSettings.fromDate}
+              onChange={handleFromDateChange}
+            />
+          </Grid>
+          <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
+            <SettingsBarDatePicker
+              label="To (m/y)"
+              value={matchSettings.toDate}
+              onChange={handleToDateChange}
+            />
+          </Grid>
+        </Box>
+        {pcScreen && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              pb: 0.5,
+            }}
+          >
+            <HtmlTooltip
+              placement="right-start"
+              title={
+                <Fragment>
+                  <Typography color="inherit" variant="h6">
+                    Matching algorithm
+                  </Typography>
+                  {
+                    'The matching algorithm is a combination of artist and genre matching. The number of artists in your selected playlist attending a festival combined with how well the genres of the playlist fit the festival, determines the match score shown on each festival.'
+                  }
+                </Fragment>
+              }
+            >
+              <InfoIcon
+                color="primary"
+                style={{
+                  fill: themeMode === 'light' ? indigo[500] : '#fcfcfe',
+                }}
+              />
+            </HtmlTooltip>
+          </Box>
+        )}
       </Paper>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
         closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        BackdropProps={{ timeout: 500 }}
         open={showPlaylistModal}
         onClose={(event, reason) => {
           if (reason === 'backdropClick') return;
           dispatch(setShowPlaylistModal(false));
         }}
         disableEscapeKeyDown
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflowY: 'auto',
+        }}
       >
         <Fade in={showPlaylistModal}>
-          <Paper className={classes.paper}>
+          <Paper sx={{ p: 2, outline: 'none', backgroundColor: '#303030' }}>
             {!(topArtistsLoaded && playlistsLoaded) && (
               <ThemeProvider theme={indigoOrangeMuiTheme}>
                 <CircularProgress
                   size={100}
                   thickness={3}
                   color={'secondary'}
-                  className={classes.loadChoicesSpinner}
+                  sx={{ m: 3 }}
                 />
               </ThemeProvider>
             )}
@@ -671,7 +630,7 @@ const FestivalMatchSettingsBar = () => {
                   variant={
                     smallScreen ? (topArtists.length === 0 ? 'h6' : 'h5') : 'h4'
                   }
-                  className={classes.initialPlaylistTitle}
+                  sx={{ textAlign: 'center', mb: 1 }}
                 >
                   {topArtists.length === 0
                     ? 'Choose a playlist to start your matching'
@@ -722,7 +681,7 @@ const FestivalMatchSettingsBar = () => {
                   color="primary"
                   size="large"
                   variant="outlined"
-                  className={classes.button}
+                  sx={{ mt: 3, mb: 1 }}
                   onClick={() => {
                     dispatch(setShowPlaylistModal(false));
                     dispatch(
@@ -762,15 +721,16 @@ const FestivalMatchSettingsBar = () => {
                     </StandardLink>
                   ) : (
                     'Spotify profile'
-                  )}{' '}
-                  and create or subscribe to a playlist to start your festival
-                  matching
+                  )}
+                  {
+                    ' and create or subscribe to a playlist to start your festival matching'
+                  }
                 </Typography>
               )}
           </Paper>
         </Fade>
       </Modal>
-    </Box>
+    </>
   );
 };
 
