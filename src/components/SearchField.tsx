@@ -17,6 +17,7 @@ import { getBaseUrl } from '../utils/utils';
 import { useSearchDb } from './SearchField.utils';
 import { createTheme } from '@mui/material/styles';
 import { getMainTheme } from '../layouts/StandardLayout.styles';
+import MatchHighlighter, { escapeRegExp } from './MatchHighlighter';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -168,7 +169,13 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                           sx={{ mb: 1 }}
                           variant="body2"
                         >
-                          {festival.name + ': ' + festival.location}
+                          <MatchHighlighter
+                            text={festival.name}
+                            regex={
+                              new RegExp(`(${escapeRegExp(inputText)})`, 'ig')
+                            }
+                          />
+                          {': ' + festival.location}
                         </StandardLink>
                       ))}
                     {searchResults.result.festivals.length > 5 && (
@@ -200,7 +207,12 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                           sx={{ mb: 1 }}
                           variant="body2"
                         >
-                          {artist.name}
+                          <MatchHighlighter
+                            text={artist.name}
+                            regex={
+                              new RegExp(`(${escapeRegExp(inputText)})`, 'ig')
+                            }
+                          />
                         </StandardLink>
                       ))}
                     {searchResults.result.artists.length > 5 && (
