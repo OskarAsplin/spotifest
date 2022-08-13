@@ -4,6 +4,7 @@ import {
   Paper,
   IconButton,
   Button,
+  buttonClasses,
   Collapse,
   Typography,
   Box,
@@ -23,6 +24,7 @@ import { getMaxArtistsInWidth, displayedLocationName } from '../utils/utils';
 import ArtistBubble from './ArtistBubble';
 import HtmlTooltip from './HtmlTooltip';
 import { useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
   createStyles({
@@ -125,13 +127,6 @@ const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
     },
     titleLine: {
       width: '100%',
-    },
-    button: {
-      whiteSpace: 'normal',
-      textTransform: 'none',
-      marginLeft: -spacing(1.25),
-      textAlign: 'left',
-      padding: spacing(0, 1, 0, 1),
     },
     grow: {
       flexGrow: 1,
@@ -271,8 +266,7 @@ const FestivalMatchCard = (props: Props) => {
       <div className={classes.titleLine}>
         <div className={clsx(classes.titleAndMatchBox, classes.addSidePadding)}>
           <div className={!showMatching ? classes.growAlign : classes.grow}>
-            <Button
-              className={classes.button}
+            <StyledTitleButton
               color="inherit"
               onClick={() => {
                 navigateToFestival(encodeURIComponent(festival.name));
@@ -288,7 +282,7 @@ const FestivalMatchCard = (props: Props) => {
               >
                 <Box fontWeight="fontWeightBold">{festival.name}</Box>
               </Typography>
-            </Button>
+            </StyledTitleButton>
           </div>
           {showMatching && (
             <div>
@@ -583,5 +577,17 @@ const FestivalMatchCard = (props: Props) => {
     </Paper>
   );
 };
+
+const StyledTitleButton = styled(Button)(({ theme: { spacing } }) => {
+  return {
+    [`&.${buttonClasses.root}`]: {
+      whiteSpace: 'normal',
+      textTransform: 'none',
+      marginLeft: spacing(-1.25),
+      textAlign: 'left',
+      padding: spacing(0, 1, 0, 1),
+    },
+  };
+});
 
 export default FestivalMatchCard;

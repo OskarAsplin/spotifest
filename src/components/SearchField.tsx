@@ -1,5 +1,6 @@
-import { IconButton, Typography } from '@mui/material';
 import {
+  IconButton,
+  Typography,
   InputAdornment,
   TextField,
   Paper,
@@ -21,10 +22,6 @@ import MatchHighlighter, { escapeRegExp } from './MatchHighlighter';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    flexColumn: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
     fixed: {
       position: 'absolute',
       '@media (min-width: 610px)': {
@@ -71,9 +68,6 @@ const useStyles = makeStyles((theme: Theme) =>
         marginRight: '28px',
       },
     },
-    minHeight: {
-      minHeight: '40px',
-    },
   })
 );
 
@@ -106,8 +100,10 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
           setShowSearchFieldSmallScreen(false);
         }}
       >
-        <div className={classes.flexColumn}>
-          {!bigScreen && <div className={classes.minHeight} />}
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          {!bigScreen && (
+            <Box sx={{ minHeight: ({ spacing }) => spacing(5) }} />
+          )}
           <TextField
             size="small"
             autoFocus={bigScreen ? false : true}
@@ -146,7 +142,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
               )}
               {searchResults.result && inputText && (
                 <Paper elevation={10} className={classes.fixed}>
-                  <div className={classes.flexColumn}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     {searchResults.result.festivals.length === 0 &&
                       searchResults.result.artists.length === 0 && (
                         <Typography color="primary" component="div">
@@ -224,12 +220,12 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                         ...
                       </Typography>
                     )}
-                  </div>
+                  </Box>
                 </Paper>
               )}
             </div>
           </ThemeProvider>
-        </div>
+        </Box>
       </ClickAwayListener>
     </ThemeProvider>
   );
