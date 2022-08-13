@@ -1,115 +1,50 @@
 import { useState } from 'react';
 import {
+  Box,
   IconButton,
   Typography,
   Toolbar,
   AppBar,
   Avatar,
-  Popover,
   Button,
+  toolbarClasses,
+  Paper,
+  Slide,
 } from '@mui/material';
-import { Paper, Drawer, Slide } from '@mui/material';
-import {
-  useScrollTrigger,
-  PaletteMode,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
+import { useScrollTrigger, PaletteMode } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
-import { Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { Brightness2, Brightness4 } from '@mui/icons-material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import InfoIcon from '@mui/icons-material/Info';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import {
-  selectLoggedIn,
-  setLoggedOff,
-} from '../redux/reducers/authorizationSlice';
+import { useSelector } from 'react-redux';
 import { selectUserInfo } from '../redux/reducers/spotifyAccountSlice';
 import { UserInfo } from '../redux/types';
-import StandardLink from './StandardLink';
 import { getBaseUrl } from '../utils/utils';
 import SearchField from './SearchField';
 import { styled } from '@mui/material/styles';
-import { useTheme } from '@mui/material/styles';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-      display: 'flex',
-      alignContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-    },
-    grow: {
-      flexGrow: 1,
-    },
-    customizeToolbar: {
-      minHeight: 36,
-      '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
-      },
-    },
-    popover: {
-      padding: theme.spacing(1.5),
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    button: {
-      textTransform: 'none',
-    },
-    fullWidthAndReverse: {
-      right: 0,
-      zIndex: 10,
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'row-reverse',
-      position: 'fixed',
-    },
-    drawerList: {
-      width: 250,
-    },
-  })
-);
+import AppBarMenuDrawer from './AppBarMenuDrawer';
+import AppBarProfilePopover from './AppBarProfilePopover';
 
 interface Props {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
 }
 
 const AppBarView = ({ setThemeMode }: Props) => {
-  const themeMode = useTheme().palette.mode;
   const bigScreen = useMediaQuery('(min-width:610px)');
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
 
-  const loggedIn: boolean = useSelector(selectLoggedIn);
   const userInfo: UserInfo | undefined = useSelector(selectUserInfo);
-  const dispatch = useDispatch();
 
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [showSearchFieldSmallScreen, setShowSearchFieldSmallScreen] =
     useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const navigate = useNavigate();
 
   const trigger = useScrollTrigger({ threshold: 30 });
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   const open = Boolean(anchorEl);
@@ -129,7 +64,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
     };
 
   return (
-    <div className={classes.root}>
+    <>
       <Slide appear={false} direction="down" in={!trigger}>
         <div>
           <AppBar
@@ -140,9 +75,9 @@ const AppBarView = ({ setThemeMode }: Props) => {
               color: '#fff',
             }}
           >
-            <Toolbar className={classes.customizeToolbar}>
+            <StyledToolbar>
               <Button
-                className={classes.button}
+                sx={{ textTransform: 'none' }}
                 color="inherit"
                 onClick={() => {
                   const url = window.location.href;
@@ -162,7 +97,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
                   {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
                 </Typography>
               </Button>
-              <div className={classes.grow}></div>
+              <Box sx={{ flexGrow: 1 }} />
               {bigScreen && (
                 <SearchField
                   setShowSearchFieldSmallScreen={setShowSearchFieldSmallScreen}
@@ -200,41 +135,6 @@ const AppBarView = ({ setThemeMode }: Props) => {
                   <AccountCircleIcon />
                 )}
               </IconButton>
-              <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
-              >
-                <div className={classes.popover}>
-                  {userInfo?.displayName && (
-                    <Typography variant="body1" sx={{ mb: 1 }}>
-                      {userInfo.displayName}
-                    </Typography>
-                  )}
-                  {userInfo && userInfo.spotifyUrl && (
-                    <StandardLink href={userInfo.spotifyUrl} sx={{ mb: 1 }}>
-                      View profile in Spotify
-                    </StandardLink>
-                  )}
-                  {loggedIn && (
-                    <StandardLink
-                      href={`https://accounts.spotify.com/en/logout`}
-                      onClick={() => dispatch(setLoggedOff())}
-                    >
-                      Log out
-                    </StandardLink>
-                  )}
-                </div>
-              </Popover>
               <IconButton
                 sx={{ p: 1.5 }}
                 color="inherit"
@@ -242,62 +142,34 @@ const AppBarView = ({ setThemeMode }: Props) => {
               >
                 <MenuIcon />
               </IconButton>
-            </Toolbar>
+            </StyledToolbar>
           </AppBar>
           {showSearchFieldSmallScreen && (
-            <div className={classes.fullWidthAndReverse}>
-              <StyledSearchFieldSmallScreenPaper>
-                <SearchField
-                  setShowSearchFieldSmallScreen={setShowSearchFieldSmallScreen}
-                />
-              </StyledSearchFieldSmallScreenPaper>
-            </div>
+            <StyledSearchFieldSmallScreenPaper>
+              <SearchField
+                setShowSearchFieldSmallScreen={setShowSearchFieldSmallScreen}
+              />
+            </StyledSearchFieldSmallScreenPaper>
           )}
         </div>
       </Slide>
-      <Drawer anchor={'right'} open={drawerOpen} onClose={toggleDrawer(false)}>
-        <div
-          className={classes.drawerList}
-          role="presentation"
-          onClick={toggleDrawer(false)}
-          onKeyDown={toggleDrawer(false)}
-        >
-          <List>
-            <ListItem
-              button
-              key="About"
-              onClick={() => {
-                if (!window.location.href.endsWith('/about'))
-                  navigate('/about');
-              }}
-            >
-              <ListItemIcon>
-                <InfoIcon />
-              </ListItemIcon>
-              <ListItemText primary="About" />
-            </ListItem>
-            <ListItem
-              button
-              key="Brightness"
-              onClick={() =>
-                setThemeMode(themeMode === 'light' ? 'dark' : 'light')
-              }
-            >
-              <ListItemIcon>
-                {themeMode === 'light' ? <Brightness2 /> : <Brightness4 />}
-              </ListItemIcon>
-              <ListItemText primary="Brightness" />
-            </ListItem>
-          </List>
-        </div>
-      </Drawer>
-    </div>
+      <AppBarProfilePopover anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+      <AppBarMenuDrawer
+        open={drawerOpen}
+        onClose={toggleDrawer(false)}
+        setThemeMode={setThemeMode}
+      />
+    </>
   );
 };
 
 const StyledSearchFieldSmallScreenPaper = styled(Paper)(
   ({ theme: { palette, spacing } }) => {
     return {
+      right: 0,
+      zIndex: 10,
+      position: 'fixed',
+
       backgroundColor: palette.mode === 'dark' ? blueGrey[900] : blueGrey[500],
       marginTop: spacing(6),
       '@media (min-width: 610px)': {
@@ -324,5 +196,16 @@ const StyledSearchFieldSmallScreenPaper = styled(Paper)(
     };
   }
 );
+
+const StyledToolbar = styled(Toolbar)(({ theme: { spacing } }) => {
+  return {
+    [`&.${toolbarClasses.root}`]: {
+      minHeight: spacing(4.5),
+      '@media (max-width: 439px)': {
+        padding: spacing(0, 1, 0, 1),
+      },
+    },
+  };
+});
 
 export default AppBarView;
