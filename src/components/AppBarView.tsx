@@ -71,7 +71,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
             id="oskarito-appbar"
             sx={{
               backgroundColor: ({ palette: { mode } }) =>
-                mode === 'dark' ? blueGrey[900] : blueGrey[600],
+                mode === 'dark' ? '#03293c' : '#065980',
               color: '#fff',
             }}
           >
