@@ -1,41 +1,29 @@
-import DateFnsUtils from '@date-io/date-fns';
+import { Fragment, useEffect } from 'react';
 import {
-  createStyles,
   Theme,
   Typography,
   Box,
   Paper,
   Grid,
-  Tooltip,
-  PaletteType,
   InputLabel,
   MenuItem,
   FormControl,
   Select,
+  SelectChangeEvent,
   ListSubheader,
   Modal,
   Fade,
-  Backdrop,
-  Link,
-  MuiThemeProvider,
-  CircularProgress,
   Button,
-} from '@material-ui/core';
-import { deepOrange, indigo } from '@material-ui/core/colors';
-import { withStyles, makeStyles, createTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import InfoIcon from '@material-ui/icons/Info';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-import React, { useEffect } from 'react';
+} from '@mui/material';
+import { indigo } from '@mui/material/colors';
+import { createStyles, makeStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import InfoIcon from '@mui/icons-material/Info';
 import ReactCountryFlag from 'react-country-flag';
 import { useSelector, useDispatch } from 'react-redux';
 import { spotifyApi, testFestivalMatches } from '../redux/asyncActions';
 import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import {
-  selectThememode,
   selectIsDbOnline,
   selectShowPlaylistModal,
   turnOnLoader,
@@ -70,6 +58,11 @@ import {
   getBigPicture,
   displayedLocationName,
 } from '../utils/utils';
+import StandardLink from './StandardLink';
+import HtmlTooltip from './HtmlTooltip';
+import SettingsBarDatePicker from './SettingsBarDatePicker';
+import { useTheme } from '@mui/material/styles';
+import { LoadingSpinner } from './LoadingSpinner';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -98,16 +91,6 @@ const useStyles = makeStyles((theme: Theme) =>
         width: '100%',
       },
       alignItems: 'center',
-    },
-    box: {
-      width: '100%',
-      '@media (min-width: 800px)': {
-        maxWidth: '1000px',
-      },
-      '@media (max-width: 799px)': {
-        maxWidth: '460px',
-      },
-      marginBottom: theme.spacing(2),
     },
     formControlPlaylist: {
       margin: theme.spacing(1),
@@ -140,88 +123,13 @@ const useStyles = makeStyles((theme: Theme) =>
         maxWidth: 220,
       },
     },
-    toolTip: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      paddingBottom: theme.spacing(0.5),
-    },
-    datePickerFieldFrom: {
-      '@media (min-width: 800px)': {
-        marginRight: theme.spacing(0.5),
-        marginLeft: theme.spacing(1),
-      },
-      '@media (max-width: 799px)': {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-      },
-    },
-    datePickerFieldTo: {
-      '@media (min-width: 800px)': {
-        marginLeft: theme.spacing(0.5),
-        marginRight: theme.spacing(1),
-      },
-      '@media (max-width: 799px)': {
-        marginRight: theme.spacing(1),
-        marginLeft: theme.spacing(1),
-      },
-    },
-    spaceBetween: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      flexDirection: 'row',
-      alignItems: 'center',
-      '@media (min-width: 800px)': {
-        justifyContent: 'space-between',
-      },
-      '@media (min-width: 1000px)': {
-        padding: theme.spacing(0.5, 2, 0, 2),
-      },
-      '@media (max-width: 999px)': {
-        padding: theme.spacing(0.5, 0.5, 0, 0.5),
-      },
-    },
-    marginBottom: {
-      marginBottom: '4px',
-    },
-    modal: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      overflowY: 'auto',
-    },
-    paper: {
-      padding: theme.spacing(2),
-      outline: 'none',
-    },
-    initialPlaylistTitle: {
-      textAlign: 'center',
-      marginBottom: theme.spacing(1),
-    },
-    button: {
-      marginTop: theme.spacing(3),
-      marginBottom: theme.spacing(1),
-    },
-    loadChoicesSpinner: {
-      margin: theme.spacing(3),
-    },
   })
 );
-
-const HtmlTooltip = withStyles((theme) => ({
-  tooltip: {
-    backgroundColor: '#f5f5f9',
-    color: 'rgba(0, 0, 0, 0.87)',
-    maxWidth: 320,
-    fontSize: theme.typography.pxToRem(12),
-    border: '1px solid #dadde9',
-  },
-}))(Tooltip);
 
 const topArtistsChoice = '__your__top__artists__';
 
 const FestivalMatchSettingsBar = () => {
-  const thememode: PaletteType = useSelector(selectThememode);
+  const themeMode = useTheme().palette.mode;
   const userInfo: UserInfo | undefined = useSelector(selectUserInfo);
   const playlists: Playlist[] = useSelector(selectPlaylists);
   const topArtists: Artist[] = useSelector(selectTopArtists);
@@ -258,22 +166,6 @@ const FestivalMatchSettingsBar = () => {
 
   const smallScreen = useMediaQuery('(max-width:610px)');
   const pcScreen = useMediaQuery('(min-width:1200px)');
-
-  const indigoOrangeMuiTheme = createTheme({
-    palette: {
-      primary: {
-        light: indigo[300],
-        main: indigo[500],
-        dark: indigo[700],
-      },
-      secondary: {
-        light: deepOrange[300],
-        main: deepOrange[500],
-        dark: deepOrange[700],
-      },
-      type: thememode,
-    },
-  });
 
   const testMatchesWithGivenSettings = (
     area: Area,
@@ -315,13 +207,10 @@ const FestivalMatchSettingsBar = () => {
     );
   };
 
-  const handlePlaylistChange = async (
-    event: React.ChangeEvent<{ value: unknown }>
-  ) => {
-    if (!event.target.value) {
-      return;
-    }
-    const playlistName = event.target.value as string;
+  const handlePlaylistChange = async (event: SelectChangeEvent) => {
+    if (!event.target.value) return;
+
+    const playlistName = event.target.value;
     if (playlistName === matchSettings.matchBasis) {
       return;
     }
@@ -344,9 +233,7 @@ const FestivalMatchSettingsBar = () => {
       return;
     }
 
-    const playlist = playlists.find((playlist) => {
-      return playlist.name === playlistName;
-    });
+    const playlist = playlists.find(({ name }) => name === playlistName);
 
     if (playlist) {
       dispatch(turnOnLoader());
@@ -434,12 +321,9 @@ const FestivalMatchSettingsBar = () => {
     }
   };
 
-  const handleAreaChange = async (
-    event: React.ChangeEvent<{ value: unknown; name?: string | undefined }>
-  ) => {
-    if (!event.target.value) {
-      return;
-    }
+  const handleAreaChange = async (event: SelectChangeEvent) => {
+    if (!event.target.value) return;
+
     const area: Area = {
       name: event.target.name ? event.target.name : '',
       isoCode: event.target.value as string,
@@ -529,219 +413,192 @@ const FestivalMatchSettingsBar = () => {
 
   const classes = useStyles();
 
-  if (!isDbOnline) {
-    return <div />;
-  }
+  if (!isDbOnline) return <div />;
 
   return (
-    <Box className={classes.box}>
-      <Paper>
-        <Box className={classes.spaceBetween}>
-          <Box className={classes.alignItems}>
-            <FormControl
-              className={classes.formControlPlaylist}
-              variant="outlined"
-              size="small"
+    <>
+      <Paper
+        sx={{
+          width: '100%',
+          '@media (min-width: 800px)': {
+            maxWidth: '1000px',
+            justifyContent: 'space-between',
+          },
+          '@media (max-width: 799px)': {
+            maxWidth: '460px',
+          },
+          mb: 2,
+          display: 'flex',
+          flexWrap: 'wrap',
+          flexDirection: 'row',
+          alignItems: 'center',
+          '@media (min-width: 1000px)': { pt: 0.5, px: 2 },
+          '@media (max-width: 999px)': { pt: 0.5, px: 0.5 },
+        }}
+      >
+        <Box className={classes.alignItems}>
+          <FormControl className={classes.formControlPlaylist} size="small">
+            <InputLabel id="choose-playlist-label">Match with</InputLabel>
+            <Select
+              labelId="choose-playlist-label"
+              id="choose-playlist"
+              value={matchSettings.matchBasis}
+              onChange={handlePlaylistChange}
+              label="Match with"
             >
-              <InputLabel id="choose-playlist-label">Match with</InputLabel>
-              <Select
-                labelId="choose-playlist-label"
-                id="choose-playlist"
-                value={matchSettings.matchBasis}
-                onChange={handlePlaylistChange}
-                label="Match with"
-              >
-                {topArtists.length !== 0 && (
-                  <MenuItem key={topArtistsChoice} value={topArtistsChoice}>
-                    Your most played artists
-                  </MenuItem>
-                )}
-                {topArtists.length !== 0 && playlists.length !== 0 && (
-                  <ListSubheader disableSticky disableGutters>
-                    or choose a playlist below
-                  </ListSubheader>
-                )}
-                {playlists.map((playlist) => (
-                  <MenuItem
-                    key={playlist.name}
-                    value={playlist.name}
-                    style={{ minWidth: 200, maxWidth: 400 }}
-                  >
-                    {playlist.name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box className={classes.alignItems}>
-            <FormControl
-              className={classes.formControlArea}
-              variant="outlined"
-              size="small"
-            >
-              <InputLabel id="choose-countries-label">Area</InputLabel>
-              <Select
-                labelId="choose-countries-label"
-                id="choose-countries"
-                value={matchSettings.area.isoCode}
-                onChange={handleAreaChange}
-                label="Area"
-              >
-                <MenuItem key={'XXX'} value={'XXX'} style={{ minWidth: 200 }}>
-                  Worldwide
+              {topArtists.length !== 0 && (
+                <MenuItem key={topArtistsChoice} value={topArtistsChoice}>
+                  Your most played artists
                 </MenuItem>
+              )}
+              {topArtists.length !== 0 && playlists.length !== 0 && (
                 <ListSubheader disableSticky disableGutters>
-                  Continents
+                  or choose a playlist below
                 </ListSubheader>
-                {[...continents]
-                  .sort((a, b) => (a.name > b.name ? 1 : -1))
-                  .map((continent) => (
-                    <MenuItem
-                      key={continent.isoCode}
-                      value={continent.isoCode}
-                      style={{ minWidth: 200 }}
-                    >
-                      {continent.name}
-                    </MenuItem>
-                  ))}
-                <ListSubheader disableSticky disableGutters>
-                  European regions
-                </ListSubheader>
-                {europeanRegions.map((region) => (
-                  <MenuItem key={region} value={region}>
-                    {region}
-                  </MenuItem>
-                ))}
-                <ListSubheader disableSticky disableGutters>
-                  US regions
-                </ListSubheader>
-                {usRegions.map((region) => (
-                  <MenuItem key={region} value={region}>
-                    {region}
-                  </MenuItem>
-                ))}
-                <ListSubheader disableSticky disableGutters>
-                  Countries
-                </ListSubheader>
-                {[...countries]
-                  .sort((a, b) => (a.name > b.name ? 1 : -1))
-                  .map((country) => (
-                    <MenuItem key={country.isoCode} value={country.isoCode}>
-                      <ReactCountryFlag
-                        countryCode={country.isoCode}
-                        svg
-                        style={{ marginRight: '8px' }}
-                      />{' '}
-                      {displayedLocationName(country.name)}
-                    </MenuItem>
-                  ))}
-              </Select>
-            </FormControl>
-          </Box>
-          <Box className={classes.alignItems2}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Grid
-                container
-                justifyContent="space-around"
-                className={classes.marginBottom}
-              >
-                <KeyboardDatePicker
-                  className={classes.datePickerFieldFrom}
-                  margin="dense"
-                  inputVariant="outlined"
-                  id="date-picker-dialog-from"
-                  label="From (m/y)"
-                  format="MM/yyyy"
-                  maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
-                  minDate={new Date(new Date().getFullYear(), 0, 1)}
-                  views={['month', 'year']}
-                  value={matchSettings.fromDate}
-                  autoOk
-                  onChange={handleFromDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </Grid>
-              <Grid
-                container
-                justifyContent="space-around"
-                className={classes.marginBottom}
-              >
-                <KeyboardDatePicker
-                  className={classes.datePickerFieldTo}
-                  margin="dense"
-                  inputVariant="outlined"
-                  id="date-picker-dialog-to"
-                  label="To (m/y)"
-                  format="MM/yyyy"
-                  maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
-                  minDate={new Date(new Date().getFullYear(), 0, 1)}
-                  views={['month', 'year']}
-                  value={matchSettings.toDate}
-                  autoOk
-                  onChange={handleToDateChange}
-                  KeyboardButtonProps={{
-                    'aria-label': 'change date',
-                  }}
-                />
-              </Grid>
-            </MuiPickersUtilsProvider>
-          </Box>
-          {pcScreen && (
-            <Box className={classes.toolTip}>
-              <HtmlTooltip
-                placement="right-start"
-                interactive
-                title={
-                  <React.Fragment>
-                    <Typography color="inherit" variant="h6">
-                      Matching algorithm
-                    </Typography>
-                    {
-                      'The matching algorithm is a combination of artist and genre matching. The number of artists in your selected playlist attending a festival combined with how well the genres of the playlist fit the festival, determines the match score shown on each festival.'
-                    }
-                  </React.Fragment>
-                }
-              >
-                <InfoIcon
-                  color="primary"
-                  style={{
-                    fill: thememode === 'light' ? indigo[500] : '#fcfcfe',
-                  }}
-                />
-              </HtmlTooltip>
-            </Box>
-          )}
+              )}
+              {playlists.map((playlist) => (
+                <MenuItem
+                  key={playlist.name}
+                  value={playlist.name}
+                  style={{ minWidth: 200, maxWidth: 400 }}
+                >
+                  {playlist.name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
+        <Box className={classes.alignItems}>
+          <FormControl className={classes.formControlArea} size="small">
+            <InputLabel id="choose-countries-label">Area</InputLabel>
+            <Select
+              labelId="choose-countries-label"
+              id="choose-countries"
+              value={matchSettings.area.isoCode}
+              onChange={handleAreaChange}
+              label="Area"
+            >
+              <MenuItem key={'XXX'} value={'XXX'} style={{ minWidth: 200 }}>
+                Worldwide
+              </MenuItem>
+              <ListSubheader disableSticky disableGutters>
+                Continents
+              </ListSubheader>
+              {[...continents]
+                .sort((a, b) => (a.name > b.name ? 1 : -1))
+                .map((continent) => (
+                  <MenuItem
+                    key={continent.isoCode}
+                    value={continent.isoCode}
+                    style={{ minWidth: 200 }}
+                  >
+                    {continent.name}
+                  </MenuItem>
+                ))}
+              <ListSubheader disableSticky disableGutters>
+                European regions
+              </ListSubheader>
+              {europeanRegions.map((region) => (
+                <MenuItem key={region} value={region}>
+                  {region}
+                </MenuItem>
+              ))}
+              <ListSubheader disableSticky disableGutters>
+                US regions
+              </ListSubheader>
+              {usRegions.map((region) => (
+                <MenuItem key={region} value={region}>
+                  {region}
+                </MenuItem>
+              ))}
+              <ListSubheader disableSticky disableGutters>
+                Countries
+              </ListSubheader>
+              {[...countries]
+                .sort((a, b) => (a.name > b.name ? 1 : -1))
+                .map((country) => (
+                  <MenuItem key={country.isoCode} value={country.isoCode}>
+                    <ReactCountryFlag
+                      countryCode={country.isoCode}
+                      svg
+                      style={{ marginRight: '8px' }}
+                    />{' '}
+                    {displayedLocationName(country.name)}
+                  </MenuItem>
+                ))}
+            </Select>
+          </FormControl>
+        </Box>
+        <Box className={classes.alignItems2}>
+          <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
+            <SettingsBarDatePicker
+              label="From"
+              value={matchSettings.fromDate}
+              onChange={handleFromDateChange}
+            />
+          </Grid>
+          <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
+            <SettingsBarDatePicker
+              label="To"
+              value={matchSettings.toDate}
+              onChange={handleToDateChange}
+            />
+          </Grid>
+        </Box>
+        {pcScreen && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              pb: 0.5,
+            }}
+          >
+            <HtmlTooltip
+              placement="right-start"
+              title={
+                <Fragment>
+                  <Typography color="inherit" variant="h6">
+                    Matching algorithm
+                  </Typography>
+                  {
+                    'The matching algorithm is a combination of artist and genre matching. The number of artists in your selected playlist attending a festival combined with how well the genres of the playlist fit the festival, determines the match score shown on each festival.'
+                  }
+                </Fragment>
+              }
+            >
+              <InfoIcon
+                color="primary"
+                style={{
+                  fill: themeMode === 'light' ? indigo[500] : '#fcfcfe',
+                }}
+              />
+            </HtmlTooltip>
+          </Box>
+        )}
       </Paper>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
         closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        BackdropProps={{ timeout: 500 }}
         open={showPlaylistModal}
         onClose={(event, reason) => {
           if (reason === 'backdropClick') return;
           dispatch(setShowPlaylistModal(false));
         }}
         disableEscapeKeyDown
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflowY: 'auto',
+        }}
       >
         <Fade in={showPlaylistModal}>
-          <Paper className={classes.paper}>
+          <Paper sx={{ p: 2, outline: 'none', backgroundColor: '#303030' }}>
             {!(topArtistsLoaded && playlistsLoaded) && (
-              <MuiThemeProvider theme={indigoOrangeMuiTheme}>
-                <CircularProgress
-                  size={100}
-                  thickness={3}
-                  color={'secondary'}
-                  className={classes.loadChoicesSpinner}
-                />
-              </MuiThemeProvider>
+              <LoadingSpinner sx={{ m: 3 }} />
             )}
             {topArtistsLoaded && playlistsLoaded && (
               <Box className={classes.alignItems3}>
@@ -749,17 +606,13 @@ const FestivalMatchSettingsBar = () => {
                   variant={
                     smallScreen ? (topArtists.length === 0 ? 'h6' : 'h5') : 'h4'
                   }
-                  className={classes.initialPlaylistTitle}
+                  sx={{ textAlign: 'center', mb: 1 }}
                 >
                   {topArtists.length === 0
                     ? 'Choose a playlist to start your matching'
                     : 'Match festivals with'}
                 </Typography>
-                <FormControl
-                  className={classes.formControl2}
-                  variant="outlined"
-                  size="small"
-                >
+                <FormControl className={classes.formControl2} size="small">
                   {topArtists.length === 0 && (
                     <InputLabel id="choose-initial-playlist-inputlabel">
                       Playlist
@@ -770,9 +623,7 @@ const FestivalMatchSettingsBar = () => {
                     id="choose-initial-playlist"
                     value={topArtists.length !== 0 ? topArtistsChoice : ''}
                     label={topArtists.length === 0 ? 'Playlist' : undefined}
-                    onChange={async (
-                      event: React.ChangeEvent<{ value: unknown }>
-                    ) => {
+                    onChange={async (event: SelectChangeEvent) => {
                       dispatch(setShowPlaylistModal(false));
                       handlePlaylistChange(event);
                     }}
@@ -806,7 +657,7 @@ const FestivalMatchSettingsBar = () => {
                   color="primary"
                   size="large"
                   variant="outlined"
-                  className={classes.button}
+                  sx={{ mt: 3, mb: 1 }}
                   onClick={() => {
                     dispatch(setShowPlaylistModal(false));
                     dispatch(
@@ -841,25 +692,21 @@ const FestivalMatchSettingsBar = () => {
                     "We can't find any listening habits or playlists to use for our festival matching. Go to your "
                   }
                   {userInfo && userInfo.spotifyUrl ? (
-                    <Link
-                      color={'primary'}
-                      href={userInfo.spotifyUrl}
-                      target={'_blank'}
-                      rel="noopener noreferrer"
-                    >
+                    <StandardLink href={userInfo.spotifyUrl}>
                       Spotify profile
-                    </Link>
+                    </StandardLink>
                   ) : (
                     'Spotify profile'
-                  )}{' '}
-                  and create or subscribe to a playlist to start your festival
-                  matching
+                  )}
+                  {
+                    ' and create or subscribe to a playlist to start your festival matching'
+                  }
                 </Typography>
               )}
           </Paper>
         </Fade>
       </Modal>
-    </Box>
+    </>
   );
 };
 

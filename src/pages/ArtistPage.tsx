@@ -1,24 +1,19 @@
+import { useEffect, useState } from 'react';
 import {
-  createStyles,
-  MuiThemeProvider,
   Theme,
   Box,
   Paper,
   Typography,
-  Link,
   Button,
   IconButton,
   Collapse,
-  CircularProgress,
-  PaletteType,
-} from '@material-ui/core';
-import { deepOrange, indigo } from '@material-ui/core/colors';
-import { createTheme, makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import { ArrowBackOutlined, MusicNote } from '@material-ui/icons';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+  Stack,
+} from '@mui/material';
+import { createStyles, makeStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate, useParams } from 'react-router-dom';
 import ArtistBubble from '../components/ArtistBubble';
@@ -29,12 +24,7 @@ import {
   selectAccessToken,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import {
-  selectLoaderOn,
-  selectThememode,
-  turnOnLoader,
-  turnOffLoader,
-} from '../redux/reducers/displaySlice';
+import { turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
 import { ArtistInfo, Artist } from '../redux/types';
 import '../styles/base.scss';
 import { fetchToJson, getApiBaseUrl } from '../utils/restUtils';
@@ -43,17 +33,20 @@ import {
   getBigPicture,
   getMaxArtistsInWidth,
 } from '../utils/utils';
+import StandardLink from '../components/StandardLink';
+import { useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
   createStyles({
     root: {
       display: 'flex',
       flexDirection: 'column',
       '@media (min-width: 440px)': {
-        padding: theme.spacing(0, 2, 0, 2),
+        padding: spacing(0, 2, 0, 2),
       },
       '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
+        padding: spacing(0, 1, 0, 1),
       },
       justifyContent: 'center',
       alignItems: 'center',
@@ -62,79 +55,45 @@ const useStyles = makeStyles((theme: Theme) =>
     verticalSpace: {
       display: 'flex',
       '@media (min-width: 690px)': {
-        padding: theme.spacing(2, 0, 2, 0),
+        padding: spacing(2, 0, 2, 0),
       },
       '@media (max-width: 689px)': {
-        padding: theme.spacing(1, 0, 1, 0),
+        padding: spacing(1, 0, 1, 0),
       },
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
     },
-    paper: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      width: '100%',
-      padding: theme.spacing(1, 0, 0, 0),
-    },
     addSidePadding: {
       '@media (min-width: 690px)': {
-        padding: theme.spacing(0, 4, 0, 4),
+        padding: spacing(0, 4, 0, 4),
       },
       '@media (max-width: 689px)': {
         '@media (min-width: 440px)': {
-          padding: theme.spacing(0, 2, 0, 2),
+          padding: spacing(0, 2, 0, 2),
         },
       },
       '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 2, 0, 2),
+        padding: spacing(0, 2, 0, 2),
       },
     },
     addSmallSidePadding: {
       '@media (min-width: 440px)': {
-        padding: theme.spacing(0, 2, 0, 2),
+        padding: spacing(0, 2, 0, 2),
       },
       '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
+        padding: spacing(0, 1, 0, 1),
       },
-    },
-    button: {
-      display: 'flex',
-      flexDirection: 'column',
-      textTransform: 'none',
-      '@media (min-width: 690px)': {
-        padding: theme.spacing(2, 2, 2, 2),
-      },
-      '@media (max-width: 689px)': {
-        padding: theme.spacing(1, 1, 1, 1),
-      },
-      marginBottom: theme.spacing(2),
-      width: '100%',
-      alignItems: 'center',
-    },
-    box: {
-      width: '100%',
-      maxWidth: '700px',
-      margin: theme.spacing(0, 2, 2, 2),
-    },
-    box2: {
-      width: '100%',
-      maxWidth: '764px',
     },
     buttonBox: {
       width: '100%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      margin: theme.spacing(1, 0, 1, 0),
+      margin: spacing(1, 0, 1, 0),
     },
     darkerBackground: {
-      backgroundColor: '#383838',
-    },
-    artistImgButton: {
-      padding: '0px',
-      borderRadius: '0px',
+      backgroundColor: '#303030',
     },
     artistImg: {
       maxHeight: '350px',
@@ -156,7 +115,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexWrap: 'wrap',
       justifyContent: 'space-between',
       '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
+        padding: spacing(0, 1, 0, 1),
       },
     },
     matchingPopularBox: {
@@ -169,31 +128,23 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     expand: {
       transform: 'rotate(0deg)',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
+      transition: transitions.create('transform', {
+        duration: transitions.duration.shortest,
       }),
     },
     expandOpen: {
       transform: 'rotate(180deg)',
     },
-    artistTitle: {
-      textAlign: 'center',
-    },
     prevAndFutureFestivalsTitle: {
       '@media (max-width: 689px)': {
         textAlign: 'center',
       },
-      marginBottom: theme.spacing(1),
+      marginBottom: spacing(1),
     },
     topLeft: {
       position: 'absolute',
-      top: theme.spacing(8),
-      left: theme.spacing(2),
-    },
-    artistTitleBox: {
-      display: 'flex',
-      justifyContent: 'center',
-      width: '100%',
+      top: spacing(8),
+      left: spacing(2),
     },
     artistWidth: {
       '@media (min-width: 690px)': {
@@ -203,19 +154,15 @@ const useStyles = makeStyles((theme: Theme) =>
         width: '75px',
       },
     },
-    festivalTitle: {
-      wordWrap: 'break-word',
-      textAlign: 'center',
-    },
     paddingBottom: {
-      paddingBottom: theme.spacing(1),
+      paddingBottom: spacing(1),
     },
     noBigPicture: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      paddingBottom: theme.spacing(3),
-      paddingTop: theme.spacing(3),
+      paddingBottom: spacing(3),
+      paddingTop: spacing(3),
       '@media (min-width: 690px)': {
         fontSize: '150px',
       },
@@ -229,8 +176,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const ArtistPage = () => {
   const loggedIn: boolean = useSelector(selectLoggedIn);
   const accessToken: string = useSelector(selectAccessToken);
-  const loaderOn: boolean = useSelector(selectLoaderOn);
-  const thememode: PaletteType = useSelector(selectThememode);
+  const themeMode = useTheme().palette.mode;
   const dispatch = useDispatch();
   const { artistId } = useParams();
 
@@ -392,16 +338,16 @@ const ArtistPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [artistId]);
 
-  const [artistInfo, setArtistInfo] = React.useState<ArtistInfo | undefined>(
+  const [artistInfo, setArtistInfo] = useState<ArtistInfo | undefined>(
     undefined
   );
-  const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
-  const [redirectFestival, setRedirectFestival] = React.useState('');
-  const [relatedArtists, setRelatedArtists] = React.useState<Artist[]>([]);
-  const [expanded, setExpanded] = React.useState(false);
-  const [isArtistInDb, setIsArtistInDb] = React.useState(true);
-  const [isNetworkError, setIsNetworkError] = React.useState(false);
-  const [isValidSpotifyId, setIsValidSpotifyId] = React.useState(true);
+  const [redirectHome, setRedirectHome] = useState<boolean>(false);
+  const [redirectFestival, setRedirectFestival] = useState('');
+  const [relatedArtists, setRelatedArtists] = useState<Artist[]>([]);
+  const [expanded, setExpanded] = useState(false);
+  const [isArtistInDb, setIsArtistInDb] = useState(true);
+  const [isNetworkError, setIsNetworkError] = useState(false);
+  const [isValidSpotifyId, setIsValidSpotifyId] = useState(true);
 
   const bigScreen = useMediaQuery('(min-width:690px)');
   const pcScreen = useMediaQuery('(min-width:1300px)');
@@ -410,38 +356,16 @@ const ArtistPage = () => {
   const fillRelatedArtistsWidth =
     maxArtistsInWidth - (relatedArtists.length % maxArtistsInWidth);
 
-  const indigoOrangeMuiTheme = createTheme({
-    typography: {
-      fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-    },
-    palette: {
-      primary: {
-        light: indigo[300],
-        main: indigo[500],
-        dark: indigo[700],
-      },
-      secondary: {
-        light: deepOrange[300],
-        main: deepOrange[500],
-        dark: deepOrange[700],
-      },
-      type: thememode,
-    },
-  });
-
   const classes = useStyles();
 
-  if (redirectFestival) {
+  if (redirectFestival)
     return <Navigate to={'/festival/' + redirectFestival} />;
-  }
 
-  if (redirectHome) {
-    return <Navigate to={'/'} />;
-  }
+  if (redirectHome) return <Navigate to={'/'} />;
 
   if (!artistInfo) {
     return (
-      <MuiThemeProvider theme={indigoOrangeMuiTheme}>
+      <>
         {pcScreen && (
           <div className={classes.topLeft}>
             <IconButton
@@ -470,10 +394,7 @@ const ArtistPage = () => {
             <Typography variant="subtitle1">Invalid URL.</Typography>
           )}
         </div>
-        <div hidden={!loaderOn} className="progressBar">
-          <CircularProgress size={100} thickness={3} color={'secondary'} />
-        </div>
-      </MuiThemeProvider>
+      </>
     );
   } else {
     return (
@@ -493,143 +414,124 @@ const ArtistPage = () => {
         <div className={classes.verticalSpace} />
 
         <div className={classes.root}>
-          <Box className={classes.box}>
-            <Paper
-              elevation={10}
-              className={classes.paper}
-              key={'artistInfo:' + artistInfo.artist.name}
+          <Paper
+            elevation={10}
+            sx={{ width: '100%', maxWidth: '700px', mx: 2, mb: 2 }}
+            key={'artistInfo:' + artistInfo.artist.name}
+          >
+            <Typography
+              variant={bigScreen ? 'h3' : 'h5'}
+              sx={{ textAlign: 'center', width: '100%', mt: 1 }}
             >
-              <div className={classes.artistTitleBox}>
-                <Typography
-                  variant={bigScreen ? 'h3' : 'h5'}
-                  className={classes.artistTitle}
+              <Box fontWeight="fontWeightBold">{artistInfo.artist.name}</Box>
+            </Typography>
+            <Box
+              className={
+                themeMode === 'light'
+                  ? classes.buttonBox
+                  : clsx(classes.buttonBox, classes.darkerBackground)
+              }
+            >
+              {artistInfo.artist.bigPicture ? (
+                <Button
+                  onClick={() =>
+                    window.open(artistInfo.artist.bigPicture, '_blank')
+                  }
+                  sx={{ p: 0, borderRadius: 0 }}
                 >
-                  <Box fontWeight="fontWeightBold">
-                    {artistInfo.artist.name}
-                  </Box>
-                </Typography>
-              </div>
-              <Box
-                className={
-                  thememode === 'light'
-                    ? classes.buttonBox
-                    : clsx(classes.buttonBox, classes.darkerBackground)
-                }
-              >
-                {artistInfo.artist.bigPicture ? (
-                  <Button
-                    onClick={() =>
-                      window.open(artistInfo.artist.bigPicture, '_blank')
-                    }
-                    className={classes.artistImgButton}
-                  >
-                    <img
-                      className={classes.artistImg}
-                      src={artistInfo.artist.bigPicture}
-                      alt=""
-                    />
-                  </Button>
-                ) : (
-                  <div className={classes.noBigPicture}>
-                    <MusicNote fontSize={'inherit'} />
-                  </div>
-                )}
-              </Box>
-              <Typography
-                variant="subtitle1"
-                className={classes.addSidePadding}
-              >
-                {artistInfo.artist.genres.length > 0
-                  ? 'Genres: ' + artistInfo.artist.genres.join(', ')
-                  : 'No registered genres'}
-              </Typography>
-              {artistInfo.artist.spotifyId && (
-                <MuiThemeProvider theme={indigoOrangeMuiTheme}>
-                  <Link
-                    color={'secondary'}
-                    variant="subtitle1"
-                    href={
-                      'https://open.spotify.com/artist/' +
-                      artistInfo.artist.spotifyId
-                    }
-                    className={classes.addSidePadding}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    Open artist in spotify
-                  </Link>
-                </MuiThemeProvider>
-              )}
-              {relatedArtists.length === 0 && (
-                <div className={classes.paddingBottom} />
-              )}
-              {relatedArtists.length > 0 && (
-                <div
-                  className={clsx(
-                    classes.matchingPopularBox,
-                    classes.addSidePadding
-                  )}
-                >
-                  <Typography variant="body1" color="primary" component="div">
-                    <Box
-                      fontWeight="fontWeightBold"
-                      onClick={() => setExpanded(!expanded)}
-                    >
-                      Related artists
-                    </Box>
-                  </Typography>
-                  <IconButton
-                    className={clsx(classes.expand, {
-                      [classes.expandOpen]: expanded,
-                    })}
-                    onClick={() => setExpanded(!expanded)}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                  >
-                    <ExpandMoreIcon />
-                  </IconButton>
+                  <img
+                    className={classes.artistImg}
+                    src={artistInfo.artist.bigPicture}
+                    alt=""
+                  />
+                </Button>
+              ) : (
+                <div className={classes.noBigPicture}>
+                  <MusicNote fontSize={'inherit'} />
                 </div>
               )}
-              {relatedArtists.length > 0 && (
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                  <div
-                    className={clsx(
-                      classes.artistAvatarBox,
-                      classes.addSmallSidePadding,
-                      classes.paddingBottom
-                    )}
+            </Box>
+            <Typography variant="subtitle1" className={classes.addSidePadding}>
+              {artistInfo.artist.genres.length > 0
+                ? 'Genres: ' + artistInfo.artist.genres.join(', ')
+                : 'No registered genres'}
+            </Typography>
+            {artistInfo.artist.spotifyId && (
+              <StandardLink
+                color={({ palette }) => palette.tertiary?.[palette.mode]}
+                variant="subtitle1"
+                href={
+                  'https://open.spotify.com/artist/' +
+                  artistInfo.artist.spotifyId
+                }
+                className={classes.addSidePadding}
+              >
+                Open artist in spotify
+              </StandardLink>
+            )}
+            {relatedArtists.length === 0 && (
+              <div className={classes.paddingBottom} />
+            )}
+            {relatedArtists.length > 0 && (
+              <div
+                className={clsx(
+                  classes.matchingPopularBox,
+                  classes.addSidePadding
+                )}
+              >
+                <Typography variant="body1" color="primary" component="div">
+                  <Box
+                    fontWeight="fontWeightBold"
+                    onClick={() => setExpanded(!expanded)}
                   >
-                    {relatedArtists
-                      .slice(0, maxArtistsInWidth)
-                      .map((artist) => (
-                        <ArtistBubble
-                          artist={artist}
-                          useSpotifyId={true}
-                          key={
-                            'avatar_rel_artist_' +
-                            artistInfo.artist.name +
-                            artist.name
-                          }
-                          bubbleId={
-                            'avatar_rel_artist_' +
-                            artistInfo.artist.name +
-                            artist.name
-                          }
-                          thememode={thememode}
-                        />
-                      ))}
-                    {relatedArtists.length > 0 &&
-                      Array.from(
-                        { length: fillRelatedArtistsWidth },
-                        (_, i) => (
-                          <div className={classes.artistWidth} key={i} />
-                        )
-                      )}
-                  </div>
-                </Collapse>
-              )}
-            </Paper>
-          </Box>
+                    Related artists
+                  </Box>
+                </Typography>
+                <IconButton
+                  className={clsx(classes.expand, {
+                    [classes.expandOpen]: expanded,
+                  })}
+                  onClick={() => setExpanded(!expanded)}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              </div>
+            )}
+            {relatedArtists.length > 0 && (
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <div
+                  className={clsx(
+                    classes.artistAvatarBox,
+                    classes.addSmallSidePadding,
+                    classes.paddingBottom
+                  )}
+                >
+                  {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
+                    <ArtistBubble
+                      artist={artist}
+                      useSpotifyId={true}
+                      key={
+                        'avatar_rel_artist_' +
+                        artistInfo.artist.name +
+                        artist.name
+                      }
+                      bubbleId={
+                        'avatar_rel_artist_' +
+                        artistInfo.artist.name +
+                        artist.name
+                      }
+                    />
+                  ))}
+                  {relatedArtists.length > 0 &&
+                    Array.from({ length: fillRelatedArtistsWidth }, (_, i) => (
+                      <div className={classes.artistWidth} key={i} />
+                    ))}
+                </div>
+              </Collapse>
+            )}
+          </Paper>
           {isArtistInDb && artistInfo.festivalsFuture.length !== 0 && (
             <div className={classes.align}>
               <div className={classes.verticalSpace} />
@@ -639,7 +541,7 @@ const ArtistPage = () => {
               >
                 Attending festivals
               </Typography>
-              <Box className={classes.box2}>
+              <StyledStack spacing={3}>
                 {artistInfo.festivalsFuture.map((festival) => (
                   <FestivalMatchCard
                     festival={festival}
@@ -649,12 +551,11 @@ const ArtistPage = () => {
                     showMatching={false}
                   />
                 ))}
-              </Box>
+              </StyledStack>
             </div>
           )}
           {isArtistInDb && artistInfo.festivalsPast.length !== 0 && (
             <div className={classes.align}>
-              <div className={classes.verticalSpace} />
               <div className={classes.verticalSpace} />
               <Typography
                 variant={bigScreen ? 'h4' : 'h5'}
@@ -662,10 +563,9 @@ const ArtistPage = () => {
               >
                 Previously attended festivals
               </Typography>
-              <Box className={classes.box2}>
-                {artistInfo.festivalsPast.map((festival, idx) => (
-                  <Button
-                    className={classes.button}
+              <StyledStack spacing={2}>
+                {artistInfo.festivalsPast.map((festival) => (
+                  <StyledPastFestivalButton
                     key={
                       'festivals artist attends: ' +
                       festival.name +
@@ -676,13 +576,10 @@ const ArtistPage = () => {
                       setRedirectFestival(encodeURIComponent(festival.name));
                     }}
                   >
-                    <div
-                      className={classes.hundredWidth}
-                      key={'past festival: ' + festival.name + idx}
-                    >
+                    <>
                       <Typography
                         variant={bigScreen ? 'h3' : 'h5'}
-                        className={classes.festivalTitle}
+                        sx={{ wordWrap: 'break-word', textAlign: 'center' }}
                       >
                         <Box fontWeight="fontWeightBold">{festival.name}</Box>
                       </Typography>
@@ -705,10 +602,10 @@ const ArtistPage = () => {
                       <Typography variant="subtitle1">
                         {festival.locationText}
                       </Typography>
-                    </div>
-                  </Button>
+                    </>
+                  </StyledPastFestivalButton>
                 ))}
-              </Box>
+              </StyledStack>
             </div>
           )}
           {!isArtistInDb && (
@@ -731,15 +628,33 @@ const ArtistPage = () => {
             </div>
           )}
         </div>
-
-        <MuiThemeProvider theme={indigoOrangeMuiTheme}>
-          <div hidden={!loaderOn} className="progressBar">
-            <CircularProgress size={100} thickness={3} color={'secondary'} />
-          </div>
-        </MuiThemeProvider>
       </>
     );
   }
 };
+
+const StyledStack = styled(Stack)(({ theme: { spacing } }) => {
+  return {
+    width: '100%',
+    maxWidth: '764px',
+    marginBottom: spacing(2),
+  };
+});
+
+const StyledPastFestivalButton = styled(Button)(({ theme: { spacing } }) => {
+  return {
+    display: 'flex',
+    flexDirection: 'column',
+    textTransform: 'none',
+    '@media (min-width: 690px)': {
+      padding: spacing(2),
+    },
+    '@media (max-width: 689px)': {
+      padding: spacing(1),
+    },
+    width: '100%',
+    alignItems: 'center',
+  };
+});
 
 export default ArtistPage;

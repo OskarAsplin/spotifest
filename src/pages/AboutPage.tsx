@@ -1,31 +1,28 @@
+import { useState } from 'react';
 import {
-  createStyles,
   Theme,
   Box,
   Paper,
   Typography,
-  Link,
   IconButton,
   Collapse,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  PaletteType,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import { ArrowBackOutlined, MusicNote } from '@material-ui/icons';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import StarIcon from '@material-ui/icons/Star';
+} from '@mui/material';
+import { makeStyles, createStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import StarIcon from '@mui/icons-material/Star';
 import clsx from 'clsx';
-import React from 'react';
-import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import TechStackContent from '../components/TechStackContent';
-import { selectThememode } from '../redux/reducers/displaySlice';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
+import StandardLink from '../components/StandardLink';
+import { useTheme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,15 +44,15 @@ const AboutPage = () => {
   const pcScreen = useMediaQuery('(min-width:1040px)');
   const bigPcScreen = useMediaQuery('(min-width:1300px)');
 
-  const [navigateHome, setNavigateHome] = React.useState<boolean>(false);
-  const [usageExpanded, setUsageExpanded] = React.useState(false);
-  const [techExpanded, setTechExpanded] = React.useState(false);
-  const [supportExpanded, setSupportExpanded] = React.useState(false);
-  const [disclaimerExpanded, setDisclaimerExpanded] = React.useState(false);
+  const [navigateHome, setNavigateHome] = useState<boolean>(false);
+  const [usageExpanded, setUsageExpanded] = useState(false);
+  const [techExpanded, setTechExpanded] = useState(false);
+  const [supportExpanded, setSupportExpanded] = useState(false);
+  const [disclaimerExpanded, setDisclaimerExpanded] = useState(false);
 
-  const thememode: PaletteType = useSelector(selectThememode);
+  const themeMode = useTheme().palette.mode;
 
-  const lightMode: boolean = thememode === 'light';
+  const lightMode: boolean = themeMode === 'light';
 
   const classes = useStyles();
 
@@ -182,14 +179,9 @@ const AboutPage = () => {
                       <StarIcon className={styles.starIcon} />
                       <Typography variant="body1">
                         {' on '}
-                        <Link
-                          color={'primary'}
-                          href="https://github.com/OskarAsplin/spotifest"
-                          target={'_blank'}
-                          rel="noopener noreferrer"
-                        >
+                        <StandardLink href="https://github.com/OskarAsplin/spotifest">
                           GitHub
-                        </Link>
+                        </StandardLink>
                       </Typography>
                     </ListItemText>,
                   ].map((listItemText, idx) => {
@@ -320,14 +312,9 @@ const AboutPage = () => {
                   purely a hobby project at this point. No personal data is
                   collected by this site, but youtube videos showed on the
                   festival pages collect cookies. When logging out or going to{' '}
-                  <Link
-                    color={'primary'}
-                    href="https://www.spotifest.app/login"
-                    target={'_blank'}
-                    rel="noopener noreferrer"
-                  >
+                  <StandardLink href="https://www.spotifest.app/login">
                     spotifest.app/login
-                  </Link>
+                  </StandardLink>
                   , all browser data linked to the site is deleted.
                 </Typography>
               </div>

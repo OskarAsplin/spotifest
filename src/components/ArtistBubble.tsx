@@ -1,140 +1,122 @@
 import {
-  createStyles,
-  Theme,
   Avatar,
+  avatarClasses,
   IconButton,
+  iconButtonClasses,
   Typography,
-  PaletteType,
-} from '@material-ui/core';
-import { blueGrey } from '@material-ui/core/colors';
-import { makeStyles } from '@material-ui/core/styles';
-import MusicNote from '@material-ui/icons/MusicNote';
-import clsx from 'clsx';
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+} from '@mui/material';
+import { blueGrey } from '@mui/material/colors';
+import { Shadows } from '@mui/material/styles';
+import MusicNote from '@mui/icons-material/MusicNote';
+import { useNavigate } from 'react-router-dom';
 import { Artist } from '../redux/types';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    artistAvatarBox: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      textAlign: 'center',
-      '@media (min-width: 690px)': {
-        width: '100px',
-      },
-      '@media (max-width: 689px)': {
-        width: '75px',
-        marginBottom: '6px',
-      },
-    },
-    artistAvatarImg: {
-      '@media (min-width: 690px)': {
-        height: 80,
-        width: 80,
-      },
-      '@media (max-width: 689px)': {
-        height: 60,
-        width: 60,
-      },
-    },
-    clickable: {
-      boxShadow: theme.shadows[3],
-    },
-    artistAvatar: {
-      '@media (max-width: 689px)': {
-        padding: '6px',
-      },
-    },
-    circleIconLight: {
-      background: blueGrey[300],
-      borderRadius: '50%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    circleIconDark: {
-      background: blueGrey[700],
-      borderRadius: '50%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    circleShadow: {
-      width: '150px',
-      height: '150px',
-      border: 'solid 1px #555',
-      backgroundColor: '#eed',
-      boxShadow: '10px - 10px  rgba(0, 0, 0, 0.6)',
-      borderRadius: '100px',
-    },
-  })
-);
-
-interface OwnProps {
+interface Props {
   artist: Artist;
   useSpotifyId?: boolean;
   bubbleId: string;
-  thememode: PaletteType;
 }
 
-type Props = OwnProps;
+const ArtistBubble = (props: Props) => {
+  const { artist, useSpotifyId, bubbleId } = props;
+  const navigate = useNavigate();
 
-const ArtistBubble: React.FC<Props> = (props: Props) => {
-  const { artist, useSpotifyId, bubbleId, thememode } = props;
-  const [navigateArtist, setNavigateArtist] = React.useState('');
-
-  const classes = useStyles();
-
-  if (navigateArtist) {
-    return (
-      <Navigate
-        to={'/artist/' + (useSpotifyId ? 'spotifyId=' : '') + navigateArtist}
-      />
-    );
-  }
+  const navigateToArtist = (artistId: string) =>
+    navigate(`/artist/${useSpotifyId ? 'spotifyId=' : ''}${artistId}`);
 
   return (
-    <div className={classes.artistAvatarBox} key={'div_' + bubbleId}>
-      <IconButton
+    <StyledAvatarContainerdiv>
+      <StyledIconButton
+        key={'div_' + bubbleId}
         color="inherit"
+        disabled={!artist.hasSpotifyId}
         onClick={() => {
           if (artist.hasSpotifyId)
-            setNavigateArtist(
+            navigateToArtist(
               encodeURIComponent(useSpotifyId ? artist.spotifyId! : artist.name)
             );
         }}
-        className={classes.artistAvatar}
-        disabled={!artist.hasSpotifyId}
       >
         {artist.iconPicture ? (
-          <Avatar
+          <StyledAvatar
             src={artist.iconPicture}
             alt={artist.name}
-            className={clsx(
-              classes.artistAvatarImg,
-              artist.hasSpotifyId ? classes.clickable : undefined
-            )}
+            isClickable={artist.hasSpotifyId}
             key={bubbleId}
           />
         ) : (
-          <div
-            className={clsx(
-              classes.artistAvatarImg,
-              thememode === 'light'
-                ? classes.circleIconLight
-                : classes.circleIconDark,
-              artist.hasSpotifyId ? classes.clickable : undefined
-            )}
-          >
+          <StyledAvatarDiv isClickable={artist.hasSpotifyId}>
             <MusicNote fontSize={'large'} />
-          </div>
+          </StyledAvatarDiv>
         )}
-      </IconButton>
+      </StyledIconButton>
       <Typography variant="caption">{artist.name}</Typography>
-    </div>
+    </StyledAvatarContainerdiv>
   );
 };
+
+export const StyledAvatarContainerdiv = styled('div')(() => {
+  return {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    '@media (min-width: 690px)': {
+      width: '100px',
+    },
+    '@media (max-width: 689px)': {
+      width: '75px',
+      marginBottom: '6px',
+    },
+  };
+});
+
+const StyledIconButton = styled(IconButton)(() => {
+  return {
+    [`&.${iconButtonClasses.root}`]: {
+      textAlign: 'center',
+      '@media (min-width: 690px)': {
+        width: '104px',
+        padding: '12px',
+      },
+      '@media (max-width: 689px)': {
+        width: '75px',
+        padding: '6px',
+      },
+    },
+  };
+});
+
+const sharedAvatarStyle = (isClickable: boolean, shadows: Shadows) => ({
+  '@media (min-width: 690px)': {
+    height: 80,
+    width: 80,
+  },
+  '@media (max-width: 689px)': {
+    height: 60,
+    width: 60,
+  },
+  boxShadow: isClickable ? shadows[3] : undefined,
+});
+
+const StyledAvatar = styled(Avatar, {
+  shouldForwardProp: (prop) => prop !== 'isClickable',
+})<{ isClickable: boolean }>(({ theme: { shadows }, isClickable }) => ({
+  [`&.${avatarClasses.root}`]: sharedAvatarStyle(isClickable, shadows),
+}));
+
+const StyledAvatarDiv = styled('div', {
+  shouldForwardProp: (prop) => prop !== 'isClickable',
+})<{ isClickable: boolean }>(({ theme: { shadows, palette }, isClickable }) => {
+  return {
+    ...sharedAvatarStyle(isClickable, shadows),
+    borderRadius: '50%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: blueGrey[palette.mode === 'light' ? 300 : 700],
+  };
+});
 
 export default ArtistBubble;

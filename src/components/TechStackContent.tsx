@@ -1,8 +1,9 @@
-import { Box, Typography, Link, Grid } from '@material-ui/core';
+import { Fragment } from 'react';
+import { Box, Typography, Grid } from '@mui/material';
 import clsx from 'clsx';
-import React from 'react';
 import aboutPageStyles from '../pages/AboutPage.module.scss';
 import styles from './TechStackContent.module.scss';
+import StandardLink from './StandardLink';
 
 interface OwnProps {
   pcScreen: boolean;
@@ -16,7 +17,7 @@ interface TechInfoRow {
   icons: { path: string; class: string }[];
 }
 
-const TechStackContent: React.FC<Props> = (props: Props) => {
+const TechStackContent = (props: Props) => {
   const { lightMode, pcScreen } = props;
 
   const techInfoRows: TechInfoRow[] = [
@@ -137,7 +138,7 @@ const TechStackContent: React.FC<Props> = (props: Props) => {
 
   const insertTechInfoRow = (techInfo: TechInfoRow) => {
     return (
-      <React.Fragment key={'techRow:' + techInfo.text}>
+      <Fragment key={'techRow:' + techInfo.text}>
         <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
           <div className={styles.techInfoText}>
             <Typography variant="body1" className={styles.textAlign}>
@@ -159,12 +160,12 @@ const TechStackContent: React.FC<Props> = (props: Props) => {
             })}
           </div>
         </Grid>
-      </React.Fragment>
+      </Fragment>
     );
   };
 
   return (
-    <React.Fragment>
+    <Fragment>
       <div className={aboutPageStyles.expandedDiv}>
         <Grid
           container
@@ -178,103 +179,53 @@ const TechStackContent: React.FC<Props> = (props: Props) => {
       <Box className={styles.licenses}>
         <div>Icon licenses</div>
         <div>
-          Facebook,{' '}
-          <Link
-            color={'primary'}
-            href="https://commons.wikimedia.org/wiki/File:React-icon.svg"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          {' Facebook, '}
+          <StandardLink href="https://commons.wikimedia.org/wiki/File:React-icon.svg">
             React-icon
-          </Link>{' '}
-          /{' '}
-          <Link
-            color={'primary'}
-            href="https://creativecommons.org/licenses/by-sa/1.0/legalcode"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          </StandardLink>
+          {' / '}
+          <StandardLink href="https://creativecommons.org/licenses/by-sa/1.0/legalcode">
             CC BY-SA 1.0
-          </Link>
+          </StandardLink>
         </div>
         <div>
-          <Link
-            color={'primary'}
-            href="https://iconscout.com/icons/typescript"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          <StandardLink href="https://iconscout.com/icons/typescript">
             Typescript Icon
-          </Link>{' '}
-          by{' '}
-          <Link
-            color={'primary'}
-            href="https://iconscout.com/contributors/icon-mafia"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          </StandardLink>
+          {' by '}
+          <StandardLink href="https://iconscout.com/contributors/icon-mafia">
             Icon Mafia
-          </Link>
+          </StandardLink>
         </div>
         <div>
-          <Link
-            color={'primary'}
-            href="https://iconscout.com/icons/redux"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          <StandardLink href="https://iconscout.com/icons/redux">
             Redux Logo Icon
-          </Link>{' '}
-          by{' '}
-          <Link
-            color={'primary'}
-            href="https://iconscout.com/contributors/icon-mafia"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          </StandardLink>
+          {' by '}
+          <StandardLink href="https://iconscout.com/contributors/icon-mafia">
             Icon Mafia
-          </Link>
+          </StandardLink>
         </div>
         <div>
-          <Link
-            color={'primary'}
-            href="https://www.python.org/community/logos/"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          <StandardLink href="https://www.python.org/community/logos/">
             Python-logo
-          </Link>{' '}
-          /{' '}
-          <Link
-            color={'primary'}
-            href="https://www.python.org/psf/trademarks/"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          </StandardLink>
+          {' / '}
+          <StandardLink href="https://www.python.org/psf/trademarks/">
             PSF Trademark Usage Policy
-          </Link>
+          </StandardLink>
         </div>
         <div>
-          <Link
-            color={'primary'}
-            href="https://icon-icons.com/icon/file-type-django/130645"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          <StandardLink href="https://icon-icons.com/icon/file-type-django/130645">
             Django Icon
-          </Link>{' '}
-          /{' '}
-          <Link
-            color={'primary'}
-            href="https://creativecommons.org/licenses/by/4.0/"
-            target={'_blank'}
-            rel="noopener noreferrer"
-          >
+          </StandardLink>
+          {' / '}
+          <StandardLink href="https://creativecommons.org/licenses/by/4.0/">
             CC BY 4.0
-          </Link>
+          </StandardLink>
         </div>
       </Box>
-    </React.Fragment>
+    </Fragment>
   );
 };
 

@@ -1,39 +1,27 @@
+import { useEffect, useState } from 'react';
 import {
-  createStyles,
-  MuiThemeProvider,
   Theme,
   Typography,
   Paper,
   Box,
-  Link,
   Button,
   Tabs,
   Tab,
   Switch,
-  useTheme,
   IconButton,
-  CircularProgress,
-  PaletteType,
-} from '@material-ui/core';
-import { deepOrange, indigo } from '@material-ui/core/colors';
-import { createTheme, makeStyles } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
-import ArrowBackOutlined from '@material-ui/icons/ArrowBack';
+} from '@mui/material';
+import { createStyles, makeStyles } from '@mui/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import ArrowBackOutlined from '@mui/icons-material/ArrowBack';
 import clsx from 'clsx';
-import React, { useEffect } from 'react';
 import CookieConsent from 'react-cookie-consent';
 import ReactCountryFlag from 'react-country-flag';
 import ReactPlayer from 'react-player/lazy';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Navigate, useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
 import ArtistBubble from '../components/ArtistBubble';
-import {
-  selectLoaderOn,
-  selectThememode,
-  turnOnLoader,
-  turnOffLoader,
-} from '../redux/reducers/displaySlice';
+import { turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
 import { FestivalInfo } from '../redux/types';
 import '../styles/base.scss';
 import { fetchToJson, getApiBaseUrl } from '../utils/restUtils';
@@ -41,7 +29,8 @@ import {
   getMaxArtistsInFullLineupWidth,
   displayedLocationName,
 } from '../utils/utils';
-import { lightBluePinkThemeOptions } from '../layouts/StandardLayout.styles';
+import StandardLink from '../components/StandardLink';
+import { useTheme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -132,7 +121,7 @@ const useStyles = makeStyles((theme: Theme) =>
       margin: theme.spacing(1, 0, 1, 0),
     },
     darkerBackground: {
-      backgroundColor: '#383838',
+      backgroundColor: '#303030',
     },
     festivalImg: {
       '@media (min-width: 900px)': {
@@ -292,8 +281,8 @@ const FestivalPage = () => {
 
   const { festivalId } = useParams();
 
-  const loaderOn: boolean = useSelector(selectLoaderOn);
-  const thememode: PaletteType = useSelector(selectThememode);
+  const themeMode = useTheme().palette.mode;
+  const themeDirection = useTheme().direction;
   const dispatch = useDispatch();
 
   const limitLineups = !mediumScreen ? 4 : undefined;
@@ -322,46 +311,16 @@ const FestivalPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [redirectHome, setRedirectHome] = React.useState<boolean>(false);
-  const [festivalInfo, setFestivalInfo] = React.useState<
-    FestivalInfo | undefined
-  >(undefined);
-  const [isFestivalInDb, setIsFestivalInDb] = React.useState(true);
-  const [isNetworkError, setIsNetworkError] = React.useState(false);
-  const [selectedLineup, setSelectedLineup] = React.useState(0);
-  const [sortAlphabetically, setSortAlphabetically] = React.useState(false);
-
-  const muiTheme = createTheme({
-    typography: {
-      fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-    },
-    palette: {
-      primary: {
-        light: indigo[300],
-        main: indigo[500],
-        dark: indigo[700],
-      },
-      secondary: {
-        light: deepOrange[300],
-        main: deepOrange[500],
-        dark: deepOrange[700],
-      },
-      type: thememode,
-    },
-  });
-
-  const lightBluePinkMuiTheme = createTheme({
-    typography: {
-      fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-    },
-    palette: {
-      ...lightBluePinkThemeOptions,
-      type: thememode,
-    },
-  });
+  const [redirectHome, setRedirectHome] = useState<boolean>(false);
+  const [festivalInfo, setFestivalInfo] = useState<FestivalInfo | undefined>(
+    undefined
+  );
+  const [isFestivalInDb, setIsFestivalInDb] = useState(true);
+  const [isNetworkError, setIsNetworkError] = useState(false);
+  const [selectedLineup, setSelectedLineup] = useState(0);
+  const [sortAlphabetically, setSortAlphabetically] = useState(false);
 
   const classes = useStyles();
-  const theme = useTheme();
 
   const TabPanel = (props: TabPanelProps) => {
     const { children, value, index, ...other } = props;
@@ -384,33 +343,26 @@ const FestivalPage = () => {
 
   if (!festivalInfo) {
     return (
-      <MuiThemeProvider theme={muiTheme}>
-        <div className={classes.align}>
-          <div className={classes.verticalSpace} />
-          <div className={classes.verticalSpace} />
-          {isNetworkError && (
-            <Typography variant="subtitle1">
-              There seems to be some issue with connecting to our database. Try
-              refreshing the page.
-            </Typography>
-          )}
-          {!isNetworkError && !isFestivalInDb && (
-            <Typography variant="subtitle1">
-              Could not find festival.
-            </Typography>
-          )}
-          {!isNetworkError && !festivalId && (
-            <Typography variant="subtitle1">Invalid URL.</Typography>
-          )}
-        </div>
-        <div hidden={!loaderOn} className="progressBar">
-          <CircularProgress size={100} thickness={3} color={'secondary'} />
-        </div>
-      </MuiThemeProvider>
+      <div className={classes.align}>
+        <div className={classes.verticalSpace} />
+        <div className={classes.verticalSpace} />
+        {isNetworkError && (
+          <Typography variant="subtitle1">
+            There seems to be some issue with connecting to our database. Try
+            refreshing the page.
+          </Typography>
+        )}
+        {!isNetworkError && !isFestivalInDb && (
+          <Typography variant="subtitle1">Could not find festival.</Typography>
+        )}
+        {!isNetworkError && !festivalId && (
+          <Typography variant="subtitle1">Invalid URL.</Typography>
+        )}
+      </div>
     );
   } else {
     return (
-      <MuiThemeProvider theme={muiTheme}>
+      <>
         {pcScreen && (
           <div className={classes.topLeft}>
             <IconButton
@@ -424,7 +376,6 @@ const FestivalPage = () => {
           </div>
         )}
         <div className={classes.verticalSpace} />
-
         <div className={classes.fexColumn}>
           <div className={classes.root}>
             <Box className={classes.box}>
@@ -443,7 +394,7 @@ const FestivalPage = () => {
                 </div>
                 <Box
                   className={
-                    thememode === 'light'
+                    themeMode === 'light'
                       ? classes.buttonBox
                       : clsx(classes.buttonBox, classes.darkerBackground)
                   }
@@ -479,40 +430,34 @@ const FestivalPage = () => {
                   {'Genres: ' + festivalInfo.genres.slice(0, 5).join(', ')}
                 </Typography>
                 {festivalInfo.webpage && (
-                  <Link
-                    color={'secondary'}
+                  <StandardLink
+                    color={({ palette }) => palette.tertiary?.[palette.mode]}
                     variant="subtitle1"
                     href={festivalInfo.webpage}
                     className={classes.addSidePadding}
-                    rel="noopener noreferrer"
-                    target="_blank"
                   >
                     Official webpage
-                  </Link>
+                  </StandardLink>
                 )}
                 {festivalInfo.ticketWebpage && (
-                  <Link
-                    color={'secondary'}
+                  <StandardLink
+                    color={({ palette }) => palette.tertiary?.[palette.mode]}
                     variant="subtitle1"
                     href={festivalInfo.ticketWebpage}
                     className={classes.addSidePadding}
-                    rel="noopener noreferrer"
-                    target="_blank"
                   >
                     Ticket webpage
-                  </Link>
+                  </StandardLink>
                 )}
                 {festivalInfo.crawledWebpage && (
-                  <Link
-                    color={'secondary'}
+                  <StandardLink
+                    color={({ palette }) => palette.tertiary?.[palette.mode]}
                     variant="subtitle1"
                     href={festivalInfo.crawledWebpage}
                     className={classes.addSidePadding}
-                    rel="noopener noreferrer"
-                    target="_blank"
                   >
                     View on Musicfestivalwizard.com
-                  </Link>
+                  </StandardLink>
                 )}
               </Paper>
             </Box>
@@ -553,198 +498,191 @@ const FestivalPage = () => {
           </div>
           {festivalInfo.lineups.length !== 0 && (
             <Box className={classes.box2}>
-              <MuiThemeProvider theme={lightBluePinkMuiTheme}>
-                <Paper
-                  square={!boxForLineups}
-                  elevation={3}
-                  className={classes.paper2}
-                  key={'festival lineups:' + festivalInfo.name}
+              <Paper
+                square={!boxForLineups}
+                elevation={3}
+                className={classes.paper2}
+                key={'festival lineups:' + festivalInfo.name}
+              >
+                <Tabs
+                  centered
+                  value={selectedLineup}
+                  indicatorColor="primary"
+                  textColor="primary"
+                  onChange={(event: React.ChangeEvent<{}>, newValue: number) =>
+                    setSelectedLineup(newValue)
+                  }
+                  aria-label="lineups"
                 >
-                  <Tabs
-                    centered
-                    value={selectedLineup}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    onChange={(
-                      event: React.ChangeEvent<{}>,
-                      newValue: number
-                    ) => setSelectedLineup(newValue)}
-                    aria-label="lineups"
-                  >
-                    {festivalInfo.lineups
-                      .slice(0, limitLineups)
-                      .map((lineup, idx) => (
-                        <Tab
-                          label={
-                            <span className={classes.tabLabel}>
-                              {lineup.year}
-                            </span>
-                          }
-                          value={idx}
-                          key={'tab: ' + festivalInfo.name + lineup.year}
-                          classes={{ root: classes.tabRoot }}
-                        />
-                      ))}
-                  </Tabs>
-                  <SwipeableViews
-                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                    index={selectedLineup}
-                    onChangeIndex={(newValue: number) =>
-                      setSelectedLineup(newValue)
-                    }
-                  >
-                    {festivalInfo.lineups
-                      .slice(0, limitLineups)
-                      .map((lineup, idx) => (
-                        <TabPanel
-                          value={selectedLineup}
-                          index={idx}
-                          key={'tabPanel: ' + festivalInfo.name + lineup.year}
-                        >
-                          {lineup.artists.length === 0 ? (
-                            <Box className={classes.lineupView}>
+                  {festivalInfo.lineups
+                    .slice(0, limitLineups)
+                    .map((lineup, idx) => (
+                      <Tab
+                        label={
+                          <span className={classes.tabLabel}>
+                            {lineup.year}
+                          </span>
+                        }
+                        value={idx}
+                        key={'tab: ' + festivalInfo.name + lineup.year}
+                        classes={{ root: classes.tabRoot }}
+                      />
+                    ))}
+                </Tabs>
+                <SwipeableViews
+                  axis={themeDirection === 'rtl' ? 'x-reverse' : 'x'}
+                  index={selectedLineup}
+                  onChangeIndex={(newValue: number) =>
+                    setSelectedLineup(newValue)
+                  }
+                >
+                  {festivalInfo.lineups
+                    .slice(0, limitLineups)
+                    .map((lineup, idx) => (
+                      <TabPanel
+                        value={selectedLineup}
+                        index={idx}
+                        key={'tabPanel: ' + festivalInfo.name + lineup.year}
+                      >
+                        {lineup.artists.length === 0 ? (
+                          <Box className={classes.lineupView}>
+                            <Typography
+                              variant="h6"
+                              className={classes.festivalTitle}
+                            >
+                              No lineup registered
+                            </Typography>
+                          </Box>
+                        ) : (
+                          <Box className={classes.lineupView}>
+                            {lineup.cancelled ? (
                               <Typography
                                 variant="h6"
+                                color="secondary"
                                 className={classes.festivalTitle}
                               >
-                                No lineup registered
+                                {'CANCELLED' +
+                                  (lineup.date_str
+                                    ? ' (' + lineup.date_str + ')'
+                                    : '')}
                               </Typography>
+                            ) : (
+                              <Typography
+                                variant="h5"
+                                className={classes.festivalTitle}
+                              >
+                                {lineup.date_str}
+                              </Typography>
+                            )}
+                            <Box className={classes.sortButtonBox}>
+                              {/* The invisible button is a quick fix for click event propagation from the grid item */}
+                              <Button
+                                hidden
+                                className={classes.invisibleButton}
+                              >
+                                .
+                              </Button>
+                              <Button
+                                disableRipple
+                                disableElevation
+                                className={classes.button}
+                                color={
+                                  !sortAlphabetically ? 'primary' : 'inherit'
+                                }
+                                onClick={() => setSortAlphabetically(false)}
+                              >
+                                Popularity
+                              </Button>
+                              <Switch
+                                checked={sortAlphabetically}
+                                color="default"
+                                onChange={(evt: any) =>
+                                  setSortAlphabetically(
+                                    evt.target.checked ? true : false
+                                  )
+                                }
+                                name="switchSortAlphabetically"
+                              />
+                              <Button
+                                disableRipple
+                                disableElevation
+                                className={classes.button}
+                                color={
+                                  sortAlphabetically ? 'primary' : 'inherit'
+                                }
+                                onClick={() => setSortAlphabetically(true)}
+                              >
+                                Alphabetically
+                              </Button>
                             </Box>
-                          ) : (
-                            <Box className={classes.lineupView}>
-                              {lineup.cancelled ? (
-                                <Typography
-                                  variant="h6"
-                                  color="secondary"
-                                  className={classes.festivalTitle}
-                                >
-                                  {'CANCELLED' +
-                                    (lineup.date_str
-                                      ? ' (' + lineup.date_str + ')'
-                                      : '')}
-                                </Typography>
-                              ) : (
-                                <Typography
-                                  variant="h5"
-                                  className={classes.festivalTitle}
-                                >
-                                  {lineup.date_str}
-                                </Typography>
-                              )}
-                              <Box className={classes.sortButtonBox}>
-                                {/* The invisible button is a quick fix for click event propagation from the grid item */}
-                                <Button
-                                  hidden
-                                  className={classes.invisibleButton}
-                                >
-                                  .
-                                </Button>
-                                <Button
-                                  disableRipple
-                                  disableElevation
-                                  className={classes.button}
-                                  color={
-                                    !sortAlphabetically ? 'primary' : 'default'
-                                  }
-                                  onClick={() => setSortAlphabetically(false)}
-                                >
-                                  Popularity
-                                </Button>
-                                <Switch
-                                  checked={sortAlphabetically}
-                                  color="default"
-                                  onChange={(evt: any) =>
-                                    setSortAlphabetically(
-                                      evt.target.checked ? true : false
+                            <div className={classes.artistAvatarBox}>
+                              {lineup.artists.length > 0 &&
+                                lineup.artists
+                                  .sort((a, b) =>
+                                    (
+                                      sortAlphabetically
+                                        ? a.name > b.name
+                                        : a.popularity < b.popularity
                                     )
-                                  }
-                                  name="switchSortAlphabetically"
-                                />
-                                <Button
-                                  disableRipple
-                                  disableElevation
-                                  className={classes.button}
-                                  color={
-                                    sortAlphabetically ? 'primary' : 'default'
-                                  }
-                                  onClick={() => setSortAlphabetically(true)}
-                                >
-                                  Alphabetically
-                                </Button>
-                              </Box>
-                              <div className={classes.artistAvatarBox}>
-                                {lineup.artists.length > 0 &&
-                                  lineup.artists
-                                    .sort((a, b) =>
-                                      (
-                                        sortAlphabetically
-                                          ? a.name > b.name
-                                          : a.popularity < b.popularity
-                                      )
-                                        ? 1
-                                        : -1
-                                    )
-                                    .map((artist) => (
-                                      <ArtistBubble
-                                        artist={artist}
-                                        key={
-                                          'avatar_festival_lineup_artist_' +
-                                          festivalInfo.name +
-                                          lineup.year +
-                                          artist.name
-                                        }
-                                        bubbleId={
-                                          'avatar_festival_lineup_artist_' +
-                                          festivalInfo.name +
-                                          lineup.year +
-                                          artist.name
-                                        }
-                                        thememode={thememode}
-                                      />
-                                    ))}
-                                {lineup.artists.length > 0 &&
-                                  Array.from(
-                                    {
-                                      length:
-                                        maxArtistsInLineupsWidth -
-                                        (lineup.artists.length %
-                                          maxArtistsInLineupsWidth),
-                                    },
-                                    (_, i) => (
-                                      <div
-                                        className={classes.artistWidth}
-                                        key={i}
-                                      />
-                                    )
-                                  )}
-                              </div>
-                              {lineup.poster && (
-                                <div className={classes.lineupPosterBox}>
-                                  <Button
-                                    onClick={() =>
-                                      window.open(lineup.poster, '_blank')
-                                    }
-                                  >
-                                    <img
-                                      className={classes.lineupPoster}
-                                      src={lineup.poster}
-                                      alt=""
+                                      ? 1
+                                      : -1
+                                  )
+                                  .map((artist) => (
+                                    <ArtistBubble
+                                      artist={artist}
+                                      key={
+                                        'avatar_festival_lineup_artist_' +
+                                        festivalInfo.name +
+                                        lineup.year +
+                                        artist.name
+                                      }
+                                      bubbleId={
+                                        'avatar_festival_lineup_artist_' +
+                                        festivalInfo.name +
+                                        lineup.year +
+                                        artist.name
+                                      }
                                     />
-                                  </Button>
-                                </div>
-                              )}
-                            </Box>
-                          )}
-                        </TabPanel>
-                      ))}
-                  </SwipeableViews>
-                </Paper>
-              </MuiThemeProvider>
+                                  ))}
+                              {lineup.artists.length > 0 &&
+                                Array.from(
+                                  {
+                                    length:
+                                      maxArtistsInLineupsWidth -
+                                      (lineup.artists.length %
+                                        maxArtistsInLineupsWidth),
+                                  },
+                                  (_, i) => (
+                                    <div
+                                      className={classes.artistWidth}
+                                      key={i}
+                                    />
+                                  )
+                                )}
+                            </div>
+                            {lineup.poster && (
+                              <div className={classes.lineupPosterBox}>
+                                <Button
+                                  onClick={() =>
+                                    window.open(lineup.poster, '_blank')
+                                  }
+                                >
+                                  <img
+                                    className={classes.lineupPoster}
+                                    src={lineup.poster}
+                                    alt=""
+                                  />
+                                </Button>
+                              </div>
+                            )}
+                          </Box>
+                        )}
+                      </TabPanel>
+                    ))}
+                </SwipeableViews>
+              </Paper>
             </Box>
           )}
-        </div>
-        <div hidden={!loaderOn} className="progressBar">
-          <CircularProgress size={100} thickness={3} color={'secondary'} />
         </div>
         {festivalInfo.video && (
           <CookieConsent
@@ -756,7 +694,7 @@ const FestivalPage = () => {
             The youtube videos on this site use cookies.
           </CookieConsent>
         )}
-      </MuiThemeProvider>
+      </>
     );
   }
 };
