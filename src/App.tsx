@@ -16,7 +16,7 @@ import {
   createTheme,
   StyledEngineProvider,
 } from '@mui/material/styles';
-import { getMainTheme } from './layouts/StandardLayout.styles';
+import { getMainTheme } from './theme/theme.styles';
 import { PaletteMode, CssBaseline } from '@mui/material';
 
 const App = () => {

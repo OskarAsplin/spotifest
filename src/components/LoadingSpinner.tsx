@@ -1,26 +1,17 @@
-import {
-  ThemeProvider,
-  CircularProgress,
-  CircularProgressProps,
-} from '@mui/material';
-import { createTheme } from '@mui/material/styles';
+import { CircularProgress, CircularProgressProps } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { selectLoaderOn } from '../redux/reducers/displaySlice';
 import '../styles/base.scss';
-import { indigoOrangePalette } from '../layouts/StandardLayout.styles';
 import { styled } from '@mui/material/styles';
 
 export const LoadingSpinner = (props: CircularProgressProps) => {
-  const indigoOrangeMuiTheme = createTheme({ palette: indigoOrangePalette });
   return (
-    <ThemeProvider theme={indigoOrangeMuiTheme}>
-      <CircularProgress
-        size={100}
-        thickness={3}
-        color={'secondary'}
-        {...props}
-      />
-    </ThemeProvider>
+    <CircularProgress
+      size={100}
+      thickness={3}
+      sx={{ color: ({ palette }) => palette.tertiary?.[palette.mode] }}
+      {...props}
+    />
   );
 };
 

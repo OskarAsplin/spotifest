@@ -17,7 +17,7 @@ import StandardLink from './StandardLink';
 import { getBaseUrl } from '../utils/utils';
 import { useSearchDb } from './SearchField.utils';
 import { createTheme } from '@mui/material/styles';
-import { getMainTheme } from '../layouts/StandardLayout.styles';
+import { getMainTheme } from '../theme/theme.styles';
 import MatchHighlighter, { escapeRegExp } from './MatchHighlighter';
 
 const useStyles = makeStyles((theme: Theme) =>

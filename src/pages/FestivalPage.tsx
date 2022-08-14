@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import {
-  ThemeProvider,
   Theme,
   Typography,
   Paper,
@@ -11,7 +10,6 @@ import {
   Switch,
   IconButton,
 } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import ArrowBackOutlined from '@mui/icons-material/ArrowBack';
@@ -33,7 +31,6 @@ import {
 } from '../utils/utils';
 import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
-import { indigoOrangePalette } from '../layouts/StandardLayout.styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -323,13 +320,6 @@ const FestivalPage = () => {
   const [selectedLineup, setSelectedLineup] = useState(0);
   const [sortAlphabetically, setSortAlphabetically] = useState(false);
 
-  const indigoOrangeTheme = createTheme({
-    typography: {
-      fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-    },
-    palette: { ...indigoOrangePalette, mode: themeMode },
-  });
-
   const classes = useStyles();
 
   const TabPanel = (props: TabPanelProps) => {
@@ -439,38 +429,36 @@ const FestivalPage = () => {
                 >
                   {'Genres: ' + festivalInfo.genres.slice(0, 5).join(', ')}
                 </Typography>
-                <ThemeProvider theme={indigoOrangeTheme}>
-                  {festivalInfo.webpage && (
-                    <StandardLink
-                      color={'secondary'}
-                      variant="subtitle1"
-                      href={festivalInfo.webpage}
-                      className={classes.addSidePadding}
-                    >
-                      Official webpage
-                    </StandardLink>
-                  )}
-                  {festivalInfo.ticketWebpage && (
-                    <StandardLink
-                      color={'secondary'}
-                      variant="subtitle1"
-                      href={festivalInfo.ticketWebpage}
-                      className={classes.addSidePadding}
-                    >
-                      Ticket webpage
-                    </StandardLink>
-                  )}
-                  {festivalInfo.crawledWebpage && (
-                    <StandardLink
-                      color={'secondary'}
-                      variant="subtitle1"
-                      href={festivalInfo.crawledWebpage}
-                      className={classes.addSidePadding}
-                    >
-                      View on Musicfestivalwizard.com
-                    </StandardLink>
-                  )}
-                </ThemeProvider>
+                {festivalInfo.webpage && (
+                  <StandardLink
+                    color={({ palette }) => palette.tertiary?.[palette.mode]}
+                    variant="subtitle1"
+                    href={festivalInfo.webpage}
+                    className={classes.addSidePadding}
+                  >
+                    Official webpage
+                  </StandardLink>
+                )}
+                {festivalInfo.ticketWebpage && (
+                  <StandardLink
+                    color={({ palette }) => palette.tertiary?.[palette.mode]}
+                    variant="subtitle1"
+                    href={festivalInfo.ticketWebpage}
+                    className={classes.addSidePadding}
+                  >
+                    Ticket webpage
+                  </StandardLink>
+                )}
+                {festivalInfo.crawledWebpage && (
+                  <StandardLink
+                    color={({ palette }) => palette.tertiary?.[palette.mode]}
+                    variant="subtitle1"
+                    href={festivalInfo.crawledWebpage}
+                    className={classes.addSidePadding}
+                  >
+                    View on Musicfestivalwizard.com
+                  </StandardLink>
+                )}
               </Paper>
             </Box>
             {festivalInfo.video && (

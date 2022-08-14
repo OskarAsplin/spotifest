@@ -229,7 +229,7 @@ const FestivalMatchCard = (props: Props) => {
         >
           {'Genres: ' + festival.top_genres.slice(0, 3).join(', ')}
         </Typography>
-        {showMatching && (
+        {showMatching && !noLineupRegistered && (
           <Typography
             variant="body1"
             color="primary"
@@ -261,7 +261,7 @@ const FestivalMatchCard = (props: Props) => {
           <Typography
             variant="body1"
             color="primary"
-            sx={{ mb: 2, fontWeight: 700 }}
+            sx={{ my: 2, fontWeight: 700 }}
           >
             No lineup registered yet
           </Typography>

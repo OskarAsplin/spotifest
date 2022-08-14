@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import {
-  ThemeProvider,
   Theme,
   Box,
   Paper,
@@ -10,7 +9,6 @@ import {
   Collapse,
   Stack,
 } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
@@ -38,7 +36,6 @@ import {
 import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { indigoOrangePalette } from '../layouts/StandardLayout.styles';
 
 const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
   createStyles({
@@ -359,8 +356,6 @@ const ArtistPage = () => {
   const fillRelatedArtistsWidth =
     maxArtistsInWidth - (relatedArtists.length % maxArtistsInWidth);
 
-  const indigoOrangeMuiTheme = createTheme({ palette: indigoOrangePalette });
-
   const classes = useStyles();
 
   if (redirectFestival)
@@ -462,19 +457,17 @@ const ArtistPage = () => {
                 : 'No registered genres'}
             </Typography>
             {artistInfo.artist.spotifyId && (
-              <ThemeProvider theme={indigoOrangeMuiTheme}>
-                <StandardLink
-                  color={'secondary'}
-                  variant="subtitle1"
-                  href={
-                    'https://open.spotify.com/artist/' +
-                    artistInfo.artist.spotifyId
-                  }
-                  className={classes.addSidePadding}
-                >
-                  Open artist in spotify
-                </StandardLink>
-              </ThemeProvider>
+              <StandardLink
+                color={({ palette }) => palette.tertiary?.[palette.mode]}
+                variant="subtitle1"
+                href={
+                  'https://open.spotify.com/artist/' +
+                  artistInfo.artist.spotifyId
+                }
+                className={classes.addSidePadding}
+              >
+                Open artist in spotify
+              </StandardLink>
             )}
             {relatedArtists.length === 0 && (
               <div className={classes.paddingBottom} />
