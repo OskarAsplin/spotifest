@@ -1,12 +1,5 @@
 import { useEffect } from 'react';
-import {
-  ThemeProvider,
-  Theme,
-  Typography,
-  CircularProgress,
-} from '@mui/material';
-import { deepOrange, indigo } from '@mui/material/colors';
-import { createTheme } from '@mui/material/styles';
+import { Theme, Typography } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
@@ -23,7 +16,6 @@ import {
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
 import {
-  selectLoaderOn,
   selectIsDbOnline,
   selectSiteInitialized,
 } from '../redux/reducers/displaySlice';
@@ -66,7 +58,6 @@ const expires_in = hashParams.expires_in;
 removeHashParamsFromUrl();
 
 const MainPage = () => {
-  const loaderOn: boolean = useSelector(selectLoaderOn);
   const isDbOnline: boolean = useSelector(selectIsDbOnline);
   const siteInitialized: boolean = useSelector(selectSiteInitialized);
   const loggedIn: boolean = useSelector(selectLoggedIn);
@@ -107,21 +98,6 @@ const MainPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const indigoOrangeMuiTheme = createTheme({
-    palette: {
-      primary: {
-        light: indigo[300],
-        main: indigo[500],
-        dark: indigo[700],
-      },
-      secondary: {
-        light: deepOrange[300],
-        main: deepOrange[500],
-        dark: deepOrange[700],
-      },
-    },
-  });
-
   const classes = useStyles();
 
   if (!loggedIn || (!token && !accessToken && !tokenExpiryDate)) {
@@ -142,11 +118,6 @@ const MainPage = () => {
           </Typography>
         </div>
       )}
-      <div hidden={!loaderOn} className="progressBar">
-        <ThemeProvider theme={indigoOrangeMuiTheme}>
-          <CircularProgress size={100} thickness={3} color={'secondary'} />
-        </ThemeProvider>
-      </div>
     </>
   );
 };

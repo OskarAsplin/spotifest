@@ -38,11 +38,6 @@ const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
         padding: spacing(0, 1, 0, 1),
       },
     },
-    artistAvatarBoxFirstRow: {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-    },
     titleAndMatchBox: {
       width: '100%',
       display: 'flex',
@@ -135,8 +130,14 @@ const FestivalMatchCard = (props: Props) => {
       {showMatching && <div className={classes.paddingBottom} />}
       <StyledPaddedDiv>
         <div className={classes.titleAndMatchBox}>
-          <div>
-            <div>
+          <Box sx={{ width: showMatching ? 'undefined' : '100%' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                width: showMatching ? 'undefined' : '100%',
+              }}
+            >
               <StyledTitleButton
                 color="inherit"
                 onClick={() => {
@@ -154,7 +155,7 @@ const FestivalMatchCard = (props: Props) => {
                   {festival.name}
                 </Typography>
               </StyledTitleButton>
-            </div>
+            </Box>
             {festival.cancelled ? (
               <Typography variant="subtitle2" color="secondary">
                 {`CANCELLED${
@@ -174,7 +175,7 @@ const FestivalMatchCard = (props: Props) => {
                 style={{ marginLeft: '8px' }}
               />
             </Typography>
-          </div>
+          </Box>
           {showMatching && (
             <HtmlTooltip
               placement="left-start"
@@ -228,15 +229,17 @@ const FestivalMatchCard = (props: Props) => {
         >
           {'Genres: ' + festival.top_genres.slice(0, 3).join(', ')}
         </Typography>
-        <Typography
-          variant="body1"
-          color="primary"
-          sx={{ my: 1.5, fontWeight: 700 }}
-        >
-          {matchingArtists.length > 0
-            ? 'Matching artists'
-            : 'No matching artists'}
-        </Typography>
+        {showMatching && (
+          <Typography
+            variant="body1"
+            color="primary"
+            sx={{ my: 1.5, fontWeight: 700 }}
+          >
+            {matchingArtists.length > 0
+              ? 'Matching artists'
+              : 'No matching artists'}
+          </Typography>
+        )}
       </StyledPaddedDiv>
       {showMatching && !noLineupRegistered && (
         <div className={classes.artistAvatarBox}>

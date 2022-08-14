@@ -10,7 +10,6 @@ import {
   Tab,
   Switch,
   IconButton,
-  CircularProgress,
 } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
@@ -20,15 +19,11 @@ import clsx from 'clsx';
 import CookieConsent from 'react-cookie-consent';
 import ReactCountryFlag from 'react-country-flag';
 import ReactPlayer from 'react-player/lazy';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Navigate, useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
 import ArtistBubble from '../components/ArtistBubble';
-import {
-  selectLoaderOn,
-  turnOnLoader,
-  turnOffLoader,
-} from '../redux/reducers/displaySlice';
+import { turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
 import { FestivalInfo } from '../redux/types';
 import '../styles/base.scss';
 import { fetchToJson, getApiBaseUrl } from '../utils/restUtils';
@@ -289,7 +284,6 @@ const FestivalPage = () => {
 
   const { festivalId } = useParams();
 
-  const loaderOn: boolean = useSelector(selectLoaderOn);
   const themeMode = useTheme().palette.mode;
   const themeDirection = useTheme().direction;
   const dispatch = useDispatch();
@@ -359,29 +353,22 @@ const FestivalPage = () => {
 
   if (!festivalInfo) {
     return (
-      <ThemeProvider theme={indigoOrangeTheme}>
-        <div className={classes.align}>
-          <div className={classes.verticalSpace} />
-          <div className={classes.verticalSpace} />
-          {isNetworkError && (
-            <Typography variant="subtitle1">
-              There seems to be some issue with connecting to our database. Try
-              refreshing the page.
-            </Typography>
-          )}
-          {!isNetworkError && !isFestivalInDb && (
-            <Typography variant="subtitle1">
-              Could not find festival.
-            </Typography>
-          )}
-          {!isNetworkError && !festivalId && (
-            <Typography variant="subtitle1">Invalid URL.</Typography>
-          )}
-        </div>
-        <div hidden={!loaderOn} className="progressBar">
-          <CircularProgress size={100} thickness={3} color={'secondary'} />
-        </div>
-      </ThemeProvider>
+      <div className={classes.align}>
+        <div className={classes.verticalSpace} />
+        <div className={classes.verticalSpace} />
+        {isNetworkError && (
+          <Typography variant="subtitle1">
+            There seems to be some issue with connecting to our database. Try
+            refreshing the page.
+          </Typography>
+        )}
+        {!isNetworkError && !isFestivalInDb && (
+          <Typography variant="subtitle1">Could not find festival.</Typography>
+        )}
+        {!isNetworkError && !festivalId && (
+          <Typography variant="subtitle1">Invalid URL.</Typography>
+        )}
+      </div>
     );
   } else {
     return (
@@ -708,9 +695,6 @@ const FestivalPage = () => {
               </Paper>
             </Box>
           )}
-        </div>
-        <div hidden={!loaderOn} className="progressBar">
-          <CircularProgress size={100} thickness={3} color={'secondary'} />
         </div>
         {festivalInfo.video && (
           <CookieConsent

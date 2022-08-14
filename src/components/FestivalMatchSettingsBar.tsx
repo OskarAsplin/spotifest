@@ -13,12 +13,9 @@ import {
   ListSubheader,
   Modal,
   Fade,
-  ThemeProvider,
-  CircularProgress,
   Button,
 } from '@mui/material';
 import { indigo } from '@mui/material/colors';
-import { createTheme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import InfoIcon from '@mui/icons-material/Info';
@@ -65,7 +62,7 @@ import StandardLink from './StandardLink';
 import HtmlTooltip from './HtmlTooltip';
 import SettingsBarDatePicker from './SettingsBarDatePicker';
 import { useTheme } from '@mui/material/styles';
-import { indigoOrangePalette } from '../layouts/StandardLayout.styles';
+import { LoadingSpinner } from './LoadingSpinner';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -169,8 +166,6 @@ const FestivalMatchSettingsBar = () => {
 
   const smallScreen = useMediaQuery('(max-width:610px)');
   const pcScreen = useMediaQuery('(min-width:1200px)');
-
-  const indigoOrangeMuiTheme = createTheme({ palette: indigoOrangePalette });
 
   const testMatchesWithGivenSettings = (
     area: Area,
@@ -603,14 +598,7 @@ const FestivalMatchSettingsBar = () => {
         <Fade in={showPlaylistModal}>
           <Paper sx={{ p: 2, outline: 'none', backgroundColor: '#303030' }}>
             {!(topArtistsLoaded && playlistsLoaded) && (
-              <ThemeProvider theme={indigoOrangeMuiTheme}>
-                <CircularProgress
-                  size={100}
-                  thickness={3}
-                  color={'secondary'}
-                  sx={{ m: 3 }}
-                />
-              </ThemeProvider>
+              <LoadingSpinner sx={{ m: 3 }} />
             )}
             {topArtistsLoaded && playlistsLoaded && (
               <Box className={classes.alignItems3}>

@@ -4,15 +4,5 @@ $bigScreen: 610px;
 $fullScreen: 690px;
 
 .appBarSpace {
-    padding-bottom: 6 * $spacing;
-}
-
-.progressBar {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin: {
-        top: -50px;
-        left: -50px;
-    }
+  padding-bottom: 6 * $spacing;
 }

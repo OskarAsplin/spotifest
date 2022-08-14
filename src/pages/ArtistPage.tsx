@@ -8,10 +8,8 @@ import {
   Button,
   IconButton,
   Collapse,
-  CircularProgress,
   Stack,
 } from '@mui/material';
-import { deepOrange, indigo } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
@@ -28,11 +26,7 @@ import {
   selectAccessToken,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import {
-  selectLoaderOn,
-  turnOnLoader,
-  turnOffLoader,
-} from '../redux/reducers/displaySlice';
+import { turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
 import { ArtistInfo, Artist } from '../redux/types';
 import '../styles/base.scss';
 import { fetchToJson, getApiBaseUrl } from '../utils/restUtils';
@@ -44,6 +38,7 @@ import {
 import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import { indigoOrangePalette } from '../layouts/StandardLayout.styles';
 
 const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
   createStyles({
@@ -184,7 +179,6 @@ const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
 const ArtistPage = () => {
   const loggedIn: boolean = useSelector(selectLoggedIn);
   const accessToken: string = useSelector(selectAccessToken);
-  const loaderOn: boolean = useSelector(selectLoaderOn);
   const themeMode = useTheme().palette.mode;
   const dispatch = useDispatch();
   const { artistId } = useParams();
@@ -365,23 +359,7 @@ const ArtistPage = () => {
   const fillRelatedArtistsWidth =
     maxArtistsInWidth - (relatedArtists.length % maxArtistsInWidth);
 
-  const indigoOrangeMuiTheme = createTheme({
-    typography: {
-      fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-    },
-    palette: {
-      primary: {
-        light: indigo[300],
-        main: indigo[500],
-        dark: indigo[700],
-      },
-      secondary: {
-        light: deepOrange[300],
-        main: deepOrange[500],
-        dark: deepOrange[700],
-      },
-    },
-  });
+  const indigoOrangeMuiTheme = createTheme({ palette: indigoOrangePalette });
 
   const classes = useStyles();
 
@@ -392,7 +370,7 @@ const ArtistPage = () => {
 
   if (!artistInfo) {
     return (
-      <ThemeProvider theme={indigoOrangeMuiTheme}>
+      <>
         {pcScreen && (
           <div className={classes.topLeft}>
             <IconButton
@@ -421,10 +399,7 @@ const ArtistPage = () => {
             <Typography variant="subtitle1">Invalid URL.</Typography>
           )}
         </div>
-        <div hidden={!loaderOn} className="progressBar">
-          <CircularProgress size={100} thickness={3} color={'secondary'} />
-        </div>
-      </ThemeProvider>
+      </>
     );
   } else {
     return (
@@ -660,12 +635,6 @@ const ArtistPage = () => {
             </div>
           )}
         </div>
-
-        <ThemeProvider theme={indigoOrangeMuiTheme}>
-          <div hidden={!loaderOn} className="progressBar">
-            <CircularProgress size={100} thickness={3} color={'secondary'} />
-          </div>
-        </ThemeProvider>
       </>
     );
   }
