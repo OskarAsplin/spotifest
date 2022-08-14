@@ -28,14 +28,6 @@ import { styled } from '@mui/material/styles';
 
 const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
   createStyles({
-    root: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: 'column',
-      padding: spacing(1, 0, 0, 0),
-      marginBottom: spacing(3),
-      width: '100%',
-    },
     root2: {
       display: 'flex',
       justifyContent: 'space-between',
@@ -261,7 +253,7 @@ const FestivalMatchCard = (props: Props) => {
     navigate(`/festival/${festivalId}`);
 
   return (
-    <Paper elevation={3} className={classes.root} key={festival.name}>
+    <Paper elevation={3} sx={{ pt: 1 }} key={festival.name}>
       {showMatching && <div className={classes.paddingBottom} />}
       <div className={classes.titleLine}>
         <div className={clsx(classes.titleAndMatchBox, classes.addSidePadding)}>

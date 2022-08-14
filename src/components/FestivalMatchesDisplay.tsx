@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Theme, Typography, Box } from '@mui/material';
-import { createStyles, makeStyles } from '@mui/styles';
+import { Typography, Box, Stack } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import Pagination from '@mui/material/Pagination';
 import { useSelector, useDispatch } from 'react-redux';
@@ -21,66 +20,7 @@ import {
   MatchSettings,
 } from '../redux/types';
 import FestivalMatchCard from './FestivalMatchCard';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    box: {
-      '@media (max-width: 609px)': {
-        marginTop: theme.spacing(1),
-      },
-      '@media (min-width: 800px)': {
-        marginTop: theme.spacing(1),
-      },
-      width: '100%',
-      maxWidth: '764px',
-    },
-    align: {
-      display: 'flex',
-      width: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    alignItems: {
-      display: 'flex',
-      '@media (min-width: 610px)': {
-        height: theme.spacing(7),
-      },
-      '@media (max-width: 609px)': {
-        flexDirection: 'column',
-        marginBottom: theme.spacing(1),
-      },
-      width: '100%',
-      alignItems: 'center',
-    },
-    verticalSpace: {
-      display: 'flex',
-      padding: theme.spacing(2, 0, 2, 0),
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-    },
-    verticalSpace2: {
-      display: 'flex',
-      padding: theme.spacing(2, 0, 0, 0),
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-    },
-    noMatches: {
-      width: '100%',
-      textAlign: 'center',
-    },
-    matchLength: {
-      '@media (min-width: 610px)': {
-        position: 'absolute',
-        textAlign: 'center',
-      },
-      '@media (max-width: 609px)': {
-        marginBottom: theme.spacing(1),
-      },
-    },
-  })
-);
+import { styled } from '@mui/material/styles';
 
 const FestivalMatchesDisplay = () => {
   const festivalMatches: FestivalMatch[] = useSelector(selectFestivalMatches);
@@ -93,8 +33,6 @@ const FestivalMatchesDisplay = () => {
   );
   const currentPage: number = useSelector(selectCurrentPage);
   const dispatch = useDispatch();
-
-  const classes = useStyles();
 
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
 
@@ -138,13 +76,21 @@ const FestivalMatchesDisplay = () => {
   }, [showMatches]);
 
   return (
-    <Box className={classes.box}>
+    <StyledRootBox>
       {showMatches.length > 0 && (
-        <Box className={classes.alignItems}>
-          <Typography variant="subtitle2" className={classes.matchLength}>
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            alignItems: 'center',
+            '@media (min-width: 610px)': { my: 1.5 },
+            '@media (max-width: 609px)': { flexDirection: 'column', mb: 1 },
+          }}
+        >
+          <StyledNumMatchesTypography variant="subtitle2">
             {festivalMatches.length + ' matches'}
-          </Typography>
-          <Box className={classes.align}>
+          </StyledNumMatchesTypography>
+          <StyledPaginationBox>
             <Pagination
               count={numPages}
               page={currentPage}
@@ -153,69 +99,101 @@ const FestivalMatchesDisplay = () => {
                 handleChange(event, value, false)
               }
             />
-          </Box>
+          </StyledPaginationBox>
         </Box>
       )}
-      {showMatches.map((festival: FestivalMatch) => {
-        const popularArtists =
-          festival.lineup_id in popularArtistsDict
-            ? popularArtistsDict[festival.lineup_id]
-            : [];
-        const matchingArtists =
-          matchSettings.matchBasis === '__your__top__artists__'
-            ? topArtists
-                .filter(
-                  (artist) =>
-                    artist.spotifyId &&
-                    festival.matching_artists.includes(artist.spotifyId)
-                )
-                .sort((a, b) =>
-                  a.userPopularity! < b.userPopularity! ? 1 : -1
-                )
-            : selectedPlaylistArtists
-                .filter(
-                  (artist) =>
-                    artist.spotifyId &&
-                    festival.matching_artists.includes(artist.spotifyId)
-                )
-                .sort((a, b) =>
-                  a.userPopularity! < b.userPopularity! ? 1 : -1
-                );
-        return (
-          <FestivalMatchCard
-            festival={festival}
-            popularArtists={popularArtists}
-            matchingArtists={matchingArtists}
-            key={'FestivalMatchCard: ' + festival.name + festival.year}
-            showMatching={true}
-          />
-        );
-      })}
-      {showMatches.length > 0 && (
-        <div>
-          <Box className={classes.align}>
-            <Pagination
-              count={numPages}
-              page={currentPage}
-              size={mediumOrBigScreen ? 'medium' : 'small'}
-              onChange={(event: React.ChangeEvent<unknown>, value: number) =>
-                handleChange(event, value, true)
-              }
+      <Stack spacing={3}>
+        {showMatches.map((festival: FestivalMatch) => {
+          const popularArtists =
+            festival.lineup_id in popularArtistsDict
+              ? popularArtistsDict[festival.lineup_id]
+              : [];
+          const matchingArtists =
+            matchSettings.matchBasis === '__your__top__artists__'
+              ? topArtists
+                  .filter(
+                    (artist) =>
+                      artist.spotifyId &&
+                      festival.matching_artists.includes(artist.spotifyId)
+                  )
+                  .sort((a, b) =>
+                    a.userPopularity! < b.userPopularity! ? 1 : -1
+                  )
+              : selectedPlaylistArtists
+                  .filter(
+                    (artist) =>
+                      artist.spotifyId &&
+                      festival.matching_artists.includes(artist.spotifyId)
+                  )
+                  .sort((a, b) =>
+                    a.userPopularity! < b.userPopularity! ? 1 : -1
+                  );
+          return (
+            <FestivalMatchCard
+              festival={festival}
+              popularArtists={popularArtists}
+              matchingArtists={matchingArtists}
+              key={'FestivalMatchCard: ' + festival.name + festival.year}
+              showMatching={true}
             />
-          </Box>
-          <div className={classes.verticalSpace2} />
-        </div>
+          );
+        })}
+      </Stack>
+      {showMatches.length > 0 && (
+        <StyledPaginationBox sx={{ mt: 3, mb: 2 }}>
+          <Pagination
+            count={numPages}
+            page={currentPage}
+            size={mediumOrBigScreen ? 'medium' : 'small'}
+            onChange={(event: React.ChangeEvent<unknown>, value: number) =>
+              handleChange(event, value, true)
+            }
+          />
+        </StyledPaginationBox>
       )}
       {siteInitialized && !isAnyMatch && (
-        <div>
-          <div className={classes.verticalSpace} />
-          <Typography variant="subtitle1" className={classes.noMatches}>
-            No registered festivals in the selected area in this time frame.
-          </Typography>
-        </div>
+        <Typography
+          variant="subtitle1"
+          sx={{ width: '100%', textAlign: 'center', py: 2 }}
+        >
+          No registered festivals in the selected area in this time frame.
+        </Typography>
       )}
-    </Box>
+    </StyledRootBox>
   );
 };
+
+const StyledRootBox = styled(Box)(({ theme: { spacing } }) => {
+  return {
+    '@media (max-width: 609px)': {
+      marginTop: spacing(1),
+    },
+    '@media (min-width: 800px)': {
+      marginTop: spacing(1),
+    },
+    width: '100%',
+    maxWidth: '764px',
+  };
+});
+
+const StyledPaginationBox = styled(Box)(() => {
+  return {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+  };
+});
+
+const StyledNumMatchesTypography = styled(Typography)(
+  ({ theme: { spacing } }) => {
+    return {
+      '@media (min-width: 610px)': {
+        position: 'absolute',
+        textAlign: 'center',
+      },
+      '@media (max-width: 609px)': { marginBottom: spacing(1) },
+    };
+  }
+);
 
 export default FestivalMatchesDisplay;
