@@ -4,13 +4,13 @@ import { selectLoaderOn } from '../redux/reducers/displaySlice';
 import '../styles/base.scss';
 import { styled } from '@mui/material/styles';
 
-export const LoadingSpinner = (props: CircularProgressProps) => {
+export const LoadingSpinner = ({ sx, ...restProps }: CircularProgressProps) => {
   return (
     <CircularProgress
       size={100}
       thickness={3}
-      sx={{ color: ({ palette }) => palette.tertiary?.[palette.mode] }}
-      {...props}
+      sx={{ color: ({ palette }) => palette.tertiary?.[palette.mode], ...sx }}
+      {...restProps}
     />
   );
 };

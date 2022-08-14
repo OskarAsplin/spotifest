@@ -11,7 +11,6 @@ export const StandardLayout = ({ setThemeMode }: Props) => {
   return (
     <>
       <AppBarView setThemeMode={setThemeMode} />
-      <div className="appBarSpace" />
       <CenteredLoadingSpinner />
       <Outlet />
     </>

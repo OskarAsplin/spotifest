@@ -64,7 +64,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
     };
 
   return (
-    <>
+    <Box sx={{ pb: 6 }}>
       <Slide appear={false} direction="down" in={!trigger}>
         <div>
           <AppBar
@@ -159,7 +159,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
         onClose={toggleDrawer(false)}
         setThemeMode={setThemeMode}
       />
-    </>
+    </Box>
   );
 };
 
