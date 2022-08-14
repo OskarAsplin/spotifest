@@ -9,6 +9,7 @@ import {
   IconButton,
   Collapse,
   CircularProgress,
+  Stack,
 } from '@mui/material';
 import { deepOrange, indigo } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
@@ -42,17 +43,18 @@ import {
 } from '../utils/utils';
 import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
   createStyles({
     root: {
       display: 'flex',
       flexDirection: 'column',
       '@media (min-width: 440px)': {
-        padding: theme.spacing(0, 2, 0, 2),
+        padding: spacing(0, 2, 0, 2),
       },
       '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
+        padding: spacing(0, 1, 0, 1),
       },
       justifyContent: 'center',
       alignItems: 'center',
@@ -61,10 +63,10 @@ const useStyles = makeStyles((theme: Theme) =>
     verticalSpace: {
       display: 'flex',
       '@media (min-width: 690px)': {
-        padding: theme.spacing(2, 0, 2, 0),
+        padding: spacing(2, 0, 2, 0),
       },
       '@media (max-width: 689px)': {
-        padding: theme.spacing(1, 0, 1, 0),
+        padding: spacing(1, 0, 1, 0),
       },
       justifyContent: 'center',
       alignItems: 'center',
@@ -75,27 +77,27 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       justifyContent: 'space-between',
       width: '100%',
-      padding: theme.spacing(1, 0, 0, 0),
+      padding: spacing(1, 0, 0, 0),
     },
     addSidePadding: {
       '@media (min-width: 690px)': {
-        padding: theme.spacing(0, 4, 0, 4),
+        padding: spacing(0, 4, 0, 4),
       },
       '@media (max-width: 689px)': {
         '@media (min-width: 440px)': {
-          padding: theme.spacing(0, 2, 0, 2),
+          padding: spacing(0, 2, 0, 2),
         },
       },
       '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 2, 0, 2),
+        padding: spacing(0, 2, 0, 2),
       },
     },
     addSmallSidePadding: {
       '@media (min-width: 440px)': {
-        padding: theme.spacing(0, 2, 0, 2),
+        padding: spacing(0, 2, 0, 2),
       },
       '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
+        padding: spacing(0, 1, 0, 1),
       },
     },
     button: {
@@ -103,37 +105,28 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       textTransform: 'none',
       '@media (min-width: 690px)': {
-        padding: theme.spacing(2, 2, 2, 2),
+        padding: spacing(2, 2, 2, 2),
       },
       '@media (max-width: 689px)': {
-        padding: theme.spacing(1, 1, 1, 1),
+        padding: spacing(1, 1, 1, 1),
       },
-      marginBottom: theme.spacing(2),
       width: '100%',
       alignItems: 'center',
     },
     box: {
       width: '100%',
       maxWidth: '700px',
-      margin: theme.spacing(0, 2, 2, 2),
-    },
-    box2: {
-      width: '100%',
-      maxWidth: '764px',
+      margin: spacing(0, 2, 2, 2),
     },
     buttonBox: {
       width: '100%',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      margin: theme.spacing(1, 0, 1, 0),
+      margin: spacing(1, 0, 1, 0),
     },
     darkerBackground: {
       backgroundColor: '#303030',
-    },
-    artistImgButton: {
-      padding: '0px',
-      borderRadius: '0px',
     },
     artistImg: {
       maxHeight: '350px',
@@ -155,7 +148,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexWrap: 'wrap',
       justifyContent: 'space-between',
       '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
+        padding: spacing(0, 1, 0, 1),
       },
     },
     matchingPopularBox: {
@@ -168,31 +161,23 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     expand: {
       transform: 'rotate(0deg)',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
+      transition: transitions.create('transform', {
+        duration: transitions.duration.shortest,
       }),
     },
     expandOpen: {
       transform: 'rotate(180deg)',
     },
-    artistTitle: {
-      textAlign: 'center',
-    },
     prevAndFutureFestivalsTitle: {
       '@media (max-width: 689px)': {
         textAlign: 'center',
       },
-      marginBottom: theme.spacing(1),
+      marginBottom: spacing(1),
     },
     topLeft: {
       position: 'absolute',
-      top: theme.spacing(8),
-      left: theme.spacing(2),
-    },
-    artistTitleBox: {
-      display: 'flex',
-      justifyContent: 'center',
-      width: '100%',
+      top: spacing(8),
+      left: spacing(2),
     },
     artistWidth: {
       '@media (min-width: 690px)': {
@@ -202,19 +187,15 @@ const useStyles = makeStyles((theme: Theme) =>
         width: '75px',
       },
     },
-    festivalTitle: {
-      wordWrap: 'break-word',
-      textAlign: 'center',
-    },
     paddingBottom: {
-      paddingBottom: theme.spacing(1),
+      paddingBottom: spacing(1),
     },
     noBigPicture: {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      paddingBottom: theme.spacing(3),
-      paddingTop: theme.spacing(3),
+      paddingBottom: spacing(3),
+      paddingTop: spacing(3),
       '@media (min-width: 690px)': {
         fontSize: '150px',
       },
@@ -402,6 +383,8 @@ const ArtistPage = () => {
   const [isNetworkError, setIsNetworkError] = useState(false);
   const [isValidSpotifyId, setIsValidSpotifyId] = useState(true);
 
+  console.log(relatedArtists);
+
   const bigScreen = useMediaQuery('(min-width:690px)');
   const pcScreen = useMediaQuery('(min-width:1300px)');
   const smallScreen = useMediaQuery('(max-width:439px)');
@@ -497,16 +480,12 @@ const ArtistPage = () => {
               className={classes.paper}
               key={'artistInfo:' + artistInfo.artist.name}
             >
-              <div className={classes.artistTitleBox}>
-                <Typography
-                  variant={bigScreen ? 'h3' : 'h5'}
-                  className={classes.artistTitle}
-                >
-                  <Box fontWeight="fontWeightBold">
-                    {artistInfo.artist.name}
-                  </Box>
-                </Typography>
-              </div>
+              <Typography
+                variant={bigScreen ? 'h3' : 'h5'}
+                sx={{ textAlign: 'center', width: '100%' }}
+              >
+                <Box fontWeight="fontWeightBold">{artistInfo.artist.name}</Box>
+              </Typography>
               <Box
                 className={
                   themeMode === 'light'
@@ -519,7 +498,7 @@ const ArtistPage = () => {
                     onClick={() =>
                       window.open(artistInfo.artist.bigPicture, '_blank')
                     }
-                    className={classes.artistImgButton}
+                    sx={{ p: 0, borderRadius: 0 }}
                   >
                     <img
                       className={classes.artistImg}
@@ -634,7 +613,7 @@ const ArtistPage = () => {
               >
                 Attending festivals
               </Typography>
-              <Box className={classes.box2}>
+              <StyledStack spacing={3}>
                 {artistInfo.festivalsFuture.map((festival) => (
                   <FestivalMatchCard
                     festival={festival}
@@ -644,12 +623,11 @@ const ArtistPage = () => {
                     showMatching={false}
                   />
                 ))}
-              </Box>
+              </StyledStack>
             </div>
           )}
           {isArtistInDb && artistInfo.festivalsPast.length !== 0 && (
             <div className={classes.align}>
-              <div className={classes.verticalSpace} />
               <div className={classes.verticalSpace} />
               <Typography
                 variant={bigScreen ? 'h4' : 'h5'}
@@ -657,7 +635,7 @@ const ArtistPage = () => {
               >
                 Previously attended festivals
               </Typography>
-              <Box className={classes.box2}>
+              <StyledStack spacing={2}>
                 {artistInfo.festivalsPast.map((festival, idx) => (
                   <Button
                     className={classes.button}
@@ -677,7 +655,7 @@ const ArtistPage = () => {
                     >
                       <Typography
                         variant={bigScreen ? 'h3' : 'h5'}
-                        className={classes.festivalTitle}
+                        sx={{ wordWrap: 'break-word', textAlign: 'center' }}
                       >
                         <Box fontWeight="fontWeightBold">{festival.name}</Box>
                       </Typography>
@@ -703,7 +681,7 @@ const ArtistPage = () => {
                     </div>
                   </Button>
                 ))}
-              </Box>
+              </StyledStack>
             </div>
           )}
           {!isArtistInDb && (
@@ -736,5 +714,13 @@ const ArtistPage = () => {
     );
   }
 };
+
+const StyledStack = styled(Stack)(({ theme: { spacing } }) => {
+  return {
+    width: '100%',
+    maxWidth: '764px',
+    marginBottom: spacing(2),
+  };
+});
 
 export default ArtistPage;

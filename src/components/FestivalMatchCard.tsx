@@ -48,13 +48,6 @@ const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
       },
       userSelect: 'none',
     },
-    festivalTitle: {
-      wordWrap: 'break-word',
-    },
-    festivalTitleCenter: {
-      wordWrap: 'break-word',
-      textAlign: 'center',
-    },
     artistAvatarBox: {
       display: 'flex',
       flexDirection: 'row',
@@ -266,11 +259,10 @@ const FestivalMatchCard = (props: Props) => {
             >
               <Typography
                 variant={bigScreen ? 'h3' : 'h5'}
-                className={
-                  !showMatching
-                    ? classes.festivalTitleCenter
-                    : classes.festivalTitle
-                }
+                sx={{
+                  wordWrap: 'break-word',
+                  textAlign: !showMatching ? 'center' : undefined,
+                }}
               >
                 <Box fontWeight="fontWeightBold">{festival.name}</Box>
               </Typography>
