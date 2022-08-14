@@ -16,35 +16,27 @@ import clsx from 'clsx';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import ReactCountryFlag from 'react-country-flag';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { selectMatchingMethod } from '../redux/reducers/festivalMatchingSlice';
-import { FestivalMatch, MatchingMethod, Artist } from '../redux/types';
+import { FestivalMatch, Artist } from '../redux/types';
 import { getMaxArtistsInWidth, displayedLocationName } from '../utils/utils';
-import ArtistBubble from './ArtistBubble';
+import ArtistBubble, { StyledAvatarContainerdiv } from './ArtistBubble';
 import HtmlTooltip from './HtmlTooltip';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 
-const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
+const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
   createStyles({
-    root2: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      flexDirection: 'column',
-      width: '100%',
-    },
     circleSize: {
       '@media (min-width: 690px)': {
-        width: '60px',
+        width: '80px',
       },
       '@media (max-width: 689px)': {
         '@media (min-width: 440px)': {
-          width: '50px',
+          width: '60px',
         },
       },
       '@media (max-width: 439px)': {
-        width: '40px',
+        width: '50px',
       },
       userSelect: 'none',
     },
@@ -53,19 +45,6 @@ const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
-    },
-    addSidePadding: {
-      '@media (min-width: 690px)': {
-        padding: spacing(0, 4, 0, 4),
-      },
-      '@media (max-width: 689px)': {
-        '@media (min-width: 440px)': {
-          padding: spacing(0, 2, 0, 2),
-        },
-      },
-      '@media (max-width: 439px)': {
-        padding: spacing(0, 2, 0, 2),
-      },
     },
     addSmallSidePadding: {
       '@media (min-width: 440px)': {
@@ -80,18 +59,11 @@ const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
       flexDirection: 'row',
       flexWrap: 'wrap',
     },
-    matchingPopularBoxFirstRow: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'nowrap',
-      alignItems: 'center',
-      minHeight: '48px',
-    },
     titleAndMatchBox: {
       width: '100%',
       display: 'flex',
       flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     matchingPopularBox: {
       width: '100%',
@@ -109,23 +81,6 @@ const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
     },
     expandOpen: {
       transform: 'rotate(180deg)',
-    },
-    titleLine: {
-      width: '100%',
-    },
-    grow: {
-      flexGrow: 1,
-    },
-    detailsAndMatching: {
-      flexGrow: 1,
-      '@media (min-width: 690px)': {
-        maxWidth: '45%',
-      },
-    },
-    growAlign: {
-      display: 'flex',
-      justifyContent: 'center',
-      flexGrow: 1,
     },
     lineup: {
       maxHeight: 260,
@@ -146,31 +101,8 @@ const useStyles = makeStyles(({ spacing, transitions, palette }: Theme) =>
         flexDirection: 'column',
       },
     },
-    artistWidth: {
-      '@media (min-width: 690px)': {
-        width: '100px',
-      },
-      '@media (max-width: 689px)': {
-        width: '75px',
-      },
-    },
-    toolTip: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
     paddingBottom: {
       paddingBottom: spacing(1),
-    },
-    expandLine: {
-      display: 'flex',
-      justifyContent: 'center',
-    },
-    expandLineGradient: {
-      background:
-        palette.mode === 'dark'
-          ? `linear-gradient(#313131, #404040);`
-          : undefined,
     },
   })
 );
@@ -186,7 +118,6 @@ const FestivalMatchCard = (props: Props) => {
   const { festival, showMatching, popularArtists, matchingArtists } = props;
 
   const themeMode = useTheme().palette.mode;
-  const matchingMethod: MatchingMethod = useSelector(selectMatchingMethod);
 
   const bigScreen = useMediaQuery('(min-width:690px)');
   const smallScreen = useMediaQuery('(max-width:439px)');
@@ -201,17 +132,10 @@ const FestivalMatchCard = (props: Props) => {
 
   const classes = useStyles();
 
-  let matching_percent: number = 0;
-  switch (matchingMethod) {
-    case MatchingMethod.Genre:
-      matching_percent = Math.ceil(festival.matching_percent_combined);
-      break;
-    case MatchingMethod.Artist:
-      matching_percent = Math.ceil(festival.matching_percent_artists);
-      break;
-    default:
-      break;
-  }
+  const matchingPercentTotal = Math.ceil(festival.matching_percent_combined);
+  const matchingPercentArtists = Math.ceil(festival.matching_percent_artists);
+  const matchingPercentGenres = Math.ceil(festival.matching_percent_genres);
+
   const textSize = smallScreen ? '28px' : '25px';
   const pathColor = themeMode === 'light' ? '#3FBF3F' : '#3de53d';
   const textColor = themeMode === 'light' ? '#3FBF3F' : '#3de53d';
@@ -219,139 +143,45 @@ const FestivalMatchCard = (props: Props) => {
 
   const noLineupRegistered = popularArtists.length === 0;
 
-  const twoArtistsNextToPicture = bigScreen && matchingArtists.length <= 2;
-  const threeArtistsNextToPicture =
-    useMediaQuery('(min-width:810px)') && matchingArtists.length <= 3;
-  const matchingNextToPicture =
-    twoArtistsNextToPicture || threeArtistsNextToPicture;
-
-  const matchingArtistsText = (className: string = '') => {
-    return (
-      <Typography
-        variant="body1"
-        color="primary"
-        component="div"
-        className={className}
-      >
-        <Box fontWeight="fontWeightBold">
-          {matchingArtists.length > 0
-            ? 'Matching artists'
-            : 'No matching artists'}
-        </Box>
-      </Typography>
-    );
-  };
-
   const navigateToFestival = (festivalId: string) =>
     navigate(`/festival/${festivalId}`);
 
   return (
     <Paper elevation={3} sx={{ pt: 1 }} key={festival.name}>
       {showMatching && <div className={classes.paddingBottom} />}
-      <div className={classes.titleLine}>
-        <div className={clsx(classes.titleAndMatchBox, classes.addSidePadding)}>
-          <div className={!showMatching ? classes.growAlign : classes.grow}>
-            <StyledTitleButton
-              color="inherit"
-              onClick={() => {
-                navigateToFestival(encodeURIComponent(festival.name));
-              }}
-            >
-              <Typography
-                variant={bigScreen ? 'h3' : 'h5'}
-                sx={{
-                  wordWrap: 'break-word',
-                  textAlign: !showMatching ? 'center' : undefined,
+      <StyledPaddedDiv>
+        <div className={classes.titleAndMatchBox}>
+          <div>
+            <div>
+              <StyledTitleButton
+                color="inherit"
+                onClick={() => {
+                  navigateToFestival(encodeURIComponent(festival.name));
                 }}
               >
-                <Box fontWeight="fontWeightBold">{festival.name}</Box>
-              </Typography>
-            </StyledTitleButton>
-          </div>
-          {showMatching && (
-            <div>
-              <Box className={classes.toolTip}>
-                <HtmlTooltip
-                  sx={{ mx: 2 }}
-                  placement="left-start"
-                  leaveTouchDelay={3000}
-                  title={
-                    <Fragment>
-                      <Typography
-                        color="inherit"
-                        variant={bigScreen ? 'subtitle2' : 'body2'}
-                      >
-                        {'Genres: ' +
-                          Math.ceil(festival.matching_percent_genres) +
-                          '%'}
-                      </Typography>
-                      <Typography
-                        color="inherit"
-                        variant={bigScreen ? 'subtitle2' : 'body2'}
-                      >
-                        {'Artists: ' +
-                          Math.ceil(festival.matching_percent_artists) +
-                          '%'}
-                      </Typography>
-                      <Typography
-                        color="inherit"
-                        variant={bigScreen ? 'subtitle2' : 'body2'}
-                      >
-                        {'Total: ' +
-                          Math.ceil(festival.matching_percent_combined) +
-                          '%'}
-                      </Typography>
-                    </Fragment>
-                  }
+                <Typography
+                  variant={bigScreen ? 'h3' : 'h5'}
+                  sx={{
+                    wordWrap: 'break-word',
+                    textAlign: !showMatching ? 'center' : undefined,
+                  }}
                 >
-                  <div className={classes.circleSize}>
-                    <CircularProgressbar
-                      value={matching_percent}
-                      text={`${matching_percent}%`}
-                      styles={buildStyles({
-                        textSize: textSize,
-                        pathTransitionDuration: 0.5,
-                        pathColor: pathColor,
-                        textColor: textColor,
-                        trailColor: trailColor,
-                      })}
-                    />
-                  </div>
-                </HtmlTooltip>
-              </Box>
+                  <Box fontWeight="fontWeightBold">{festival.name}</Box>
+                </Typography>
+              </StyledTitleButton>
             </div>
-          )}
-        </div>
-      </div>
-      <div className={classes.root2}>
-        <div
-          id={'details_and_matching_artists_and_lineup'}
-          className={classes.flexRow}
-        >
-          <div
-            id={'details_and_matching_artists'}
-            className={classes.detailsAndMatching}
-          >
             {festival.cancelled ? (
-              <Typography
-                variant="subtitle2"
-                color="secondary"
-                className={classes.addSidePadding}
-              >
-                {'CANCELLED' +
-                  (festival.date
-                    ? ' (' + festival.date + ', ' + festival.year + ')'
-                    : '')}
+              <Typography variant="subtitle2" color="secondary">
+                {`CANCELLED${
+                  festival.date ? ` (${festival.date}, ${festival.year})` : ''
+                }`}
               </Typography>
             ) : (
-              <Typography
-                variant="subtitle2"
-                className={classes.addSidePadding}
-              >
+              <Typography variant="subtitle2">
                 {festival.date + ', ' + festival.year}
               </Typography>
             )}
-            <Typography variant="subtitle2" className={classes.addSidePadding}>
+            <Typography variant="subtitle2">
               {displayedLocationName(festival.locationText)}{' '}
               <ReactCountryFlag
                 countryCode={festival.country}
@@ -359,111 +189,128 @@ const FestivalMatchCard = (props: Props) => {
                 style={{ marginLeft: '8px' }}
               />
             </Typography>
-            <Typography
-              variant="subtitle2"
-              className={classes.addSidePadding}
-              noWrap
-            >
-              {'Genres: ' + festival.top_genres.slice(0, 3).join(', ')}
-            </Typography>
-            {showMatching && !noLineupRegistered && matchingNextToPicture && (
-              <>
-                <div className={classes.matchingPopularBoxFirstRow}>
-                  {matchingArtistsText(classes.addSidePadding)}
-                </div>
-                <div
-                  className={clsx(
-                    classes.artistAvatarBoxFirstRow,
-                    classes.addSmallSidePadding
-                  )}
-                >
-                  {matchingArtists.map((artist) => (
-                    <ArtistBubble
-                      artist={artist}
-                      key={
-                        'avatar_match_artist_' +
-                        festival.name +
-                        festival.year +
-                        artist.name
-                      }
-                      bubbleId={
-                        'avatar_match_artist_' +
-                        festival.name +
-                        festival.year +
-                        artist.name
-                      }
-                    />
-                  ))}
-                </div>
-              </>
-            )}
           </div>
-        </div>
-        {showMatching && !noLineupRegistered && !matchingNextToPicture && (
-          <>
-            <div
-              className={clsx(
-                classes.matchingPopularBox,
-                classes.addSidePadding
-              )}
+          {showMatching && (
+            <HtmlTooltip
+              placement="left-start"
+              leaveTouchDelay={3000}
+              title={
+                <Fragment>
+                  <Typography
+                    color="inherit"
+                    variant={bigScreen ? 'subtitle2' : 'body2'}
+                  >
+                    {`Genres: ${matchingPercentGenres}%`}
+                  </Typography>
+                  <Typography
+                    color="inherit"
+                    variant={bigScreen ? 'subtitle2' : 'body2'}
+                  >
+                    {`Artists: ${matchingPercentArtists}%`}
+                  </Typography>
+                  <Typography
+                    color="inherit"
+                    variant={bigScreen ? 'subtitle2' : 'body2'}
+                  >
+                    {`Total: ${matchingPercentTotal}%`}
+                  </Typography>
+                </Fragment>
+              }
             >
-              {matchingArtistsText()}
-            </div>
-            <div
-              className={clsx(
-                classes.artistAvatarBox,
-                classes.addSmallSidePadding
-              )}
-            >
-              {matchingArtists.map((artist) => (
-                <ArtistBubble
-                  artist={artist}
-                  key={
-                    'avatar_match_artist_' +
-                    festival.name +
-                    festival.year +
-                    artist.name
-                  }
-                  bubbleId={
-                    'avatar_match_artist_' +
-                    festival.name +
-                    festival.year +
-                    artist.name
-                  }
+              <div className={classes.circleSize}>
+                <CircularProgressbar
+                  value={matchingPercentTotal}
+                  text={`${matchingPercentTotal}%`}
+                  styles={buildStyles({
+                    textSize: textSize,
+                    pathTransitionDuration: 0.5,
+                    pathColor: pathColor,
+                    textColor: textColor,
+                    trailColor: trailColor,
+                  })}
                 />
-              ))}
-              {matchingArtists.length > 0 &&
-                Array.from({ length: fillMatchingArtistWidth }, (_, i) => (
-                  <div className={classes.artistWidth} key={i} />
-                ))}
-            </div>
-          </>
-        )}
-        {noLineupRegistered ? (
-          <div
-            className={clsx(classes.matchingPopularBox, classes.addSidePadding)}
-          >
-            <Typography variant="body1" color="primary" component="div">
-              <Box fontWeight="fontWeightBold">No lineup registered yet</Box>
-            </Typography>
-          </div>
-        ) : (
-          <>
-            <div
-              className={clsx(
-                classes.matchingPopularBox,
-                classes.addSidePadding
-              )}
+              </div>
+            </HtmlTooltip>
+          )}
+        </div>
+        <Typography
+          variant="subtitle2"
+          noWrap
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {'Genres: ' + festival.top_genres.slice(0, 3).join(', ')}
+        </Typography>
+        <Typography
+          variant="body1"
+          color="primary"
+          sx={{ my: 1.5, fontWeight: 700 }}
+        >
+          {matchingArtists.length > 0
+            ? 'Matching artists'
+            : 'No matching artists'}
+        </Typography>
+      </StyledPaddedDiv>
+      {showMatching && !noLineupRegistered && (
+        <div
+          className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding)}
+        >
+          {matchingArtists.map((artist) => (
+            <ArtistBubble
+              artist={artist}
+              key={`avatar_match_artist_${festival.name}_${festival.year}_${artist.name}`}
+              bubbleId={`avatar_match_artist_${festival.name}_${festival.year}_${artist.name}`}
+            />
+          ))}
+          {matchingArtists.length > 0 &&
+            Array.from({ length: fillMatchingArtistWidth }, (_, i) => (
+              <StyledAvatarContainerdiv key={i} />
+            ))}
+        </div>
+      )}
+      {noLineupRegistered ? (
+        <StyledPaddedDiv>
+          <Typography variant="body1" color="primary" component="div">
+            <Box fontWeight="fontWeightBold">No lineup registered yet</Box>
+          </Typography>
+        </StyledPaddedDiv>
+      ) : (
+        <>
+          <StyledPaddedDiv>
+            <Typography
+              variant="body1"
+              color="primary"
+              sx={{ my: 1.5, fontWeight: 700 }}
+              onClick={() => setExpanded(!expanded)}
             >
-              <Typography variant="body1" color="primary" component="div">
-                <Box
-                  fontWeight="fontWeightBold"
-                  onClick={() => setExpanded(!expanded)}
-                >
-                  Popular artists at this festival
-                </Box>
-              </Typography>
-            </div>
+              Popular artists at this festival
+            </Typography>
+          </StyledPaddedDiv>
+          <div
+            className={clsx(
+              classes.artistAvatarBox,
+              classes.addSmallSidePadding,
+              classes.paddingBottom
+            )}
+          >
+            {popularArtists.length > 0 &&
+              popularArtists
+                .slice(0, maxArtistsInWidth)
+                .map((artist) => (
+                  <ArtistBubble
+                    artist={artist}
+                    key={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
+                    bubbleId={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
+                  />
+                ))}
+            {popularArtists.length > 0 &&
+              Array.from({ length: fillPopularArtistWidth }, (_, i) => (
+                <StyledAvatarContainerdiv key={i} />
+              ))}
+          </div>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
             <div
               className={clsx(
                 classes.artistAvatarBox,
@@ -473,91 +320,50 @@ const FestivalMatchCard = (props: Props) => {
             >
               {popularArtists.length > 0 &&
                 popularArtists
-                  .slice(0, maxArtistsInWidth)
+                  .slice(
+                    maxArtistsInWidth,
+                    maxArtistsInWidth > 4
+                      ? maxArtistsInWidth * 2
+                      : maxArtistsInWidth * 3
+                  )
                   .map((artist) => (
                     <ArtistBubble
                       artist={artist}
-                      key={
-                        'avatar_pop_artist_' +
-                        festival.name +
-                        festival.year +
-                        artist.name
-                      }
-                      bubbleId={
-                        'avatar_pop_artist_' +
-                        festival.name +
-                        festival.year +
-                        artist.name
-                      }
+                      key={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
+                      bubbleId={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
                     />
                   ))}
               {popularArtists.length > 0 &&
                 Array.from({ length: fillPopularArtistWidth }, (_, i) => (
-                  <div className={classes.artistWidth} key={i} />
+                  <StyledAvatarContainerdiv key={i} />
                 ))}
             </div>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <div
-                className={clsx(
-                  classes.artistAvatarBox,
-                  classes.addSmallSidePadding,
-                  classes.paddingBottom
-                )}
+          </Collapse>
+          {popularArtists.length > maxArtistsInWidth && (
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                background:
+                  themeMode === 'dark' && !expanded
+                    ? 'linear-gradient(#313131, #404040)'
+                    : undefined,
+              }}
+            >
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded,
+                })}
+                onClick={() => setExpanded(!expanded)}
+                aria-expanded={expanded}
+                aria-label="show more"
               >
-                {popularArtists.length > 0 &&
-                  popularArtists
-                    .slice(
-                      maxArtistsInWidth,
-                      maxArtistsInWidth > 4
-                        ? maxArtistsInWidth * 2
-                        : maxArtistsInWidth * 3
-                    )
-                    .map((artist) => (
-                      <ArtistBubble
-                        artist={artist}
-                        key={
-                          'avatar_pop_artist_' +
-                          festival.name +
-                          festival.year +
-                          artist.name
-                        }
-                        bubbleId={
-                          'avatar_pop_artist_' +
-                          festival.name +
-                          festival.year +
-                          artist.name
-                        }
-                      />
-                    ))}
-                {popularArtists.length > 0 &&
-                  Array.from({ length: fillPopularArtistWidth }, (_, i) => (
-                    <div className={classes.artistWidth} key={i} />
-                  ))}
-              </div>
-            </Collapse>
-            {popularArtists.length > maxArtistsInWidth && (
-              <div
-                className={
-                  expanded
-                    ? classes.expandLine
-                    : clsx(classes.expandLine, classes.expandLineGradient)
-                }
-              >
-                <IconButton
-                  className={clsx(classes.expand, {
-                    [classes.expandOpen]: expanded,
-                  })}
-                  onClick={() => setExpanded(!expanded)}
-                  aria-expanded={expanded}
-                  aria-label="show more"
-                >
-                  <ExpandMoreIcon />
-                </IconButton>
-              </div>
-            )}
-          </>
-        )}
-      </div>
+                <ExpandMoreIcon />
+              </IconButton>
+            </Box>
+          )}
+        </>
+      )}
     </Paper>
   );
 };
@@ -567,9 +373,26 @@ const StyledTitleButton = styled(Button)(({ theme: { spacing } }) => {
     [`&.${buttonClasses.root}`]: {
       whiteSpace: 'normal',
       textTransform: 'none',
-      marginLeft: spacing(-1.25),
       textAlign: 'left',
+      marginLeft: spacing(-1.25),
+      marginBottom: spacing(1.5),
       padding: spacing(0, 1, 0, 1),
+    },
+  };
+});
+
+const StyledPaddedDiv = styled('div')(({ theme: { spacing } }) => {
+  return {
+    '@media (min-width: 690px)': {
+      padding: spacing(0, 4, 0, 4),
+    },
+    '@media (max-width: 689px)': {
+      '@media (min-width: 440px)': {
+        padding: spacing(0, 2, 0, 2),
+      },
+    },
+    '@media (max-width: 439px)': {
+      padding: spacing(0, 2, 0, 2),
     },
   };
 });

@@ -549,14 +549,14 @@ const FestivalMatchSettingsBar = () => {
         <Box className={classes.alignItems2}>
           <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
             <SettingsBarDatePicker
-              label="From (m/y)"
+              label="From"
               value={matchSettings.fromDate}
               onChange={handleFromDateChange}
             />
           </Grid>
           <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
             <SettingsBarDatePicker
-              label="To (m/y)"
+              label="To"
               value={matchSettings.toDate}
               onChange={handleToDateChange}
             />

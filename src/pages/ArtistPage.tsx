@@ -72,13 +72,6 @@ const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
       alignItems: 'center',
       width: '100%',
     },
-    paper: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      width: '100%',
-      padding: spacing(1, 0, 0, 0),
-    },
     addSidePadding: {
       '@media (min-width: 690px)': {
         padding: spacing(0, 4, 0, 4),
@@ -99,24 +92,6 @@ const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
       '@media (max-width: 439px)': {
         padding: spacing(0, 1, 0, 1),
       },
-    },
-    button: {
-      display: 'flex',
-      flexDirection: 'column',
-      textTransform: 'none',
-      '@media (min-width: 690px)': {
-        padding: spacing(2, 2, 2, 2),
-      },
-      '@media (max-width: 689px)': {
-        padding: spacing(1, 1, 1, 1),
-      },
-      width: '100%',
-      alignItems: 'center',
-    },
-    box: {
-      width: '100%',
-      maxWidth: '700px',
-      margin: spacing(0, 2, 2, 2),
     },
     buttonBox: {
       width: '100%',
@@ -383,8 +358,6 @@ const ArtistPage = () => {
   const [isNetworkError, setIsNetworkError] = useState(false);
   const [isValidSpotifyId, setIsValidSpotifyId] = useState(true);
 
-  console.log(relatedArtists);
-
   const bigScreen = useMediaQuery('(min-width:690px)');
   const pcScreen = useMediaQuery('(min-width:1300px)');
   const smallScreen = useMediaQuery('(max-width:439px)');
@@ -474,136 +447,126 @@ const ArtistPage = () => {
         <div className={classes.verticalSpace} />
 
         <div className={classes.root}>
-          <Box className={classes.box}>
-            <Paper
-              elevation={10}
-              className={classes.paper}
-              key={'artistInfo:' + artistInfo.artist.name}
+          <Paper
+            elevation={10}
+            sx={{ width: '100%', maxWidth: '700px', mx: 2, mb: 2 }}
+            key={'artistInfo:' + artistInfo.artist.name}
+          >
+            <Typography
+              variant={bigScreen ? 'h3' : 'h5'}
+              sx={{ textAlign: 'center', width: '100%', mt: 1 }}
             >
-              <Typography
-                variant={bigScreen ? 'h3' : 'h5'}
-                sx={{ textAlign: 'center', width: '100%' }}
-              >
-                <Box fontWeight="fontWeightBold">{artistInfo.artist.name}</Box>
-              </Typography>
-              <Box
-                className={
-                  themeMode === 'light'
-                    ? classes.buttonBox
-                    : clsx(classes.buttonBox, classes.darkerBackground)
-                }
-              >
-                {artistInfo.artist.bigPicture ? (
-                  <Button
-                    onClick={() =>
-                      window.open(artistInfo.artist.bigPicture, '_blank')
-                    }
-                    sx={{ p: 0, borderRadius: 0 }}
-                  >
-                    <img
-                      className={classes.artistImg}
-                      src={artistInfo.artist.bigPicture}
-                      alt=""
-                    />
-                  </Button>
-                ) : (
-                  <div className={classes.noBigPicture}>
-                    <MusicNote fontSize={'inherit'} />
-                  </div>
-                )}
-              </Box>
-              <Typography
-                variant="subtitle1"
-                className={classes.addSidePadding}
-              >
-                {artistInfo.artist.genres.length > 0
-                  ? 'Genres: ' + artistInfo.artist.genres.join(', ')
-                  : 'No registered genres'}
-              </Typography>
-              {artistInfo.artist.spotifyId && (
-                <ThemeProvider theme={indigoOrangeMuiTheme}>
-                  <StandardLink
-                    color={'secondary'}
-                    variant="subtitle1"
-                    href={
-                      'https://open.spotify.com/artist/' +
-                      artistInfo.artist.spotifyId
-                    }
-                    className={classes.addSidePadding}
-                  >
-                    Open artist in spotify
-                  </StandardLink>
-                </ThemeProvider>
-              )}
-              {relatedArtists.length === 0 && (
-                <div className={classes.paddingBottom} />
-              )}
-              {relatedArtists.length > 0 && (
-                <div
-                  className={clsx(
-                    classes.matchingPopularBox,
-                    classes.addSidePadding
-                  )}
+              <Box fontWeight="fontWeightBold">{artistInfo.artist.name}</Box>
+            </Typography>
+            <Box
+              className={
+                themeMode === 'light'
+                  ? classes.buttonBox
+                  : clsx(classes.buttonBox, classes.darkerBackground)
+              }
+            >
+              {artistInfo.artist.bigPicture ? (
+                <Button
+                  onClick={() =>
+                    window.open(artistInfo.artist.bigPicture, '_blank')
+                  }
+                  sx={{ p: 0, borderRadius: 0 }}
                 >
-                  <Typography variant="body1" color="primary" component="div">
-                    <Box
-                      fontWeight="fontWeightBold"
-                      onClick={() => setExpanded(!expanded)}
-                    >
-                      Related artists
-                    </Box>
-                  </Typography>
-                  <IconButton
-                    className={clsx(classes.expand, {
-                      [classes.expandOpen]: expanded,
-                    })}
-                    onClick={() => setExpanded(!expanded)}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                  >
-                    <ExpandMoreIcon />
-                  </IconButton>
+                  <img
+                    className={classes.artistImg}
+                    src={artistInfo.artist.bigPicture}
+                    alt=""
+                  />
+                </Button>
+              ) : (
+                <div className={classes.noBigPicture}>
+                  <MusicNote fontSize={'inherit'} />
                 </div>
               )}
-              {relatedArtists.length > 0 && (
-                <Collapse in={expanded} timeout="auto" unmountOnExit>
-                  <div
-                    className={clsx(
-                      classes.artistAvatarBox,
-                      classes.addSmallSidePadding,
-                      classes.paddingBottom
-                    )}
+            </Box>
+            <Typography variant="subtitle1" className={classes.addSidePadding}>
+              {artistInfo.artist.genres.length > 0
+                ? 'Genres: ' + artistInfo.artist.genres.join(', ')
+                : 'No registered genres'}
+            </Typography>
+            {artistInfo.artist.spotifyId && (
+              <ThemeProvider theme={indigoOrangeMuiTheme}>
+                <StandardLink
+                  color={'secondary'}
+                  variant="subtitle1"
+                  href={
+                    'https://open.spotify.com/artist/' +
+                    artistInfo.artist.spotifyId
+                  }
+                  className={classes.addSidePadding}
+                >
+                  Open artist in spotify
+                </StandardLink>
+              </ThemeProvider>
+            )}
+            {relatedArtists.length === 0 && (
+              <div className={classes.paddingBottom} />
+            )}
+            {relatedArtists.length > 0 && (
+              <div
+                className={clsx(
+                  classes.matchingPopularBox,
+                  classes.addSidePadding
+                )}
+              >
+                <Typography variant="body1" color="primary" component="div">
+                  <Box
+                    fontWeight="fontWeightBold"
+                    onClick={() => setExpanded(!expanded)}
                   >
-                    {relatedArtists
-                      .slice(0, maxArtistsInWidth)
-                      .map((artist) => (
-                        <ArtistBubble
-                          artist={artist}
-                          useSpotifyId={true}
-                          key={
-                            'avatar_rel_artist_' +
-                            artistInfo.artist.name +
-                            artist.name
-                          }
-                          bubbleId={
-                            'avatar_rel_artist_' +
-                            artistInfo.artist.name +
-                            artist.name
-                          }
-                        />
-                      ))}
-                    {relatedArtists.length > 0 &&
-                      Array.from(
-                        { length: fillRelatedArtistsWidth },
-                        (_, i) => (
-                          <div className={classes.artistWidth} key={i} />
-                        )
-                      )}
-                  </div>
-                </Collapse>
-              )}
-            </Paper>
-          </Box>
+                    Related artists
+                  </Box>
+                </Typography>
+                <IconButton
+                  className={clsx(classes.expand, {
+                    [classes.expandOpen]: expanded,
+                  })}
+                  onClick={() => setExpanded(!expanded)}
+                  aria-expanded={expanded}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </IconButton>
+              </div>
+            )}
+            {relatedArtists.length > 0 && (
+              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                <div
+                  className={clsx(
+                    classes.artistAvatarBox,
+                    classes.addSmallSidePadding,
+                    classes.paddingBottom
+                  )}
+                >
+                  {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
+                    <ArtistBubble
+                      artist={artist}
+                      useSpotifyId={true}
+                      key={
+                        'avatar_rel_artist_' +
+                        artistInfo.artist.name +
+                        artist.name
+                      }
+                      bubbleId={
+                        'avatar_rel_artist_' +
+                        artistInfo.artist.name +
+                        artist.name
+                      }
+                    />
+                  ))}
+                  {relatedArtists.length > 0 &&
+                    Array.from({ length: fillRelatedArtistsWidth }, (_, i) => (
+                      <div className={classes.artistWidth} key={i} />
+                    ))}
+                </div>
+              </Collapse>
+            )}
+          </Paper>
           {isArtistInDb && artistInfo.festivalsFuture.length !== 0 && (
             <div className={classes.align}>
               <div className={classes.verticalSpace} />
@@ -636,9 +599,8 @@ const ArtistPage = () => {
                 Previously attended festivals
               </Typography>
               <StyledStack spacing={2}>
-                {artistInfo.festivalsPast.map((festival, idx) => (
-                  <Button
-                    className={classes.button}
+                {artistInfo.festivalsPast.map((festival) => (
+                  <StyledPastFestivalButton
                     key={
                       'festivals artist attends: ' +
                       festival.name +
@@ -649,10 +611,7 @@ const ArtistPage = () => {
                       setRedirectFestival(encodeURIComponent(festival.name));
                     }}
                   >
-                    <div
-                      className={classes.hundredWidth}
-                      key={'past festival: ' + festival.name + idx}
-                    >
+                    <>
                       <Typography
                         variant={bigScreen ? 'h3' : 'h5'}
                         sx={{ wordWrap: 'break-word', textAlign: 'center' }}
@@ -678,8 +637,8 @@ const ArtistPage = () => {
                       <Typography variant="subtitle1">
                         {festival.locationText}
                       </Typography>
-                    </div>
-                  </Button>
+                    </>
+                  </StyledPastFestivalButton>
                 ))}
               </StyledStack>
             </div>
@@ -720,6 +679,22 @@ const StyledStack = styled(Stack)(({ theme: { spacing } }) => {
     width: '100%',
     maxWidth: '764px',
     marginBottom: spacing(2),
+  };
+});
+
+const StyledPastFestivalButton = styled(Button)(({ theme: { spacing } }) => {
+  return {
+    display: 'flex',
+    flexDirection: 'column',
+    textTransform: 'none',
+    '@media (min-width: 690px)': {
+      padding: spacing(2),
+    },
+    '@media (max-width: 689px)': {
+      padding: spacing(1),
+    },
+    width: '100%',
+    alignItems: 'center',
   };
 });
 

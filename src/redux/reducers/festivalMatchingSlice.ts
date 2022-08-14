@@ -4,7 +4,6 @@ import {
   Artist,
   FestivalMatch,
   PopularArtistsDict,
-  MatchingMethod,
   Area,
   MatchSettings,
 } from '../types';
@@ -13,7 +12,6 @@ interface FestivalMatchingState {
   selectedPlaylistArtists: Artist[];
   festivalMatches: FestivalMatch[];
   popularArtists: PopularArtistsDict;
-  matchingMethod: MatchingMethod;
   countries: Area[];
   continents: Area[];
   matchSettings: MatchSettings;
@@ -42,7 +40,6 @@ const initialState: FestivalMatchingState = {
   selectedPlaylistArtists: [],
   festivalMatches: [],
   popularArtists: {},
-  matchingMethod: MatchingMethod.Genre,
   countries: [],
   continents: [],
   matchSettings: initialMatchSettings,
@@ -61,9 +58,6 @@ export const festivalMatchingSlice = createSlice({
     },
     setPopularArtists: (state, action: PayloadAction<PopularArtistsDict>) => {
       state.popularArtists = action.payload;
-    },
-    setMatchingMethod: (state, action: PayloadAction<MatchingMethod>) => {
-      state.matchingMethod = action.payload;
     },
     addCountries: (state, action: PayloadAction<Area[]>) => {
       state.countries = action.payload;
@@ -84,7 +78,6 @@ export const {
   setSelectedPlaylistArtists,
   addFestivalMatches,
   setPopularArtists,
-  setMatchingMethod,
   addCountries,
   addContinents,
   setMatchSettings,
@@ -97,8 +90,6 @@ export const selectFestivalMatches = (state: RootState) =>
   state.festivalMatching.festivalMatches;
 export const selectPopularArtists = (state: RootState) =>
   state.festivalMatching.popularArtists;
-export const selectMatchingMethod = (state: RootState) =>
-  state.festivalMatching.matchingMethod;
 export const selectCountries = (state: RootState) =>
   state.festivalMatching.countries;
 export const selectContinents = (state: RootState) =>

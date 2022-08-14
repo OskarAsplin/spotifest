@@ -114,8 +114,3 @@ export interface SearchResponse {
   festivals: { name: string; location: string; country: string }[];
   artists: { name: string }[];
 }
-
-export enum MatchingMethod {
-  Genre,
-  Artist,
-}

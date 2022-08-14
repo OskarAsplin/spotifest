@@ -56,7 +56,7 @@ const ArtistBubble = (props: Props) => {
   );
 };
 
-const StyledAvatarContainerdiv = styled('div')(() => {
+export const StyledAvatarContainerdiv = styled('div')(() => {
   return {
     display: 'flex',
     flexDirection: 'column',
@@ -82,7 +82,6 @@ const StyledIconButton = styled(IconButton)(() => {
       },
       '@media (max-width: 689px)': {
         width: '75px',
-        marginBottom: '6px',
         padding: '6px',
       },
     },
