@@ -385,13 +385,10 @@ const ArtistPage = () => {
 
   const classes = useStyles();
 
-  if (redirectFestival) {
+  if (redirectFestival)
     return <Navigate to={'/festival/' + redirectFestival} />;
-  }
 
-  if (redirectHome) {
-    return <Navigate to={'/'} />;
-  }
+  if (redirectHome) return <Navigate to={'/'} />;
 
   if (!artistInfo) {
     return (

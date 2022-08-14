@@ -26,27 +26,11 @@ import { styled } from '@mui/material/styles';
 
 const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
   createStyles({
-    circleSize: {
-      '@media (min-width: 690px)': {
-        width: '80px',
-      },
-      '@media (max-width: 689px)': {
-        '@media (min-width: 440px)': {
-          width: '60px',
-        },
-      },
-      '@media (max-width: 439px)': {
-        width: '50px',
-      },
-      userSelect: 'none',
-    },
     artistAvatarBox: {
       display: 'flex',
       flexDirection: 'row',
       flexWrap: 'wrap',
       justifyContent: 'space-between',
-    },
-    addSmallSidePadding: {
       '@media (min-width: 440px)': {
         padding: spacing(0, 2, 0, 2),
       },
@@ -164,9 +148,10 @@ const FestivalMatchCard = (props: Props) => {
                   sx={{
                     wordWrap: 'break-word',
                     textAlign: !showMatching ? 'center' : undefined,
+                    fontWeight: 700,
                   }}
                 >
-                  <Box fontWeight="fontWeightBold">{festival.name}</Box>
+                  {festival.name}
                 </Typography>
               </StyledTitleButton>
             </div>
@@ -217,7 +202,7 @@ const FestivalMatchCard = (props: Props) => {
                 </Fragment>
               }
             >
-              <div className={classes.circleSize}>
+              <StyledMatchCircleDiv>
                 <CircularProgressbar
                   value={matchingPercentTotal}
                   text={`${matchingPercentTotal}%`}
@@ -229,7 +214,7 @@ const FestivalMatchCard = (props: Props) => {
                     trailColor: trailColor,
                   })}
                 />
-              </div>
+              </StyledMatchCircleDiv>
             </HtmlTooltip>
           )}
         </div>
@@ -254,9 +239,7 @@ const FestivalMatchCard = (props: Props) => {
         </Typography>
       </StyledPaddedDiv>
       {showMatching && !noLineupRegistered && (
-        <div
-          className={clsx(classes.artistAvatarBox, classes.addSmallSidePadding)}
-        >
+        <div className={classes.artistAvatarBox}>
           {matchingArtists.map((artist) => (
             <ArtistBubble
               artist={artist}
@@ -272,8 +255,12 @@ const FestivalMatchCard = (props: Props) => {
       )}
       {noLineupRegistered ? (
         <StyledPaddedDiv>
-          <Typography variant="body1" color="primary" component="div">
-            <Box fontWeight="fontWeightBold">No lineup registered yet</Box>
+          <Typography
+            variant="body1"
+            color="primary"
+            sx={{ mb: 2, fontWeight: 700 }}
+          >
+            No lineup registered yet
           </Typography>
         </StyledPaddedDiv>
       ) : (
@@ -288,13 +275,7 @@ const FestivalMatchCard = (props: Props) => {
               Popular artists at this festival
             </Typography>
           </StyledPaddedDiv>
-          <div
-            className={clsx(
-              classes.artistAvatarBox,
-              classes.addSmallSidePadding,
-              classes.paddingBottom
-            )}
-          >
+          <div className={clsx(classes.artistAvatarBox, classes.paddingBottom)}>
             {popularArtists.length > 0 &&
               popularArtists
                 .slice(0, maxArtistsInWidth)
@@ -312,11 +293,7 @@ const FestivalMatchCard = (props: Props) => {
           </div>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <div
-              className={clsx(
-                classes.artistAvatarBox,
-                classes.addSmallSidePadding,
-                classes.paddingBottom
-              )}
+              className={clsx(classes.artistAvatarBox, classes.paddingBottom)}
             >
               {popularArtists.length > 0 &&
                 popularArtists
@@ -394,6 +371,23 @@ const StyledPaddedDiv = styled('div')(({ theme: { spacing } }) => {
     '@media (max-width: 439px)': {
       padding: spacing(0, 2, 0, 2),
     },
+  };
+});
+
+const StyledMatchCircleDiv = styled('div')(() => {
+  return {
+    '@media (min-width: 690px)': {
+      width: '80px',
+    },
+    '@media (max-width: 689px)': {
+      '@media (min-width: 440px)': {
+        width: '60px',
+      },
+    },
+    '@media (max-width: 439px)': {
+      width: '50px',
+    },
+    userSelect: 'none',
   };
 });
 

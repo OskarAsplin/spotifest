@@ -1,6 +1,11 @@
 import { ThemeOptions } from '@mui/material/styles';
-import { pink, lightBlue } from '@mui/material/colors';
+import { TypographyOptions } from '@mui/material/styles/createTypography';
+import { deepOrange, indigo, pink, lightBlue } from '@mui/material/colors';
 import { PaletteMode } from '@mui/material';
+
+const typography: TypographyOptions = {
+  fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+};
 
 export const lightBluePinkThemeOptions: ThemeOptions['palette'] = {
   primary: {
@@ -15,10 +20,8 @@ export const lightBluePinkThemeOptions: ThemeOptions['palette'] = {
   },
 };
 
-export const getMainTheme = (mode: PaletteMode) => ({
-  typography: {
-    fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-  },
+export const getMainTheme = (mode: PaletteMode): ThemeOptions => ({
+  typography,
   palette: {
     ...lightBluePinkThemeOptions,
     mode,
@@ -32,3 +35,16 @@ export const getMainTheme = (mode: PaletteMode) => ({
       : {}),
   },
 });
+
+export const indigoOrangePalette: ThemeOptions['palette'] = {
+  primary: {
+    light: indigo[300],
+    main: indigo[500],
+    dark: indigo[700],
+  },
+  secondary: {
+    light: deepOrange[300],
+    main: deepOrange[500],
+    dark: deepOrange[700],
+  },
+};

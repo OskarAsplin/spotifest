@@ -17,7 +17,7 @@ import {
   CircularProgress,
   Button,
 } from '@mui/material';
-import { deepOrange, indigo } from '@mui/material/colors';
+import { indigo } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
@@ -65,6 +65,7 @@ import StandardLink from './StandardLink';
 import HtmlTooltip from './HtmlTooltip';
 import SettingsBarDatePicker from './SettingsBarDatePicker';
 import { useTheme } from '@mui/material/styles';
+import { indigoOrangePalette } from '../layouts/StandardLayout.styles';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -169,20 +170,7 @@ const FestivalMatchSettingsBar = () => {
   const smallScreen = useMediaQuery('(max-width:610px)');
   const pcScreen = useMediaQuery('(min-width:1200px)');
 
-  const indigoOrangeMuiTheme = createTheme({
-    palette: {
-      primary: {
-        light: indigo[300],
-        main: indigo[500],
-        dark: indigo[700],
-      },
-      secondary: {
-        light: deepOrange[300],
-        main: deepOrange[500],
-        dark: deepOrange[700],
-      },
-    },
-  });
+  const indigoOrangeMuiTheme = createTheme({ palette: indigoOrangePalette });
 
   const testMatchesWithGivenSettings = (
     area: Area,
