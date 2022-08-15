@@ -124,7 +124,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
           />
           <ThemeProvider theme={lightTheme}>
             <div>
-              {searchResults.loading && (
+              {searchResults.loading && inputText && (
                 <Paper elevation={10} className={classes.fixedAndAligned}>
                   <CircularProgress />
                 </Paper>
