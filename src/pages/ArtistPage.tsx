@@ -15,7 +15,7 @@ import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
-import { Navigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ArtistBubble from '../components/ArtistBubble';
 import FestivalMatchCard from '../components/FestivalMatchCard';
 import { spotifyApi } from '../redux/asyncActions';
@@ -29,6 +29,7 @@ import { ArtistInfo, Artist } from '../redux/types';
 import '../styles/base.scss';
 import { fetchToJson, getApiBaseUrl } from '../utils/restUtils';
 import {
+  getFestivalPath,
   getIconPicture,
   getBigPicture,
   getMaxArtistsInWidth,
@@ -179,6 +180,7 @@ const ArtistPage = () => {
   const themeMode = useTheme().palette.mode;
   const dispatch = useDispatch();
   const { artistId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsValidSpotifyId(true);
@@ -214,7 +216,6 @@ const ArtistPage = () => {
                     artist: {
                       name: spotifyArtistResponse.name,
                       spotifyId: spotifyArtistResponse.id,
-                      hasSpotifyId: true,
                       iconPicture: '',
                       bigPicture: bigPicture,
                       popularity: spotifyArtistResponse.popularity,
@@ -254,7 +255,6 @@ const ArtistPage = () => {
                     return {
                       name: relArtist.name,
                       spotifyId: relArtist.id,
-                      hasSpotifyId: true,
                       iconPicture: iconPicture,
                       bigPicture: '',
                       popularity: relArtist.popularity,
@@ -301,7 +301,6 @@ const ArtistPage = () => {
                           return {
                             name: relArtist.name,
                             spotifyId: relArtist.id,
-                            hasSpotifyId: true,
                             iconPicture: iconPicture,
                             bigPicture: '',
                             popularity: relArtist.popularity,
@@ -341,8 +340,6 @@ const ArtistPage = () => {
   const [artistInfo, setArtistInfo] = useState<ArtistInfo | undefined>(
     undefined
   );
-  const [redirectHome, setRedirectHome] = useState<boolean>(false);
-  const [redirectFestival, setRedirectFestival] = useState('');
   const [relatedArtists, setRelatedArtists] = useState<Artist[]>([]);
   const [expanded, setExpanded] = useState(false);
   const [isArtistInDb, setIsArtistInDb] = useState(true);
@@ -358,11 +355,6 @@ const ArtistPage = () => {
 
   const classes = useStyles();
 
-  if (redirectFestival)
-    return <Navigate to={'/festival/' + redirectFestival} />;
-
-  if (redirectHome) return <Navigate to={'/'} />;
-
   if (!artistInfo) {
     return (
       <>
@@ -371,7 +363,7 @@ const ArtistPage = () => {
             <IconButton
               onClick={() => {
                 window.history.back();
-                setTimeout(() => setRedirectHome(true), 10);
+                setTimeout(() => navigate('/'), 10);
               }}
             >
               <ArrowBackOutlined fontSize="large" />
@@ -404,7 +396,7 @@ const ArtistPage = () => {
             <IconButton
               onClick={() => {
                 window.history.back();
-                setTimeout(() => setRedirectHome(true), 10);
+                setTimeout(() => navigate('/'), 10);
               }}
             >
               <ArrowBackOutlined fontSize="large" />
@@ -511,7 +503,6 @@ const ArtistPage = () => {
                   {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
                     <ArtistBubble
                       artist={artist}
-                      useSpotifyId={true}
                       key={
                         'avatar_rel_artist_' +
                         artistInfo.artist.name +
@@ -572,9 +563,7 @@ const ArtistPage = () => {
                       festival.year
                     }
                     variant="outlined"
-                    onClick={() => {
-                      setRedirectFestival(encodeURIComponent(festival.name));
-                    }}
+                    onClick={() => navigate(getFestivalPath(festival.name))}
                   >
                     <>
                       <Typography

@@ -18,7 +18,7 @@ import CookieConsent from 'react-cookie-consent';
 import ReactCountryFlag from 'react-country-flag';
 import ReactPlayer from 'react-player/lazy';
 import { useDispatch } from 'react-redux';
-import { Navigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
 import ArtistBubble from '../components/ArtistBubble';
 import { turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
@@ -284,6 +284,7 @@ const FestivalPage = () => {
   const themeMode = useTheme().palette.mode;
   const themeDirection = useTheme().direction;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const limitLineups = !mediumScreen ? 4 : undefined;
 
@@ -311,7 +312,6 @@ const FestivalPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [redirectHome, setRedirectHome] = useState<boolean>(false);
   const [festivalInfo, setFestivalInfo] = useState<FestivalInfo | undefined>(
     undefined
   );
@@ -338,8 +338,6 @@ const FestivalPage = () => {
       </Typography>
     );
   };
-
-  if (redirectHome) return <Navigate to="/" />;
 
   if (!festivalInfo) {
     return (
@@ -368,7 +366,7 @@ const FestivalPage = () => {
             <IconButton
               onClick={() => {
                 window.history.back();
-                setTimeout(() => setRedirectHome(true), 10);
+                setTimeout(() => navigate('/'), 10);
               }}
             >
               <ArrowBackOutlined fontSize="large" />

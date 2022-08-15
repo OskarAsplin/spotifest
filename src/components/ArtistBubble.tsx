@@ -11,42 +11,33 @@ import MusicNote from '@mui/icons-material/MusicNote';
 import { useNavigate } from 'react-router-dom';
 import { Artist } from '../redux/types';
 import { styled } from '@mui/material/styles';
+import { getArtistPath } from '../utils/utils';
 
 interface Props {
   artist: Artist;
-  useSpotifyId?: boolean;
   bubbleId: string;
 }
 
-const ArtistBubble = (props: Props) => {
-  const { artist, useSpotifyId, bubbleId } = props;
+const ArtistBubble = ({ artist, bubbleId }: Props) => {
   const navigate = useNavigate();
-
-  const navigateToArtist = (artistId: string) =>
-    navigate(`/artist/${useSpotifyId ? 'spotifyId=' : ''}${artistId}`);
 
   return (
     <StyledAvatarContainerdiv>
       <StyledIconButton
         key={'div_' + bubbleId}
         color="inherit"
-        disabled={!artist.hasSpotifyId}
-        onClick={() => {
-          if (artist.hasSpotifyId)
-            navigateToArtist(
-              encodeURIComponent(useSpotifyId ? artist.spotifyId! : artist.name)
-            );
-        }}
+        disabled={!artist.spotifyId}
+        onClick={() => navigate(getArtistPath(artist.name, artist.spotifyId))}
       >
         {artist.iconPicture ? (
           <StyledAvatar
             src={artist.iconPicture}
             alt={artist.name}
-            isClickable={artist.hasSpotifyId}
+            isClickable={!!artist.spotifyId}
             key={bubbleId}
           />
         ) : (
-          <StyledAvatarDiv isClickable={artist.hasSpotifyId}>
+          <StyledAvatarDiv isClickable={!!artist.spotifyId}>
             <MusicNote fontSize={'large'} />
           </StyledAvatarDiv>
         )}

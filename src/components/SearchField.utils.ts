@@ -44,10 +44,7 @@ export const useSearchDb = () =>
 
 export const searchDatabase = (searchString: string) => {
   return fetchToJson(getApiBaseUrl() + '/onTour/search/?q=' + searchString)
-    .then((response: any) => {
-      const searchResponse = response as SearchResponse;
-      return searchResponse;
-    })
+    .then((response: any) => response as SearchResponse)
     .catch((error) => {
       console.log(error);
       return emptySearchResponse;

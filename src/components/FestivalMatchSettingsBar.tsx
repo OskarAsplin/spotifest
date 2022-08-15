@@ -279,7 +279,6 @@ const FestivalMatchSettingsBar = () => {
                 return newArtists.push({
                   name: artistResponse.name,
                   spotifyId: artistResponse.id,
-                  hasSpotifyId: true,
                   iconPicture: getIconPicture(artistResponse.images),
                   bigPicture: getBigPicture(artistResponse.images),
                   popularity: artistResponse.popularity,

@@ -75,3 +75,17 @@ export const getBaseUrl = () => {
     return url.slice(0, localhost_pos) + 'localhost:3000';
   }
 };
+
+export const getArtistPath = (artistName: string, spotifyId?: string) => {
+  if (spotifyId) return `/artist/spotifyId=${spotifyId}`;
+  return '/artist/' + encodeURIComponent(artistName);
+};
+
+export const getFestivalPath = (festivalName: string) =>
+  '/festival/' + encodeURIComponent(festivalName);
+
+export const getArtistUrl = (artistName: string, spotifyId?: string) =>
+  getBaseUrl() + getArtistPath(artistName, spotifyId);
+
+export const getFestivalUrl = (festivalName: string) =>
+  getBaseUrl() + getFestivalPath(festivalName);

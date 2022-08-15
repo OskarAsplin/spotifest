@@ -14,7 +14,7 @@ import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import SearchIcon from '@mui/icons-material/Search';
 import StandardLink from './StandardLink';
-import { getBaseUrl } from '../utils/utils';
+import { getArtistUrl, getFestivalUrl } from '../utils/utils';
 import { useSearchDb } from './SearchField.utils';
 import { createTheme } from '@mui/material/styles';
 import { getMainTheme } from '../theme/theme.styles';
@@ -80,14 +80,6 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
 
   const classes = useStyles();
   const { inputText, setInputText, searchResults } = useSearchDb();
-
-  const getFestivalUrl = (festivalName: string) => {
-    return getBaseUrl() + '/festival/' + encodeURIComponent(festivalName);
-  };
-
-  const getArtistUrl = (artistName: string) => {
-    return getBaseUrl() + '/artist/' + encodeURIComponent(artistName);
-  };
 
   const darkTheme = createTheme(getMainTheme('dark'));
   const lightTheme = createTheme(getMainTheme('light'));
@@ -198,7 +190,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                         <StandardLink
                           color={'textSecondary'}
                           key={'searchResult artist: ' + artist.name}
-                          href={getArtistUrl(artist.name)}
+                          href={getArtistUrl(artist.name, artist.spotifyId)}
                           onClick={() => setInputText('')}
                           sx={{ mb: 1 }}
                           variant="body2"
