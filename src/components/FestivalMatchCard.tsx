@@ -133,13 +133,18 @@ const FestivalMatchCard = (props: Props) => {
           <Box sx={{ width: showMatching ? 'undefined' : '100%' }}>
             <Box
               sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                width: showMatching ? 'undefined' : '100%',
+                ...(showMatching
+                  ? {}
+                  : {
+                      display: 'flex',
+                      justifyContent: 'center',
+                      width: '100%',
+                    }),
               }}
             >
               <StyledTitleButton
                 color="inherit"
+                variant="outlined"
                 onClick={() => {
                   navigateToFestival(encodeURIComponent(festival.name));
                 }}
@@ -348,15 +353,17 @@ const FestivalMatchCard = (props: Props) => {
   );
 };
 
-const StyledTitleButton = styled(Button)(({ theme: { spacing } }) => {
+const StyledTitleButton = styled(Button)(({ theme: { spacing, palette } }) => {
   return {
     [`&.${buttonClasses.root}`]: {
       whiteSpace: 'normal',
       textTransform: 'none',
       textAlign: 'left',
-      marginLeft: spacing(-1.25),
       marginBottom: spacing(1.5),
       padding: spacing(0, 1, 0, 1),
+      borderColor: palette.primary?.[palette.mode],
+      '@media (min-width: 690px)': { borderStyle: 'dashed' },
+      '@media (max-width: 689px)': { borderStyle: 'dotted' },
     },
   };
 });
