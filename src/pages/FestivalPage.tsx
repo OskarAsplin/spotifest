@@ -13,7 +13,9 @@ import {
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import ArrowBackOutlined from '@mui/icons-material/ArrowBack';
-import clsx from 'clsx';
+import PublicIcon from '@mui/icons-material/Public';
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import CookieConsent from 'react-cookie-consent';
 import ReactCountryFlag from 'react-country-flag';
 import ReactPlayer from 'react-player/lazy';
@@ -29,7 +31,6 @@ import {
   getMaxArtistsInFullLineupWidth,
   displayedLocationName,
 } from '../utils/utils';
-import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -51,13 +52,6 @@ const useStyles = makeStyles((theme: Theme) =>
       flexDirection: 'column',
       alignItems: 'center',
       width: '100%',
-    },
-    paper: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      width: '100%',
-      padding: theme.spacing(1, 0, 1, 0),
     },
     paper2: {
       display: 'flex',
@@ -113,24 +107,8 @@ const useStyles = makeStyles((theme: Theme) =>
     videoBox: {
       marginBottom: theme.spacing(2),
     },
-    buttonBox: {
-      width: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: theme.spacing(1, 0, 1, 0),
-    },
     darkerBackground: {
       backgroundColor: '#303030',
-    },
-    festivalImg: {
-      '@media (min-width: 900px)': {
-        maxHeight: 400,
-      },
-      '@media (max-width: 899px)': {
-        maxHeight: 350,
-      },
-      maxWidth: '100%',
     },
     lineupView: {
       display: 'flex',
@@ -205,9 +183,6 @@ const useStyles = makeStyles((theme: Theme) =>
         minWidth: '72px',
       },
     },
-    festivalTitle: {
-      textAlign: 'center',
-    },
     topLeft: {
       position: 'absolute',
       top: theme.spacing(8),
@@ -217,23 +192,6 @@ const useStyles = makeStyles((theme: Theme) =>
       display: 'flex',
       justifyContent: 'center',
       width: '100%',
-    },
-    addSidePadding: {
-      '@media (min-width: 690px)': {
-        padding: theme.spacing(0, 4, 0, 4),
-      },
-      '@media (max-width: 689px)': {
-        '@media (min-width: 440px)': {
-          padding: theme.spacing(0, 2, 0, 2),
-        },
-      },
-      '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 2, 0, 2),
-      },
-    },
-    festivalImgButton: {
-      padding: '0px',
-      borderRadius: '0px',
     },
     artistWidth: {
       '@media (min-width: 690px)': {
@@ -281,7 +239,6 @@ const FestivalPage = () => {
 
   const { festivalId } = useParams();
 
-  const themeMode = useTheme().palette.mode;
   const themeDirection = useTheme().direction;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -379,41 +336,29 @@ const FestivalPage = () => {
             <Box className={classes.box}>
               <Paper
                 elevation={3}
-                className={classes.paper}
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  py: 1,
+                  '@media (min-width: 690px)': { px: 4 },
+                  '@media (max-width: 689px)': {
+                    '@media (min-width: 440px)': { px: 2 },
+                  },
+                  '@media (max-width: 439px)': { px: 2 },
+                }}
                 key={'festivalInfo:' + festivalInfo.name}
               >
                 <div className={classes.festivalTitleBox}>
                   <Typography
-                    variant={bigScreen ? 'h3' : mediumScreen ? 'h4' : 'h5'}
-                    className={classes.festivalTitle}
+                    variant={bigScreen ? 'h3' : 'h4'}
+                    sx={{ mb: 2, fontWeight: 'bold' }}
                   >
-                    <Box fontWeight="fontWeightBold">{festivalInfo.name}</Box>
+                    {festivalInfo.name}
                   </Typography>
                 </div>
-                <Box
-                  className={
-                    themeMode === 'light'
-                      ? classes.buttonBox
-                      : clsx(classes.buttonBox, classes.darkerBackground)
-                  }
-                >
-                  <Button
-                    onClick={() =>
-                      window.open(festivalInfo.festivalImg, '_blank')
-                    }
-                    className={classes.festivalImgButton}
-                  >
-                    <img
-                      className={classes.festivalImg}
-                      src={festivalInfo.festivalImg}
-                      alt=""
-                    />
-                  </Button>
-                </Box>
-                <Typography
-                  variant="subtitle1"
-                  className={classes.addSidePadding}
-                >
+                <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
                   {displayedLocationName(festivalInfo.locationText)}{' '}
                   <ReactCountryFlag
                     countryCode={festivalInfo.country}
@@ -423,40 +368,48 @@ const FestivalPage = () => {
                 </Typography>
                 <Typography
                   variant="subtitle1"
-                  className={classes.addSidePadding}
+                  sx={{ m: 1, textAlign: 'center' }}
                 >
                   {'Genres: ' + festivalInfo.genres.slice(0, 5).join(', ')}
                 </Typography>
-                {festivalInfo.webpage && (
-                  <StandardLink
-                    color={({ palette }) => palette.tertiary?.[palette.mode]}
-                    variant="subtitle1"
-                    href={festivalInfo.webpage}
-                    className={classes.addSidePadding}
-                  >
-                    Official webpage
-                  </StandardLink>
-                )}
-                {festivalInfo.ticketWebpage && (
-                  <StandardLink
-                    color={({ palette }) => palette.tertiary?.[palette.mode]}
-                    variant="subtitle1"
-                    href={festivalInfo.ticketWebpage}
-                    className={classes.addSidePadding}
-                  >
-                    Ticket webpage
-                  </StandardLink>
-                )}
-                {festivalInfo.crawledWebpage && (
-                  <StandardLink
-                    color={({ palette }) => palette.tertiary?.[palette.mode]}
-                    variant="subtitle1"
-                    href={festivalInfo.crawledWebpage}
-                    className={classes.addSidePadding}
-                  >
-                    View on Musicfestivalwizard.com
-                  </StandardLink>
-                )}
+                <div>
+                  {festivalInfo.webpage && (
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      sx={{ p: 1, minWidth: 0, mx: 2, my: 1, borderRadius: 2 }}
+                      onClick={() =>
+                        window.open(festivalInfo.webpage, '_blank')
+                      }
+                    >
+                      <PublicIcon />
+                    </Button>
+                  )}
+                  {festivalInfo.ticketWebpage && (
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      sx={{ p: 1, minWidth: 0, mx: 2, my: 1, borderRadius: 2 }}
+                      onClick={() =>
+                        window.open(festivalInfo.ticketWebpage, '_blank')
+                      }
+                    >
+                      <LocalActivityIcon />
+                    </Button>
+                  )}
+                  {festivalInfo.crawledWebpage && (
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      sx={{ p: 1, minWidth: 0, mx: 2, my: 1, borderRadius: 2 }}
+                      onClick={() =>
+                        window.open(festivalInfo.crawledWebpage, '_blank')
+                      }
+                    >
+                      <AutoFixHighIcon />
+                    </Button>
+                  )}
+                </div>
               </Paper>
             </Box>
             {festivalInfo.video && (
@@ -544,31 +497,21 @@ const FestivalPage = () => {
                       >
                         {lineup.artists.length === 0 ? (
                           <Box className={classes.lineupView}>
-                            <Typography
-                              variant="h6"
-                              className={classes.festivalTitle}
-                            >
+                            <Typography variant="h6">
                               No lineup registered
                             </Typography>
                           </Box>
                         ) : (
                           <Box className={classes.lineupView}>
                             {lineup.cancelled ? (
-                              <Typography
-                                variant="h6"
-                                color="secondary"
-                                className={classes.festivalTitle}
-                              >
+                              <Typography variant="h6" color="secondary">
                                 {'CANCELLED' +
                                   (lineup.date_str
                                     ? ' (' + lineup.date_str + ')'
                                     : '')}
                               </Typography>
                             ) : (
-                              <Typography
-                                variant="h5"
-                                className={classes.festivalTitle}
-                              >
+                              <Typography variant="h5">
                                 {lineup.date_str}
                               </Typography>
                             )}

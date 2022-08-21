@@ -1,5 +1,6 @@
 import { useState, Fragment } from 'react';
 import {
+  Divider,
   Theme,
   Paper,
   IconButton,
@@ -130,37 +131,36 @@ const FestivalMatchCard = (props: Props) => {
       {showMatching && <div className={classes.paddingBottom} />}
       <StyledPaddedDiv>
         <div className={classes.titleAndMatchBox}>
-          <Box sx={{ width: showMatching ? 'undefined' : '100%' }}>
-            <Box
-              sx={{
-                ...(showMatching
-                  ? {}
-                  : {
-                      display: 'flex',
-                      justifyContent: 'center',
-                      width: '100%',
-                    }),
+          <Box
+            sx={{
+              ...(showMatching
+                ? {}
+                : {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '100%',
+                  }),
+            }}
+          >
+            <StyledTitleButton
+              color="inherit"
+              variant="outlined"
+              onClick={() => {
+                navigateToFestival(encodeURIComponent(festival.name));
               }}
             >
-              <StyledTitleButton
-                color="inherit"
-                variant="outlined"
-                onClick={() => {
-                  navigateToFestival(encodeURIComponent(festival.name));
+              <Typography
+                variant={bigScreen ? 'h3' : 'h5'}
+                sx={{
+                  wordWrap: 'break-word',
+                  textAlign: !showMatching ? 'center' : undefined,
+                  fontWeight: 700,
                 }}
               >
-                <Typography
-                  variant={bigScreen ? 'h3' : 'h5'}
-                  sx={{
-                    wordWrap: 'break-word',
-                    textAlign: !showMatching ? 'center' : undefined,
-                    fontWeight: 700,
-                  }}
-                >
-                  {festival.name}
-                </Typography>
-              </StyledTitleButton>
-            </Box>
+                {festival.name}
+              </Typography>
+            </StyledTitleButton>
             {festival.cancelled ? (
               <Typography variant="subtitle2" color="secondary">
                 {`CANCELLED${
@@ -230,6 +230,7 @@ const FestivalMatchCard = (props: Props) => {
           sx={{
             overflow: 'hidden',
             textOverflow: 'ellipsis',
+            textAlign: showMatching ? undefined : 'center',
           }}
         >
           {'Genres: ' + festival.top_genres.slice(0, 3).join(', ')}
@@ -237,7 +238,11 @@ const FestivalMatchCard = (props: Props) => {
         {showMatching && !noLineupRegistered && (
           <Typography
             variant="body1"
-            color="primary"
+            color={
+              matchingArtists.length > 0
+                ? 'primary'
+                : ({ palette }) => palette.text.disabled
+            }
             sx={{ my: 1.5, fontWeight: 700 }}
           >
             {matchingArtists.length > 0
@@ -273,7 +278,7 @@ const FestivalMatchCard = (props: Props) => {
         </StyledPaddedDiv>
       ) : (
         <>
-          <StyledPaddedDiv>
+          <Divider sx={{ width: '100%' }}>
             <Typography
               variant="body1"
               color="primary"
@@ -282,7 +287,7 @@ const FestivalMatchCard = (props: Props) => {
             >
               Popular artists at this festival
             </Typography>
-          </StyledPaddedDiv>
+          </Divider>
           <div className={clsx(classes.artistAvatarBox, classes.paddingBottom)}>
             {popularArtists.length > 0 &&
               popularArtists

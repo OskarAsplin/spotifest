@@ -676,8 +676,11 @@ const FestivalMatchSettingsBar = () => {
                     );
                   }}
                 >
-                  <Typography variant={smallScreen ? 'h6' : 'h4'}>
-                    <Box fontWeight="fontWeightBold">Go</Box>
+                  <Typography
+                    variant={smallScreen ? 'h6' : 'h4'}
+                    sx={{ fontWeight: 'bold' }}
+                  >
+                    Go
                   </Typography>
                 </Button>
               </Box>

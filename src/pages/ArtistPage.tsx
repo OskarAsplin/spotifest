@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import {
+  Avatar,
+  Divider,
   Theme,
   Box,
   Paper,
   Typography,
   Button,
   IconButton,
-  Collapse,
   Stack,
 } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -34,7 +34,6 @@ import {
   getBigPicture,
   getMaxArtistsInWidth,
 } from '../utils/utils';
-import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 
@@ -64,19 +63,6 @@ const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
       justifyContent: 'center',
       alignItems: 'center',
       width: '100%',
-    },
-    addSidePadding: {
-      '@media (min-width: 690px)': {
-        padding: spacing(0, 4, 0, 4),
-      },
-      '@media (max-width: 689px)': {
-        '@media (min-width: 440px)': {
-          padding: spacing(0, 2, 0, 2),
-        },
-      },
-      '@media (max-width: 439px)': {
-        padding: spacing(0, 2, 0, 2),
-      },
     },
     addSmallSidePadding: {
       '@media (min-width: 440px)': {
@@ -341,7 +327,6 @@ const ArtistPage = () => {
     undefined
   );
   const [relatedArtists, setRelatedArtists] = useState<Artist[]>([]);
-  const [expanded, setExpanded] = useState(false);
   const [isArtistInDb, setIsArtistInDb] = useState(true);
   const [isNetworkError, setIsNetworkError] = useState(false);
   const [isValidSpotifyId, setIsValidSpotifyId] = useState(true);
@@ -408,14 +393,27 @@ const ArtistPage = () => {
         <div className={classes.root}>
           <Paper
             elevation={10}
-            sx={{ width: '100%', maxWidth: '700px', mx: 2, mb: 2 }}
+            sx={{
+              width: '100%',
+              maxWidth: '700px',
+              mx: 2,
+              mb: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
             key={'artistInfo:' + artistInfo.artist.name}
           >
             <Typography
-              variant={bigScreen ? 'h3' : 'h5'}
-              sx={{ textAlign: 'center', width: '100%', mt: 1 }}
+              variant={bigScreen ? 'h3' : 'h4'}
+              sx={{
+                textAlign: 'center',
+                width: '100%',
+                mt: 1,
+                fontWeight: 'bold',
+              }}
             >
-              <Box fontWeight="fontWeightBold">{artistInfo.artist.name}</Box>
+              {artistInfo.artist.name}
             </Typography>
             <Box
               className={
@@ -443,56 +441,53 @@ const ArtistPage = () => {
                 </div>
               )}
             </Box>
-            <Typography variant="subtitle1" className={classes.addSidePadding}>
+            <Typography
+              variant="subtitle1"
+              sx={{
+                textAlign: 'center',
+                '@media (min-width: 690px)': { px: 4 },
+                '@media (max-width: 689px)': {
+                  '@media (min-width: 440px)': { px: 2 },
+                },
+                '@media (max-width: 439px)': { px: 2 },
+              }}
+            >
               {artistInfo.artist.genres.length > 0
                 ? 'Genres: ' + artistInfo.artist.genres.join(', ')
                 : 'No registered genres'}
             </Typography>
             {artistInfo.artist.spotifyId && (
-              <StandardLink
-                color={({ palette }) => palette.tertiary?.[palette.mode]}
-                variant="subtitle1"
-                href={
-                  'https://open.spotify.com/artist/' +
-                  artistInfo.artist.spotifyId
+              <IconButton
+                sx={{ p: 1.5 }}
+                color="inherit"
+                onClick={() =>
+                  window.open(
+                    `https://open.spotify.com/artist/${artistInfo.artist.spotifyId}`,
+                    '_blank'
+                  )
                 }
-                className={classes.addSidePadding}
               >
-                Open artist in spotify
-              </StandardLink>
+                <Avatar
+                  src={process.env.PUBLIC_URL + '/techIcons/Spotify-Mark.png'}
+                  alt=""
+                  sx={{ height: 28, width: 28 }}
+                />
+              </IconButton>
             )}
             {relatedArtists.length === 0 && (
               <div className={classes.paddingBottom} />
             )}
             {relatedArtists.length > 0 && (
-              <div
-                className={clsx(
-                  classes.matchingPopularBox,
-                  classes.addSidePadding
-                )}
-              >
-                <Typography variant="body1" color="primary" component="div">
-                  <Box
-                    fontWeight="fontWeightBold"
-                    onClick={() => setExpanded(!expanded)}
+              <>
+                <Divider sx={{ width: '100%' }}>
+                  <Typography
+                    variant="body1"
+                    color="primary"
+                    sx={{ fontWeight: 'bold' }}
                   >
                     Related artists
-                  </Box>
-                </Typography>
-                <IconButton
-                  className={clsx(classes.expand, {
-                    [classes.expandOpen]: expanded,
-                  })}
-                  onClick={() => setExpanded(!expanded)}
-                  aria-expanded={expanded}
-                  aria-label="show more"
-                >
-                  <ExpandMoreIcon />
-                </IconButton>
-              </div>
-            )}
-            {relatedArtists.length > 0 && (
-              <Collapse in={expanded} timeout="auto" unmountOnExit>
+                  </Typography>
+                </Divider>
                 <div
                   className={clsx(
                     classes.artistAvatarBox,
@@ -520,7 +515,7 @@ const ArtistPage = () => {
                       <div className={classes.artistWidth} key={i} />
                     ))}
                 </div>
-              </Collapse>
+              </>
             )}
           </Paper>
           {isArtistInDb && artistInfo.festivalsFuture.length !== 0 && (
@@ -568,9 +563,13 @@ const ArtistPage = () => {
                     <>
                       <Typography
                         variant={bigScreen ? 'h3' : 'h5'}
-                        sx={{ wordWrap: 'break-word', textAlign: 'center' }}
+                        sx={{
+                          wordWrap: 'break-word',
+                          textAlign: 'center',
+                          fontWeight: 'bold',
+                        }}
                       >
-                        <Box fontWeight="fontWeightBold">{festival.name}</Box>
+                        {festival.name}
                       </Typography>
                       {festival.cancelled ? (
                         <Typography variant="subtitle1" color="secondary">

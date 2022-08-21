@@ -142,8 +142,8 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                         </Typography>
                       )}
                     {searchResults.result.festivals.length > 0 && (
-                      <Typography component="div" sx={{ mb: 1 }}>
-                        <Box fontWeight="fontWeightBold">Festivals:</Box>
+                      <Typography sx={{ mb: 1, fontWeight: 'bold' }}>
+                        Festivals:
                       </Typography>
                     )}
                     {searchResults.result.festivals
@@ -180,8 +180,8 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                         <Box sx={{ mt: 2 }} />
                       )}
                     {searchResults.result.artists.length > 0 && (
-                      <Typography sx={{ mb: 1 }} component="div">
-                        <Box fontWeight="fontWeightBold">Artists:</Box>
+                      <Typography sx={{ mb: 1, fontWeight: 'bold' }}>
+                        Artists:
                       </Typography>
                     )}
                     {searchResults.result.artists
