@@ -81,9 +81,6 @@ const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
         flexDirection: 'column',
       },
     },
-    paddingBottom: {
-      paddingBottom: spacing(1),
-    },
   })
 );
 
@@ -128,7 +125,7 @@ const FestivalMatchCard = (props: Props) => {
 
   return (
     <Paper elevation={3} sx={{ pt: 1 }} key={festival.name}>
-      {showMatching && <div className={classes.paddingBottom} />}
+      {showMatching && <Box sx={{ pb: 1 }} />}
       <StyledPaddedDiv>
         <div className={classes.titleAndMatchBox}>
           <Box
@@ -154,7 +151,7 @@ const FestivalMatchCard = (props: Props) => {
                 variant={bigScreen ? 'h3' : 'h5'}
                 sx={{
                   wordWrap: 'break-word',
-                  textAlign: !showMatching ? 'center' : undefined,
+                  textAlign: 'center',
                   fontWeight: 700,
                 }}
               >
@@ -270,7 +267,7 @@ const FestivalMatchCard = (props: Props) => {
         <StyledPaddedDiv>
           <Typography
             variant="body1"
-            color="primary"
+            color={({ palette }) => palette.text.disabled}
             sx={{ my: 2, fontWeight: 700 }}
           >
             No lineup registered yet
@@ -288,7 +285,7 @@ const FestivalMatchCard = (props: Props) => {
               Popular artists at this festival
             </Typography>
           </Divider>
-          <div className={clsx(classes.artistAvatarBox, classes.paddingBottom)}>
+          <div className={classes.artistAvatarBox}>
             {popularArtists.length > 0 &&
               popularArtists
                 .slice(0, maxArtistsInWidth)
@@ -305,9 +302,7 @@ const FestivalMatchCard = (props: Props) => {
               ))}
           </div>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <div
-              className={clsx(classes.artistAvatarBox, classes.paddingBottom)}
-            >
+            <div className={classes.artistAvatarBox}>
               {popularArtists.length > 0 &&
                 popularArtists
                   .slice(
@@ -389,8 +384,9 @@ const StyledPaddedDiv = styled('div')(({ theme: { spacing } }) => {
   };
 });
 
-const StyledMatchCircleDiv = styled('div')(() => {
+const StyledMatchCircleDiv = styled('div')(({ theme: { spacing } }) => {
   return {
+    marginLeft: spacing(2),
     '@media (min-width: 690px)': {
       width: '80px',
     },
