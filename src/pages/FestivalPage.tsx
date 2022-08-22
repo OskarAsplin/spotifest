@@ -397,18 +397,6 @@ const FestivalPage = () => {
                       <LocalActivityIcon />
                     </Button>
                   )}
-                  {festivalInfo.crawledWebpage && (
-                    <Button
-                      variant="outlined"
-                      color="primary"
-                      sx={{ p: 1, minWidth: 0, mx: 2, my: 1, borderRadius: 2 }}
-                      onClick={() =>
-                        window.open(festivalInfo.crawledWebpage, '_blank')
-                      }
-                    >
-                      <AutoFixHighIcon />
-                    </Button>
-                  )}
                 </div>
               </Paper>
             </Box>
