@@ -15,7 +15,6 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import ArrowBackOutlined from '@mui/icons-material/ArrowBack';
 import PublicIcon from '@mui/icons-material/Public';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
-import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import CookieConsent from 'react-cookie-consent';
 import ReactCountryFlag from 'react-country-flag';
 import ReactPlayer from 'react-player/lazy';
