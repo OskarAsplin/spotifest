@@ -352,7 +352,7 @@ const FestivalPage = () => {
                 <div className={classes.festivalTitleBox}>
                   <Typography
                     variant={bigScreen ? 'h3' : 'h4'}
-                    sx={{ mb: 2, fontWeight: 'bold' }}
+                    sx={{ mb: 2, fontWeight: 'bold', textAlign: 'center' }}
                   >
                     {festivalInfo.name}
                   </Typography>
