@@ -3,7 +3,6 @@ import {
   Divider,
   Theme,
   Paper,
-  IconButton,
   Button,
   buttonClasses,
   Collapse,
@@ -12,8 +11,6 @@ import {
 } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import clsx from 'clsx';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import ReactCountryFlag from 'react-country-flag';
@@ -24,8 +21,9 @@ import ArtistBubble, { StyledAvatarContainerdiv } from './ArtistBubble';
 import HtmlTooltip from './HtmlTooltip';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
+import { ExpandButton } from './ExpandButton';
 
-const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
+const useStyles = makeStyles(({ spacing }: Theme) =>
   createStyles({
     artistAvatarBox: {
       display: 'flex',
@@ -52,15 +50,6 @@ const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
       flexWrap: 'nowrap',
       alignItems: 'center',
       minHeight: '48px',
-    },
-    expand: {
-      transform: 'rotate(0deg)',
-      transition: transitions.create('transform', {
-        duration: transitions.duration.shortest,
-      }),
-    },
-    expandOpen: {
-      transform: 'rotate(180deg)',
     },
     lineup: {
       maxHeight: 260,
@@ -335,16 +324,10 @@ const FestivalMatchCard = (props: Props) => {
                     : undefined,
               }}
             >
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: expanded,
-                })}
+              <ExpandButton
+                expanded={expanded}
                 onClick={() => setExpanded(!expanded)}
-                aria-expanded={expanded}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
+              />
             </Box>
           )}
         </>
