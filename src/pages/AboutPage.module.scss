@@ -140,6 +140,15 @@ $socialButtonSize: 46px;
   @include centeredFlex(row);
 }
 
+.rowFlexCenterSpaceApart {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 330px;
+  width: 100%;
+}
+
 .creatorImgBox {
   @include centeredFlex(column);
   width: 100%;

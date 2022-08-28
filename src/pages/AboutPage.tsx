@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import {
-  Theme,
   Box,
   Paper,
   Typography,
@@ -11,32 +10,17 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import { makeStyles, createStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import StarIcon from '@mui/icons-material/Star';
 import clsx from 'clsx';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import TechStackContent from '../components/TechStackContent';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
 import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    expand: {
-      transform: 'rotate(0deg)',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-      }),
-    },
-    expandOpen: {
-      transform: 'rotate(180deg)',
-    },
-  })
-);
+import { ExpandButton } from '../components/ExpandButton';
 
 const AboutPage = () => {
   const bigScreen = useMediaQuery('(min-width:610px)');
@@ -44,19 +28,16 @@ const AboutPage = () => {
   const pcScreen = useMediaQuery('(min-width:1040px)');
   const bigPcScreen = useMediaQuery('(min-width:1300px)');
 
-  const [navigateHome, setNavigateHome] = useState<boolean>(false);
   const [usageExpanded, setUsageExpanded] = useState(false);
   const [techExpanded, setTechExpanded] = useState(false);
   const [supportExpanded, setSupportExpanded] = useState(false);
   const [disclaimerExpanded, setDisclaimerExpanded] = useState(false);
 
-  const themeMode = useTheme().palette.mode;
+  const navigate = useNavigate();
 
-  const lightMode: boolean = themeMode === 'light';
+  const isLightMode = useTheme().palette.mode === 'light';
 
-  const classes = useStyles();
-
-  if (navigateHome) return <Navigate to="/" />;
+  const { PUBLIC_URL } = process.env;
 
   return (
     <>
@@ -65,7 +46,7 @@ const AboutPage = () => {
           <IconButton
             onClick={() => {
               window.history.back();
-              setTimeout(() => setNavigateHome(true), 10);
+              setTimeout(() => navigate('/'), 10);
             }}
           >
             <ArrowBackOutlined fontSize="large" />
@@ -106,26 +87,18 @@ const AboutPage = () => {
             elevation={3}
             className={clsx(styles.paper, styles.minWidth400)}
           >
-            <div className={styles.rowFlexCenter}>
-              <Typography
-                variant="h5"
-                onClick={() => setTechExpanded(!techExpanded)}
-              >
+            <div
+              className={styles.rowFlexCenterSpaceApart}
+              onClick={() => setTechExpanded(!techExpanded)}
+            >
+              <ExpandButton expanded={techExpanded} />
+              <Typography variant="h5" sx={{ cursor: 'pointer' }}>
                 Technology stack
               </Typography>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: techExpanded,
-                })}
-                onClick={() => setTechExpanded(!techExpanded)}
-                aria-expanded={techExpanded}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
+              <ExpandButton expanded={techExpanded} />
             </div>
             <Collapse in={techExpanded} timeout="auto" unmountOnExit>
-              <TechStackContent pcScreen={pcScreen} lightMode={lightMode} />
+              <TechStackContent pcScreen={pcScreen} />
             </Collapse>
           </Paper>
         </Box>
@@ -140,23 +113,15 @@ const AboutPage = () => {
             elevation={3}
             className={clsx(styles.paperTop, styles.minWidth400)}
           >
-            <div className={styles.rowFlexCenter}>
-              <Typography
-                variant="h5"
-                onClick={() => setSupportExpanded(!supportExpanded)}
-              >
+            <div
+              className={styles.rowFlexCenterSpaceApart}
+              onClick={() => setSupportExpanded(!supportExpanded)}
+            >
+              <ExpandButton expanded={supportExpanded} />
+              <Typography variant="h5" sx={{ cursor: 'pointer' }}>
                 Ways to support
               </Typography>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: supportExpanded,
-                })}
-                onClick={() => setSupportExpanded(!supportExpanded)}
-                aria-expanded={supportExpanded}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
+              <ExpandButton expanded={supportExpanded} />
             </div>
             <Collapse in={supportExpanded} timeout="auto" unmountOnExit>
               <div className={styles.expandedDiv}>
@@ -204,33 +169,22 @@ const AboutPage = () => {
             elevation={3}
             className={clsx(styles.paper, styles.minWidth400)}
           >
-            <div className={styles.rowFlexCenter}>
-              <Typography
-                variant="h5"
-                onClick={() => setUsageExpanded(!usageExpanded)}
-              >
+            <div
+              className={styles.rowFlexCenterSpaceApart}
+              onClick={() => setUsageExpanded(!usageExpanded)}
+            >
+              <ExpandButton expanded={usageExpanded} />
+              <Typography variant="h5" sx={{ cursor: 'pointer' }}>
                 How to use
               </Typography>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: usageExpanded,
-                })}
-                onClick={() => setUsageExpanded(!usageExpanded)}
-                aria-expanded={usageExpanded}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
+              <ExpandButton expanded={usageExpanded} />
             </div>
             <Collapse in={usageExpanded} timeout="auto" unmountOnExit>
               <div className={styles.expandedDiv}>
                 <div className={styles.usageBox}>
                   <div className={styles.usagePart}>
                     <img
-                      src={
-                        process.env.PUBLIC_URL +
-                        '/usageImages/match-settings.jpg'
-                      }
+                      src={PUBLIC_URL + '/usageImages/match-settings.jpg'}
                       className={styles.usageImg}
                       alt="match-settings-box"
                     />
@@ -246,8 +200,7 @@ const AboutPage = () => {
                   <div className={styles.usagePart}>
                     <img
                       src={
-                        process.env.PUBLIC_URL +
-                        '/usageImages/festival-match-marked.jpg'
+                        PUBLIC_URL + '/usageImages/festival-match-marked.jpg'
                       }
                       className={styles.usageImg}
                       alt="festival-match-marked"
@@ -263,7 +216,7 @@ const AboutPage = () => {
                   </div>
                   <div className={styles.usagePart}>
                     <img
-                      src={process.env.PUBLIC_URL + '/usageImages/top-bar.jpg'}
+                      src={PUBLIC_URL + '/usageImages/top-bar.jpg'}
                       className={clsx(styles.usageImg, styles.topBarImg)}
                       alt="top-bar"
                     />
@@ -286,23 +239,15 @@ const AboutPage = () => {
             elevation={3}
             className={clsx(styles.paper, styles.minWidth400)}
           >
-            <div className={styles.rowFlexCenter}>
-              <Typography
-                variant="h5"
-                onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}
-              >
+            <div
+              className={styles.rowFlexCenterSpaceApart}
+              onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}
+            >
+              <ExpandButton expanded={disclaimerExpanded} />
+              <Typography variant="h5" sx={{ cursor: 'pointer' }}>
                 Disclaimer
               </Typography>
-              <IconButton
-                className={clsx(classes.expand, {
-                  [classes.expandOpen]: disclaimerExpanded,
-                })}
-                onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}
-                aria-expanded={disclaimerExpanded}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
+              <ExpandButton expanded={disclaimerExpanded} />
             </div>
             <Collapse in={disclaimerExpanded} timeout="auto" unmountOnExit>
               <div className={styles.expandedDiv}>
@@ -331,14 +276,13 @@ const AboutPage = () => {
                 Created by
               </Typography>
               <Box
-                className={
-                  lightMode
-                    ? clsx(styles.creatorImgBox, styles.roundedCorners)
-                    : clsx(styles.creatorImgBox, styles.darkerBackground)
-                }
+                className={clsx(
+                  styles.creatorImgBox,
+                  isLightMode ? styles.roundedCorners : styles.darkerBackground
+                )}
               >
                 <img
-                  src={process.env.PUBLIC_URL + '/creator_image_cropped.jpg'}
+                  src={PUBLIC_URL + '/creator_image_cropped.jpg'}
                   className={styles.creatorImage}
                   alt="Creator"
                 />
@@ -357,9 +301,7 @@ const AboutPage = () => {
                 >
                   <div className={styles.linkedInSocialButton}>
                     <img
-                      src={
-                        process.env.PUBLIC_URL + '/techIcons/LinkedIn-Bug.png'
-                      }
+                      src={PUBLIC_URL + '/techIcons/LinkedIn-Bug.png'}
                       className={styles.linkeidInSocialBug}
                       alt="LinkedIn"
                     />
@@ -372,13 +314,9 @@ const AboutPage = () => {
                 >
                   <div className={styles.socialButton}>
                     <img
-                      src={
-                        lightMode
-                          ? process.env.PUBLIC_URL +
-                            '/techIcons/GitHub-Mark.png'
-                          : process.env.PUBLIC_URL +
-                            '/techIcons/GitHub-Mark-white.png'
-                      }
+                      src={`${PUBLIC_URL}/techIcons/GitHub-Mark${
+                        isLightMode ? '' : '-white'
+                      }.png`}
                       className={styles.githubSocialBug}
                       alt="GitHub"
                     />

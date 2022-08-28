@@ -34,8 +34,7 @@ import {
   getBigPicture,
   getMaxArtistsInWidth,
 } from '../utils/utils';
-import { useTheme } from '@mui/material/styles';
-import { styled } from '@mui/material/styles';
+import { useTheme, styled } from '@mui/material/styles';
 
 const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
   createStyles({

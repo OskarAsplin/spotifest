@@ -1,13 +1,15 @@
 import { Fragment } from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import { Typography, Grid, Box } from '@mui/material';
 import clsx from 'clsx';
 import aboutPageStyles from '../pages/AboutPage.module.scss';
 import styles from './TechStackContent.module.scss';
 import StandardLink from './StandardLink';
+import { useTheme } from '@mui/material/styles';
+import HtmlTooltip from './HtmlTooltip';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 interface OwnProps {
   pcScreen: boolean;
-  lightMode: boolean;
 }
 
 type Props = OwnProps;
@@ -18,7 +20,8 @@ interface TechInfoRow {
 }
 
 const TechStackContent = (props: Props) => {
-  const { lightMode, pcScreen } = props;
+  const { pcScreen } = props;
+  const isLightMode = useTheme().palette.mode === 'light';
 
   const techInfoRows: TechInfoRow[] = [
     {
@@ -43,7 +46,7 @@ const TechStackContent = (props: Props) => {
       text: 'Frontend hosted on Netlify',
       icons: [
         {
-          path: lightMode ? 'Netlify.svg' : 'Netlify-white.svg',
+          path: isLightMode ? 'Netlify.svg' : 'Netlify-white.svg',
           class: styles.iconDefaultHeight,
         },
       ],
@@ -52,7 +55,7 @@ const TechStackContent = (props: Props) => {
       text: 'Backend written in Python with Django and SQLite as database',
       icons: [
         {
-          path: lightMode ? 'Python.svg' : 'Python-white.svg',
+          path: isLightMode ? 'Python.svg' : 'Python-white.svg',
           class: clsx(styles.iconDefaultHeight, styles.pythonRemoveRightSpace),
         },
         {
@@ -60,7 +63,7 @@ const TechStackContent = (props: Props) => {
           class: clsx(styles.djangoIconSize, styles.iconMarginLeft),
         },
         {
-          path: lightMode ? 'SQLite.svg' : 'SQLite-white.png',
+          path: isLightMode ? 'SQLite.svg' : 'SQLite-white.png',
           class: clsx(styles.iconDefaultHeight, styles.iconMarginLeft),
         },
       ],
@@ -69,7 +72,7 @@ const TechStackContent = (props: Props) => {
       text: 'Django server set up with Gunicorn and Nginx',
       icons: [
         {
-          path: lightMode ? 'Gunicorn.png' : 'Gunicorn-white.png',
+          path: isLightMode ? 'Gunicorn.png' : 'Gunicorn-white.png',
           class: styles.mediumSize,
         },
         {
@@ -82,7 +85,7 @@ const TechStackContent = (props: Props) => {
       text: 'Backend server environment contained with Docker',
       icons: [
         {
-          path: lightMode ? 'Docker.png' : 'Docker-white.png',
+          path: isLightMode ? 'Docker.png' : 'Docker-white.png',
           class: styles.iconDefaultHeight,
         },
       ],
@@ -111,7 +114,7 @@ const TechStackContent = (props: Props) => {
       text: 'Lineup and festival information from Music Festival Wizard',
       icons: [
         {
-          path: lightMode ? 'MFW.png' : 'MFW-white.png',
+          path: isLightMode ? 'MFW.png' : 'MFW-white.png',
           class: styles.iconDefaultHeight,
         },
       ],
@@ -120,7 +123,7 @@ const TechStackContent = (props: Props) => {
       text: 'Code version control on GitHub',
       icons: [
         {
-          path: lightMode ? 'GitHub.png' : 'GitHub-white.png',
+          path: isLightMode ? 'GitHub.png' : 'GitHub-white.png',
           class: styles.smallSize,
         },
       ],
@@ -129,7 +132,7 @@ const TechStackContent = (props: Props) => {
       text: 'Domain bought on NameCheap',
       icons: [
         {
-          path: lightMode ? 'Namecheap.svg' : 'Namecheap-white.png',
+          path: isLightMode ? 'Namecheap.svg' : 'Namecheap-white.png',
           class: styles.mediumSize,
         },
       ],
@@ -175,56 +178,68 @@ const TechStackContent = (props: Props) => {
         >
           {techInfoRows.map((techInfoRow) => insertTechInfoRow(techInfoRow))}
         </Grid>
+        <HtmlTooltip
+          disableFocusListener
+          enterTouchDelay={0}
+          title={
+            <Fragment>
+              <div>
+                {' Facebook, '}
+                <StandardLink href="https://commons.wikimedia.org/wiki/File:React-icon.svg">
+                  React-icon
+                </StandardLink>
+                {' / '}
+                <StandardLink href="https://creativecommons.org/licenses/by-sa/1.0/legalcode">
+                  CC BY-SA 1.0
+                </StandardLink>
+              </div>
+              <div>
+                <StandardLink href="https://iconscout.com/icons/typescript">
+                  Typescript Icon
+                </StandardLink>
+                {' by '}
+                <StandardLink href="https://iconscout.com/contributors/icon-mafia">
+                  Icon Mafia
+                </StandardLink>
+              </div>
+              <div>
+                <StandardLink href="https://iconscout.com/icons/redux">
+                  Redux Logo Icon
+                </StandardLink>
+                {' by '}
+                <StandardLink href="https://iconscout.com/contributors/icon-mafia">
+                  Icon Mafia
+                </StandardLink>
+              </div>
+              <div>
+                <StandardLink href="https://www.python.org/community/logos/">
+                  Python-logo
+                </StandardLink>
+                {' / '}
+                <StandardLink href="https://www.python.org/psf/trademarks/">
+                  PSF Trademark Usage Policy
+                </StandardLink>
+              </div>
+              <div>
+                <StandardLink href="https://icon-icons.com/icon/file-type-django/130645">
+                  Django Icon
+                </StandardLink>
+                {' / '}
+                <StandardLink href="https://creativecommons.org/licenses/by/4.0/">
+                  CC BY 4.0
+                </StandardLink>
+              </div>
+            </Fragment>
+          }
+        >
+          <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: 4 }}>
+            <Typography variant="body1" sx={{ marginRight: 1 }}>
+              Icon licenses
+            </Typography>
+            <InfoOutlinedIcon />
+          </Box>
+        </HtmlTooltip>
       </div>
-      <Box className={styles.licenses}>
-        <div>Icon licenses</div>
-        <div>
-          {' Facebook, '}
-          <StandardLink href="https://commons.wikimedia.org/wiki/File:React-icon.svg">
-            React-icon
-          </StandardLink>
-          {' / '}
-          <StandardLink href="https://creativecommons.org/licenses/by-sa/1.0/legalcode">
-            CC BY-SA 1.0
-          </StandardLink>
-        </div>
-        <div>
-          <StandardLink href="https://iconscout.com/icons/typescript">
-            Typescript Icon
-          </StandardLink>
-          {' by '}
-          <StandardLink href="https://iconscout.com/contributors/icon-mafia">
-            Icon Mafia
-          </StandardLink>
-        </div>
-        <div>
-          <StandardLink href="https://iconscout.com/icons/redux">
-            Redux Logo Icon
-          </StandardLink>
-          {' by '}
-          <StandardLink href="https://iconscout.com/contributors/icon-mafia">
-            Icon Mafia
-          </StandardLink>
-        </div>
-        <div>
-          <StandardLink href="https://www.python.org/community/logos/">
-            Python-logo
-          </StandardLink>
-          {' / '}
-          <StandardLink href="https://www.python.org/psf/trademarks/">
-            PSF Trademark Usage Policy
-          </StandardLink>
-        </div>
-        <div>
-          <StandardLink href="https://icon-icons.com/icon/file-type-django/130645">
-            Django Icon
-          </StandardLink>
-          {' / '}
-          <StandardLink href="https://creativecommons.org/licenses/by/4.0/">
-            CC BY 4.0
-          </StandardLink>
-        </div>
-      </Box>
     </Fragment>
   );
 };
