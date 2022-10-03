@@ -35,6 +35,7 @@ import {
   getMaxArtistsInWidth,
 } from '../utils/utils';
 import { useTheme, styled } from '@mui/material/styles';
+import ArtistBox from '../components/ArtistBox';
 
 const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
   createStyles({
@@ -63,14 +64,6 @@ const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
       alignItems: 'center',
       width: '100%',
     },
-    addSmallSidePadding: {
-      '@media (min-width: 440px)': {
-        padding: spacing(0, 2, 0, 2),
-      },
-      '@media (max-width: 439px)': {
-        padding: spacing(0, 1, 0, 1),
-      },
-    },
     buttonBox: {
       width: '100%',
       display: 'flex',
@@ -94,15 +87,6 @@ const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
       width: '100%',
       justifyContent: 'center',
       alignItems: 'center',
-    },
-    artistAvatarBox: {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between',
-      '@media (max-width: 439px)': {
-        padding: spacing(0, 1, 0, 1),
-      },
     },
     matchingPopularBox: {
       width: '100%',
@@ -139,9 +123,6 @@ const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
       '@media (max-width: 689px)': {
         width: '75px',
       },
-    },
-    paddingBottom: {
-      paddingBottom: spacing(1),
     },
     noBigPicture: {
       display: 'flex',
@@ -397,6 +378,7 @@ const ArtistPage = () => {
               maxWidth: '700px',
               mx: 2,
               mb: 2,
+              pb: 1,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -473,9 +455,6 @@ const ArtistPage = () => {
                 />
               </IconButton>
             )}
-            {relatedArtists.length === 0 && (
-              <div className={classes.paddingBottom} />
-            )}
             {relatedArtists.length > 0 && (
               <>
                 <Divider sx={{ width: '100%' }}>
@@ -487,13 +466,7 @@ const ArtistPage = () => {
                     Related artists
                   </Typography>
                 </Divider>
-                <div
-                  className={clsx(
-                    classes.artistAvatarBox,
-                    classes.addSmallSidePadding,
-                    classes.paddingBottom
-                  )}
-                >
+                <ArtistBox>
                   {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
                     <ArtistBubble
                       artist={artist}
@@ -513,7 +486,7 @@ const ArtistPage = () => {
                     Array.from({ length: fillRelatedArtistsWidth }, (_, i) => (
                       <div className={classes.artistWidth} key={i} />
                     ))}
-                </div>
+                </ArtistBox>
               </>
             )}
           </Paper>

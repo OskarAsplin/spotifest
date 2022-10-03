@@ -1,7 +1,6 @@
 import { useState, Fragment } from 'react';
 import {
   Divider,
-  Theme,
   Paper,
   Button,
   buttonClasses,
@@ -9,7 +8,6 @@ import {
   Typography,
   Box,
 } from '@mui/material';
-import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -22,56 +20,7 @@ import HtmlTooltip from './HtmlTooltip';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { ExpandButton } from './ExpandButton';
-
-const useStyles = makeStyles(({ spacing }: Theme) =>
-  createStyles({
-    artistAvatarBox: {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between',
-      '@media (min-width: 440px)': {
-        padding: spacing(0, 2, 0, 2),
-      },
-      '@media (max-width: 439px)': {
-        padding: spacing(0, 1, 0, 1),
-      },
-    },
-    titleAndMatchBox: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    matchingPopularBox: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'nowrap',
-      alignItems: 'center',
-      minHeight: '48px',
-    },
-    lineup: {
-      maxHeight: 260,
-      maxWidth: '100%',
-    },
-    lineupImgButton: {
-      padding: '0px',
-      borderRadius: '0px',
-    },
-    flexRow: {
-      display: 'flex',
-      '@media (min-width: 690px)': {
-        marginTop: spacing(1),
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-      },
-      '@media (max-width: 689px)': {
-        flexDirection: 'column',
-      },
-    },
-  })
-);
+import ArtistBox from './ArtistBox';
 
 interface Props {
   festival: FestivalMatch;
@@ -96,8 +45,6 @@ const FestivalMatchCard = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
   const navigate = useNavigate();
 
-  const classes = useStyles();
-
   const matchingPercentTotal = Math.ceil(festival.matching_percent_combined);
   const matchingPercentArtists = Math.ceil(festival.matching_percent_artists);
   const matchingPercentGenres = Math.ceil(festival.matching_percent_genres);
@@ -116,7 +63,14 @@ const FestivalMatchCard = (props: Props) => {
     <Paper elevation={3} sx={{ pt: 1 }} key={festival.name}>
       {showMatching && <Box sx={{ pb: 1 }} />}
       <StyledPaddedDiv>
-        <div className={classes.titleAndMatchBox}>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
           <Box
             sx={{
               ...(showMatching
@@ -209,7 +163,7 @@ const FestivalMatchCard = (props: Props) => {
               </StyledMatchCircleDiv>
             </HtmlTooltip>
           )}
-        </div>
+        </Box>
         <Typography
           variant="subtitle2"
           noWrap
@@ -238,7 +192,7 @@ const FestivalMatchCard = (props: Props) => {
         )}
       </StyledPaddedDiv>
       {showMatching && !noLineupRegistered && (
-        <div className={classes.artistAvatarBox}>
+        <ArtistBox>
           {matchingArtists.map((artist) => (
             <ArtistBubble
               artist={artist}
@@ -250,7 +204,7 @@ const FestivalMatchCard = (props: Props) => {
             Array.from({ length: fillMatchingArtistWidth }, (_, i) => (
               <StyledAvatarContainerdiv key={i} />
             ))}
-        </div>
+        </ArtistBox>
       )}
       {noLineupRegistered ? (
         <StyledPaddedDiv>
@@ -274,7 +228,7 @@ const FestivalMatchCard = (props: Props) => {
               Popular artists at this festival
             </Typography>
           </Divider>
-          <div className={classes.artistAvatarBox}>
+          <ArtistBox>
             {popularArtists.length > 0 &&
               popularArtists
                 .slice(0, maxArtistsInWidth)
@@ -289,9 +243,9 @@ const FestivalMatchCard = (props: Props) => {
               Array.from({ length: fillPopularArtistWidth }, (_, i) => (
                 <StyledAvatarContainerdiv key={i} />
               ))}
-          </div>
+          </ArtistBox>
           <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <div className={classes.artistAvatarBox}>
+            <ArtistBox>
               {popularArtists.length > 0 &&
                 popularArtists
                   .slice(
@@ -311,7 +265,7 @@ const FestivalMatchCard = (props: Props) => {
                 Array.from({ length: fillPopularArtistWidth }, (_, i) => (
                   <StyledAvatarContainerdiv key={i} />
                 ))}
-            </div>
+            </ArtistBox>
           </Collapse>
           {popularArtists.length > maxArtistsInWidth && (
             <Box

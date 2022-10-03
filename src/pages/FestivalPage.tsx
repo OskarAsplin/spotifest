@@ -15,7 +15,6 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import ArrowBackOutlined from '@mui/icons-material/ArrowBack';
 import PublicIcon from '@mui/icons-material/Public';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
-import CookieConsent from 'react-cookie-consent';
 import ReactCountryFlag from 'react-country-flag';
 import ReactPlayer from 'react-player/lazy';
 import { useDispatch } from 'react-redux';
@@ -31,6 +30,7 @@ import {
   displayedLocationName,
 } from '../utils/utils';
 import { useTheme } from '@mui/material/styles';
+import StyledCookieConsent from '../components/CookieConsent';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -199,24 +199,6 @@ const useStyles = makeStyles((theme: Theme) =>
       '@media (max-width: 689px)': {
         width: '75px',
       },
-    },
-    cookiesContainer: {
-      boxShadow: theme.shadows[3],
-      color: 'rgb(64, 64, 64) !important',
-      backgroundColor: 'rgb(200, 200, 200) !important',
-      fontSize: '16px !important',
-      '@media (max-width: 460px)': {
-        justifyContent: 'center !important',
-        textAlign: 'center !important',
-      },
-    },
-    cookiesButton: {
-      color: '#fefefe !important',
-      backgroundColor: 'rgb(118, 175, 73) !important', // rgb(180, 237, 134)
-      borderRadius: '5px !important',
-      topMargin: '0px !important',
-      fontWeight: 700,
-      padding: theme.spacing(1.5, 3, 1.5, 3) + '!important',
     },
   })
 );
@@ -613,14 +595,9 @@ const FestivalPage = () => {
           )}
         </div>
         {festivalInfo.video && (
-          <CookieConsent
-            location="bottom"
-            buttonText="Got it!"
-            containerClasses={classes.cookiesContainer}
-            buttonClasses={classes.cookiesButton}
-          >
+          <StyledCookieConsent>
             The youtube videos on this site use cookies.
-          </CookieConsent>
+          </StyledCookieConsent>
         )}
       </>
     );
