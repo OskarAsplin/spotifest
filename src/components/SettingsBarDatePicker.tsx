@@ -5,6 +5,7 @@ import {
 } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { MATCHING_MAX_DATE, MATCHING_MIN_DATE } from '../config';
 
 const SettingsBarDatePicker = <TInputDate,>(
   props: Omit<MobileDatePickerProps<TInputDate, Date>, 'renderInput'>
@@ -13,10 +14,9 @@ const SettingsBarDatePicker = <TInputDate,>(
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <MobileDatePicker
         {...props}
-        maxDate={new Date(new Date().getFullYear() + 1, 11, 31)}
-        minDate={new Date(new Date().getFullYear(), 0, 1)}
+        minDate={MATCHING_MIN_DATE}
+        maxDate={MATCHING_MAX_DATE}
         views={['month', 'year']}
-        closeOnSelect
         renderInput={(params) => (
           <TextField
             {...params}
