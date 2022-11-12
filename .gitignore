@@ -25,3 +25,4 @@ yarn-error.log*
 # other
 /src/*.json
 .env
+*sublime*

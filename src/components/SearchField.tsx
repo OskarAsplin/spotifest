@@ -9,8 +9,7 @@ import {
   ClickAwayListener,
   ThemeProvider,
 } from '@mui/material';
-import { Theme } from '@mui/material/styles';
-import { createStyles, makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import SearchIcon from '@mui/icons-material/Search';
 import StandardLink from './StandardLink';
@@ -20,65 +19,12 @@ import { createTheme } from '@mui/material/styles';
 import { getMainTheme } from '../theme/theme.styles';
 import MatchHighlighter, { escapeRegExp } from './MatchHighlighter';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    fixed: {
-      position: 'absolute',
-      '@media (min-width: 610px)': {
-        width: '250px',
-      },
-      '@media (max-width: 609px)': {
-        width: '200px',
-      },
-      padding: theme.spacing(1, 1, 1, 1),
-    },
-    fixedAndAligned: {
-      position: 'fixed',
-      '@media (min-width: 610px)': {
-        width: '250px',
-      },
-      '@media (max-width: 609px)': {
-        width: '200px',
-      },
-      display: 'flex',
-      padding: theme.spacing(1, 1, 1, 1),
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    fixedWidthAbsolute: {
-      '@media (min-width: 610px)': {
-        width: '250px',
-      },
-      '@media (max-width: 609px)': {
-        position: 'absolute',
-        minHeight: '40px',
-        width: '200px',
-      },
-      '@media (min-width: 590px)': {
-        '@media (max-width: 609px)': {
-          marginRight: '44px',
-        },
-      },
-      '@media (min-width: 440px)': {
-        '@media (max-width: 589px)': {
-          marginRight: '36px',
-        },
-      },
-      '@media (max-width: 439px)': {
-        marginRight: '28px',
-      },
-    },
-  })
-);
-
 interface Props {
   setShowSearchFieldSmallScreen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
-
-  const classes = useStyles();
   const { inputText, setInputText, searchResults } = useSearchDb();
 
   const darkTheme = createTheme(getMainTheme('dark'));
@@ -96,18 +42,15 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
           {!bigScreen && (
             <Box sx={{ minHeight: ({ spacing }) => spacing(5) }} />
           )}
-          <TextField
+          <StyledTextField
             size="small"
             autoFocus={bigScreen ? false : true}
-            className={classes.fixedWidthAbsolute}
             placeholder="Search"
             value={inputText}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               setInputText(event.target.value)
             }
-            InputLabelProps={{
-              shrink: true,
-            }}
+            InputLabelProps={{ shrink: true }}
             InputProps={
               bigScreen
                 ? {
@@ -125,15 +68,15 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
           <ThemeProvider theme={lightTheme}>
             <div>
               {searchResults.loading && inputText && (
-                <Paper elevation={10} className={classes.fixedAndAligned}>
+                <StyledFixedPaper elevation={10}>
                   <CircularProgress />
-                </Paper>
+                </StyledFixedPaper>
               )}
               {searchResults.error && (
                 <div>Error: {searchResults.error.message}</div>
               )}
               {searchResults.result && inputText && (
-                <Paper elevation={10} className={classes.fixed}>
+                <StyledAbsolutePaper elevation={10}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                     {searchResults.result.festivals.length === 0 &&
                       searchResults.result.artists.length === 0 && (
@@ -213,7 +156,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                       </Typography>
                     )}
                   </Box>
-                </Paper>
+                </StyledAbsolutePaper>
               )}
             </div>
           </ThemeProvider>
@@ -222,5 +165,38 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
     </ThemeProvider>
   );
 };
+
+const StyledAbsolutePaper = styled(Paper)(({ theme: { spacing } }) => ({
+  position: 'absolute',
+  padding: spacing(1),
+  '@media (min-width: 610px)': { width: '250px' },
+  '@media (max-width: 609px)': { width: '200px' },
+}));
+
+const StyledFixedPaper = styled(Paper)(({ theme: { spacing } }) => ({
+  position: 'fixed',
+  padding: spacing(1),
+  '@media (min-width: 610px)': { width: '250px' },
+  '@media (max-width: 609px)': { width: '200px' },
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledTextField = styled(TextField)(() => ({
+  '@media (min-width: 610px)': { width: '250px' },
+  '@media (max-width: 609px)': {
+    position: 'absolute',
+    minHeight: '40px',
+    width: '200px',
+  },
+  '@media (min-width: 590px)': {
+    '@media (max-width: 609px)': { marginRight: '44px' },
+  },
+  '@media (min-width: 440px)': {
+    '@media (max-width: 589px)': { marginRight: '36px' },
+  },
+  '@media (max-width: 439px)': { marginRight: '28px' },
+}));
 
 export default SearchField;

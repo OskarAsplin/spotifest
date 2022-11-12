@@ -1,6 +1,5 @@
 import { Fragment, useEffect } from 'react';
 import {
-  Theme,
   Typography,
   Box,
   Paper,
@@ -16,7 +15,6 @@ import {
   Button,
 } from '@mui/material';
 import { indigo } from '@mui/material/colors';
-import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import InfoIcon from '@mui/icons-material/Info';
 import ReactCountryFlag from 'react-country-flag';
@@ -61,70 +59,8 @@ import {
 import StandardLink from './StandardLink';
 import HtmlTooltip from './HtmlTooltip';
 import SettingsBarDatePicker from './SettingsBarDatePicker';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import { LoadingSpinner } from './LoadingSpinner';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    alignItems: {
-      display: 'flex',
-      '@media (max-width: 799px)': {
-        width: '100%',
-      },
-      alignItems: 'center',
-    },
-    alignItems2: {
-      display: 'flex',
-      '@media (min-width: 800px)': {
-        width: '316px',
-      },
-      '@media (max-width: 799px)': {
-        width: '100%',
-      },
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    alignItems3: {
-      display: 'flex',
-      flexDirection: 'column',
-      '@media (max-width: 799px)': {
-        width: '100%',
-      },
-      alignItems: 'center',
-    },
-    formControlPlaylist: {
-      margin: theme.spacing(1),
-      '@media (min-width: 800px)': {
-        minWidth: 150,
-        maxWidth: 220,
-      },
-      '@media (max-width: 799px)': {
-        width: '100%',
-      },
-    },
-    formControlArea: {
-      margin: theme.spacing(1),
-      '@media (min-width: 800px)': {
-        minWidth: 150,
-        maxWidth: 180,
-      },
-      '@media (max-width: 799px)': {
-        width: '100%',
-      },
-    },
-    formControl2: {
-      margin: theme.spacing(1),
-      '@media (min-width: 800px)': {
-        minWidth: 200,
-        maxWidth: 300,
-      },
-      '@media (max-width: 799px)': {
-        minWidth: 150,
-        maxWidth: 220,
-      },
-    },
-  })
-);
 
 const topArtistsChoice = '__your__top__artists__';
 
@@ -410,8 +346,6 @@ const FestivalMatchSettingsBar = () => {
     }
   };
 
-  const classes = useStyles();
-
   if (!isDbOnline) return <div />;
 
   return (
@@ -435,8 +369,15 @@ const FestivalMatchSettingsBar = () => {
           '@media (max-width: 999px)': { pt: 0.5, px: 0.5 },
         }}
       >
-        <Box className={classes.alignItems}>
-          <FormControl className={classes.formControlPlaylist} size="small">
+        <StyledBox>
+          <FormControl
+            sx={{
+              m: 1,
+              '@media (min-width: 800px)': { minWidth: 150, maxWidth: 220 },
+              '@media (max-width: 799px)': { width: '100%' },
+            }}
+            size="small"
+          >
             <InputLabel id="choose-playlist-label">Match with</InputLabel>
             <Select
               labelId="choose-playlist-label"
@@ -466,9 +407,16 @@ const FestivalMatchSettingsBar = () => {
               ))}
             </Select>
           </FormControl>
-        </Box>
-        <Box className={classes.alignItems}>
-          <FormControl className={classes.formControlArea} size="small">
+        </StyledBox>
+        <StyledBox>
+          <FormControl
+            sx={{
+              m: 1,
+              '@media (min-width: 800px)': { minWidth: 150, maxWidth: 180 },
+              '@media (max-width: 799px)': { width: '100%' },
+            }}
+            size="small"
+          >
             <InputLabel id="choose-countries-label">Area</InputLabel>
             <Select
               labelId="choose-countries-label"
@@ -527,8 +475,13 @@ const FestivalMatchSettingsBar = () => {
                 ))}
             </Select>
           </FormControl>
-        </Box>
-        <Box className={classes.alignItems2}>
+        </StyledBox>
+        <StyledBox
+          sx={{
+            '@media (min-width: 800px)': { width: '316px' },
+            justifyContent: 'center',
+          }}
+        >
           <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
             <SettingsBarDatePicker
               label="From"
@@ -543,7 +496,7 @@ const FestivalMatchSettingsBar = () => {
               onChange={handleToDateChange}
             />
           </Grid>
-        </Box>
+        </StyledBox>
         {pcScreen && (
           <Box
             sx={{
@@ -600,7 +553,7 @@ const FestivalMatchSettingsBar = () => {
               <LoadingSpinner sx={{ m: 3 }} />
             )}
             {topArtistsLoaded && playlistsLoaded && (
-              <Box className={classes.alignItems3}>
+              <StyledBox sx={{ flexDirection: 'column' }}>
                 <Typography
                   variant={
                     smallScreen ? (topArtists.length === 0 ? 'h6' : 'h5') : 'h4'
@@ -611,7 +564,20 @@ const FestivalMatchSettingsBar = () => {
                     ? 'Choose a playlist to start your matching'
                     : 'Match festivals with'}
                 </Typography>
-                <FormControl className={classes.formControl2} size="small">
+                <FormControl
+                  sx={{
+                    m: 1,
+                    '@media (min-width: 800px)': {
+                      minWidth: 200,
+                      maxWidth: 300,
+                    },
+                    '@media (max-width: 799px)': {
+                      minWidth: 150,
+                      maxWidth: 220,
+                    },
+                  }}
+                  size="small"
+                >
                   {topArtists.length === 0 && (
                     <InputLabel id="choose-initial-playlist-inputlabel">
                       Playlist
@@ -648,10 +614,10 @@ const FestivalMatchSettingsBar = () => {
                     ))}
                   </Select>
                 </FormControl>
-              </Box>
+              </StyledBox>
             )}
             {topArtistsLoaded && playlistsLoaded && topArtists.length !== 0 && (
-              <Box className={classes.alignItems3}>
+              <StyledBox sx={{ flexDirection: 'column' }}>
                 <Button
                   color="primary"
                   size="large"
@@ -683,7 +649,7 @@ const FestivalMatchSettingsBar = () => {
                     Go
                   </Typography>
                 </Button>
-              </Box>
+              </StyledBox>
             )}
             {topArtistsLoaded &&
               playlistsLoaded &&
@@ -711,5 +677,11 @@ const FestivalMatchSettingsBar = () => {
     </>
   );
 };
+
+const StyledBox = styled(Box)(() => ({
+  display: 'flex',
+  alignItems: 'center',
+  '@media (max-width: 799px)': { width: '100%' },
+}));
 
 export default FestivalMatchSettingsBar;
