@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import { Theme, Typography } from '@mui/material';
-import { createStyles, makeStyles } from '@mui/styles';
+import { Box, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import FestivalMatchesDisplay from '../components/FestivalMatchesDisplay';
@@ -21,36 +20,7 @@ import {
 } from '../redux/reducers/displaySlice';
 import '../styles/base.scss';
 import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      '@media (min-width: 440px)': {
-        padding: theme.spacing(0, 2, 0, 2),
-      },
-      '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
-      },
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-    },
-    verticalSpace: {
-      display: 'flex',
-      '@media (min-width: 800px)': {
-        padding: theme.spacing(2, 0, 2, 0),
-      },
-      '@media (max-width: 799px)': {
-        padding: theme.spacing(1, 0, 1, 0),
-      },
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-    },
-  })
-);
+import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 
 const hashParams = getHashParams();
 const token = hashParams.access_token;
@@ -69,17 +39,13 @@ const MainPage = () => {
     if (token) {
       dispatch(setAccessToken(token));
       spotifyApi.setAccessToken(token);
-      if (!siteInitialized) {
-        dispatch(initializeSite(token));
-      }
-      if (expires_in) {
-        dispatch(setTokenExpiryDate(+expires_in));
-      }
+
+      if (!siteInitialized) dispatch(initializeSite(token));
+      if (expires_in) dispatch(setTokenExpiryDate(+expires_in));
     } else if (accessToken) {
       spotifyApi.setAccessToken(accessToken);
-      if (!siteInitialized) {
-        dispatch(initializeSite(token));
-      }
+      if (!siteInitialized) dispatch(initializeSite(token));
+
       if (tokenExpiryDate !== '') {
         const unixTimeNow = new Date().getTime();
         const tenMinMilliseconds = 600000;
@@ -98,27 +64,30 @@ const MainPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const classes = useStyles();
-
   if (!loggedIn || (!token && !accessToken && !tokenExpiryDate)) {
     return <Navigate to="/login" />;
   }
   return (
-    <>
-      <div className={classes.verticalSpace} />
-      <div className={classes.root}>
-        <FestivalMatchSettingsBar />
-        {isDbOnline && <FestivalMatchesDisplay />}
-      </div>
-      {!isDbOnline && (
-        <div className={classes.root}>
-          <Typography variant="subtitle1">
-            There seems to be some issue with connecting to our database. Try
-            refreshing the page.
-          </Typography>
-        </div>
+    <StyledRootDiv>
+      <Box
+        sx={{
+          width: '100%',
+          '@media (min-width: 800px)': { py: 2 },
+          '@media (max-width: 799px)': { py: 1 },
+        }}
+      />
+      {isDbOnline ? (
+        <>
+          <FestivalMatchSettingsBar />
+          <FestivalMatchesDisplay />
+        </>
+      ) : (
+        <Typography variant="subtitle1">
+          There seems to be some issue with connecting to our database. Try
+          refreshing the page.
+        </Typography>
       )}
-    </>
+    </StyledRootDiv>
   );
 };
 

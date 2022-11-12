@@ -35,6 +35,7 @@ import {
 } from '../utils/utils';
 import { useTheme, styled } from '@mui/material/styles';
 import ArtistBox from '../components/ArtistBox';
+import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 
 const ArtistPage = () => {
   const loggedIn: boolean = useSelector(selectLoggedIn);
@@ -481,16 +482,6 @@ const ArtistPage = () => {
     );
   }
 };
-
-const StyledRootDiv = styled('div')(({ theme: { spacing } }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  '@media (min-width: 440px)': { padding: spacing(0, 2) },
-  '@media (max-width: 439px)': { padding: spacing(0, 1) },
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100%',
-}));
 
 const VerticalSpaceDiv = styled('div')(({ theme: { spacing } }) => ({
   '@media (min-width: 690px)': { padding: spacing(2) },
