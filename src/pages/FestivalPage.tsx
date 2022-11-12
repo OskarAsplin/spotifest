@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import {
-  Theme,
   Typography,
   Paper,
   Box,
   Button,
   Tabs,
   Tab,
+  tabClasses,
 } from '@mui/material';
-import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import PublicIcon from '@mui/icons-material/Public';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
@@ -34,112 +33,6 @@ import BackCircleButton from '../components/BackCircleButton';
 import TabPanel from '../components/TabPanel';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
 import CustomSwitch from '../components/CustomSwitch';
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      width: '100%',
-      '@media (min-width: 440px)': { padding: theme.spacing(0, 2) },
-      '@media (max-width: 439px)': { padding: theme.spacing(0, 1) },
-    },
-    fexColumn: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-      width: '100%',
-    },
-    paper2: {
-      display: 'flex',
-      flexDirection: 'column',
-      '@media (min-width: 1182px)': {
-        marginBottom: theme.spacing(2),
-      },
-      '@media (min-width: 440px)': {
-        padding: theme.spacing(0, 2, 0, 2),
-      },
-      '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
-      },
-      width: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    paperVideo: {
-      '@media (min-width: 610px)': {
-        padding: theme.spacing(2, 4, 2, 4),
-      },
-      '@media (max-width: 609px)': {
-        '@media (min-width: 349px)': {
-          padding: theme.spacing(1, 2, 1, 2),
-        },
-      },
-      '@media (max-width: 348px)': {
-        padding: theme.spacing(1, 1, 1, 1),
-      },
-    },
-    box: {
-      width: '100%',
-      maxWidth: '750px',
-      margin: theme.spacing(0, 2, 2, 2),
-    },
-    box2: {
-      width: '100%',
-      maxWidth: '1150px',
-      margin: theme.spacing(0, 2, 0, 2),
-    },
-    videoBox: {
-      marginBottom: theme.spacing(2),
-    },
-    darkerBackground: {
-      backgroundColor: '#303030',
-    },
-    lineupView: {
-      display: 'flex',
-      flexDirection: 'column',
-      alignItems: 'center',
-    },
-    artistAvatarBox: {
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      justifyContent: 'space-between',
-      width: '99%',
-    },
-    lineupPosterBox: {
-      display: 'flex',
-      alignItems: 'center',
-      marginTop: theme.spacing(2),
-    },
-    lineupPoster: {
-      maxHeight: 450,
-      '@media (min-width: 610px)': {
-        maxWidth: 450,
-      },
-      '@media (max-width: 609px)': {
-        maxWidth: 300,
-      },
-    },
-    tabLabel: {
-      fontSize: '20px',
-    },
-    tabRoot: {
-      '@media (min-width: 900px)': {
-        minWidth: '160px',
-      },
-      '@media (min-width: 610px)': {
-        '@media (max-width: 899px)': {
-          minWidth: '100px',
-        },
-      },
-      '@media (max-width: 609px)': {
-        minWidth: '72px',
-      },
-    },
-  })
-);
 
 const FestivalPage = () => {
   const boxForLineups = useMediaQuery('(min-width:1182px)');
@@ -189,8 +82,6 @@ const FestivalPage = () => {
   const [selectedLineup, setSelectedLineup] = useState(0);
   const [sortAlphabetically, setSortAlphabetically] = useState(false);
 
-  const classes = useStyles();
-
   if (!festivalInfo) {
     return (
       <StyledCenteredColumnDiv>
@@ -215,9 +106,9 @@ const FestivalPage = () => {
       <>
         {pcScreen && <BackCircleButton />}
         <VerticalSpaceDiv />
-        <div className={classes.fexColumn}>
-          <div className={classes.root}>
-            <Box className={classes.box}>
+        <StyledCenteredColumnDiv>
+          <StyledRootDiv>
+            <Box sx={{ width: '100%', maxWidth: '750px', mt: 0, mb: 2, mx: 2 }}>
               <Paper
                 elevation={3}
                 sx={{
@@ -288,10 +179,9 @@ const FestivalPage = () => {
               </Paper>
             </Box>
             {festivalInfo.video && (
-              <Box className={classes.videoBox}>
-                <Paper
+              <Box sx={{ mb: 2 }}>
+                <StyledVideoPaper
                   elevation={3}
-                  className={classes.paperVideo}
                   key={'festival video:' + festivalInfo.name}
                 >
                   <ReactPlayer
@@ -318,16 +208,15 @@ const FestivalPage = () => {
                         : 225
                     }
                   />
-                </Paper>
+                </StyledVideoPaper>
               </Box>
             )}
-          </div>
+          </StyledRootDiv>
           {festivalInfo.lineups.length !== 0 && (
-            <Box className={classes.box2}>
-              <Paper
+            <Box sx={{ width: '100%', maxWidth: '1150px', my: 0, mx: 2 }}>
+              <StyledLineupPaper
                 square={!boxForLineups}
                 elevation={3}
-                className={classes.paper2}
                 key={'festival lineups:' + festivalInfo.name}
               >
                 <Tabs
@@ -343,15 +232,14 @@ const FestivalPage = () => {
                   {festivalInfo.lineups
                     .slice(0, limitLineups)
                     .map((lineup, idx) => (
-                      <Tab
+                      <StyledTab
                         label={
-                          <span className={classes.tabLabel}>
+                          <span style={{ fontSize: '20px' }}>
                             {lineup.year}
                           </span>
                         }
                         value={idx}
                         key={'tab: ' + festivalInfo.name + lineup.year}
-                        classes={{ root: classes.tabRoot }}
                       />
                     ))}
                 </Tabs>
@@ -371,13 +259,13 @@ const FestivalPage = () => {
                         key={'tabPanel: ' + festivalInfo.name + lineup.year}
                       >
                         {lineup.artists.length === 0 ? (
-                          <Box className={classes.lineupView}>
+                          <StyledCenteredColumnDiv>
                             <Typography variant="h6">
                               No lineup registered
                             </Typography>
-                          </Box>
+                          </StyledCenteredColumnDiv>
                         ) : (
-                          <Box className={classes.lineupView}>
+                          <StyledCenteredColumnDiv>
                             {lineup.cancelled ? (
                               <Typography variant="h6" color="secondary">
                                 {'CANCELLED' +
@@ -396,7 +284,15 @@ const FestivalPage = () => {
                               leftOptionText="Popularity"
                               rightOptionText="Alphabetically"
                             />
-                            <div className={classes.artistAvatarBox}>
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                flexWrap: 'wrap',
+                                justifyContent: 'space-between',
+                                width: '99%',
+                              }}
+                            >
                               {lineup.artists.length > 0 &&
                                 lineup.artists
                                   .sort((a, b) =>
@@ -435,31 +331,36 @@ const FestivalPage = () => {
                                   },
                                   (_, i) => <StyledAvatarContainerdiv key={i} />
                                 )}
-                            </div>
+                            </Box>
                             {lineup.poster && (
-                              <div className={classes.lineupPosterBox}>
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  mt: 2,
+                                }}
+                              >
                                 <Button
                                   onClick={() =>
                                     window.open(lineup.poster, '_blank')
                                   }
                                 >
-                                  <img
-                                    className={classes.lineupPoster}
+                                  <StyledLineupPosterImg
                                     src={lineup.poster}
                                     alt=""
                                   />
                                 </Button>
-                              </div>
+                              </Box>
                             )}
-                          </Box>
+                          </StyledCenteredColumnDiv>
                         )}
                       </TabPanel>
                     ))}
                 </SwipeableViews>
-              </Paper>
+              </StyledLineupPaper>
             </Box>
           )}
-        </div>
+        </StyledCenteredColumnDiv>
         {festivalInfo.video && (
           <StyledCookieConsent>
             The youtube videos on this site use cookies.
@@ -469,6 +370,50 @@ const FestivalPage = () => {
     );
   }
 };
+
+const StyledRootDiv = styled('div')(({ theme: { spacing } }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  width: '100%',
+  '@media (min-width: 440px)': { padding: spacing(0, 2) },
+  '@media (max-width: 439px)': { padding: spacing(0, 1) },
+}));
+
+const StyledLineupPaper = styled(Paper)(({ theme: { spacing } }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  '@media (min-width: 1182px)': { marginBottom: spacing(2) },
+  '@media (min-width: 440px)': { padding: spacing(0, 2) },
+  '@media (max-width: 439px)': { padding: spacing(0, 1) },
+}));
+
+const StyledLineupPosterImg = styled('img')(() => ({
+  maxHeight: 450,
+  '@media (min-width: 610px)': { maxWidth: 450 },
+  '@media (max-width: 609px)': { maxWidth: 300 },
+}));
+
+const StyledVideoPaper = styled(Paper)(({ theme: { spacing } }) => ({
+  '@media (min-width: 610px)': { padding: spacing(2, 4) },
+  '@media (max-width: 609px)': {
+    '@media (min-width: 349px)': { padding: spacing(1, 2) },
+  },
+  '@media (max-width: 348px)': { padding: spacing(1) },
+}));
+
+const StyledTab = styled(Tab)(() => ({
+  [`&.${tabClasses.root}`]: {
+    '@media (min-width: 900px)': { minWidth: '160px' },
+    '@media (min-width: 610px)': {
+      '@media (max-width: 899px)': { minWidth: '100px' },
+    },
+    '@media (max-width: 609px)': { minWidth: '72px' },
+  },
+}));
 
 const VerticalSpaceDiv = styled('div')(({ theme: { spacing } }) => ({
   '@media (min-width: 610px)': { padding: spacing(2) },
