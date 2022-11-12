@@ -1,11 +1,5 @@
 import { useEffect } from 'react';
-import {
-  buttonClasses,
-  Box,
-  Typography,
-  typographyClasses,
-  Button,
-} from '@mui/material';
+import { Box, Typography, typographyClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useDispatch } from 'react-redux';
@@ -15,6 +9,7 @@ import {
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
 import StandardLink from '../components/StandardLink';
+import LoginButton from '../components/LoginButton/LoginButton';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');
@@ -28,6 +23,11 @@ const LoginPage = () => {
     dispatch(setLoggedOff());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const onClickLoginButton = () => {
+    dispatch(setLoggedIn());
+    window.open(getAuthorizeHref(), '_self');
+  };
 
   return (
     <StyledBackgroundDiv>
@@ -56,28 +56,7 @@ const LoginPage = () => {
           px: 1,
         }}
       >
-        <StyledLoginButton
-          bigScreen={bigScreen}
-          key={'Log in with spotify button'}
-          variant="contained"
-          onClick={() => {
-            dispatch(setLoggedIn());
-            window.open(getAuthorizeHref(), '_self');
-          }}
-        >
-          <Box
-            component="img"
-            src={process.env.PUBLIC_URL + '/techIcons/Spotify-Mark-white.png'}
-            alt="Spotify-icon"
-            sx={{
-              height: bigScreen ? '50px' : '35px',
-              mr: bigScreen ? 2 : 1.5,
-            }}
-          />
-          <Typography variant={bigScreen ? 'h4' : 'h6'} color="textPrimary">
-            Log in with Spotify
-          </Typography>
-        </StyledLoginButton>
+        <LoginButton onClick={onClickLoginButton} />
       </Box>
       <StyledFooterDiv>
         <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
@@ -106,26 +85,6 @@ const LoginPage = () => {
     </StyledBackgroundDiv>
   );
 };
-
-const StyledLoginButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== 'bigScreen',
-})<{ bigScreen: boolean }>(({ theme: { spacing, shadows }, bigScreen }) => {
-  return {
-    [`&.${buttonClasses.root}`]: {
-      display: 'flex',
-      flexDirection: 'row',
-      textTransform: 'none',
-      alignItems: 'center',
-      backgroundColor: '#1DB954',
-      boxShadow: shadows[3],
-      '&:hover': {
-        backgroundColor: 'rgb(19, 175, 74)',
-      },
-      padding: bigScreen ? spacing(2, 5, 2, 5) : spacing(1, 2.5, 1, 1.5),
-      borderRadius: bigScreen ? 15 : 25,
-    },
-  };
-});
 
 const StyledFooterTypography = styled(Typography)(() => {
   return {
