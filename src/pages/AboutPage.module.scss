@@ -130,12 +130,6 @@ $socialButtonSize: 46px;
   min-height: 48px;
 }
 
-.topLeft {
-  position: absolute;
-  top: 8 * $dis;
-  left: 2 * $dis;
-}
-
 .rowFlexCenter {
   @include centeredFlex(row);
 }

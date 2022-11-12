@@ -116,9 +116,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
               <IconButton
                 sx={{
                   p: 1.5,
-                  '@media (min-width: 610px)': {
-                    ml: 2,
-                  },
+                  '@media (min-width: 610px)': { ml: 2 },
                   padding: userInfo?.profilePictureUrl ? '10px' : undefined,
                 }}
                 color="inherit"

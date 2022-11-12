@@ -11,16 +11,16 @@ import {
   ListItemText,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
+import { MusicNote } from '@mui/icons-material';
 import StarIcon from '@mui/icons-material/Star';
 import clsx from 'clsx';
-import { useNavigate } from 'react-router-dom';
 import TechStackContent from '../components/TechStackContent';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
 import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
 import { ExpandButton } from '../components/ExpandButton';
+import BackCircleButton from '../components/BackCircleButton';
 
 const AboutPage = () => {
   const bigScreen = useMediaQuery('(min-width:610px)');
@@ -33,26 +33,13 @@ const AboutPage = () => {
   const [supportExpanded, setSupportExpanded] = useState(false);
   const [disclaimerExpanded, setDisclaimerExpanded] = useState(false);
 
-  const navigate = useNavigate();
-
   const isLightMode = useTheme().palette.mode === 'light';
 
   const { PUBLIC_URL } = process.env;
 
   return (
     <>
-      {bigPcScreen && (
-        <div className={styles.topLeft}>
-          <IconButton
-            onClick={() => {
-              window.history.back();
-              setTimeout(() => navigate('/'), 10);
-            }}
-          >
-            <ArrowBackOutlined fontSize="large" />
-          </IconButton>
-        </div>
-      )}
+      {bigPcScreen && <BackCircleButton />}
       <div className={styles.verticalSpace} />
       <div className={styles.verticalSpace} />
 

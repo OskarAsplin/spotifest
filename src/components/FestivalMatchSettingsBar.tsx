@@ -469,7 +469,7 @@ const FestivalMatchSettingsBar = () => {
                       countryCode={country.isoCode}
                       svg
                       style={{ marginRight: '8px' }}
-                    />{' '}
+                    />
                     {displayedLocationName(country.name)}
                   </MenuItem>
                 ))}

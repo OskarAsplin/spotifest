@@ -7,20 +7,19 @@ import {
   Button,
   Tabs,
   Tab,
-  Switch,
-  IconButton,
 } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import ArrowBackOutlined from '@mui/icons-material/ArrowBack';
 import PublicIcon from '@mui/icons-material/Public';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import ReactCountryFlag from 'react-country-flag';
 import ReactPlayer from 'react-player/lazy';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
-import ArtistBubble from '../components/ArtistBubble';
+import ArtistBubble, {
+  StyledAvatarContainerdiv,
+} from '../components/ArtistBubble';
 import { turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
 import { FestivalInfo } from '../redux/types';
 import '../styles/base.scss';
@@ -29,22 +28,22 @@ import {
   getMaxArtistsInFullLineupWidth,
   displayedLocationName,
 } from '../utils/utils';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import StyledCookieConsent from '../components/CookieConsent';
+import BackCircleButton from '../components/BackCircleButton';
+import TabPanel from '../components/TabPanel';
+import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
+import CustomSwitch from '../components/CustomSwitch';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       display: 'flex',
       flexDirection: 'column',
-      '@media (min-width: 440px)': {
-        padding: theme.spacing(0, 2, 0, 2),
-      },
-      '@media (max-width: 439px)': {
-        padding: theme.spacing(0, 1, 0, 1),
-      },
       alignItems: 'center',
       width: '100%',
+      '@media (min-width: 440px)': { padding: theme.spacing(0, 2) },
+      '@media (max-width: 439px)': { padding: theme.spacing(0, 1) },
     },
     fexColumn: {
       display: 'flex',
@@ -80,18 +79,6 @@ const useStyles = makeStyles((theme: Theme) =>
       '@media (max-width: 348px)': {
         padding: theme.spacing(1, 1, 1, 1),
       },
-    },
-    verticalSpace: {
-      display: 'flex',
-      '@media (min-width: 610px)': {
-        padding: theme.spacing(2, 0, 2, 0),
-      },
-      '@media (max-width: 609px)': {
-        padding: theme.spacing(1, 0, 1, 0),
-      },
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
     },
     box: {
       width: '100%',
@@ -138,37 +125,6 @@ const useStyles = makeStyles((theme: Theme) =>
     tabLabel: {
       fontSize: '20px',
     },
-    sortButtonBox: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    button: {
-      textTransform: 'none',
-      padding: theme.spacing(0),
-      fontSize: '18px',
-      '&:hover': {
-        backgroundColor: 'transparent',
-      },
-    },
-    invisibleButton: {
-      display: 'none',
-    },
-    align: {
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    tabPanel: {
-      '@media (min-width: 690px)': {
-        padding: theme.spacing(2, 0, 2, 0),
-      },
-      '@media (max-width: 689px)': {
-        padding: theme.spacing(1, 0, 1, 0),
-      },
-    },
     tabRoot: {
       '@media (min-width: 900px)': {
         minWidth: '160px',
@@ -182,32 +138,8 @@ const useStyles = makeStyles((theme: Theme) =>
         minWidth: '72px',
       },
     },
-    topLeft: {
-      position: 'absolute',
-      top: theme.spacing(8),
-      left: theme.spacing(2),
-    },
-    festivalTitleBox: {
-      display: 'flex',
-      justifyContent: 'center',
-      width: '100%',
-    },
-    artistWidth: {
-      '@media (min-width: 690px)': {
-        width: '100px',
-      },
-      '@media (max-width: 689px)': {
-        width: '75px',
-      },
-    },
   })
 );
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}
 
 const FestivalPage = () => {
   const boxForLineups = useMediaQuery('(min-width:1182px)');
@@ -222,7 +154,6 @@ const FestivalPage = () => {
 
   const themeDirection = useTheme().direction;
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const limitLineups = !mediumScreen ? 4 : undefined;
 
@@ -260,28 +191,11 @@ const FestivalPage = () => {
 
   const classes = useStyles();
 
-  const TabPanel = (props: TabPanelProps) => {
-    const { children, value, index, ...other } = props;
-
-    return (
-      <Typography
-        component="div"
-        role="tabpanel"
-        hidden={value !== index}
-        id={`simple-tabpanel-${index}`}
-        aria-labelledby={`simple-tab-${index}`}
-        {...other}
-      >
-        {value === index && <Box className={classes.tabPanel}>{children}</Box>}
-      </Typography>
-    );
-  };
-
   if (!festivalInfo) {
     return (
-      <div className={classes.align}>
-        <div className={classes.verticalSpace} />
-        <div className={classes.verticalSpace} />
+      <StyledCenteredColumnDiv>
+        <VerticalSpaceDiv />
+        <VerticalSpaceDiv />
         {isNetworkError && (
           <Typography variant="subtitle1">
             There seems to be some issue with connecting to our database. Try
@@ -294,24 +208,13 @@ const FestivalPage = () => {
         {!isNetworkError && !festivalId && (
           <Typography variant="subtitle1">Invalid URL.</Typography>
         )}
-      </div>
+      </StyledCenteredColumnDiv>
     );
   } else {
     return (
       <>
-        {pcScreen && (
-          <div className={classes.topLeft}>
-            <IconButton
-              onClick={() => {
-                window.history.back();
-                setTimeout(() => navigate('/'), 10);
-              }}
-            >
-              <ArrowBackOutlined fontSize="large" />
-            </IconButton>
-          </div>
-        )}
-        <div className={classes.verticalSpace} />
+        {pcScreen && <BackCircleButton />}
+        <VerticalSpaceDiv />
         <div className={classes.fexColumn}>
           <div className={classes.root}>
             <Box className={classes.box}>
@@ -331,16 +234,19 @@ const FestivalPage = () => {
                 }}
                 key={'festivalInfo:' + festivalInfo.name}
               >
-                <div className={classes.festivalTitleBox}>
-                  <Typography
-                    variant={bigScreen ? 'h3' : 'h4'}
-                    sx={{ mb: 2, fontWeight: 'bold', textAlign: 'center' }}
-                  >
-                    {festivalInfo.name}
-                  </Typography>
-                </div>
+                <Typography
+                  variant={bigScreen ? 'h3' : 'h4'}
+                  sx={{
+                    mb: 2,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    width: '100%',
+                  }}
+                >
+                  {festivalInfo.name}
+                </Typography>
                 <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
-                  {displayedLocationName(festivalInfo.locationText)}{' '}
+                  {displayedLocationName(festivalInfo.locationText)}
                   <ReactCountryFlag
                     countryCode={festivalInfo.country}
                     svg
@@ -484,47 +390,12 @@ const FestivalPage = () => {
                                 {lineup.date_str}
                               </Typography>
                             )}
-                            <Box className={classes.sortButtonBox}>
-                              {/* The invisible button is a quick fix for click event propagation from the grid item */}
-                              <Button
-                                hidden
-                                className={classes.invisibleButton}
-                              >
-                                .
-                              </Button>
-                              <Button
-                                disableRipple
-                                disableElevation
-                                className={classes.button}
-                                color={
-                                  !sortAlphabetically ? 'primary' : 'inherit'
-                                }
-                                onClick={() => setSortAlphabetically(false)}
-                              >
-                                Popularity
-                              </Button>
-                              <Switch
-                                checked={sortAlphabetically}
-                                color="default"
-                                onChange={(evt: any) =>
-                                  setSortAlphabetically(
-                                    evt.target.checked ? true : false
-                                  )
-                                }
-                                name="switchSortAlphabetically"
-                              />
-                              <Button
-                                disableRipple
-                                disableElevation
-                                className={classes.button}
-                                color={
-                                  sortAlphabetically ? 'primary' : 'inherit'
-                                }
-                                onClick={() => setSortAlphabetically(true)}
-                              >
-                                Alphabetically
-                              </Button>
-                            </Box>
+                            <CustomSwitch
+                              checked={sortAlphabetically}
+                              setChecked={setSortAlphabetically}
+                              leftOptionText="Popularity"
+                              rightOptionText="Alphabetically"
+                            />
                             <div className={classes.artistAvatarBox}>
                               {lineup.artists.length > 0 &&
                                 lineup.artists
@@ -562,12 +433,7 @@ const FestivalPage = () => {
                                       (lineup.artists.length %
                                         maxArtistsInLineupsWidth),
                                   },
-                                  (_, i) => (
-                                    <div
-                                      className={classes.artistWidth}
-                                      key={i}
-                                    />
-                                  )
+                                  (_, i) => <StyledAvatarContainerdiv key={i} />
                                 )}
                             </div>
                             {lineup.poster && (
@@ -603,5 +469,11 @@ const FestivalPage = () => {
     );
   }
 };
+
+const VerticalSpaceDiv = styled('div')(({ theme: { spacing } }) => ({
+  '@media (min-width: 610px)': { padding: spacing(2) },
+  '@media (max-width: 609px)': { padding: spacing(1) },
+  width: '100%',
+}));
 
 export default FestivalPage;

@@ -113,7 +113,7 @@ const FestivalMatchCard = (props: Props) => {
               </Typography>
             )}
             <Typography variant="subtitle2">
-              {displayedLocationName(festival.locationText)}{' '}
+              {displayedLocationName(festival.locationText)}
               <ReactCountryFlag
                 countryCode={festival.country}
                 svg

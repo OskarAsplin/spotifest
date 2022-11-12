@@ -163,37 +163,24 @@ const FestivalMatchesDisplay = () => {
   );
 };
 
-const StyledRootBox = styled(Box)(({ theme: { spacing } }) => {
-  return {
-    '@media (max-width: 609px)': {
-      marginTop: spacing(1),
-    },
-    '@media (min-width: 800px)': {
-      marginTop: spacing(1),
-    },
-    width: '100%',
-    maxWidth: '764px',
-  };
-});
+const StyledRootBox = styled(Box)(({ theme: { spacing } }) => ({
+  width: '100%',
+  maxWidth: '764px',
+  '@media (max-width: 609px)': { marginTop: spacing(1) },
+  '@media (min-width: 800px)': { marginTop: spacing(1) },
+}));
 
-const StyledPaginationBox = styled(Box)(() => {
-  return {
-    display: 'flex',
-    width: '100%',
-    justifyContent: 'center',
-  };
-});
+const StyledPaginationBox = styled(Box)(() => ({
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'center',
+}));
 
 const StyledNumMatchesTypography = styled(Typography)(
-  ({ theme: { spacing } }) => {
-    return {
-      '@media (min-width: 610px)': {
-        position: 'absolute',
-        textAlign: 'center',
-      },
-      '@media (max-width: 609px)': { marginBottom: spacing(1) },
-    };
-  }
+  ({ theme: { spacing } }) => ({
+    '@media (min-width: 610px)': { position: 'absolute', textAlign: 'center' },
+    '@media (max-width: 609px)': { marginBottom: spacing(1) },
+  })
 );
 
 export default FestivalMatchesDisplay;

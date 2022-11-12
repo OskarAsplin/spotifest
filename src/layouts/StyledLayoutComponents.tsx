@@ -9,3 +9,17 @@ export const StyledRootDiv = styled('div')(({ theme: { spacing } }) => ({
   '@media (min-width: 440px)': { padding: spacing(0, 2) },
   '@media (max-width: 439px)': { padding: spacing(0, 1) },
 }));
+
+export const StyledCenteredColumnDiv = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
+
+export const StyledCenteredRowDiv = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+}));

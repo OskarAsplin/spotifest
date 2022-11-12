@@ -10,7 +10,7 @@ import {
   Stack,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
+import { MusicNote } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArtistBubble, {
@@ -36,6 +36,7 @@ import {
 import { useTheme, styled } from '@mui/material/styles';
 import ArtistBox from '../components/ArtistBox';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
+import BackCircleButton from '../components/BackCircleButton';
 
 const ArtistPage = () => {
   const loggedIn: boolean = useSelector(selectLoggedIn);
@@ -218,18 +219,7 @@ const ArtistPage = () => {
   if (!artistInfo) {
     return (
       <>
-        {pcScreen && (
-          <StyledTopLeftDiv>
-            <IconButton
-              onClick={() => {
-                window.history.back();
-                setTimeout(() => navigate('/'), 10);
-              }}
-            >
-              <ArrowBackOutlined fontSize="large" />
-            </IconButton>
-          </StyledTopLeftDiv>
-        )}
+        {pcScreen && <BackCircleButton />}
         <StyledCenteredDiv>
           <VerticalSpaceDiv />
           <VerticalSpaceDiv />
@@ -251,18 +241,7 @@ const ArtistPage = () => {
   } else {
     return (
       <>
-        {pcScreen && (
-          <StyledTopLeftDiv>
-            <IconButton
-              onClick={() => {
-                window.history.back();
-                setTimeout(() => navigate('/'), 10);
-              }}
-            >
-              <ArrowBackOutlined fontSize="large" />
-            </IconButton>
-          </StyledTopLeftDiv>
-        )}
+        {pcScreen && <BackCircleButton />}
         <VerticalSpaceDiv />
 
         <StyledRootDiv>
@@ -523,12 +502,6 @@ const StyledPastFestivalButton = styled(Button)(({ theme: { spacing } }) => ({
   '@media (max-width: 689px)': { padding: spacing(1) },
   width: '100%',
   alignItems: 'center',
-}));
-
-const StyledTopLeftDiv = styled('div')(({ theme: { spacing } }) => ({
-  position: 'absolute',
-  top: spacing(8),
-  left: spacing(2),
 }));
 
 export default ArtistPage;
