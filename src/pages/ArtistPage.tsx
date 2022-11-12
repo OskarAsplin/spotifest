@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   Avatar,
   Divider,
-  Theme,
   Box,
   Paper,
   Typography,
@@ -10,13 +9,13 @@ import {
   IconButton,
   Stack,
 } from '@mui/material';
-import { createStyles, makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { ArrowBackOutlined, MusicNote } from '@mui/icons-material';
-import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import ArtistBubble from '../components/ArtistBubble';
+import ArtistBubble, {
+  StyledAvatarContainerdiv,
+} from '../components/ArtistBubble';
 import FestivalMatchCard from '../components/FestivalMatchCard';
 import { spotifyApi } from '../redux/asyncActions';
 import {
@@ -36,109 +35,6 @@ import {
 } from '../utils/utils';
 import { useTheme, styled } from '@mui/material/styles';
 import ArtistBox from '../components/ArtistBox';
-
-const useStyles = makeStyles(({ spacing, transitions }: Theme) =>
-  createStyles({
-    root: {
-      display: 'flex',
-      flexDirection: 'column',
-      '@media (min-width: 440px)': {
-        padding: spacing(0, 2, 0, 2),
-      },
-      '@media (max-width: 439px)': {
-        padding: spacing(0, 1, 0, 1),
-      },
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-    },
-    verticalSpace: {
-      display: 'flex',
-      '@media (min-width: 690px)': {
-        padding: spacing(2, 0, 2, 0),
-      },
-      '@media (max-width: 689px)': {
-        padding: spacing(1, 0, 1, 0),
-      },
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-    },
-    buttonBox: {
-      width: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: spacing(1, 0, 1, 0),
-    },
-    darkerBackground: {
-      backgroundColor: '#303030',
-    },
-    artistImg: {
-      maxHeight: '350px',
-      maxWidth: '100%',
-    },
-    hundredWidth: {
-      width: '100%',
-    },
-    align: {
-      display: 'flex',
-      flexDirection: 'column',
-      width: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    matchingPopularBox: {
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'row',
-      flexWrap: 'nowrap',
-      alignItems: 'center',
-      minHeight: '48px',
-    },
-    expand: {
-      transform: 'rotate(0deg)',
-      transition: transitions.create('transform', {
-        duration: transitions.duration.shortest,
-      }),
-    },
-    expandOpen: {
-      transform: 'rotate(180deg)',
-    },
-    prevAndFutureFestivalsTitle: {
-      '@media (max-width: 689px)': {
-        textAlign: 'center',
-      },
-      marginBottom: spacing(1),
-    },
-    topLeft: {
-      position: 'absolute',
-      top: spacing(8),
-      left: spacing(2),
-    },
-    artistWidth: {
-      '@media (min-width: 690px)': {
-        width: '100px',
-      },
-      '@media (max-width: 689px)': {
-        width: '75px',
-      },
-    },
-    noBigPicture: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingBottom: spacing(3),
-      paddingTop: spacing(3),
-      '@media (min-width: 690px)': {
-        fontSize: '150px',
-      },
-      '@media (max-width: 689px)': {
-        fontSize: '80px',
-      },
-    },
-  })
-);
 
 const ArtistPage = () => {
   const loggedIn: boolean = useSelector(selectLoggedIn);
@@ -318,13 +214,11 @@ const ArtistPage = () => {
   const fillRelatedArtistsWidth =
     maxArtistsInWidth - (relatedArtists.length % maxArtistsInWidth);
 
-  const classes = useStyles();
-
   if (!artistInfo) {
     return (
       <>
         {pcScreen && (
-          <div className={classes.topLeft}>
+          <StyledTopLeftDiv>
             <IconButton
               onClick={() => {
                 window.history.back();
@@ -333,11 +227,11 @@ const ArtistPage = () => {
             >
               <ArrowBackOutlined fontSize="large" />
             </IconButton>
-          </div>
+          </StyledTopLeftDiv>
         )}
-        <div className={classes.align}>
-          <div className={classes.verticalSpace} />
-          <div className={classes.verticalSpace} />
+        <StyledCenteredDiv>
+          <VerticalSpaceDiv />
+          <VerticalSpaceDiv />
           {isNetworkError && (
             <Typography variant="subtitle1">
               There seems to be some issue with connecting to our database. Try
@@ -350,14 +244,14 @@ const ArtistPage = () => {
           {!isNetworkError && !artistId && (
             <Typography variant="subtitle1">Invalid URL.</Typography>
           )}
-        </div>
+        </StyledCenteredDiv>
       </>
     );
   } else {
     return (
       <>
         {pcScreen && (
-          <div className={classes.topLeft}>
+          <StyledTopLeftDiv>
             <IconButton
               onClick={() => {
                 window.history.back();
@@ -366,11 +260,11 @@ const ArtistPage = () => {
             >
               <ArrowBackOutlined fontSize="large" />
             </IconButton>
-          </div>
+          </StyledTopLeftDiv>
         )}
-        <div className={classes.verticalSpace} />
+        <VerticalSpaceDiv />
 
-        <div className={classes.root}>
+        <StyledRootDiv>
           <Paper
             elevation={10}
             sx={{
@@ -397,29 +291,30 @@ const ArtistPage = () => {
               {artistInfo.artist.name}
             </Typography>
             <Box
-              className={
-                themeMode === 'light'
-                  ? classes.buttonBox
-                  : clsx(classes.buttonBox, classes.darkerBackground)
-              }
+              sx={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mt: 1,
+                ...(themeMode === 'dark' ? { backgroundColor: '#303030' } : {}),
+              }}
             >
               {artistInfo.artist.bigPicture ? (
-                <Button
-                  onClick={() =>
-                    window.open(artistInfo.artist.bigPicture, '_blank')
-                  }
-                  sx={{ p: 0, borderRadius: 0 }}
-                >
-                  <img
-                    className={classes.artistImg}
-                    src={artistInfo.artist.bigPicture}
-                    alt=""
-                  />
-                </Button>
+                <StyledImg src={artistInfo.artist.bigPicture} alt="" />
               ) : (
-                <div className={classes.noBigPicture}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    py: 3,
+                    '@media (min-width: 690px)': { fontSize: '150px' },
+                    '@media (max-width: 689px)': { fontSize: '80px' },
+                  }}
+                >
                   <MusicNote fontSize={'inherit'} />
-                </div>
+                </Box>
               )}
             </Box>
             <Typography
@@ -484,21 +379,18 @@ const ArtistPage = () => {
                   ))}
                   {relatedArtists.length > 0 &&
                     Array.from({ length: fillRelatedArtistsWidth }, (_, i) => (
-                      <div className={classes.artistWidth} key={i} />
+                      <StyledAvatarContainerdiv key={i} />
                     ))}
                 </ArtistBox>
               </>
             )}
           </Paper>
           {isArtistInDb && artistInfo.festivalsFuture.length !== 0 && (
-            <div className={classes.align}>
-              <div className={classes.verticalSpace} />
-              <Typography
-                variant={bigScreen ? 'h4' : 'h5'}
-                className={classes.prevAndFutureFestivalsTitle}
-              >
+            <StyledCenteredDiv>
+              <VerticalSpaceDiv />
+              <StyledFestivalsTypography variant={bigScreen ? 'h4' : 'h5'}>
                 Attending festivals
-              </Typography>
+              </StyledFestivalsTypography>
               <StyledStack spacing={3}>
                 {artistInfo.festivalsFuture.map((festival) => (
                   <FestivalMatchCard
@@ -510,17 +402,14 @@ const ArtistPage = () => {
                   />
                 ))}
               </StyledStack>
-            </div>
+            </StyledCenteredDiv>
           )}
           {isArtistInDb && artistInfo.festivalsPast.length !== 0 && (
-            <div className={classes.align}>
-              <div className={classes.verticalSpace} />
-              <Typography
-                variant={bigScreen ? 'h4' : 'h5'}
-                className={classes.prevAndFutureFestivalsTitle}
-              >
+            <StyledCenteredDiv>
+              <VerticalSpaceDiv />
+              <StyledFestivalsTypography variant={bigScreen ? 'h4' : 'h5'}>
                 Previously attended festivals
-              </Typography>
+              </StyledFestivalsTypography>
               <StyledStack spacing={2}>
                 {artistInfo.festivalsPast.map((festival) => (
                   <StyledPastFestivalButton
@@ -566,55 +455,89 @@ const ArtistPage = () => {
                   </StyledPastFestivalButton>
                 ))}
               </StyledStack>
-            </div>
+            </StyledCenteredDiv>
           )}
           {!isArtistInDb && (
-            <div className={classes.align}>
-              <div className={classes.verticalSpace} />
+            <StyledCenteredDiv>
+              <VerticalSpaceDiv />
               <Typography variant="subtitle1">
                 This artist has no registered festivals in our database.
               </Typography>
-              <div className={classes.verticalSpace} />
-            </div>
+              <VerticalSpaceDiv />
+            </StyledCenteredDiv>
           )}
           {isNetworkError && (
-            <div className={classes.align}>
-              <div className={classes.verticalSpace} />
-              <div className={classes.verticalSpace} />
+            <StyledCenteredDiv>
+              <VerticalSpaceDiv />
+              <VerticalSpaceDiv />
               <Typography variant="subtitle1">
                 There seems to be some issue contacting our database. Try
                 refreshing the page.
               </Typography>
-            </div>
+            </StyledCenteredDiv>
           )}
-        </div>
+        </StyledRootDiv>
       </>
     );
   }
 };
 
-const StyledStack = styled(Stack)(({ theme: { spacing } }) => {
-  return {
-    width: '100%',
-    maxWidth: '764px',
-    marginBottom: spacing(2),
-  };
-});
+const StyledRootDiv = styled('div')(({ theme: { spacing } }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  '@media (min-width: 440px)': { padding: spacing(0, 2) },
+  '@media (max-width: 439px)': { padding: spacing(0, 1) },
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+}));
 
-const StyledPastFestivalButton = styled(Button)(({ theme: { spacing } }) => {
-  return {
-    display: 'flex',
-    flexDirection: 'column',
-    textTransform: 'none',
-    '@media (min-width: 690px)': {
-      padding: spacing(2),
-    },
-    '@media (max-width: 689px)': {
-      padding: spacing(1),
-    },
-    width: '100%',
-    alignItems: 'center',
-  };
-});
+const VerticalSpaceDiv = styled('div')(({ theme: { spacing } }) => ({
+  '@media (min-width: 690px)': { padding: spacing(2) },
+  '@media (max-width: 689px)': { padding: spacing(1) },
+  width: '100%',
+}));
+
+const StyledImg = styled('img')(() => ({
+  maxHeight: '350px',
+  maxWidth: '100%',
+}));
+
+const StyledCenteredDiv = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+}));
+
+const StyledFestivalsTypography = styled(Typography)(
+  ({ theme: { spacing } }) => ({
+    marginBottom: spacing(1),
+    '@media (max-width: 689px)': { textAlign: 'center' },
+  })
+);
+
+const StyledStack = styled(Stack)(({ theme: { spacing } }) => ({
+  width: '100%',
+  maxWidth: '764px',
+  marginBottom: spacing(2),
+}));
+
+const StyledPastFestivalButton = styled(Button)(({ theme: { spacing } }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  textTransform: 'none',
+  '@media (min-width: 690px)': { padding: spacing(2) },
+  '@media (max-width: 689px)': { padding: spacing(1) },
+  width: '100%',
+  alignItems: 'center',
+}));
+
+const StyledTopLeftDiv = styled('div')(({ theme: { spacing } }) => ({
+  position: 'absolute',
+  top: spacing(8),
+  left: spacing(2),
+}));
 
 export default ArtistPage;
