@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import AppBarView from '../components/AppBarView';
 import { PaletteMode } from '@mui/material';
-import { CenteredLoadingSpinner } from '../components/LoadingSpinner';
+import { CenteredLoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
 
 interface Props {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;

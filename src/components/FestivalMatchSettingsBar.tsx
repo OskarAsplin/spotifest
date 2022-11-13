@@ -60,7 +60,7 @@ import StandardLink from './StandardLink';
 import HtmlTooltip from './HtmlTooltip';
 import SettingsBarDatePicker from './SettingsBarDatePicker';
 import { styled, useTheme } from '@mui/material/styles';
-import { LoadingSpinner } from './LoadingSpinner';
+import { LoadingSpinner } from './LoadingSpinner/LoadingSpinner';
 
 const topArtistsChoice = '__your__top__artists__';
 
