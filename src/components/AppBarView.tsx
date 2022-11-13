@@ -23,8 +23,8 @@ import { UserInfo } from '../redux/types';
 import { getBaseUrl } from '../utils/utils';
 import SearchField from './SearchField';
 import { styled } from '@mui/material/styles';
-import AppBarMenuDrawer from './AppBarMenuDrawer';
 import AppBarProfilePopover from './AppBarProfilePopover';
+import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 
 interface Props {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
@@ -152,7 +152,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
         </div>
       </Slide>
       <AppBarProfilePopover anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
-      <AppBarMenuDrawer
+      <AppBarMenuDrawerContainer
         open={drawerOpen}
         onClose={toggleDrawer(false)}
         setThemeMode={setThemeMode}
