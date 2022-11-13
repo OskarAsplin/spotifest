@@ -20,7 +20,7 @@ import styles from './AboutPage.module.scss';
 import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
 import { ExpandButton } from '../components/ExpandButton';
-import BackCircleButton from '../components/BackCircleButton';
+import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
 
 const AboutPage = () => {
   const bigScreen = useMediaQuery('(min-width:610px)');
@@ -39,7 +39,7 @@ const AboutPage = () => {
 
   return (
     <>
-      {bigPcScreen && <BackCircleButton />}
+      {bigPcScreen && <BackCircleButtonContainer />}
       <div className={styles.verticalSpace} />
       <div className={styles.verticalSpace} />
 

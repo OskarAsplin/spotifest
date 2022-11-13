@@ -8,44 +8,36 @@ import {
 import { blueGrey } from '@mui/material/colors';
 import { Shadows } from '@mui/material/styles';
 import MusicNote from '@mui/icons-material/MusicNote';
-import { useNavigate } from 'react-router-dom';
-import { Artist } from '../redux/types';
+import { Artist } from '../../redux/types';
 import { styled } from '@mui/material/styles';
-import { getArtistPath } from '../utils/utils';
 
-interface Props {
+interface ArtistBubbleProps {
   artist: Artist;
-  bubbleId: string;
+  onClick: () => void;
 }
 
-const ArtistBubble = ({ artist, bubbleId }: Props) => {
-  const navigate = useNavigate();
-
-  return (
-    <StyledAvatarContainerdiv>
-      <StyledIconButton
-        key={'div_' + bubbleId}
-        color="inherit"
-        disabled={!artist.spotifyId}
-        onClick={() => navigate(getArtistPath(artist.name, artist.spotifyId))}
-      >
-        {artist.iconPicture ? (
-          <StyledAvatar
-            src={artist.iconPicture}
-            alt={artist.name}
-            isClickable={!!artist.spotifyId}
-            key={bubbleId}
-          />
-        ) : (
-          <StyledAvatarDiv isClickable={!!artist.spotifyId}>
-            <MusicNote fontSize={'large'} />
-          </StyledAvatarDiv>
-        )}
-      </StyledIconButton>
-      <Typography variant="caption">{artist.name}</Typography>
-    </StyledAvatarContainerdiv>
-  );
-};
+const ArtistBubble = ({ artist, onClick }: ArtistBubbleProps) => (
+  <StyledAvatarContainerdiv>
+    <StyledIconButton
+      color="inherit"
+      disabled={!artist.spotifyId}
+      onClick={onClick}
+    >
+      {artist.iconPicture ? (
+        <StyledAvatar
+          src={artist.iconPicture}
+          alt={artist.name}
+          isClickable={!!artist.spotifyId}
+        />
+      ) : (
+        <StyledAvatarDiv isClickable={!!artist.spotifyId}>
+          <MusicNote fontSize={'large'} />
+        </StyledAvatarDiv>
+      )}
+    </StyledIconButton>
+    <Typography variant="caption">{artist.name}</Typography>
+  </StyledAvatarContainerdiv>
+);
 
 export const StyledAvatarContainerdiv = styled('div')(() => {
   return {

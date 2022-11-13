@@ -16,9 +16,8 @@ import ReactPlayer from 'react-player/lazy';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
-import ArtistBubble, {
-  StyledAvatarContainerdiv,
-} from '../components/ArtistBubble';
+import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
+import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubble';
 import { turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
 import { FestivalInfo } from '../redux/types';
 import '../styles/base.scss';
@@ -29,7 +28,7 @@ import {
 } from '../utils/utils';
 import { styled, useTheme } from '@mui/material/styles';
 import StyledCookieConsent from '../components/CookieConsent';
-import BackCircleButton from '../components/BackCircleButton';
+import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
 import TabPanel from '../components/TabPanel';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
 import CustomSwitch from '../components/CustomSwitch';
@@ -104,7 +103,7 @@ const FestivalPage = () => {
   } else {
     return (
       <>
-        {pcScreen && <BackCircleButton />}
+        {pcScreen && <BackCircleButtonContainer />}
         <VerticalSpaceDiv />
         <StyledCenteredColumnDiv>
           <StyledRootDiv>
@@ -305,15 +304,9 @@ const FestivalPage = () => {
                                       : -1
                                   )
                                   .map((artist) => (
-                                    <ArtistBubble
+                                    <ArtistBubbleContainer
                                       artist={artist}
                                       key={
-                                        'avatar_festival_lineup_artist_' +
-                                        festivalInfo.name +
-                                        lineup.year +
-                                        artist.name
-                                      }
-                                      bubbleId={
                                         'avatar_festival_lineup_artist_' +
                                         festivalInfo.name +
                                         lineup.year +

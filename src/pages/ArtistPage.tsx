@@ -13,9 +13,8 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { MusicNote } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import ArtistBubble, {
-  StyledAvatarContainerdiv,
-} from '../components/ArtistBubble';
+import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
+import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubble';
 import FestivalMatchCard from '../components/FestivalMatchCard';
 import { spotifyApi } from '../redux/asyncActions';
 import {
@@ -34,9 +33,8 @@ import {
   getMaxArtistsInWidth,
 } from '../utils/utils';
 import { useTheme, styled } from '@mui/material/styles';
-import ArtistBox from '../components/ArtistBox';
-import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
-import BackCircleButton from '../components/BackCircleButton';
+import { ArtistBox, StyledRootDiv } from '../layouts/StyledLayoutComponents';
+import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
 
 const ArtistPage = () => {
   const loggedIn: boolean = useSelector(selectLoggedIn);
@@ -219,7 +217,7 @@ const ArtistPage = () => {
   if (!artistInfo) {
     return (
       <>
-        {pcScreen && <BackCircleButton />}
+        {pcScreen && <BackCircleButtonContainer />}
         <StyledCenteredDiv>
           <VerticalSpaceDiv />
           <VerticalSpaceDiv />
@@ -241,7 +239,7 @@ const ArtistPage = () => {
   } else {
     return (
       <>
-        {pcScreen && <BackCircleButton />}
+        {pcScreen && <BackCircleButtonContainer />}
         <VerticalSpaceDiv />
 
         <StyledRootDiv>
@@ -343,14 +341,9 @@ const ArtistPage = () => {
                 </Divider>
                 <ArtistBox>
                   {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
-                    <ArtistBubble
+                    <ArtistBubbleContainer
                       artist={artist}
                       key={
-                        'avatar_rel_artist_' +
-                        artistInfo.artist.name +
-                        artist.name
-                      }
-                      bubbleId={
                         'avatar_rel_artist_' +
                         artistInfo.artist.name +
                         artist.name

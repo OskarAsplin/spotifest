@@ -9,21 +9,23 @@ const meta: Meta = {
   title: 'Buttons/LoginButton',
   component: LoginButton,
   parameters: {
+    docs: {
+      description: {
+        component:
+          'LoginButton used on LoginPage. Adjust screen size to see the mobile/desktop version of the button',
+      },
+    },
     backgrounds: {
       default: 'light',
     },
   },
   args: {
-    onClick: () => action('onClick'),
+    onClick: action('onClick'),
   },
 };
 
 export default meta;
 
-const Template: Story = (args) => (
-  <div>
-    <LoginButton {...args} />
-  </div>
-);
+const Template: Story = (args) => <LoginButton {...args} />;
 
 export { Template as LoginButton };

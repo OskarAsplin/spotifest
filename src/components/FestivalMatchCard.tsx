@@ -15,12 +15,13 @@ import ReactCountryFlag from 'react-country-flag';
 import { useNavigate } from 'react-router-dom';
 import { FestivalMatch, Artist } from '../redux/types';
 import { getMaxArtistsInWidth, displayedLocationName } from '../utils/utils';
-import ArtistBubble, { StyledAvatarContainerdiv } from './ArtistBubble';
+import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
+import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubble';
 import HtmlTooltip from './HtmlTooltip';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import { ExpandButton } from './ExpandButton';
-import ArtistBox from './ArtistBox';
+import { ArtistBox } from '../layouts/StyledLayoutComponents';
 
 interface Props {
   festival: FestivalMatch;
@@ -194,10 +195,9 @@ const FestivalMatchCard = (props: Props) => {
       {showMatching && !noLineupRegistered && (
         <ArtistBox>
           {matchingArtists.map((artist) => (
-            <ArtistBubble
+            <ArtistBubbleContainer
               artist={artist}
               key={`avatar_match_artist_${festival.name}_${festival.year}_${artist.name}`}
-              bubbleId={`avatar_match_artist_${festival.name}_${festival.year}_${artist.name}`}
             />
           ))}
           {matchingArtists.length > 0 &&
@@ -233,10 +233,9 @@ const FestivalMatchCard = (props: Props) => {
               popularArtists
                 .slice(0, maxArtistsInWidth)
                 .map((artist) => (
-                  <ArtistBubble
+                  <ArtistBubbleContainer
                     artist={artist}
                     key={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
-                    bubbleId={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
                   />
                 ))}
             {popularArtists.length > 0 &&
@@ -255,10 +254,9 @@ const FestivalMatchCard = (props: Props) => {
                       : maxArtistsInWidth * 3
                   )
                   .map((artist) => (
-                    <ArtistBubble
+                    <ArtistBubbleContainer
                       artist={artist}
                       key={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
-                      bubbleId={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
                     />
                   ))}
               {popularArtists.length > 0 &&
