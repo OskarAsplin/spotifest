@@ -86,60 +86,52 @@ const LoginPage = () => {
   );
 };
 
-const StyledFooterTypography = styled(Typography)(() => {
-  return {
-    [`&.${typographyClasses.root}`]: {
-      '@media (min-width: 610px)': {
-        '@media (min-height: 610px)': {
-          fontSize: '1.25rem',
-        },
+const StyledFooterTypography = styled(Typography)(() => ({
+  [`&.${typographyClasses.root}`]: {
+    '@media (min-width: 610px)': {
+      '@media (min-height: 610px)': {
+        fontSize: '1.25rem',
       },
     },
-  };
-});
+  },
+}));
 
-const StyledTitleTypography = styled(Typography)(() => {
-  return {
-    [`&.${typographyClasses.root}`]: {
-      textAlign: 'center',
-      borderRadius: '15%',
-      backgroundColor: 'rgba(0, 0, 0, 0.4)',
-      '@media (min-width: 610px)': {
-        '@media (min-height: 610px)': {
-          boxShadow: '0 -2px 20px 20px rgba(0, 0, 0, 0.4)',
-        },
-      },
-      boxShadow: '0 -1px 10px 10px rgba(0, 0, 0, 0.4)',
-      textShadow: '1px 1px 2px black',
-    },
-  };
-});
-
-const StyledBackgroundDiv = styled('div')(() => {
-  return {
-    height: '100vh',
-    backgroundImage:
-      'url(/background_image.jpg), url(/background_image_low_res.jpg)',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center center',
-  };
-});
-
-const StyledFooterDiv = styled('div')(({ theme: { spacing } }) => {
-  return {
-    position: 'absolute',
-    bottom: 0,
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+const StyledTitleTypography = styled(Typography)(() => ({
+  [`&.${typographyClasses.root}`]: {
     textAlign: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    marginBottom: spacing(1),
-    padding: spacing(1, 2, 1, 2),
-    boxShadow: '0 -1px 50px 50px rgba(0, 0, 0, 0.6)',
-  };
-});
+    borderRadius: '15%',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    textShadow: '1px 1px 2px black',
+    boxShadow: '0 -1px 10px 10px rgba(0, 0, 0, 0.4)',
+    '@media (min-width: 610px)': {
+      '@media (min-height: 610px)': {
+        boxShadow: '0 -2px 20px 20px rgba(0, 0, 0, 0.4)',
+      },
+    },
+  },
+}));
+
+const StyledBackgroundDiv = styled('div')(() => ({
+  height: '100vh',
+  backgroundImage:
+    'url(/background_image.jpg), url(/background_image_low_res.jpg)',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center center',
+}));
+
+const StyledFooterDiv = styled('div')(({ theme: { spacing } }) => ({
+  position: 'absolute',
+  bottom: 0,
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  textAlign: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  marginBottom: spacing(1),
+  padding: spacing(1, 2, 1, 2),
+  boxShadow: '0 -1px 50px 50px rgba(0, 0, 0, 0.6)',
+}));
 
 export default LoginPage;
