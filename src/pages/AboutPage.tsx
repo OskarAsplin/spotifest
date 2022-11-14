@@ -19,7 +19,7 @@ import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
 import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
-import { ExpandButton } from '../components/ExpandButton';
+import ExpandButton from '../components/ExpandButton/ExpandButton';
 import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
 
 const AboutPage = () => {

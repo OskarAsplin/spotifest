@@ -6,7 +6,7 @@ interface ExpandButtonProps extends IconButtonProps {
   expanded?: boolean;
 }
 
-export const ExpandButton = (props: ExpandButtonProps) => (
+const ExpandButton = (props: ExpandButtonProps) => (
   <StyledIconButton {...props}>
     <ExpandMoreIcon />
   </StyledIconButton>
@@ -14,11 +14,11 @@ export const ExpandButton = (props: ExpandButtonProps) => (
 
 const StyledIconButton = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'expanded',
-})<{ expanded?: boolean }>(({ theme: { transitions }, expanded }) => {
-  return {
-    transition: transitions.create('transform', {
-      duration: transitions.duration.shortest,
-    }),
-    transform: expanded ? 'rotate(180deg)' : undefined,
-  };
-});
+})<{ expanded?: boolean }>(({ theme: { transitions }, expanded }) => ({
+  transition: transitions.create('transform', {
+    duration: transitions.duration.shortest,
+  }),
+  transform: expanded ? 'rotate(180deg)' : undefined,
+}));
+
+export default ExpandButton;

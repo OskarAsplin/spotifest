@@ -31,7 +31,7 @@ import StyledCookieConsent from '../components/CookieConsent';
 import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
 import TabPanel from '../components/TabPanel';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
-import CustomSwitch from '../components/CustomSwitch';
+import CustomSwitch from '../components/CustomSwitch/CustomSwitch';
 
 const FestivalPage = () => {
   const boxForLineups = useMediaQuery('(min-width:1182px)');

@@ -20,7 +20,7 @@ import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubbl
 import HtmlTooltip from './HtmlTooltip';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { ExpandButton } from './ExpandButton';
+import ExpandButton from './ExpandButton/ExpandButton';
 import { ArtistBox } from '../layouts/StyledLayoutComponents';
 
 interface Props {
