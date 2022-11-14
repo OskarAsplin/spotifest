@@ -17,14 +17,18 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectUserInfo } from '../redux/reducers/spotifyAccountSlice';
 import { UserInfo } from '../redux/types';
-import { getBaseUrl } from '../utils/utils';
+import { getBaseUrl, isMainPage } from '../utils/utils';
 import SearchField from './SearchField';
 import { styled } from '@mui/material/styles';
-import AppBarProfilePopover from './AppBarProfilePopover';
+import AppBarProfilePopover from './AppBarProfilePopover/AppBarProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
+import {
+  selectLoggedIn,
+  setLoggedOff,
+} from '../redux/reducers/authorizationSlice';
 
 interface Props {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
@@ -35,6 +39,8 @@ const AppBarView = ({ setThemeMode }: Props) => {
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
 
   const userInfo: UserInfo | undefined = useSelector(selectUserInfo);
+  const loggedIn: boolean = useSelector(selectLoggedIn);
+  const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [showSearchFieldSmallScreen, setShowSearchFieldSmallScreen] =
@@ -48,7 +54,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const popoverId = open ? 'simple-popover' : undefined;
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -62,6 +68,12 @@ const AppBarView = ({ setThemeMode }: Props) => {
 
       setDrawerOpen(open);
     };
+
+  const onClickLogo = () => {
+    const url = window.location.href;
+    if (isMainPage(url)) window.scrollTo({ top: 0, behavior: 'smooth' });
+    else window.open(getBaseUrl(), '_self');
+  };
 
   return (
     <Box sx={{ pb: 6 }}>
@@ -79,19 +91,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
               <Button
                 sx={{ textTransform: 'none' }}
                 color="inherit"
-                onClick={() => {
-                  const url = window.location.href;
-                  if (
-                    url.endsWith('spotifest.app') ||
-                    url.endsWith('spotifest.app/') ||
-                    url.endsWith('localhost:3000') ||
-                    url.endsWith('localhost:3000/')
-                  ) {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  } else {
-                    window.open(getBaseUrl(), '_self');
-                  }
-                }}
+                onClick={onClickLogo}
               >
                 <Typography variant="h6">
                   {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
@@ -120,7 +120,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
                   padding: userInfo?.profilePictureUrl ? '10px' : undefined,
                 }}
                 color="inherit"
-                aria-describedby={id}
+                aria-describedby={popoverId}
                 onClick={handleClick}
               >
                 {userInfo?.profilePictureUrl ? (
@@ -151,7 +151,15 @@ const AppBarView = ({ setThemeMode }: Props) => {
           )}
         </div>
       </Slide>
-      <AppBarProfilePopover anchorEl={anchorEl} setAnchorEl={setAnchorEl} />
+      <AppBarProfilePopover
+        id={popoverId}
+        anchorEl={anchorEl}
+        setAnchorEl={setAnchorEl}
+        userName={userInfo?.displayName}
+        spotifyUrl={userInfo?.spotifyUrl}
+        loggedIn={loggedIn}
+        onClickLogout={() => dispatch(setLoggedOff())}
+      />
       <AppBarMenuDrawerContainer
         open={drawerOpen}
         onClose={toggleDrawer(false)}
@@ -195,15 +203,13 @@ const StyledSearchFieldSmallScreenPaper = styled(Paper)(
   }
 );
 
-const StyledToolbar = styled(Toolbar)(({ theme: { spacing } }) => {
-  return {
-    [`&.${toolbarClasses.root}`]: {
-      minHeight: spacing(4.5),
-      '@media (max-width: 439px)': {
-        padding: spacing(0, 1, 0, 1),
-      },
+const StyledToolbar = styled(Toolbar)(({ theme: { spacing } }) => ({
+  [`&.${toolbarClasses.root}`]: {
+    minHeight: spacing(4.5),
+    '@media (max-width: 439px)': {
+      padding: spacing(0, 1, 0, 1),
     },
-  };
-});
+  },
+}));
 
 export default AppBarView;

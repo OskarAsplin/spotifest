@@ -288,53 +288,35 @@ const FestivalMatchCard = (props: Props) => {
   );
 };
 
-const StyledTitleButton = styled(Button)(({ theme: { spacing, palette } }) => {
-  return {
-    [`&.${buttonClasses.root}`]: {
-      whiteSpace: 'normal',
-      textTransform: 'none',
-      textAlign: 'left',
-      marginBottom: spacing(1.5),
-      padding: spacing(0, 1, 0, 1),
-      borderColor: palette.primary?.[palette.mode],
-      '@media (min-width: 690px)': { borderStyle: 'dashed' },
-      '@media (max-width: 689px)': { borderStyle: 'dotted' },
-    },
-  };
-});
+const StyledTitleButton = styled(Button)(({ theme: { spacing, palette } }) => ({
+  [`&.${buttonClasses.root}`]: {
+    whiteSpace: 'normal',
+    textTransform: 'none',
+    textAlign: 'left',
+    marginBottom: spacing(1.5),
+    padding: spacing(0, 1),
+    borderColor: palette.primary?.[palette.mode],
+    '@media (min-width: 690px)': { borderStyle: 'dashed' },
+    '@media (max-width: 689px)': { borderStyle: 'dotted' },
+  },
+}));
 
-const StyledPaddedDiv = styled('div')(({ theme: { spacing } }) => {
-  return {
-    '@media (min-width: 690px)': {
-      padding: spacing(0, 4, 0, 4),
-    },
-    '@media (max-width: 689px)': {
-      '@media (min-width: 440px)': {
-        padding: spacing(0, 2, 0, 2),
-      },
-    },
-    '@media (max-width: 439px)': {
-      padding: spacing(0, 2, 0, 2),
-    },
-  };
-});
+const StyledPaddedDiv = styled('div')(({ theme: { spacing } }) => ({
+  '@media (min-width: 690px)': { padding: spacing(0, 4) },
+  '@media (max-width: 689px)': {
+    '@media (min-width: 440px)': { padding: spacing(0, 2) },
+  },
+  '@media (max-width: 439px)': { padding: spacing(0, 2) },
+}));
 
-const StyledMatchCircleDiv = styled('div')(({ theme: { spacing } }) => {
-  return {
-    marginLeft: spacing(2),
-    '@media (min-width: 690px)': {
-      width: '80px',
-    },
-    '@media (max-width: 689px)': {
-      '@media (min-width: 440px)': {
-        width: '60px',
-      },
-    },
-    '@media (max-width: 439px)': {
-      width: '50px',
-    },
-    userSelect: 'none',
-  };
-});
+const StyledMatchCircleDiv = styled('div')(({ theme: { spacing } }) => ({
+  marginLeft: spacing(2),
+  userSelect: 'none',
+  '@media (min-width: 690px)': { width: '80px' },
+  '@media (max-width: 689px)': {
+    '@media (min-width: 440px)': { width: '60px' },
+  },
+  '@media (max-width: 439px)': { width: '50px' },
+}));
 
 export default FestivalMatchCard;
