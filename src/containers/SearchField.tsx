@@ -12,12 +12,12 @@ import {
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import SearchIcon from '@mui/icons-material/Search';
-import StandardLink from './StandardLink';
+import StandardLink from '../components/StandardLink';
 import { getArtistUrl, getFestivalUrl } from '../utils/utils';
 import { useSearchDb } from './SearchField.utils';
 import { createTheme } from '@mui/material/styles';
 import { getMainTheme } from '../theme/theme.styles';
-import MatchHighlighter, { escapeRegExp } from './MatchHighlighter';
+import MatchHighlighter, { escapeRegExp } from '../components/MatchHighlighter';
 
 interface Props {
   setShowSearchFieldSmallScreen: React.Dispatch<React.SetStateAction<boolean>>;

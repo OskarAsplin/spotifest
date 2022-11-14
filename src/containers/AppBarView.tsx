@@ -23,7 +23,7 @@ import { UserInfo } from '../redux/types';
 import { getBaseUrl, isMainPage } from '../utils/utils';
 import SearchField from './SearchField';
 import { styled } from '@mui/material/styles';
-import AppBarProfilePopover from './AppBarProfilePopover/AppBarProfilePopover';
+import AppBarProfilePopover from '../components/AppBarProfilePopover/AppBarProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 import {
   selectLoggedIn,

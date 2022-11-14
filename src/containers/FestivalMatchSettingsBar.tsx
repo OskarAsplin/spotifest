@@ -56,11 +56,11 @@ import {
   getBigPicture,
   displayedLocationName,
 } from '../utils/utils';
-import StandardLink from './StandardLink';
-import HtmlTooltip from './HtmlTooltip';
-import SettingsBarDatePicker from './SettingsBarDatePicker';
+import StandardLink from '../components/StandardLink';
+import HtmlTooltip from '../components/HtmlTooltip';
+import SettingsBarDatePicker from '../components/SettingsBarDatePicker';
 import { styled, useTheme } from '@mui/material/styles';
-import { LoadingSpinner } from './LoadingSpinner/LoadingSpinner';
+import { LoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
 
 const topArtistsChoice = '__your__top__artists__';
 

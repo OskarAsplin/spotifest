@@ -14,7 +14,7 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { MusicNote } from '@mui/icons-material';
 import StarIcon from '@mui/icons-material/Star';
 import clsx from 'clsx';
-import TechStackContent from '../components/TechStackContent';
+import TechStackContent from '../containers/TechStackContent';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
 import StandardLink from '../components/StandardLink';

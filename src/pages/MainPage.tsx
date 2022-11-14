@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import FestivalMatchesDisplay from '../components/FestivalMatchesDisplay';
-import FestivalMatchSettingsBar from '../components/FestivalMatchSettingsBar';
+import FestivalMatchesDisplay from '../containers/FestivalMatchesDisplay';
+import FestivalMatchSettingsBar from '../containers/FestivalMatchSettingsBar';
 import { getAuthorizeHref } from '../oauthConfig';
 import { initializeSite, spotifyApi } from '../redux/asyncActions';
 import {

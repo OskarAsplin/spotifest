@@ -3,9 +3,9 @@ import { Typography, Grid, Box } from '@mui/material';
 import clsx from 'clsx';
 import aboutPageStyles from '../pages/AboutPage.module.scss';
 import styles from './TechStackContent.module.scss';
-import StandardLink from './StandardLink';
+import StandardLink from '../components/StandardLink';
 import { useTheme } from '@mui/material/styles';
-import HtmlTooltip from './HtmlTooltip';
+import HtmlTooltip from '../components/HtmlTooltip';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 interface OwnProps {
