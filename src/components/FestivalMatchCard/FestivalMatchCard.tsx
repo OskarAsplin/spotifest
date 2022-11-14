@@ -9,30 +9,35 @@ import {
   Box,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
 import ReactCountryFlag from 'react-country-flag';
-import { useNavigate } from 'react-router-dom';
-import { FestivalMatch, Artist } from '../redux/types';
-import { getMaxArtistsInWidth, displayedLocationName } from '../utils/utils';
-import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
-import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubble';
-import HtmlTooltip from './HtmlTooltip';
+import { FestivalMatch, Artist } from '../../redux/types';
+import { getMaxArtistsInWidth, displayedLocationName } from '../../utils/utils';
+import { StyledAvatarContainerdiv } from '../../components/ArtistBubble/ArtistBubble';
+import HtmlTooltip from '../HtmlTooltip';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import ExpandButton from './ExpandButton/ExpandButton';
-import { ArtistBox } from '../layouts/StyledLayoutComponents';
+import ExpandButton from '../ExpandButton/ExpandButton';
+import { ArtistBox } from '../../layouts/StyledLayoutComponents';
+import MatchingCircle from '../MatchingCircle/MatchingCircle';
+import ArtistBubble from '../ArtistBubble/ArtistBubble';
 
-interface Props {
+export interface FestivalMatchCardProps {
   festival: FestivalMatch;
   popularArtists: Artist[];
   matchingArtists: Artist[];
   showMatching: boolean;
+  onClickTitle: () => void;
+  onClickArtistBubble: (artistName: string, spotifyId?: string) => void;
 }
 
-const FestivalMatchCard = (props: Props) => {
-  const { festival, showMatching, popularArtists, matchingArtists } = props;
-
+const FestivalMatchCard = ({
+  festival,
+  showMatching,
+  popularArtists,
+  matchingArtists,
+  onClickTitle,
+  onClickArtistBubble,
+}: FestivalMatchCardProps) => {
   const themeMode = useTheme().palette.mode;
 
   const bigScreen = useMediaQuery('(min-width:690px)');
@@ -44,21 +49,12 @@ const FestivalMatchCard = (props: Props) => {
     maxArtistsInWidth - (popularArtists.length % maxArtistsInWidth);
 
   const [expanded, setExpanded] = useState(false);
-  const navigate = useNavigate();
 
   const matchingPercentTotal = Math.ceil(festival.matching_percent_combined);
   const matchingPercentArtists = Math.ceil(festival.matching_percent_artists);
   const matchingPercentGenres = Math.ceil(festival.matching_percent_genres);
 
-  const textSize = smallScreen ? '28px' : '25px';
-  const pathColor = themeMode === 'light' ? '#3FBF3F' : '#3de53d';
-  const textColor = themeMode === 'light' ? '#3FBF3F' : '#3de53d';
-  const trailColor = themeMode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
-
   const noLineupRegistered = popularArtists.length === 0;
-
-  const navigateToFestival = (festivalId: string) =>
-    navigate(`/festival/${festivalId}`);
 
   return (
     <Paper elevation={3} sx={{ pt: 1 }} key={festival.name}>
@@ -87,9 +83,7 @@ const FestivalMatchCard = (props: Props) => {
             <StyledTitleButton
               color="inherit"
               variant="outlined"
-              onClick={() => {
-                navigateToFestival(encodeURIComponent(festival.name));
-              }}
+              onClick={onClickTitle}
             >
               <Typography
                 variant={bigScreen ? 'h3' : 'h5'}
@@ -149,19 +143,7 @@ const FestivalMatchCard = (props: Props) => {
                 </Fragment>
               }
             >
-              <StyledMatchCircleDiv>
-                <CircularProgressbar
-                  value={matchingPercentTotal}
-                  text={`${matchingPercentTotal}%`}
-                  styles={buildStyles({
-                    textSize: textSize,
-                    pathTransitionDuration: 0.5,
-                    pathColor: pathColor,
-                    textColor: textColor,
-                    trailColor: trailColor,
-                  })}
-                />
-              </StyledMatchCircleDiv>
+              <MatchingCircle matchingPercent={matchingPercentTotal} />
             </HtmlTooltip>
           )}
         </Box>
@@ -195,9 +177,10 @@ const FestivalMatchCard = (props: Props) => {
       {showMatching && !noLineupRegistered && (
         <ArtistBox>
           {matchingArtists.map((artist) => (
-            <ArtistBubbleContainer
-              artist={artist}
+            <ArtistBubble
               key={`avatar_match_artist_${festival.name}_${festival.year}_${artist.name}`}
+              artist={artist}
+              onClick={() => onClickArtistBubble(artist.name, artist.spotifyId)}
             />
           ))}
           {matchingArtists.length > 0 &&
@@ -233,9 +216,12 @@ const FestivalMatchCard = (props: Props) => {
               popularArtists
                 .slice(0, maxArtistsInWidth)
                 .map((artist) => (
-                  <ArtistBubbleContainer
-                    artist={artist}
+                  <ArtistBubble
                     key={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
+                    artist={artist}
+                    onClick={() =>
+                      onClickArtistBubble(artist.name, artist.spotifyId)
+                    }
                   />
                 ))}
             {popularArtists.length > 0 &&
@@ -254,9 +240,12 @@ const FestivalMatchCard = (props: Props) => {
                       : maxArtistsInWidth * 3
                   )
                   .map((artist) => (
-                    <ArtistBubbleContainer
-                      artist={artist}
+                    <ArtistBubble
                       key={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
+                      artist={artist}
+                      onClick={() =>
+                        onClickArtistBubble(artist.name, artist.spotifyId)
+                      }
                     />
                   ))}
               {popularArtists.length > 0 &&
@@ -307,16 +296,6 @@ const StyledPaddedDiv = styled('div')(({ theme: { spacing } }) => ({
     '@media (min-width: 440px)': { padding: spacing(0, 2) },
   },
   '@media (max-width: 439px)': { padding: spacing(0, 2) },
-}));
-
-const StyledMatchCircleDiv = styled('div')(({ theme: { spacing } }) => ({
-  marginLeft: spacing(2),
-  userSelect: 'none',
-  '@media (min-width: 690px)': { width: '80px' },
-  '@media (max-width: 689px)': {
-    '@media (min-width: 440px)': { width: '60px' },
-  },
-  '@media (max-width: 439px)': { width: '50px' },
 }));
 
 export default FestivalMatchCard;

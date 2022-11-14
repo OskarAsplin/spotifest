@@ -19,7 +19,7 @@ import {
   PopularArtistsDict,
   MatchSettings,
 } from '../redux/types';
-import FestivalMatchCard from './FestivalMatchCard';
+import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import { styled } from '@mui/material/styles';
 
 const FestivalMatchesDisplay = () => {
@@ -129,7 +129,7 @@ const FestivalMatchesDisplay = () => {
                     a.userPopularity! < b.userPopularity! ? 1 : -1
                   );
           return (
-            <FestivalMatchCard
+            <FestivalMatchCardContainer
               festival={festival}
               popularArtists={popularArtists}
               matchingArtists={matchingArtists}

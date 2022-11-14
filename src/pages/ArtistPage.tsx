@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
 import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubble';
-import FestivalMatchCard from '../components/FestivalMatchCard';
+import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import { spotifyApi } from '../redux/asyncActions';
 import {
   selectLoggedIn,
@@ -366,7 +366,7 @@ const ArtistPage = () => {
               </StyledFestivalsTypography>
               <StyledStack spacing={3}>
                 {artistInfo.festivalsFuture.map((festival) => (
-                  <FestivalMatchCard
+                  <FestivalMatchCardContainer
                     festival={festival}
                     popularArtists={festival.popular_artists}
                     matchingArtists={[]}
