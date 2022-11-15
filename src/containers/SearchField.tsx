@@ -5,7 +5,6 @@ import {
   TextField,
   Paper,
   Box,
-  CircularProgress,
   ClickAwayListener,
   ThemeProvider,
 } from '@mui/material';
@@ -14,21 +13,36 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import SearchIcon from '@mui/icons-material/Search';
 import StandardLink from '../components/StandardLink';
 import { getArtistUrl, getFestivalUrl } from '../utils/utils';
-import { useSearchDb } from './SearchField.utils';
 import { createTheme } from '@mui/material/styles';
 import { getMainTheme } from '../theme/theme.styles';
 import MatchHighlighter, { escapeRegExp } from '../components/MatchHighlighter';
+import { debounce } from 'lodash-es';
+import { ChangeEvent, useState } from 'react';
+import { getDjangoSearchResults } from '../utils/api/djangoApi';
+import { useGet } from '../utils/api/api';
 
 interface Props {
   setShowSearchFieldSmallScreen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
+const DEBOUNCE_WAIT = 500;
+
 const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
-  const { inputText, setInputText, searchResults } = useSearchDb();
-
   const darkTheme = createTheme(getMainTheme('dark'));
   const lightTheme = createTheme(getMainTheme('light'));
+
+  const [inputText, setInputText] = useState('');
+
+  const { data: searchResults } = useGet(getDjangoSearchResults, {
+    query: { searchString: inputText },
+    enabled: !!inputText.length,
+  });
+
+  const debouncedOnChange = debounce(
+    (e: ChangeEvent<HTMLInputElement>) => setInputText(e.target.value),
+    DEBOUNCE_WAIT
+  );
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -46,10 +60,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
             size="small"
             autoFocus={bigScreen ? false : true}
             placeholder="Search"
-            value={inputText}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-              setInputText(event.target.value)
-            }
+            onChange={debouncedOnChange}
             InputLabelProps={{ shrink: true }}
             InputProps={
               bigScreen
@@ -67,29 +78,21 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
           />
           <ThemeProvider theme={lightTheme}>
             <div>
-              {searchResults.loading && inputText && (
-                <StyledFixedPaper elevation={10}>
-                  <CircularProgress />
-                </StyledFixedPaper>
-              )}
-              {searchResults.error && (
-                <div>Error: {searchResults.error.message}</div>
-              )}
-              {searchResults.result && inputText && (
+              {searchResults && inputText && (
                 <StyledAbsolutePaper elevation={10}>
                   <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    {searchResults.result.festivals.length === 0 &&
-                      searchResults.result.artists.length === 0 && (
+                    {searchResults.festivals.length === 0 &&
+                      searchResults.artists.length === 0 && (
                         <Typography color="primary" component="div">
                           No results
                         </Typography>
                       )}
-                    {searchResults.result.festivals.length > 0 && (
+                    {searchResults.festivals.length > 0 && (
                       <Typography sx={{ mb: 1, fontWeight: 'bold' }}>
                         Festivals:
                       </Typography>
                     )}
-                    {searchResults.result.festivals
+                    {searchResults.festivals
                       .slice(0, 5)
                       .map((festival: any) => (
                         <StandardLink
@@ -109,7 +112,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                           {': ' + festival.location}
                         </StandardLink>
                       ))}
-                    {searchResults.result.festivals.length > 5 && (
+                    {searchResults.festivals.length > 5 && (
                       <Typography
                         color="textSecondary"
                         variant="subtitle1"
@@ -118,35 +121,33 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                         ...
                       </Typography>
                     )}
-                    {searchResults.result.festivals.length > 0 &&
-                      searchResults.result.artists.length > 0 && (
+                    {searchResults.festivals.length > 0 &&
+                      searchResults.artists.length > 0 && (
                         <Box sx={{ mt: 2 }} />
                       )}
-                    {searchResults.result.artists.length > 0 && (
+                    {searchResults.artists.length > 0 && (
                       <Typography sx={{ mb: 1, fontWeight: 'bold' }}>
                         Artists:
                       </Typography>
                     )}
-                    {searchResults.result.artists
-                      .slice(0, 5)
-                      .map((artist: any) => (
-                        <StandardLink
-                          color={'textSecondary'}
-                          key={'searchResult artist: ' + artist.name}
-                          href={getArtistUrl(artist.name, artist.spotifyId)}
-                          onClick={() => setInputText('')}
-                          sx={{ mb: 1 }}
-                          variant="body2"
-                        >
-                          <MatchHighlighter
-                            text={artist.name}
-                            regex={
-                              new RegExp(`(${escapeRegExp(inputText)})`, 'ig')
-                            }
-                          />
-                        </StandardLink>
-                      ))}
-                    {searchResults.result.artists.length > 5 && (
+                    {searchResults.artists.slice(0, 5).map((artist: any) => (
+                      <StandardLink
+                        color={'textSecondary'}
+                        key={'searchResult artist: ' + artist.name}
+                        href={getArtistUrl(artist.name, artist.spotifyId)}
+                        onClick={() => setInputText('')}
+                        sx={{ mb: 1 }}
+                        variant="body2"
+                      >
+                        <MatchHighlighter
+                          text={artist.name}
+                          regex={
+                            new RegExp(`(${escapeRegExp(inputText)})`, 'ig')
+                          }
+                        />
+                      </StandardLink>
+                    ))}
+                    {searchResults.artists.length > 5 && (
                       <Typography
                         color="textSecondary"
                         variant="subtitle1"
@@ -171,16 +172,6 @@ const StyledAbsolutePaper = styled(Paper)(({ theme: { spacing } }) => ({
   padding: spacing(1),
   '@media (min-width: 610px)': { width: '250px' },
   '@media (max-width: 609px)': { width: '200px' },
-}));
-
-const StyledFixedPaper = styled(Paper)(({ theme: { spacing } }) => ({
-  position: 'fixed',
-  padding: spacing(1),
-  '@media (min-width: 610px)': { width: '250px' },
-  '@media (max-width: 609px)': { width: '200px' },
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
 }));
 
 const StyledTextField = styled(TextField)(() => ({

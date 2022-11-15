@@ -1,5 +1,5 @@
 import { fetchGet, getApiBaseUrl } from './restUtils';
-import { ArtistInfo, FestivalInfo } from '../../redux/types';
+import { ArtistInfo, FestivalInfo, SearchResponse } from '../../redux/types';
 
 const getOntourBase = () => `${getApiBaseUrl()}/onTour`;
 
@@ -26,4 +26,13 @@ export const getDjangoFestival = ({
 }): Promise<FestivalInfo> =>
   fetchGet<FestivalInfo>(
     `${getOntourBase()}/festivalInfo/?q=${encodeURIComponent(name)}`
+  );
+
+export const getDjangoSearchResults = ({
+  searchString,
+}: {
+  searchString: string;
+}) =>
+  fetchGet<SearchResponse>(
+    `${getOntourBase()}/search/?q=${encodeURIComponent(searchString)}`
   );
