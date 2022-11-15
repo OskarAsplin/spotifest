@@ -189,8 +189,7 @@ const FestivalMatchSettingsBar = () => {
             );
             return artistIdsRaw;
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
             dispatch(setLoggedOff());
             return [];
           });
@@ -224,8 +223,7 @@ const FestivalMatchSettingsBar = () => {
               }
             );
           })
-          .catch((error) => {
-            console.log(error);
+          .catch(() => {
             dispatch(setLoggedOff());
             return [];
           });
@@ -248,11 +246,7 @@ const FestivalMatchSettingsBar = () => {
           allArtistIdsRaw.length
         );
         dispatch(setSelectedPlaylistArtists(newArtists));
-      } else {
-        console.log('Something went wrong. No artists in list');
       }
-    } else {
-      console.log('Could not find playlist: ' + playlistName);
     }
   };
 

@@ -57,10 +57,7 @@ export const getPopularArtistsInLineups =
       .then((data) => {
         dispatch(setPopularArtists(data as PopularArtistsDict));
       })
-      .catch((reason) => {
-        console.log(reason);
-        dispatch(setDbIsOffline());
-      });
+      .catch(() => dispatch(setDbIsOffline()));
   };
 
 export const testFestivalMatches =
@@ -117,32 +114,26 @@ export const testFestivalMatches =
           dispatch(getPopularArtistsInLineups(firstPageLineups));
         }
       })
-      .catch((reason) => {
-        console.log(reason);
-        dispatch(setDbIsOffline());
-      })
+      .catch(() => dispatch(setDbIsOffline()))
       .finally(() => dispatch(turnOffLoader()));
   };
 
-const mapTopArtistToArtistObject = (
+const mapToArtist = (
   artist: SpotifyApi.ArtistObjectFull,
   idx: number,
   totalTopArtists: number
-) => {
-  return {
-    name: artist.name,
-    spotifyId: artist.id,
-    iconPicture: getIconPicture(artist.images),
-    bigPicture: getBigPicture(artist.images),
-    popularity: artist.popularity,
-    userPopularity: totalTopArtists * 2 - idx,
-    genres: artist.genres,
-  } as Artist;
-};
+): Artist => ({
+  name: artist.name,
+  spotifyId: artist.id,
+  iconPicture: getIconPicture(artist.images),
+  bigPicture: getBigPicture(artist.images),
+  popularity: artist.popularity,
+  userPopularity: totalTopArtists * 2 - idx,
+  genres: artist.genres,
+});
 
-const topArtistsCount = (numArtists: number) => {
-  return (numArtists * (3 * numArtists + 1)) / 2; // n(3n+1)/2
-};
+const topArtistsCount = (numArtists: number) =>
+  (numArtists * (3 * numArtists + 1)) / 2; // n(3n+1)/2
 
 Object.values =
   Object.values ||
@@ -235,27 +226,15 @@ export const initializeSite =
               ([responseLongTerm, responseMediumTerm, responseShortTerm]) => {
                 const topArtistsLongTerm: Artist[] = responseLongTerm.items.map(
                   (artist, idx) =>
-                    mapTopArtistToArtistObject(
-                      artist,
-                      idx,
-                      responseLongTerm.items.length
-                    )
+                    mapToArtist(artist, idx, responseLongTerm.items.length)
                 );
                 const topArtistsMediumTerm: Artist[] =
                   responseMediumTerm.items.map((artist, idx) =>
-                    mapTopArtistToArtistObject(
-                      artist,
-                      idx,
-                      responseMediumTerm.items.length
-                    )
+                    mapToArtist(artist, idx, responseMediumTerm.items.length)
                   );
                 const topArtistsShortTerm: Artist[] =
                   responseShortTerm.items.map((artist, idx) =>
-                    mapTopArtistToArtistObject(
-                      artist,
-                      idx,
-                      responseShortTerm.items.length
-                    )
+                    mapToArtist(artist, idx, responseShortTerm.items.length)
                   );
                 const countTopArtists =
                   topArtistsCount(responseLongTerm.items.length) +
@@ -284,25 +263,16 @@ export const initializeSite =
                 );
               }
             )
-            .catch((error) => {
-              console.log(error);
-              dispatch(setLoggedOff());
-            });
+            .catch(() => dispatch(setLoggedOff()));
 
           dispatch(getAllPlaylists(getMe.id, 0, []));
         }
       )
       .catch((error) => {
         if (error instanceof XMLHttpRequest) {
-          if (error.status === 401) {
-            dispatch(setLoggedOff());
-          }
+          if (error.status === 401) dispatch(setLoggedOff());
         }
-        if (error instanceof TypeError) {
-          dispatch(setDbIsOffline());
-        }
-        console.log('status code: ' + error.status);
-        console.log(error);
+        if (error instanceof TypeError) dispatch(setDbIsOffline());
       });
   };
 
@@ -339,8 +309,5 @@ export const getAllPlaylists =
           dispatch(setPlaylists(allPlaylists));
         }
       })
-      .catch((error) => {
-        console.log(error);
-        dispatch(setLoggedOff());
-      });
+      .catch(() => dispatch(setLoggedOff()));
   };

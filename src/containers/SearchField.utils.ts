@@ -42,11 +42,7 @@ const useDebouncedSearch = (searchFunction: any) => {
 export const useSearchDb = () =>
   useDebouncedSearch((text: any) => searchDatabase(text));
 
-export const searchDatabase = (searchString: string) => {
-  return fetchGet(getApiBaseUrl() + '/onTour/search/?q=' + searchString)
+export const searchDatabase = (searchString: string) =>
+  fetchGet(getApiBaseUrl() + '/onTour/search/?q=' + searchString)
     .then((response: any) => response as SearchResponse)
-    .catch((error) => {
-      console.log(error);
-      return emptySearchResponse;
-    });
-};
+    .catch(() => emptySearchResponse);
