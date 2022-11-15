@@ -1,4 +1,4 @@
-import { fetchToJson, getApiBaseUrl } from '../utils/restUtils';
+import { fetchGet, getApiBaseUrl } from '../utils/api/restUtils';
 import { SearchResponse } from '../redux/types';
 import { useState } from 'react';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
@@ -43,7 +43,7 @@ export const useSearchDb = () =>
   useDebouncedSearch((text: any) => searchDatabase(text));
 
 export const searchDatabase = (searchString: string) => {
-  return fetchToJson(getApiBaseUrl() + '/onTour/search/?q=' + searchString)
+  return fetchGet(getApiBaseUrl() + '/onTour/search/?q=' + searchString)
     .then((response: any) => response as SearchResponse)
     .catch((error) => {
       console.log(error);

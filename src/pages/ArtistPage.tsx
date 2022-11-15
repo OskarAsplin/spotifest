@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import {
   Avatar,
   Divider,
@@ -11,7 +10,7 @@ import {
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { MusicNote } from '@mui/icons-material';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
 import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubble';
@@ -20,192 +19,78 @@ import { spotifyApi } from '../redux/asyncActions';
 import {
   selectLoggedIn,
   selectAccessToken,
-  setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import { turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
-import { ArtistInfo, Artist } from '../redux/types';
 import '../styles/base.scss';
-import { fetchToJson, getApiBaseUrl } from '../utils/restUtils';
-import {
-  getFestivalPath,
-  getIconPicture,
-  getBigPicture,
-  getMaxArtistsInWidth,
-} from '../utils/utils';
+import { getFestivalPath, getMaxArtistsInWidth } from '../utils/utils';
 import { useTheme, styled } from '@mui/material/styles';
 import { ArtistBox, StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
+import {
+  getDjangoArtistByName,
+  getDjangoArtistBySpotifyId,
+} from '../utils/api/djangoApi';
+import {
+  getSpotifyArtistInfo,
+  getSpotifyArtistRelatedArtists,
+} from '../utils/api/spotifyApi';
+import { useGet, withFallback } from '../utils/api/api';
+import { CenteredLoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
 
-const ArtistPage = () => {
-  const loggedIn: boolean = useSelector(selectLoggedIn);
-  const accessToken: string = useSelector(selectAccessToken);
+const SuspenseFallback = () => <CenteredLoadingSpinner show />;
+const ErrorFallback = () => (
+  <StyledCenteredDiv>
+    <VerticalSpaceDiv />
+    <VerticalSpaceDiv />
+    <Typography variant="subtitle1">
+      There seems to be some issue with connecting to our database. Try
+      refreshing the page.
+    </Typography>
+  </StyledCenteredDiv>
+);
+
+const ArtistPage = withFallback(
+  SuspenseFallback,
+  ErrorFallback
+)(() => {
+  const loggedIn = useSelector(selectLoggedIn);
+  const accessToken = useSelector(selectAccessToken);
   const themeMode = useTheme().palette.mode;
-  const dispatch = useDispatch();
   const { artistId } = useParams();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setIsValidSpotifyId(true);
-    setIsArtistInDb(true);
-    setArtistInfo(undefined);
-    if (artistId && artistId.indexOf('spotifyId=') !== -1) {
-      const spotifyId = artistId.substring('spotifyId='.length);
-      dispatch(turnOnLoader());
-      fetchToJson(
-        getApiBaseUrl() + '/onTour/artistInfo/?spotifyId=' + spotifyId
-      )
-        .then((response: any) => {
-          const responseArtist = response as ArtistInfo;
-          setArtistInfo(responseArtist);
-        })
-        .catch((error) => {
-          console.log(error);
-          if (error instanceof TypeError) {
-            setIsNetworkError(true);
-          } else {
-            setIsArtistInDb(false);
-          }
-          if (loggedIn && accessToken) {
-            spotifyApi.setAccessToken(accessToken);
-            spotifyApi
-              .getArtist(spotifyId)
-              .then(
-                (spotifyArtistResponse: SpotifyApi.SingleArtistResponse) => {
-                  const bigPicture: string = getBigPicture(
-                    spotifyArtistResponse.images
-                  );
-                  setArtistInfo({
-                    artist: {
-                      name: spotifyArtistResponse.name,
-                      spotifyId: spotifyArtistResponse.id,
-                      iconPicture: '',
-                      bigPicture: bigPicture,
-                      popularity: spotifyArtistResponse.popularity,
-                      genres: spotifyArtistResponse.genres,
-                    },
-                    festivalsFuture: [],
-                    festivalsPast: [],
-                  });
-                }
-              )
-              .catch((error) => {
-                console.log(error);
-                if (error.status === 401) {
-                  // TODO: check if renewal time and just renew token and redirect to same page.
-                  dispatch(setLoggedOff());
-                } else {
-                  setIsValidSpotifyId(false);
-                }
-              });
-          }
-        })
-        .finally(() => dispatch(turnOffLoader()));
-      if (loggedIn && accessToken) {
-        spotifyApi.setAccessToken(accessToken);
-        spotifyApi
-          .getArtistRelatedArtists(spotifyId)
-          .then(
-            (
-              spotifyArtistResponse: SpotifyApi.ArtistsRelatedArtistsResponse
-            ) => {
-              if (spotifyArtistResponse.artists.length > 0) {
-                const related = spotifyArtistResponse.artists.map(
-                  (relArtist) => {
-                    const iconPicture: string = getIconPicture(
-                      relArtist.images
-                    );
-                    return {
-                      name: relArtist.name,
-                      spotifyId: relArtist.id,
-                      iconPicture: iconPicture,
-                      bigPicture: '',
-                      popularity: relArtist.popularity,
-                      genres: relArtist.genres,
-                    } as Artist;
-                  }
-                );
-                setRelatedArtists(related);
-              }
-            }
-          )
-          .catch((error) => {
-            console.log(error);
-            if (error.status === 401) {
-              // TODO: check if renewal time and just renew token and redirect to same page.
-              dispatch(setLoggedOff());
-            } else {
-              setIsValidSpotifyId(false);
-            }
-          });
-      }
-    } else {
-      if (artistId) {
-        dispatch(turnOnLoader());
-        fetchToJson(getApiBaseUrl() + '/onTour/artistInfo/?q=' + artistId)
-          .then((response: any) => {
-            const responseArtist = response as ArtistInfo;
-            setArtistInfo(responseArtist);
+  if (loggedIn && accessToken) spotifyApi.setAccessToken(accessToken);
 
-            if (responseArtist.artist.spotifyId && loggedIn && accessToken) {
-              spotifyApi.setAccessToken(accessToken);
-              spotifyApi
-                .getArtistRelatedArtists(responseArtist.artist.spotifyId)
-                .then(
-                  (
-                    spotifyArtistResponse: SpotifyApi.ArtistsRelatedArtistsResponse
-                  ) => {
-                    if (spotifyArtistResponse.artists.length > 0) {
-                      const related = spotifyArtistResponse.artists.map(
-                        (relArtist) => {
-                          const iconPicture: string = getIconPicture(
-                            relArtist.images
-                          );
-                          return {
-                            name: relArtist.name,
-                            spotifyId: relArtist.id,
-                            iconPicture: iconPicture,
-                            bigPicture: '',
-                            popularity: relArtist.popularity,
-                            genres: relArtist.genres,
-                          } as Artist;
-                        }
-                      );
-                      setRelatedArtists(related);
-                    }
-                  }
-                )
-                .catch((error) => {
-                  console.log(error);
-                  if (error.status === 401) {
-                    // TODO: check if renewal time and just renew token and redirect to same page.
-                    dispatch(setLoggedOff());
-                  } else {
-                    setIsValidSpotifyId(false);
-                  }
-                });
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-            if (error instanceof TypeError) {
-              setIsNetworkError(true);
-            } else {
-              setIsArtistInDb(false);
-            }
-          })
-          .finally(() => dispatch(turnOffLoader()));
-      }
+  const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
+  const spotifyId = artistId?.substring('spotifyId='.length);
+
+  const { data: artistBySpotifyId, isError: isArtistBySpotifyIdError } = useGet(
+    getDjangoArtistBySpotifyId,
+    {
+      query: { spotifyId: spotifyId ?? '' },
+      enabled: hasSpotifyId,
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [artistId]);
-
-  const [artistInfo, setArtistInfo] = useState<ArtistInfo | undefined>(
-    undefined
   );
-  const [relatedArtists, setRelatedArtists] = useState<Artist[]>([]);
-  const [isArtistInDb, setIsArtistInDb] = useState(true);
-  const [isNetworkError, setIsNetworkError] = useState(false);
-  const [isValidSpotifyId, setIsValidSpotifyId] = useState(true);
+
+  const { data: artistByName } = useGet(getDjangoArtistByName, {
+    query: { name: artistId ?? '' },
+    enabled: !hasSpotifyId && !!artistId,
+  });
+
+  const { data: spotifyArtist } = useGet(getSpotifyArtistInfo, {
+    query: { accessToken, spotifyId: spotifyId ?? '' },
+    enabled: isArtistBySpotifyIdError,
+  });
+
+  const spotifyIdFromDjango = artistByName?.artist.spotifyId;
+
+  const { data: relatedArtists = [] } = useGet(getSpotifyArtistRelatedArtists, {
+    query: { accessToken, spotifyId: spotifyId ?? spotifyIdFromDjango ?? '' },
+    enabled:
+      loggedIn && !!accessToken && (hasSpotifyId || !!spotifyIdFromDjango),
+  });
+
+  const artistInfo = artistBySpotifyId || artistByName || spotifyArtist;
+  const isArtistInDb = !!artistBySpotifyId || !!artistByName;
 
   const bigScreen = useMediaQuery('(min-width:690px)');
   const pcScreen = useMediaQuery('(min-width:1300px)');
@@ -221,16 +106,10 @@ const ArtistPage = () => {
         <StyledCenteredDiv>
           <VerticalSpaceDiv />
           <VerticalSpaceDiv />
-          {isNetworkError && (
-            <Typography variant="subtitle1">
-              There seems to be some issue with connecting to our database. Try
-              refreshing the page.
-            </Typography>
-          )}
-          {!isNetworkError && (!isArtistInDb || !isValidSpotifyId) && (
+          {!artistInfo && (
             <Typography variant="subtitle1">Could not find artist.</Typography>
           )}
-          {!isNetworkError && !artistId && (
+          {!artistId && (
             <Typography variant="subtitle1">Invalid URL.</Typography>
           )}
         </StyledCenteredDiv>
@@ -358,7 +237,7 @@ const ArtistPage = () => {
               </>
             )}
           </Paper>
-          {isArtistInDb && artistInfo.festivalsFuture.length !== 0 && (
+          {artistInfo.festivalsFuture.length !== 0 && (
             <StyledCenteredDiv>
               <VerticalSpaceDiv />
               <StyledFestivalsTypography variant={bigScreen ? 'h4' : 'h5'}>
@@ -377,7 +256,7 @@ const ArtistPage = () => {
               </StyledStack>
             </StyledCenteredDiv>
           )}
-          {isArtistInDb && artistInfo.festivalsPast.length !== 0 && (
+          {artistInfo.festivalsPast.length !== 0 && (
             <StyledCenteredDiv>
               <VerticalSpaceDiv />
               <StyledFestivalsTypography variant={bigScreen ? 'h4' : 'h5'}>
@@ -439,21 +318,11 @@ const ArtistPage = () => {
               <VerticalSpaceDiv />
             </StyledCenteredDiv>
           )}
-          {isNetworkError && (
-            <StyledCenteredDiv>
-              <VerticalSpaceDiv />
-              <VerticalSpaceDiv />
-              <Typography variant="subtitle1">
-                There seems to be some issue contacting our database. Try
-                refreshing the page.
-              </Typography>
-            </StyledCenteredDiv>
-          )}
         </StyledRootDiv>
       </>
     );
   }
-};
+});
 
 const VerticalSpaceDiv = styled('div')(({ theme: { spacing } }) => ({
   '@media (min-width: 690px)': { padding: spacing(2) },

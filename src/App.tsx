@@ -18,6 +18,7 @@ import {
 } from '@mui/material/styles';
 import { getMainTheme } from './theme/theme.styles';
 import { PaletteMode, CssBaseline } from '@mui/material';
+import ApiProvider from './utils/api/ApiProvider';
 
 const App = () => {
   const [mode, setMode] = useState<PaletteMode>('dark');
@@ -29,21 +30,23 @@ const App = () => {
         <CssBaseline />
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <Router>
-              <Routes>
-                <Route path="/login" element={<LoginPage />} />
-                <Route element={<StandardLayout setThemeMode={setMode} />}>
-                  <Route path="/" element={<MainPage />} />
-                  <Route path="/artist/:artistId" element={<ArtistPage />} />
-                  <Route
-                    path="/festival/:festivalId"
-                    element={<FestivalPage />}
-                  />
-                  <Route path="/about" element={<AboutPage />} />
-                </Route>
-                <Route element={<PageNotFound />} />
-              </Routes>
-            </Router>
+            <ApiProvider>
+              <Router>
+                <Routes>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route element={<StandardLayout setThemeMode={setMode} />}>
+                    <Route path="/" element={<MainPage />} />
+                    <Route path="/artist/:artistId" element={<ArtistPage />} />
+                    <Route
+                      path="/festival/:festivalId"
+                      element={<FestivalPage />}
+                    />
+                    <Route path="/about" element={<AboutPage />} />
+                  </Route>
+                  <Route element={<PageNotFound />} />
+                </Routes>
+              </Router>
+            </ApiProvider>
           </PersistGate>
         </Provider>
       </ThemeProvider>

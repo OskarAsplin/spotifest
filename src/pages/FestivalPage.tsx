@@ -21,7 +21,7 @@ import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubbl
 import { turnOnLoader, turnOffLoader } from '../redux/reducers/displaySlice';
 import { FestivalInfo } from '../redux/types';
 import '../styles/base.scss';
-import { fetchToJson, getApiBaseUrl } from '../utils/restUtils';
+import { fetchGet, getApiBaseUrl } from '../utils/api/restUtils';
 import {
   getMaxArtistsInFullLineupWidth,
   displayedLocationName,
@@ -57,7 +57,7 @@ const FestivalPage = () => {
 
   useEffect(() => {
     dispatch(turnOnLoader());
-    fetchToJson(getApiBaseUrl() + '/onTour/festivalInfo/?q=' + festivalId)
+    fetchGet(getApiBaseUrl() + '/onTour/festivalInfo/?q=' + festivalId)
       .then((response: any) => {
         setFestivalInfo(response as FestivalInfo);
       })

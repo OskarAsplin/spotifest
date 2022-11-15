@@ -1,5 +1,5 @@
 import countries_list from 'countries-list/dist/data.json';
-import { fetchToJson, getApiBaseUrl } from '../utils/restUtils';
+import { fetchGet, getApiBaseUrl } from '../utils/api/restUtils';
 import {
   getShortDateISOString,
   getIconPicture,
@@ -159,10 +159,10 @@ export const initializeSite =
     if (token) {
       spotifyApi.setAccessToken(token);
     }
-    const getAvailableCountries = fetchToJson(
+    const getAvailableCountries = fetchGet(
       getApiBaseUrl() + '/onTour/availableCountries'
     );
-    const getAvailableContinents = fetchToJson(
+    const getAvailableContinents = fetchGet(
       getApiBaseUrl() + '/onTour/availableContinents'
     );
 

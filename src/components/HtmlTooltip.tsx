@@ -1,8 +1,14 @@
 import { Tooltip } from '@mui/material';
 import { TooltipProps, tooltipClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { forwardRef } from 'react';
 
-const HtmlTooltip = styled(({ className, ...props }: TooltipProps) => (
+// eslint-disable-next-line react/display-name
+const HtmlTooltip = forwardRef<HTMLDivElement, TooltipProps>((props, ref) => {
+  return <StyledTooltip ref={ref} {...props} />;
+});
+
+const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme: { typography } }) => ({
   [`& .${tooltipClasses.tooltip}`]: {
