@@ -22,15 +22,14 @@ export const mapSpotifyArtistToArtist = (
 
 export const mapToArtistWithPopularity = (
   artist: SpotifyApi.ArtistObjectFull,
-  idx: number,
-  totalTopArtists: number
+  userPopularity: number
 ): Artist => ({
   name: artist.name,
   spotifyId: artist.id,
   iconPicture: getIconPicture(artist.images),
   bigPicture: getBigPicture(artist.images),
   popularity: artist.popularity,
-  userPopularity: totalTopArtists * 2 - idx,
+  userPopularity: userPopularity,
   genres: artist.genres,
 });
 

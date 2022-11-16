@@ -5,7 +5,7 @@ import { Navigate } from 'react-router-dom';
 import FestivalMatchesDisplay from '../containers/FestivalMatchesDisplay';
 import FestivalMatchSettingsBar from '../containers/FestivalMatchSettingsBar';
 import { getAuthorizeHref } from '../oauthConfig';
-import { initializeSite, spotifyApi } from '../redux/asyncActions';
+import { initializeSite } from '../redux/asyncActions';
 import {
   selectLoggedIn,
   selectAccessToken,
@@ -21,6 +21,7 @@ import {
 import '../styles/base.scss';
 import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
+import { spotifyApi } from '../utils/api/spotifyApi';
 
 const hashParams = getHashParams();
 const token = hashParams.access_token;

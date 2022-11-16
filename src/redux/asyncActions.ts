@@ -23,9 +23,7 @@ import {
   setPlaylists,
 } from './reducers/spotifyAccountSlice';
 import { AppThunk } from './store';
-import { Artist, MatchRequest, Playlist } from './types';
-
-import SpotifyWebApi from 'spotify-web-api-js';
+import { Artist, MatchRequest } from './types';
 import { mapToArtistMinimal } from '../utils/mappers';
 import {
   getDjangoAvailableContinents,
@@ -33,13 +31,8 @@ import {
   postDjangoFestivalMatches,
   postDjangoPopularArtistsInLineups,
 } from '../utils/api/djangoApi';
-import {
-  mapSpotifyPlaylistToPlaylist,
-  mapToArtistWithPopularity,
-  mapToUserInfo,
-} from '../utils/api/mappers';
-
-export const spotifyApi = new SpotifyWebApi();
+import { mapToArtistWithPopularity, mapToUserInfo } from '../utils/api/mappers';
+import { getAllPlaylists, spotifyApi } from '../utils/api/spotifyApi';
 
 export const getPopularArtistsInLineups =
   (lineups: string[]): AppThunk =>
@@ -110,9 +103,8 @@ export const initializeSite =
   (token: string): AppThunk =>
   (dispatch) => {
     dispatch(setDbIsOnline());
-    if (token) {
-      spotifyApi.setAccessToken(token);
-    }
+    if (token) spotifyApi.setAccessToken(token);
+
     const availableCountriesPromise = getDjangoAvailableCountries();
     const availableContinentsPromise = getDjangoAvailableContinents();
 
@@ -122,9 +114,9 @@ export const initializeSite =
       availableContinentsPromise,
     ])
       .then(([getMe, availableCountries, availableContinents]) => {
+        dispatch(setUserInfo(mapToUserInfo(getMe)));
         dispatch(addCountries(availableCountries));
         dispatch(addContinents(availableContinents));
-        dispatch(setUserInfo(mapToUserInfo(getMe)));
 
         const userContinent: string =
           getMe.country in (countries_list as any).countries
@@ -159,24 +151,21 @@ export const initializeSite =
               (artist, idx) =>
                 mapToArtistWithPopularity(
                   artist,
-                  idx,
-                  responseLongTerm.items.length
+                  responseLongTerm.items.length * 2 - idx
                 )
             );
             const topArtistsMediumTerm: Artist[] = responseMediumTerm.items.map(
               (artist, idx) =>
                 mapToArtistWithPopularity(
                   artist,
-                  idx,
-                  responseMediumTerm.items.length
+                  responseMediumTerm.items.length * 2 - idx
                 )
             );
             const topArtistsShortTerm: Artist[] = responseShortTerm.items.map(
               (artist, idx) =>
                 mapToArtistWithPopularity(
                   artist,
-                  idx,
-                  responseShortTerm.items.length
+                  responseShortTerm.items.length * 2 - idx
                 )
             );
             const countTopArtists =
@@ -207,7 +196,7 @@ export const initializeSite =
           })
           .catch(() => dispatch(setLoggedOff()));
 
-        dispatch(getAllPlaylists(getMe.id, 0, []));
+        dispatch(setAllPlaylistsInRedux(getMe.id));
       })
       .catch((error) => {
         if (error instanceof XMLHttpRequest) {
@@ -217,24 +206,9 @@ export const initializeSite =
       });
   };
 
-export const getAllPlaylists =
-  (userId: string, offset: number, allPlaylists: Playlist[]): AppThunk =>
-  (dispatch) => {
-    spotifyApi
-      .getUserPlaylists(userId, { limit: 50, offset: offset })
-      .then((response: SpotifyApi.ListOfUsersPlaylistsResponse) => {
-        const playlists: Playlist[] = response.items
-          .filter((playlist) => playlist.tracks.total > 0)
-          .map(mapSpotifyPlaylistToPlaylist);
-
-        if (response.total > offset + 50) {
-          dispatch(
-            getAllPlaylists(userId, offset + 50, allPlaylists.concat(playlists))
-          );
-        } else {
-          allPlaylists = allPlaylists.concat(playlists);
-          dispatch(setPlaylists(allPlaylists));
-        }
-      })
-      .catch(() => dispatch(setLoggedOff()));
+export const setAllPlaylistsInRedux =
+  (userId: string): AppThunk =>
+  async (dispatch) => {
+    const allPlaylists = await getAllPlaylists({ userId });
+    dispatch(setPlaylists(allPlaylists));
   };

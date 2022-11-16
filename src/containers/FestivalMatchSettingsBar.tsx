@@ -19,7 +19,7 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import InfoIcon from '@mui/icons-material/Info';
 import ReactCountryFlag from 'react-country-flag';
 import { useSelector, useDispatch } from 'react-redux';
-import { spotifyApi, testFestivalMatches } from '../redux/asyncActions';
+import { testFestivalMatches } from '../redux/asyncActions';
 import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import {
   selectIsDbOnline,
@@ -51,16 +51,13 @@ import {
   UserInfo,
 } from '../redux/types';
 import { europeanRegions, usRegions, regionMap } from '../utils/regionUtils';
-import {
-  getIconPicture,
-  getBigPicture,
-  displayedLocationName,
-} from '../utils/utils';
+import { displayedLocationName } from '../utils/utils';
 import StandardLink from '../components/StandardLink';
 import HtmlTooltip from '../components/HtmlTooltip';
 import SettingsBarDatePicker from '../components/SettingsBarDatePicker';
 import { styled, useTheme } from '@mui/material/styles';
 import { LoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
+import { getAllArtists, spotifyApi } from '../utils/api/spotifyApi';
 
 const topArtistsChoice = '__your__top__artists__';
 
@@ -203,31 +200,7 @@ const FestivalMatchSettingsBar = () => {
       const artistIds: string[] = [...new Set(allArtistIdsRaw)].filter(
         Boolean
       ) as string[];
-      const newArtists: Artist[] = [];
-
-      for (let index = 0; index < artistIds.length; index += 50) {
-        await spotifyApi
-          .getArtists(artistIds.slice(index, index + 50))
-          .then((artistsResponse: SpotifyApi.MultipleArtistsResponse) => {
-            artistsResponse.artists.map(
-              (artistResponse: SpotifyApi.ArtistObjectFull) => {
-                return newArtists.push({
-                  name: artistResponse.name,
-                  spotifyId: artistResponse.id,
-                  iconPicture: getIconPicture(artistResponse.images),
-                  bigPicture: getBigPicture(artistResponse.images),
-                  popularity: artistResponse.popularity,
-                  userPopularity: count[artistResponse.id],
-                  genres: artistResponse.genres,
-                } as Artist);
-              }
-            );
-          })
-          .catch(() => {
-            dispatch(setLoggedOff());
-            return [];
-          });
-      }
+      const newArtists = await getAllArtists({ artistIds, count });
 
       if (newArtists.length > 0) {
         dispatch(

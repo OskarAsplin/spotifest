@@ -3,7 +3,7 @@ import {
   selectAccessToken,
   selectLoggedIn,
 } from '../redux/reducers/authorizationSlice';
-import { spotifyApi } from '../redux/asyncActions';
+import { spotifyApi } from '../utils/api/spotifyApi';
 import { Outlet } from 'react-router-dom';
 
 const WithSpotifyTokenRoute = () => {
