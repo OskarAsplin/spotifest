@@ -10,16 +10,10 @@ import {
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { MusicNote } from '@mui/icons-material';
-import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
 import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubble';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
-import { spotifyApi } from '../redux/asyncActions';
-import {
-  selectLoggedIn,
-  selectAccessToken,
-} from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
 import { getFestivalPath, getMaxArtistsInWidth } from '../utils/utils';
 import { useTheme, styled } from '@mui/material/styles';
@@ -36,6 +30,7 @@ import {
 import { useGet, withFallback } from '../utils/api/api';
 import { CenteredLoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
 import FallbackPage from './FallbackPage';
+import { spotifyApi } from '../redux/asyncActions';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner show />;
 const ErrorFallback = () => (
@@ -46,16 +41,14 @@ const ArtistPage = withFallback(
   SuspenseFallback,
   ErrorFallback
 )(() => {
-  const loggedIn = useSelector(selectLoggedIn);
-  const accessToken = useSelector(selectAccessToken);
   const themeMode = useTheme().palette.mode;
   const { artistId } = useParams();
   const navigate = useNavigate();
 
-  if (loggedIn && accessToken) spotifyApi.setAccessToken(accessToken);
-
   const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
   const spotifyId = hasSpotifyId && artistId?.substring('spotifyId='.length);
+
+  const hasSpotifyAccessToken = !!spotifyApi.getAccessToken();
 
   const { data: artistBySpotifyId, isError: isArtistBySpotifyIdError } = useGet(
     getDjangoArtistBySpotifyId,
@@ -71,20 +64,16 @@ const ArtistPage = withFallback(
   });
 
   const { data: spotifyArtist } = useGet(getSpotifyArtistInfo, {
-    query: { accessToken, spotifyId: spotifyId || '' },
-    enabled: !!isArtistBySpotifyIdError,
+    query: { spotifyId: spotifyId || '' },
+    enabled: hasSpotifyAccessToken && !!isArtistBySpotifyIdError,
   });
 
   const spotifyIdFromDjango = artistByName?.artist.spotifyId;
 
   const { data: relatedArtists = [] } = useGet(getSpotifyArtistRelatedArtists, {
-    query: { accessToken, spotifyId: spotifyId || spotifyIdFromDjango || '' },
-    enabled: hasSpotifyId || !!spotifyIdFromDjango,
+    query: { spotifyId: spotifyId || spotifyIdFromDjango || '' },
+    enabled: hasSpotifyAccessToken && (hasSpotifyId || !!spotifyIdFromDjango),
   });
-
-  console.log(hasSpotifyId);
-  console.log(!!isArtistBySpotifyIdError);
-  console.log(spotifyIdFromDjango);
 
   const artistInfo = artistBySpotifyId || artistByName || spotifyArtist;
   const isArtistInDb = !!artistBySpotifyId || !!artistByName;

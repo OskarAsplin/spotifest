@@ -4,7 +4,7 @@ import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { setLoggedOff } from '../../redux/reducers/authorizationSlice';
 
-export type OpBaseType<R = any> = (...args: any) => Promise<R>;
+type OpBaseType<R = any> = (...args: any) => Promise<R>;
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
 
 export interface UseGetProps<Op extends OpBaseType>
@@ -17,6 +17,7 @@ export const useGet = <Op extends OpBaseType>(
   { query = {}, onError, ...queryConfig }: UseGetProps<Op> = {}
 ) => {
   const dispatch = useDispatch();
+
   return useQuery<ThenArg<ReturnType<Op>>>(
     [operation.name, query],
     () => operation(query),

@@ -19,6 +19,7 @@ import {
 import { getMainTheme } from './theme/theme.styles';
 import { PaletteMode, CssBaseline } from '@mui/material';
 import ApiProvider from './utils/api/ApiProvider';
+import WithSpotifyTokenRoute from './layouts/WithSpotifyTokenRoute';
 
 const App = () => {
   const [mode, setMode] = useState<PaletteMode>('dark');
@@ -34,14 +35,19 @@ const App = () => {
               <Router>
                 <Routes>
                   <Route path="/login" element={<LoginPage />} />
-                  <Route element={<StandardLayout setThemeMode={setMode} />}>
-                    <Route path="/" element={<MainPage />} />
-                    <Route path="/artist/:artistId" element={<ArtistPage />} />
-                    <Route
-                      path="/festival/:festivalId"
-                      element={<FestivalPage />}
-                    />
-                    <Route path="/about" element={<AboutPage />} />
+                  <Route element={<WithSpotifyTokenRoute />}>
+                    <Route element={<StandardLayout setThemeMode={setMode} />}>
+                      <Route path="/" element={<MainPage />} />
+                      <Route
+                        path="/artist/:artistId"
+                        element={<ArtistPage />}
+                      />
+                      <Route
+                        path="/festival/:festivalId"
+                        element={<FestivalPage />}
+                      />
+                      <Route path="/about" element={<AboutPage />} />
+                    </Route>
                   </Route>
                   <Route element={<PageNotFound />} />
                 </Routes>
