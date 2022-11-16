@@ -55,15 +55,16 @@ const ArtistPage = withFallback(
   if (loggedIn && accessToken) spotifyApi.setAccessToken(accessToken);
 
   const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
-  const spotifyId = artistId?.substring('spotifyId='.length);
+  const spotifyId = hasSpotifyId && artistId?.substring('spotifyId='.length);
 
-  const { data: artistBySpotifyId, isError: isArtistBySpotifyIdError } = useGet(
-    getDjangoArtistBySpotifyId,
-    {
-      query: { spotifyId: spotifyId ?? '' },
-      enabled: hasSpotifyId,
-    }
-  );
+  const {
+    data: artistBySpotifyId,
+    isError: isArtistBySpotifyIdError,
+    error,
+  } = useGet(getDjangoArtistBySpotifyId, {
+    query: { spotifyId: spotifyId || '' },
+    enabled: hasSpotifyId,
+  });
 
   const { data: artistByName } = useGet(getDjangoArtistByName, {
     query: { name: artistId ?? '' },
@@ -71,17 +72,26 @@ const ArtistPage = withFallback(
   });
 
   const { data: spotifyArtist } = useGet(getSpotifyArtistInfo, {
-    query: { accessToken, spotifyId: spotifyId ?? '' },
+    query: { accessToken, spotifyId: spotifyId || '' },
     enabled: isArtistBySpotifyIdError,
   });
 
   const spotifyIdFromDjango = artistByName?.artist.spotifyId;
 
   const { data: relatedArtists = [] } = useGet(getSpotifyArtistRelatedArtists, {
-    query: { accessToken, spotifyId: spotifyId ?? spotifyIdFromDjango ?? '' },
+    query: { accessToken, spotifyId: spotifyId || spotifyIdFromDjango || '' },
     enabled:
       loggedIn && !!accessToken && (hasSpotifyId || !!spotifyIdFromDjango),
   });
+
+  console.log(artistId);
+  console.log(spotifyId);
+  console.log(hasSpotifyId);
+  console.log(isArtistBySpotifyIdError);
+  console.log(error);
+  console.log(loggedIn);
+  console.log(accessToken);
+  console.log(spotifyIdFromDjango);
 
   const artistInfo = artistBySpotifyId || artistByName || spotifyArtist;
   const isArtistInDb = !!artistBySpotifyId || !!artistByName;
