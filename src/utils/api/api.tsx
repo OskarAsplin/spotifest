@@ -3,6 +3,7 @@ import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { setLoggedOff } from '../../redux/reducers/authorizationSlice';
+import { uniqueFunctionId } from './uniqueFunctionId';
 
 type OpBaseType<R = any> = (...args: any) => Promise<R>;
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
@@ -19,7 +20,7 @@ export const useGet = <Op extends OpBaseType>(
   const dispatch = useDispatch();
 
   return useQuery<ThenArg<ReturnType<Op>>>(
-    [operation.name, query],
+    [uniqueFunctionId(operation), query],
     () => operation(query),
     {
       useErrorBoundary: (error: any) =>
