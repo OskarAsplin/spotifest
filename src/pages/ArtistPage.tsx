@@ -82,6 +82,10 @@ const ArtistPage = withFallback(
     enabled: hasSpotifyId || !!spotifyIdFromDjango,
   });
 
+  console.log(hasSpotifyId);
+  console.log(!!isArtistBySpotifyIdError);
+  console.log(spotifyIdFromDjango);
+
   const artistInfo = artistBySpotifyId || artistByName || spotifyArtist;
   const isArtistInDb = !!artistBySpotifyId || !!artistByName;
 
