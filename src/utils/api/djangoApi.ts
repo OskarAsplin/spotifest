@@ -1,5 +1,13 @@
-import { fetchGet, getApiBaseUrl } from './restUtils';
-import { ArtistInfo, FestivalInfo, SearchResponse } from '../../redux/types';
+import { fetchGet, fetchPost, getApiBaseUrl } from './restUtils';
+import {
+  Area,
+  ArtistInfo,
+  FestivalInfo,
+  FestivalMatch,
+  MatchRequest,
+  PopularArtistsDict,
+  SearchResponse,
+} from '../../redux/types';
 
 const getOntourBase = () => `${getApiBaseUrl()}/onTour`;
 
@@ -25,4 +33,32 @@ export function getDjangoFestival({ name }: { name: string }) {
 export function getDjangoSearchResults({ search }: { search: string }) {
   const url = `${getOntourBase()}/search/?q=${encodeURIComponent(search)}`;
   return fetchGet<SearchResponse>(url);
+}
+
+export function getDjangoAvailableCountries() {
+  const url = `${getOntourBase()}/availableCountries`;
+  return fetchGet<Area[]>(url);
+}
+
+export function getDjangoAvailableContinents() {
+  const url = `${getOntourBase()}/availableContinents`;
+  return fetchGet<Area[]>(url);
+}
+
+export function postDjangoFestivalMatches({
+  matchRequest,
+}: {
+  matchRequest: MatchRequest;
+}) {
+  const url = `${getOntourBase()}/festivalMatches`;
+  return fetchPost<FestivalMatch[]>(url, JSON.stringify(matchRequest));
+}
+
+export function postDjangoPopularArtistsInLineups({
+  lineups,
+}: {
+  lineups: string[];
+}) {
+  const url = `${getOntourBase()}/popularArtistsInLineups`;
+  return fetchPost<PopularArtistsDict>(url, JSON.stringify(lineups));
 }

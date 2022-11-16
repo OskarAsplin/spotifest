@@ -25,8 +25,8 @@ export interface Artist {
 }
 
 export interface ArtistMinimal {
-  spotifyId: string;
-  userPopularity: number;
+  spotifyId?: string;
+  userPopularity?: number;
 }
 
 export interface Lineup {
