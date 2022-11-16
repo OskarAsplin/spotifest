@@ -30,7 +30,8 @@ import {
 import { useGet, withFallback } from '../utils/api/api';
 import { CenteredLoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
 import FallbackPage from './FallbackPage';
-import { spotifyApi } from '../redux/asyncActions';
+import { useSelector } from 'react-redux';
+import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner show />;
 const ErrorFallback = () => (
@@ -48,7 +49,7 @@ const ArtistPage = withFallback(
   const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
   const spotifyId = hasSpotifyId && artistId?.substring('spotifyId='.length);
 
-  const hasSpotifyAccessToken = !!spotifyApi.getAccessToken();
+  const loggedIn = useSelector(selectLoggedIn);
 
   const { data: artistBySpotifyId, isError: isArtistBySpotifyIdError } = useGet(
     getDjangoArtistBySpotifyId,
@@ -65,14 +66,14 @@ const ArtistPage = withFallback(
 
   const { data: spotifyArtist } = useGet(getSpotifyArtistInfo, {
     query: { spotifyId: spotifyId || '' },
-    enabled: hasSpotifyAccessToken && !!isArtistBySpotifyIdError,
+    enabled: loggedIn && !!isArtistBySpotifyIdError,
   });
 
   const spotifyIdFromDjango = artistByName?.artist.spotifyId;
 
   const { data: relatedArtists = [] } = useGet(getSpotifyArtistRelatedArtists, {
     query: { spotifyId: spotifyId || spotifyIdFromDjango || '' },
-    enabled: hasSpotifyAccessToken && (hasSpotifyId || !!spotifyIdFromDjango),
+    enabled: loggedIn && (hasSpotifyId || !!spotifyIdFromDjango),
   });
 
   const artistInfo = artistBySpotifyId || artistByName || spotifyArtist;
