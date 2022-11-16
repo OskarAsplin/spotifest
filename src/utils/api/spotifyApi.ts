@@ -5,18 +5,20 @@ import {
   mapSpotifyArtistToArtistInfo,
 } from './mappers';
 
-export const getSpotifyArtistInfo = async ({
+export async function getSpotifyArtistInfo({
   spotifyId,
 }: {
   spotifyId: string;
-}): Promise<ArtistInfo> =>
-  mapSpotifyArtistToArtistInfo(await spotifyApi.getArtist(spotifyId));
+}): Promise<ArtistInfo> {
+  return mapSpotifyArtistToArtistInfo(await spotifyApi.getArtist(spotifyId));
+}
 
-export const getSpotifyArtistRelatedArtists = async ({
+export async function getSpotifyArtistRelatedArtists({
   spotifyId,
 }: {
   spotifyId: string;
-}): Promise<Artist[]> =>
-  (await spotifyApi.getArtistRelatedArtists(spotifyId)).artists.map(
+}): Promise<Artist[]> {
+  return (await spotifyApi.getArtistRelatedArtists(spotifyId)).artists.map(
     mapSpotifyArtistToArtist
   );
+}

@@ -35,7 +35,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
   const [inputText, setInputText] = useState('');
 
   const { data: searchResults } = useGet(getDjangoSearchResults, {
-    query: { searchString: inputText },
+    query: { search: inputText },
     enabled: !!inputText.length,
   });
 

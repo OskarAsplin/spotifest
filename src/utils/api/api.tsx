@@ -18,8 +18,6 @@ export const useGet = <Op extends OpBaseType>(
 ) => {
   const dispatch = useDispatch();
 
-  console.log([operation.name, query]);
-  console.log(queryConfig.enabled);
   return useQuery<ThenArg<ReturnType<Op>>>(
     [operation.name, query],
     () => operation(query),

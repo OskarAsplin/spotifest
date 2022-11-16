@@ -3,36 +3,26 @@ import { ArtistInfo, FestivalInfo, SearchResponse } from '../../redux/types';
 
 const getOntourBase = () => `${getApiBaseUrl()}/onTour`;
 
-export const getDjangoArtistBySpotifyId = ({
+export function getDjangoArtistBySpotifyId({
   spotifyId,
 }: {
   spotifyId: string;
-}): Promise<ArtistInfo> =>
-  fetchGet<ArtistInfo>(`${getOntourBase()}/artistInfo/?spotifyId=${spotifyId}`);
+}) {
+  const url = `${getOntourBase()}/artistInfo/?spotifyId=${spotifyId}`;
+  return fetchGet<ArtistInfo>(url);
+}
 
-export const getDjangoArtistByName = ({
-  name,
-}: {
-  name: string;
-}): Promise<ArtistInfo> =>
-  fetchGet<ArtistInfo>(
-    `${getOntourBase()}/artistInfo/?q=${encodeURIComponent(name)}`
-  );
+export function getDjangoArtistByName({ name }: { name: string }) {
+  const url = `${getOntourBase()}/artistInfo/?q=${encodeURIComponent(name)}`;
+  return fetchGet<ArtistInfo>(url);
+}
 
-export const getDjangoFestival = ({
-  name,
-}: {
-  name: string;
-}): Promise<FestivalInfo> =>
-  fetchGet<FestivalInfo>(
-    `${getOntourBase()}/festivalInfo/?q=${encodeURIComponent(name)}`
-  );
+export function getDjangoFestival({ name }: { name: string }) {
+  const url = `${getOntourBase()}/festivalInfo/?q=${encodeURIComponent(name)}`;
+  return fetchGet<FestivalInfo>(url);
+}
 
-export const getDjangoSearchResults = ({
-  searchString,
-}: {
-  searchString: string;
-}) =>
-  fetchGet<SearchResponse>(
-    `${getOntourBase()}/search/?q=${encodeURIComponent(searchString)}`
-  );
+export function getDjangoSearchResults({ search }: { search: string }) {
+  const url = `${getOntourBase()}/search/?q=${encodeURIComponent(search)}`;
+  return fetchGet<SearchResponse>(url);
+}
