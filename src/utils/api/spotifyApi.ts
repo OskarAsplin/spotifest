@@ -1,13 +1,18 @@
 import SpotifyWebApi from 'spotify-web-api-js';
-import { Artist, ArtistInfo, Playlist } from '../../redux/types';
+import { Artist, ArtistInfo, Playlist, UserInfo } from '../../redux/types';
 import {
   mapSpotifyArtistToArtist,
   mapSpotifyArtistToArtistInfo,
   mapSpotifyPlaylistToPlaylist,
   mapToArtistWithPopularity,
+  mapToUserInfo,
 } from './mappers';
 
 export const spotifyApi = new SpotifyWebApi();
+
+export async function getSpotifyUserInfo(): Promise<UserInfo> {
+  return mapToUserInfo(await spotifyApi.getMe());
+}
 
 export async function getSpotifyArtistInfo({
   spotifyId,
@@ -108,4 +113,19 @@ export async function getAllArtists({
       allArtists: updatedAllArtists,
     });
   } else return updatedAllArtists;
+}
+
+export async function getTopArtistsWithPopularity({
+  timeRange,
+}: {
+  timeRange: 'long_term' | 'medium_term' | 'short_term';
+}): Promise<Artist[]> {
+  const response = await spotifyApi.getMyTopArtists({
+    limit: 50,
+    time_range: timeRange,
+  });
+
+  return response.items.map((artist, idx) =>
+    mapToArtistWithPopularity(artist, response.items.length * 2 - idx)
+  );
 }
