@@ -11,12 +11,12 @@ import {
 import { indigo } from '@mui/material/colors';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import InfoIcon from '@mui/icons-material/Info';
-import { Playlist, Artist, Area, MatchSettings } from '../redux/types';
-import HtmlTooltip from '../components/HtmlTooltip';
-import SettingsBarDatePicker from '../components/SettingsBarDatePicker';
+import { Playlist, Artist, Area, MatchSettings } from '../../redux/types';
+import HtmlTooltip from '../HtmlTooltip';
+import SettingsBarDatePicker from '../SettingsBarDatePicker';
 import { styled, useTheme } from '@mui/material/styles';
-import MatchCriteriaSelect from '../components/MatchCriteriaSelect/MatchCriteriaSelect';
-import AreaSelect from '../components/AreaSelect/AreaSelect';
+import MatchCriteriaSelect from '../MatchCriteriaSelect/MatchCriteriaSelect';
+import AreaSelect from '../AreaSelect/AreaSelect';
 
 interface FestivalMatchSettingsBarProps {
   playlists: Playlist[];

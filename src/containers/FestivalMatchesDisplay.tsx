@@ -13,25 +13,16 @@ import {
   setCurrentPage,
 } from '../redux/reducers/festivalMatchingSlice';
 import { selectTopArtists } from '../redux/reducers/spotifyAccountSlice';
-import {
-  FestivalMatch,
-  Artist,
-  PopularArtistsDict,
-  MatchSettings,
-} from '../redux/types';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import { styled } from '@mui/material/styles';
 
 const FestivalMatchesDisplay = () => {
-  const festivalMatches: FestivalMatch[] = useSelector(selectFestivalMatches);
-  const popularArtistsDict: PopularArtistsDict =
-    useSelector(selectPopularArtists);
-  const matchSettings: MatchSettings = useSelector(selectMatchSettings);
-  const topArtists: Artist[] = useSelector(selectTopArtists);
-  const selectedPlaylistArtists: Artist[] = useSelector(
-    selectSelectedPlaylistArtists
-  );
-  const currentPage: number = useSelector(selectCurrentPage);
+  const festivalMatches = useSelector(selectFestivalMatches);
+  const popularArtistsDict = useSelector(selectPopularArtists);
+  const matchSettings = useSelector(selectMatchSettings);
+  const topArtists = useSelector(selectTopArtists);
+  const selectedPlaylistArtists = useSelector(selectSelectedPlaylistArtists);
+  const currentPage = useSelector(selectCurrentPage);
   const dispatch = useDispatch();
 
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
@@ -103,7 +94,7 @@ const FestivalMatchesDisplay = () => {
         </Box>
       )}
       <Stack spacing={3}>
-        {showMatches.map((festival: FestivalMatch) => {
+        {showMatches.map((festival) => {
           const popularArtists =
             festival.lineup_id in popularArtistsDict
               ? popularArtistsDict[festival.lineup_id]

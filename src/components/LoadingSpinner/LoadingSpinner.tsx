@@ -14,7 +14,7 @@ export const LoadingSpinner = ({ sx, ...restProps }: CircularProgressProps) => (
 );
 
 export const CenteredLoadingSpinner = ({ show }: { show?: boolean }) => {
-  const loaderOn: boolean = useSelector(selectLoaderOn);
+  const loaderOn = useSelector(selectLoaderOn);
   return (
     <StyledDiv hidden={!loaderOn && !show}>
       <LoadingSpinner />

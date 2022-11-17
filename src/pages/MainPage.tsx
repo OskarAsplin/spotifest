@@ -29,11 +29,11 @@ const expires_in = hashParams.expires_in;
 removeHashParamsFromUrl();
 
 const MainPage = () => {
-  const isDbOnline: boolean = useSelector(selectIsDbOnline);
-  const siteInitialized: boolean = useSelector(selectSiteInitialized);
-  const loggedIn: boolean = useSelector(selectLoggedIn);
-  const accessToken: string = useSelector(selectAccessToken);
-  const tokenExpiryDate: string = useSelector(selectTokenExpiryDate);
+  const isDbOnline = useSelector(selectIsDbOnline);
+  const siteInitialized = useSelector(selectSiteInitialized);
+  const loggedIn = useSelector(selectLoggedIn);
+  const accessToken = useSelector(selectAccessToken);
+  const tokenExpiryDate = useSelector(selectTokenExpiryDate);
   const dispatch = useDispatch();
 
   useEffect(() => {

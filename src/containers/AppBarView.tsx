@@ -19,7 +19,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserInfo } from '../redux/reducers/spotifyAccountSlice';
-import { UserInfo } from '../redux/types';
 import { getBaseUrl, isMainPage } from '../utils/utils';
 import SearchField from './SearchField';
 import { styled } from '@mui/material/styles';
@@ -38,8 +37,8 @@ const AppBarView = ({ setThemeMode }: Props) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
 
-  const userInfo: UserInfo | undefined = useSelector(selectUserInfo);
-  const loggedIn: boolean = useSelector(selectLoggedIn);
+  const userInfo = useSelector(selectUserInfo);
+  const loggedIn = useSelector(selectLoggedIn);
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
