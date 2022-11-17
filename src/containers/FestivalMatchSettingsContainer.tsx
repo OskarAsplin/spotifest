@@ -31,7 +31,7 @@ import {
   getAllArtists,
 } from '../utils/api/spotifyApi';
 import SelectPlaylistModal from '../components/SelectPlaylistModal/SelectPlaylistModal';
-import FestivalMatchSettingsBar from './FestivalMatchSettingsBar';
+import FestivalMatchSettingsBar from '../components/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
 import { TOP_ARTISTS_CHOICE } from '../components/MatchCriteriaSelect/MatchCriteriaSelect';
 
 const FestivalMatchSettingsContainer = () => {
