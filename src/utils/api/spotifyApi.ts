@@ -51,9 +51,33 @@ export async function getAllPlaylists({
       offset: offset + 50,
       allPlaylists: updatedAllPlaylists,
     });
-  } else {
-    return updatedAllPlaylists;
-  }
+  } else return updatedAllPlaylists;
+}
+
+export async function getAllArtistIdsFromPlaylist({
+  playlist,
+  offset = 0,
+  allArtistIds = [],
+}: {
+  playlist: Playlist;
+  offset?: number;
+  allArtistIds?: string[];
+}): Promise<string[]> {
+  const { id, ownerId, numTracks } = playlist;
+  const tracks = await spotifyApi.getPlaylistTracks(ownerId, id, { offset });
+  const newArtistIds: string[] = tracks.items.flatMap((trackItem) =>
+    trackItem.track.artists.map((trackArtist) => trackArtist.id)
+  );
+
+  const updatedAllArtistIds = allArtistIds.concat(newArtistIds);
+
+  if (offset + 100 < numTracks) {
+    return getAllArtistIdsFromPlaylist({
+      playlist,
+      offset: offset + 100,
+      allArtistIds: updatedAllArtistIds,
+    });
+  } else return updatedAllArtistIds;
 }
 
 export async function getAllArtists({

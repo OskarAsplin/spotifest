@@ -119,8 +119,10 @@ export const initializeSite =
         dispatch(addContinents(availableContinents));
 
         const userContinent: string =
-          getMe.country in (countries_list as any).countries
-            ? (countries_list as any).countries[getMe.country].continent
+          getMe.country in countries_list.countries
+            ? countries_list.countries[
+                getMe.country as keyof typeof countries_list.countries
+              ].continent
             : '';
         const isRegisteredContinent = availableContinents.find(
           (continent) => continent.isoCode === userContinent

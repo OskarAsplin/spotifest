@@ -20,7 +20,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import ReactCountryFlag from 'react-country-flag';
 import { useSelector, useDispatch } from 'react-redux';
 import { testFestivalMatches } from '../redux/asyncActions';
-import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import {
   selectIsDbOnline,
   selectShowPlaylistModal,
@@ -57,7 +56,10 @@ import HtmlTooltip from '../components/HtmlTooltip';
 import SettingsBarDatePicker from '../components/SettingsBarDatePicker';
 import { styled, useTheme } from '@mui/material/styles';
 import { LoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
-import { getAllArtists, spotifyApi } from '../utils/api/spotifyApi';
+import {
+  getAllArtistIdsFromPlaylist,
+  getAllArtists,
+} from '../utils/api/spotifyApi';
 
 const topArtistsChoice = '__your__top__artists__';
 
@@ -171,35 +173,13 @@ const FestivalMatchSettingsBar = () => {
     if (playlist) {
       dispatch(turnOnLoader());
 
-      let allArtistIdsRaw: string[] = [];
-
-      for (let offset = 0; offset < playlist.numTracks; offset += 100) {
-        const artistIdsRaw: string[] = await spotifyApi
-          .getPlaylistTracks(playlist.ownerId, playlist.id, { offset: offset })
-          .then(async (playlistResponse: SpotifyApi.PlaylistTrackResponse) => {
-            const artistIdsRaw: string[] = playlistResponse.items.flatMap(
-              (trackItem) => {
-                return trackItem.track.artists.map((trackArtist) => {
-                  return trackArtist.id;
-                });
-              }
-            );
-            return artistIdsRaw;
-          })
-          .catch(() => {
-            dispatch(setLoggedOff());
-            return [];
-          });
-        allArtistIdsRaw = allArtistIdsRaw.concat(artistIdsRaw);
-      }
+      const allArtistIdsRaw = await getAllArtistIdsFromPlaylist({ playlist });
 
       const count: { [id: string]: number } = {};
       allArtistIdsRaw.forEach(
         (val: string) => (count[val] = (count[val] || 0) + 1)
       );
-      const artistIds: string[] = [...new Set(allArtistIdsRaw)].filter(
-        Boolean
-      ) as string[];
+      const artistIds = [...new Set(allArtistIdsRaw)].filter(Boolean);
       const newArtists = await getAllArtists({ artistIds, count });
 
       if (newArtists.length > 0) {
@@ -228,7 +208,7 @@ const FestivalMatchSettingsBar = () => {
 
     const area: Area = {
       name: event.target.name ? event.target.name : '',
-      isoCode: event.target.value as string,
+      isoCode: event.target.value,
     };
     if (area.isoCode !== matchSettings.area.isoCode) {
       testMatchesWithGivenSettings(
