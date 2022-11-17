@@ -3,7 +3,6 @@ import { Box, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import FestivalMatchesDisplay from '../containers/FestivalMatchesDisplay';
-import FestivalMatchSettingsBar from '../containers/FestivalMatchSettingsBar';
 import { getAuthorizeHref } from '../oauthConfig';
 import { initializeSite } from '../redux/asyncActions';
 import {
@@ -22,6 +21,7 @@ import '../styles/base.scss';
 import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { setSpotifyToken } from '../utils/api/spotifyApi';
+import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
 
 const hashParams = getHashParams();
 const token = hashParams.access_token;
@@ -79,7 +79,7 @@ const MainPage = () => {
       />
       {isDbOnline ? (
         <>
-          <FestivalMatchSettingsBar />
+          <FestivalMatchSettingsContainer />
           <FestivalMatchesDisplay />
         </>
       ) : (
