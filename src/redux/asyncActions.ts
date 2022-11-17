@@ -35,7 +35,7 @@ import {
   getAllPlaylists,
   getSpotifyUserInfo,
   getTopArtistsWithPopularity,
-  spotifyApi,
+  setSpotifyToken,
 } from '../utils/api/spotifyApi';
 
 export const getPopularArtistsInLineups =
@@ -99,7 +99,7 @@ export const initializeSite =
   (token: string): AppThunk =>
   (dispatch) => {
     dispatch(setDbIsOnline());
-    if (token) spotifyApi.setAccessToken(token);
+    if (token) setSpotifyToken(token);
 
     Promise.all([
       getSpotifyUserInfo(),

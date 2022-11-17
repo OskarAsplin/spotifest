@@ -8,7 +8,10 @@ import {
   mapToUserInfo,
 } from './mappers';
 
-export const spotifyApi = new SpotifyWebApi();
+const spotifyApi = new SpotifyWebApi();
+
+export const setSpotifyToken = (token: string) =>
+  spotifyApi.setAccessToken(token);
 
 export async function getSpotifyUserInfo(): Promise<UserInfo> {
   return mapToUserInfo(await spotifyApi.getMe());

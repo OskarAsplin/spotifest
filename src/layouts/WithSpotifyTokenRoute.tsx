@@ -3,14 +3,14 @@ import {
   selectAccessToken,
   selectLoggedIn,
 } from '../redux/reducers/authorizationSlice';
-import { spotifyApi } from '../utils/api/spotifyApi';
+import { setSpotifyToken } from '../utils/api/spotifyApi';
 import { Outlet } from 'react-router-dom';
 
 const WithSpotifyTokenRoute = () => {
   const loggedIn = useSelector(selectLoggedIn);
   const accessToken = useSelector(selectAccessToken);
 
-  if (loggedIn && accessToken) spotifyApi.setAccessToken(accessToken);
+  if (loggedIn && accessToken) setSpotifyToken(accessToken);
   return <Outlet />;
 };
 export default WithSpotifyTokenRoute;

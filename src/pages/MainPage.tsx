@@ -21,7 +21,7 @@ import {
 import '../styles/base.scss';
 import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
-import { spotifyApi } from '../utils/api/spotifyApi';
+import { setSpotifyToken } from '../utils/api/spotifyApi';
 
 const hashParams = getHashParams();
 const token = hashParams.access_token;
@@ -39,12 +39,12 @@ const MainPage = () => {
   useEffect(() => {
     if (token) {
       dispatch(setAccessToken(token));
-      spotifyApi.setAccessToken(token);
+      setSpotifyToken(token);
 
       if (!siteInitialized) dispatch(initializeSite(token));
       if (expires_in) dispatch(setTokenExpiryDate(+expires_in));
     } else if (accessToken) {
-      spotifyApi.setAccessToken(accessToken);
+      setSpotifyToken(accessToken);
       if (!siteInitialized) dispatch(initializeSite(token));
 
       if (tokenExpiryDate !== '') {
