@@ -14,9 +14,9 @@ import { Playlist, Artist } from '../../redux/types';
 import StandardLink from '../StandardLink';
 import { styled } from '@mui/material/styles';
 import { LoadingSpinner } from '../LoadingSpinner/LoadingSpinner';
-import MatchCriteriaSelect from '../MatchCriteriaSelect/MatchCriteriaSelect';
-
-const topArtistsChoice = '__your__top__artists__';
+import MatchCriteriaSelect, {
+  TOP_ARTISTS_CHOICE,
+} from '../MatchCriteriaSelect/MatchCriteriaSelect';
 
 interface SelectPlaylistModalProps {
   open: boolean;
@@ -95,7 +95,7 @@ const SelectPlaylistModal = ({
                   </InputLabel>
                 )}
                 <MatchCriteriaSelect
-                  value={topArtists.length !== 0 ? topArtistsChoice : ''}
+                  value={topArtists.length !== 0 ? TOP_ARTISTS_CHOICE : ''}
                   label={topArtists.length === 0 ? 'Playlist' : undefined}
                   onChange={(event: SelectChangeEvent) => {
                     hidePlaylistModal();

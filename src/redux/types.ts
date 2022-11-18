@@ -56,6 +56,17 @@ export interface MatchRequest {
   states: string[];
 }
 
+export interface MatchCriteria {
+  artists: Artist[];
+  numTracks: number;
+  isTopArtists: Boolean;
+  dateFrom: Date;
+  dateTo: Date;
+  continents?: string[];
+  countries?: string[];
+  states?: string[];
+}
+
 export interface FestivalMatch {
   lineup_id: string;
   name: string;

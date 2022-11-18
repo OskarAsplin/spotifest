@@ -20,7 +20,6 @@ const meta: Meta = {
   args: {
     userName: 'Mr Boombastic',
     spotifyUrl: 'https://spotify.com',
-    loggedIn: true,
     onClickLogout: action('onClickLogout'),
   },
   argTypes: {

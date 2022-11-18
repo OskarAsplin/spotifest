@@ -8,7 +8,6 @@ interface Props {
   setAnchorEl: React.Dispatch<React.SetStateAction<HTMLButtonElement | null>>;
   userName?: string;
   spotifyUrl?: string;
-  loggedIn: boolean;
   onClickLogout: () => void;
 }
 
@@ -18,7 +17,6 @@ const AppBarProfilePopover = ({
   setAnchorEl,
   userName,
   spotifyUrl,
-  loggedIn,
   onClickLogout,
 }: Props) => {
   const open = Boolean(anchorEl);
@@ -40,17 +38,17 @@ const AppBarProfilePopover = ({
           </Typography>
         )}
         {spotifyUrl && (
-          <StandardLink href={spotifyUrl} sx={{ mb: 1 }}>
-            View profile in Spotify
-          </StandardLink>
-        )}
-        {loggedIn && (
-          <StandardLink
-            href="https://accounts.spotify.com/en/logout"
-            onClick={onClickLogout}
-          >
-            Log out
-          </StandardLink>
+          <>
+            <StandardLink href={spotifyUrl} sx={{ mb: 1 }}>
+              View profile in Spotify
+            </StandardLink>
+            <StandardLink
+              href="https://accounts.spotify.com/en/logout"
+              onClick={onClickLogout}
+            >
+              Log out
+            </StandardLink>
+          </>
         )}
       </StyledPopoverDiv>
     </Popover>

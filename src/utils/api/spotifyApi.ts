@@ -132,3 +132,56 @@ export async function getTopArtistsWithPopularity({
     mapToArtistWithPopularity(artist, response.items.length * 2 - idx)
   );
 }
+
+const topArtistsCount = (numArtists: number) =>
+  (numArtists * (3 * numArtists + 1)) / 2; // n(3n+1)/2
+
+export async function getAllTopArtistsWithPopularity(): Promise<{
+  topArtists: Artist[];
+  countTopArtists: number;
+}> {
+  return Promise.all([
+    getTopArtistsWithPopularity({ timeRange: 'long_term' }),
+    getTopArtistsWithPopularity({ timeRange: 'medium_term' }),
+    getTopArtistsWithPopularity({ timeRange: 'short_term' }),
+  ]).then(([topLongTerm, topMediumTerm, topShortTerm]) => {
+    const countTopArtists =
+      topArtistsCount(topLongTerm.length) +
+      topArtistsCount(topMediumTerm.length) +
+      topArtistsCount(topShortTerm.length);
+
+    const tempDict: { [id: string]: Artist } = {};
+    [...topLongTerm, ...topMediumTerm, ...topShortTerm].forEach((artist) => {
+      if (artist.spotifyId! in tempDict) {
+        tempDict[artist.spotifyId!].userPopularity! += artist.userPopularity!;
+      } else {
+        tempDict[artist.spotifyId!] = artist;
+      }
+    });
+
+    return { topArtists: Object.values(tempDict), countTopArtists };
+  });
+}
+
+export async function getAllPlaylistArtists({
+  playlist,
+}: {
+  playlist?: Playlist;
+}): Promise<{
+  playlistArtists: Artist[];
+  numTracks: number;
+}> {
+  if (!playlist) return { playlistArtists: [], numTracks: 0 };
+  const allArtistIdsRaw = await getAllArtistIdsFromPlaylist({ playlist });
+
+  const count: { [id: string]: number } = {};
+  allArtistIdsRaw.forEach(
+    (val: string) => (count[val] = (count[val] || 0) + 1)
+  );
+  const artistIds = [...new Set(allArtistIdsRaw)].filter(Boolean);
+  const newArtists = await getAllArtists({ artistIds, count });
+
+  const numTracks = allArtistIdsRaw.length;
+
+  return { playlistArtists: newArtists, numTracks };
+}

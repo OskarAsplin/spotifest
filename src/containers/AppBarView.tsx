@@ -17,17 +17,15 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectUserInfo } from '../redux/reducers/spotifyAccountSlice';
+import { useDispatch } from 'react-redux';
 import { getBaseUrl, isMainPage } from '../utils/utils';
 import SearchField from './SearchField';
 import { styled } from '@mui/material/styles';
 import AppBarProfilePopover from '../components/AppBarProfilePopover/AppBarProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
-import {
-  selectLoggedIn,
-  setLoggedOff,
-} from '../redux/reducers/authorizationSlice';
+import { setLoggedOff } from '../redux/reducers/authorizationSlice';
+import { useGet } from '../utils/api/api';
+import { getSpotifyUserInfo } from '../utils/api/spotifyApi';
 
 interface Props {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
@@ -37,8 +35,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
 
-  const userInfo = useSelector(selectUserInfo);
-  const loggedIn = useSelector(selectLoggedIn);
+  const { data: userInfo } = useGet(getSpotifyUserInfo);
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -156,7 +153,6 @@ const AppBarView = ({ setThemeMode }: Props) => {
         setAnchorEl={setAnchorEl}
         userName={userInfo?.displayName}
         spotifyUrl={userInfo?.spotifyUrl}
-        loggedIn={loggedIn}
         onClickLogout={() => dispatch(setLoggedOff())}
       />
       <AppBarMenuDrawerContainer

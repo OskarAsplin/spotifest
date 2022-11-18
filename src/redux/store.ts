@@ -21,6 +21,7 @@ import authorizationReducer, {
 } from './reducers/authorizationSlice';
 import displayReducer from './reducers/displaySlice';
 import festivalMatchingReducer from './reducers/festivalMatchingSlice';
+import matchingReducer from './reducers/matchingSlice';
 import spotifyAccountReducer from './reducers/spotifyAccountSlice';
 
 const appReducer = combineReducers({
@@ -28,6 +29,7 @@ const appReducer = combineReducers({
   authorization: authorizationReducer,
   spotifyAccount: spotifyAccountReducer,
   festivalMatching: festivalMatchingReducer,
+  matching: matchingReducer,
 });
 
 const rootReducer: Reducer = (state: RootState, action: AnyAction) => {

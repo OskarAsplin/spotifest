@@ -45,11 +45,7 @@ export function getDjangoAvailableContinents() {
   return fetchGet<Area[]>(url);
 }
 
-export function postDjangoFestivalMatches({
-  matchRequest,
-}: {
-  matchRequest: MatchRequest;
-}) {
+export function postDjangoFestivalMatches(matchRequest: MatchRequest) {
   const url = `${getOntourBase()}/festivalMatches`;
   return fetchPost<FestivalMatch[]>(url, JSON.stringify(matchRequest));
 }

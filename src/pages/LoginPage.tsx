@@ -21,7 +21,6 @@ const LoginPage = () => {
 
   useEffect(() => {
     dispatch(setLoggedOff());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onClickLoginButton = () => {

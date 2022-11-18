@@ -4,6 +4,8 @@ import ReactCountryFlag from 'react-country-flag';
 import { displayedLocationName } from '../../utils/utils';
 import { europeanRegions, usRegions } from '../../utils/regionUtils';
 
+export const WORLDWIDE_AREA: Area = { name: 'Worldwide', isoCode: 'XXX' };
+
 interface AreaSelectProps<T = string> extends Omit<SelectProps<T>, 'children'> {
   continents: Area[];
   countries: Area[];
@@ -16,8 +18,12 @@ const AreaSelect = ({
 }: AreaSelectProps) => {
   return (
     <Select {...selectProps}>
-      <MenuItem key={'XXX'} value={'XXX'} style={{ minWidth: 200 }}>
-        Worldwide
+      <MenuItem
+        key={WORLDWIDE_AREA.isoCode}
+        value={WORLDWIDE_AREA.isoCode}
+        style={{ minWidth: 200 }}
+      >
+        {WORLDWIDE_AREA.name}
       </MenuItem>
       <ListSubheader disableSticky disableGutters>
         Continents

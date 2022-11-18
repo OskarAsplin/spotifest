@@ -29,9 +29,9 @@ export const spotifyAccountSlice = createSlice({
     },
     setTopArtists: (
       state,
-      action: PayloadAction<{ artists: Artist[]; countTopArtists: number }>
+      action: PayloadAction<{ topArtists: Artist[]; countTopArtists: number }>
     ) => {
-      state.topArtists = action.payload.artists;
+      state.topArtists = action.payload.topArtists;
       state.topArtistsLoaded = true;
       state.countTopArtists = action.payload.countTopArtists;
     },

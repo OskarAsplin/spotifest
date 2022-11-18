@@ -1,5 +1,4 @@
 import countries_list from 'countries-list/dist/data.json';
-import { getShortDateISOString } from '../utils/utils';
 import { setLoggedOff } from './reducers/authorizationSlice';
 import {
   turnOnLoader,
@@ -23,8 +22,7 @@ import {
   setPlaylists,
 } from './reducers/spotifyAccountSlice';
 import { AppThunk } from './store';
-import { Artist, MatchRequest } from './types';
-import { mapToArtistMinimal } from '../utils/mappers';
+import { Artist } from './types';
 import {
   getDjangoAvailableContinents,
   getDjangoAvailableCountries,
@@ -33,10 +31,11 @@ import {
 } from '../utils/api/djangoApi';
 import {
   getAllPlaylists,
+  getAllTopArtistsWithPopularity,
   getSpotifyUserInfo,
-  getTopArtistsWithPopularity,
   setSpotifyToken,
 } from '../utils/api/spotifyApi';
+import { createMatchRequest } from '../containers/FestivalMatchesDisplay.utils';
 
 export const getPopularArtistsInLineups =
   (lineups: string[]): AppThunk =>
@@ -61,22 +60,17 @@ export const testFestivalMatches =
   ): AppThunk =>
   (dispatch) => {
     dispatch(turnOnLoader());
-    dateFrom.setUTCHours(0);
-    dateFrom.setDate(1); // Frist day of month
-    dateTo.setUTCHours(0);
-    dateTo.setMonth(dateTo.getMonth() + 1, 0); // Last day of month
-    const matchRequest: MatchRequest = {
-      artists: artists.map(mapToArtistMinimal),
-      genres: artists.flatMap((artist) => artist.genres),
-      numTracks: numTracks,
-      isTopArtists: isTopArtists,
-      dateFrom: getShortDateISOString(dateFrom),
-      dateTo: getShortDateISOString(dateTo),
-      continents: continents ?? [],
-      countries: countries ?? [],
-      states: states ?? [],
-    };
-    postDjangoFestivalMatches({ matchRequest })
+    const matchRequest = createMatchRequest({
+      artists,
+      numTracks,
+      isTopArtists,
+      dateFrom,
+      dateTo,
+      continents,
+      countries,
+      states,
+    });
+    postDjangoFestivalMatches(matchRequest)
       .then((festivalMatches) => {
         dispatch(addFestivalMatches(festivalMatches));
         dispatch(setDbIsOnline());
@@ -91,9 +85,6 @@ export const testFestivalMatches =
       .catch(() => dispatch(setDbIsOffline()))
       .finally(() => dispatch(turnOffLoader()));
   };
-
-const topArtistsCount = (numArtists: number) =>
-  (numArtists * (3 * numArtists + 1)) / 2; // n(3n+1)/2
 
 export const initializeSite =
   (token: string): AppThunk =>
@@ -133,36 +124,8 @@ export const initializeSite =
 
         dispatch(setSiteInitialized());
 
-        Promise.all([
-          getTopArtistsWithPopularity({ timeRange: 'long_term' }),
-          getTopArtistsWithPopularity({ timeRange: 'medium_term' }),
-          getTopArtistsWithPopularity({ timeRange: 'short_term' }),
-        ])
-          .then(([topLongTerm, topMediumTerm, topShortTerm]) => {
-            const countTopArtists =
-              topArtistsCount(topLongTerm.length) +
-              topArtistsCount(topMediumTerm.length) +
-              topArtistsCount(topShortTerm.length);
-
-            const tempDict: { [id: string]: Artist } = {};
-            [...topLongTerm, ...topMediumTerm, ...topShortTerm].forEach(
-              (artist) => {
-                if (artist.spotifyId! in tempDict) {
-                  tempDict[artist.spotifyId!].userPopularity! +=
-                    artist.userPopularity!;
-                } else {
-                  tempDict[artist.spotifyId!] = artist;
-                }
-              }
-            );
-
-            dispatch(
-              setTopArtists({
-                artists: Object.values(tempDict),
-                countTopArtists,
-              })
-            );
-          })
+        getAllTopArtistsWithPopularity()
+          .then((value) => dispatch(setTopArtists(value)))
           .catch(() => dispatch(setLoggedOff()));
 
         dispatch(setAllPlaylistsInRedux(userInfo.id));

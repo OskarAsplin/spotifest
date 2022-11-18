@@ -8,6 +8,7 @@ import {
   MatchSettings,
 } from '../types';
 import { INITIAL_FROM_DATE, INITIAL_TO_DATE } from '../../config';
+import { WORLDWIDE_AREA } from '../../components/AreaSelect/AreaSelect';
 
 interface FestivalMatchingState {
   selectedPlaylistArtists: Artist[];
@@ -21,7 +22,7 @@ interface FestivalMatchingState {
 
 export const initialMatchSettings: MatchSettings = {
   matchBasis: '',
-  area: { name: 'Worldwide', isoCode: 'XXX' },
+  area: WORLDWIDE_AREA,
   fromDate: INITIAL_FROM_DATE.toISOString(),
   toDate: INITIAL_TO_DATE.toISOString(),
   numTracks: 0,

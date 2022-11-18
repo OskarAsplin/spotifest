@@ -25,7 +25,6 @@ import {
   selectCountTopArtists,
 } from '../redux/reducers/spotifyAccountSlice';
 import { Artist, Area } from '../redux/types';
-import { europeanRegions, usRegions, regionMap } from '../utils/regionUtils';
 import {
   getAllArtistIdsFromPlaylist,
   getAllArtists,
@@ -33,6 +32,7 @@ import {
 import SelectPlaylistModal from '../components/SelectPlaylistModal/SelectPlaylistModal';
 import FestivalMatchSettingsBar from '../components/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
 import { TOP_ARTISTS_CHOICE } from '../components/MatchCriteriaSelect/MatchCriteriaSelect';
+import { getAreaFilters } from '../utils/utils';
 
 const FestivalMatchSettingsContainer = () => {
   const userInfo = useSelector(selectUserInfo);
@@ -76,22 +76,10 @@ const FestivalMatchSettingsContainer = () => {
     numTracks: number
   ) => {
     const isTopArtists = chosenPlaylistName === TOP_ARTISTS_CHOICE;
-    let continentFilter: string[] = [];
-    let countryFilter: string[] = [];
-    let stateFilter: string[] = [];
-
-    if (area.isoCode !== 'XXX') {
-      if (continents.find((continent) => continent.isoCode === area.isoCode)) {
-        continentFilter = [area.isoCode];
-      } else if (europeanRegions.find((region) => region === area.isoCode)) {
-        countryFilter = regionMap[area.isoCode];
-      } else if (usRegions.find((region) => region === area.isoCode)) {
-        countryFilter = ['US'];
-        stateFilter = regionMap[area.isoCode];
-      } else {
-        countryFilter = [area.isoCode];
-      }
-    }
+    const { continentFilter, countryFilter, stateFilter } = getAreaFilters(
+      area,
+      continents
+    );
 
     dispatch(
       testFestivalMatches(
