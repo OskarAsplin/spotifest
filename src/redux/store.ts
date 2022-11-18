@@ -1,9 +1,4 @@
-import {
-  configureStore,
-  getDefaultMiddleware,
-  ThunkAction,
-  Action,
-} from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 import { combineReducers, AnyAction, Reducer } from 'redux';
 import {
   persistStore,
