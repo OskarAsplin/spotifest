@@ -1,273 +1,105 @@
 import { useEffect } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import { testFestivalMatches } from '../redux/asyncActions';
+import { Area } from '../redux/types';
 import {
-  selectIsDbOnline,
-  selectShowPlaylistModal,
-  turnOnLoader,
-  setShowPlaylistModal,
-} from '../redux/reducers/displaySlice';
-import {
-  selectMatchSettings,
-  selectSelectedPlaylistArtists,
-  selectCountries,
-  selectContinents,
-  setMatchSettings,
-  setSelectedPlaylistArtists,
-} from '../redux/reducers/festivalMatchingSlice';
-import {
-  selectUserInfo,
-  selectPlaylists,
-  selectTopArtists,
-  selectTopArtistsLoaded,
-  selectPlaylistsLoaded,
-  selectCountTopArtists,
-} from '../redux/reducers/spotifyAccountSlice';
-import { Artist, Area } from '../redux/types';
-import {
-  getAllArtistIdsFromPlaylist,
-  getAllArtists,
+  getAllPlaylists,
+  getAllTopArtistsWithPopularity,
+  getSpotifyUserInfo,
 } from '../utils/api/spotifyApi';
 import SelectPlaylistModal from '../components/SelectPlaylistModal/SelectPlaylistModal';
 import FestivalMatchSettingsBar from '../components/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
 import { TOP_ARTISTS_CHOICE } from '../components/MatchCriteriaSelect/MatchCriteriaSelect';
-import { getAreaFilters } from '../utils/utils';
+import { useGet } from '../utils/api/api';
+import {
+  getDjangoAvailableContinents,
+  getDjangoAvailableCountries,
+} from '../utils/api/djangoApi';
+import { getInitialContinent } from '../utils/utils';
+import {
+  selectFromDate,
+  selectMatchArea,
+  selectMatchBasis,
+  selectToDate,
+  setDates,
+  setFromDate,
+  setMatchArea,
+  setMatchBasis,
+  setToDate,
+} from '../redux/reducers/matchingSlice';
 
 const FestivalMatchSettingsContainer = () => {
-  const userInfo = useSelector(selectUserInfo);
-  const playlists = useSelector(selectPlaylists);
-  const topArtists = useSelector(selectTopArtists);
-  const selectedPlaylistArtists = useSelector(selectSelectedPlaylistArtists);
-  const countries = useSelector(selectCountries);
-  const continents = useSelector(selectContinents);
-  const matchSettings = useSelector(selectMatchSettings);
-  const showPlaylistModal = useSelector(selectShowPlaylistModal);
-  const topArtistsLoaded = useSelector(selectTopArtistsLoaded);
-  const playlistsLoaded = useSelector(selectPlaylistsLoaded);
-  const isDbOnline = useSelector(selectIsDbOnline);
-  const countTopArtists = useSelector(selectCountTopArtists);
+  const matchBasis = useSelector(selectMatchBasis);
+  const matchArea = useSelector(selectMatchArea);
+  const fromDate = useSelector(selectFromDate);
+  const toDate = useSelector(selectToDate);
   const dispatch = useDispatch();
 
+  const { data: userInfo } = useGet(getSpotifyUserInfo);
+  const { data: countries = [] } = useGet(getDjangoAvailableCountries);
+  const { data: continents = [] } = useGet(getDjangoAvailableContinents);
+  const { data: playlists = [] } = useGet(getAllPlaylists, {
+    query: { userId: userInfo?.id ?? '' },
+    enabled: !!userInfo?.id,
+  });
+  const { data: allTopArtistsData } = useGet(getAllTopArtistsWithPopularity);
+  const topArtists = allTopArtistsData?.topArtists ?? [];
+
   useEffect(() => {
-    const matchRequestIsValid =
-      matchSettings.matchBasis === TOP_ARTISTS_CHOICE
-        ? topArtists.length !== 0
-        : selectedPlaylistArtists.length !== 0;
-    if (!isDbOnline && matchRequestIsValid) {
-      testMatchesWithGivenSettings(
-        matchSettings.area,
-        new Date(Date.parse(matchSettings.fromDate)),
-        new Date(Date.parse(matchSettings.toDate)),
-        matchSettings.matchBasis,
-        selectedPlaylistArtists,
-        matchSettings.numTracks
-      );
+    if (userInfo && continents && !matchArea) {
+      const initialArea = getInitialContinent(userInfo.country, continents);
+      dispatch(setMatchArea(initialArea));
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [userInfo, continents]);
 
-  const testMatchesWithGivenSettings = (
-    area: Area,
-    dateFrom: Date,
-    dateTo: Date,
-    chosenPlaylistName: string,
-    artistsFromPlaylist: Artist[],
-    numTracks: number
-  ) => {
-    const isTopArtists = chosenPlaylistName === TOP_ARTISTS_CHOICE;
-    const { continentFilter, countryFilter, stateFilter } = getAreaFilters(
-      area,
-      continents
-    );
+  if (!matchArea) return <div />;
 
-    dispatch(
-      testFestivalMatches(
-        isTopArtists ? topArtists : artistsFromPlaylist,
-        numTracks,
-        isTopArtists,
-        dateFrom,
-        dateTo,
-        continentFilter,
-        countryFilter,
-        stateFilter
-      )
-    );
-  };
-
-  const handlePlaylistChange = async (event: SelectChangeEvent) => {
+  const onPlaylistChange = async (event: SelectChangeEvent) => {
     if (!event.target.value) return;
-
     const playlistName = event.target.value;
-    if (playlistName === matchSettings.matchBasis) {
-      return;
-    }
-    if (playlistName === TOP_ARTISTS_CHOICE) {
-      dispatch(
-        setMatchSettings({
-          ...matchSettings,
-          matchBasis: playlistName,
-          numTracks: countTopArtists,
-        })
-      );
-      testMatchesWithGivenSettings(
-        matchSettings.area,
-        new Date(Date.parse(matchSettings.fromDate)),
-        new Date(Date.parse(matchSettings.toDate)),
-        playlistName,
-        selectedPlaylistArtists,
-        countTopArtists
-      );
-      return;
-    }
-
-    const playlist = playlists.find(({ name }) => name === playlistName);
-
-    if (playlist) {
-      dispatch(turnOnLoader());
-
-      const allArtistIdsRaw = await getAllArtistIdsFromPlaylist({ playlist });
-
-      const count: { [id: string]: number } = {};
-      allArtistIdsRaw.forEach(
-        (val: string) => (count[val] = (count[val] || 0) + 1)
-      );
-      const artistIds = [...new Set(allArtistIdsRaw)].filter(Boolean);
-      const newArtists = await getAllArtists({ artistIds, count });
-
-      if (newArtists.length > 0) {
-        dispatch(
-          setMatchSettings({
-            ...matchSettings,
-            matchBasis: playlistName,
-            numTracks: allArtistIdsRaw.length,
-          })
-        );
-        testMatchesWithGivenSettings(
-          matchSettings.area,
-          new Date(Date.parse(matchSettings.fromDate)),
-          new Date(Date.parse(matchSettings.toDate)),
-          playlistName,
-          newArtists,
-          allArtistIdsRaw.length
-        );
-        dispatch(setSelectedPlaylistArtists(newArtists));
-      }
-    }
+    if (playlistName === matchBasis) return;
+    dispatch(setMatchBasis(playlistName));
   };
 
-  const handleAreaChange = async (event: SelectChangeEvent) => {
+  const onAreaChange = async (event: SelectChangeEvent) => {
     if (!event.target.value) return;
-
-    const area: Area = {
-      name: event.target.name ? event.target.name : '',
-      isoCode: event.target.value,
-    };
-    if (area.isoCode !== matchSettings.area.isoCode) {
-      testMatchesWithGivenSettings(
-        area,
-        new Date(Date.parse(matchSettings.fromDate)),
-        new Date(Date.parse(matchSettings.toDate)),
-        matchSettings.matchBasis,
-        selectedPlaylistArtists,
-        matchSettings.numTracks
-      );
-      dispatch(setMatchSettings({ ...matchSettings, area: area }));
-    }
+    const { name, value } = event.target;
+    const area: Area = { name, isoCode: value };
+    dispatch(setMatchArea(area));
   };
 
-  const handleFromDateChange = (date: Date | null) => {
+  const onFromDateChange = (date: Date | null) => {
     if (date) {
-      const toDate = new Date(matchSettings.toDate);
-      if (date > toDate) {
-        dispatch(
-          setMatchSettings({
-            ...matchSettings,
-            fromDate: date.toISOString(),
-            toDate: date.toISOString(),
-          })
-        );
-        testMatchesWithGivenSettings(
-          matchSettings.area,
-          date,
-          date,
-          matchSettings.matchBasis,
-          selectedPlaylistArtists,
-          matchSettings.numTracks
-        );
+      const isoDate = date.toISOString();
+      if (date > new Date(toDate)) {
+        dispatch(setDates({ fromDate: isoDate, toDate: isoDate }));
       } else {
-        dispatch(
-          setMatchSettings({ ...matchSettings, fromDate: date.toISOString() })
-        );
-        testMatchesWithGivenSettings(
-          matchSettings.area,
-          date,
-          toDate,
-          matchSettings.matchBasis,
-          selectedPlaylistArtists,
-          matchSettings.numTracks
-        );
+        dispatch(setFromDate(isoDate));
       }
     }
   };
 
-  const handleToDateChange = (date: Date | null) => {
+  const onToDateChange = (date: Date | null) => {
     if (date) {
-      const fromDate = new Date(matchSettings.fromDate);
-      if (date < fromDate) {
-        dispatch(
-          setMatchSettings({
-            ...matchSettings,
-            fromDate: date.toISOString(),
-            toDate: date.toISOString(),
-          })
-        );
-        testMatchesWithGivenSettings(
-          matchSettings.area,
-          date,
-          date,
-          matchSettings.matchBasis,
-          selectedPlaylistArtists,
-          matchSettings.numTracks
-        );
+      const isoDate = date.toISOString();
+      if (date < new Date(fromDate)) {
+        dispatch(setDates({ fromDate: isoDate, toDate: isoDate }));
       } else {
-        dispatch(
-          setMatchSettings({ ...matchSettings, toDate: date.toISOString() })
-        );
-        testMatchesWithGivenSettings(
-          matchSettings.area,
-          fromDate,
-          date,
-          matchSettings.matchBasis,
-          selectedPlaylistArtists,
-          matchSettings.numTracks
-        );
+        dispatch(setToDate(isoDate));
       }
     }
   };
 
-  const hidePlaylistModal = () => dispatch(setShowPlaylistModal(false));
+  const onClickModalGoButton = () =>
+    dispatch(setMatchBasis(TOP_ARTISTS_CHOICE));
 
-  const onClickModalGoButton = () => {
-    hidePlaylistModal();
-    dispatch(
-      setMatchSettings({
-        ...matchSettings,
-        matchBasis: TOP_ARTISTS_CHOICE,
-        numTracks: countTopArtists,
-      })
-    );
-    testMatchesWithGivenSettings(
-      matchSettings.area,
-      new Date(Date.parse(matchSettings.fromDate)),
-      new Date(Date.parse(matchSettings.toDate)),
-      TOP_ARTISTS_CHOICE,
-      selectedPlaylistArtists,
-      countTopArtists
-    );
+  const matchSettings = {
+    matchBasis: matchBasis ?? '',
+    area: matchArea,
+    fromDate,
+    toDate,
+    numTracks: 0,
   };
-
-  if (!isDbOnline) return <div />;
 
   return (
     <>
@@ -278,17 +110,15 @@ const FestivalMatchSettingsContainer = () => {
         continents={continents}
         matchSettings={matchSettings}
         onChangeHandlers={{
-          onPlaylistChange: handlePlaylistChange,
-          onAreaChange: handleAreaChange,
-          onFromDateChange: handleFromDateChange,
-          onToDateChange: handleToDateChange,
+          onPlaylistChange,
+          onAreaChange,
+          onFromDateChange,
+          onToDateChange,
         }}
       />
       <SelectPlaylistModal
-        open={showPlaylistModal}
-        hidePlaylistModal={hidePlaylistModal}
-        dataLoaded={topArtistsLoaded && playlistsLoaded}
-        onPlaylistChange={handlePlaylistChange}
+        open={!matchBasis}
+        onPlaylistChange={onPlaylistChange}
         onClickGoButton={onClickModalGoButton}
         playlists={playlists}
         topArtists={topArtists}

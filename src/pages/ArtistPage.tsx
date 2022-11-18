@@ -33,7 +33,7 @@ import FallbackPage from './FallbackPage';
 import { useSelector } from 'react-redux';
 import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 
-const SuspenseFallback = () => <CenteredLoadingSpinner show />;
+const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const ErrorFallback = () => (
   <FallbackPage fallbackText="There seems to be some issue with connecting to our database. Try refreshing the page." />
 );

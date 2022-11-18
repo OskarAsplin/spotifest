@@ -1,11 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Typography, Box, Stack } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import Pagination from '@mui/material/Pagination';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  selectCurrentPage,
-  setCurrentPage,
-} from '../redux/reducers/festivalMatchingSlice';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import { styled } from '@mui/material/styles';
 import { useGet, withFallback } from '../utils/api/api';
@@ -33,13 +30,13 @@ import { CenteredLoadingSpinner } from '../components/LoadingSpinner/LoadingSpin
 
 const ITEMS_PER_PAGE = 15;
 
-const SuspenseFallback = () => <CenteredLoadingSpinner show />;
+const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const FestivalMatchesDisplay = withFallback(SuspenseFallback)(() => {
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
   const dispatch = useDispatch();
 
-  const currentPage = useSelector(selectCurrentPage);
+  const [page, setPage] = useState(1);
   const matchBasis = useSelector(selectMatchBasis);
   const matchArea = useSelector(selectMatchArea);
   const fromDate = useSelector(selectFromDate);
@@ -92,28 +89,32 @@ const FestivalMatchesDisplay = withFallback(SuspenseFallback)(() => {
     enabled: !!artists.length && !!numTracks,
   });
 
-  const currentPageLineups = festivalMatches
-    .slice((currentPage - 1) * 15, currentPage * 15)
+  useEffect(() => {
+    setPage(1);
+  }, [festivalMatches]);
+
+  const pageLineups = festivalMatches
+    .slice((page - 1) * 15, page * 15)
     .map((match) => match.lineup_id);
 
   const { data: popularArtistsDict = {} } = useGet(
     postDjangoPopularArtistsInLineups,
     {
-      query: { lineups: currentPageLineups },
-      enabled: currentPageLineups.length > 0,
+      query: { lineups: pageLineups },
+      enabled: pageLineups.length > 0,
       keepPreviousData: true,
     }
   );
 
   const numPages = Math.ceil(festivalMatches.length / ITEMS_PER_PAGE);
 
-  const handleChange = (
+  const onPageChange = (
     event: React.ChangeEvent<unknown>,
     value: number,
     isBottomPagination: boolean
   ) => {
-    if (currentPage !== value) {
-      dispatch(setCurrentPage(value));
+    if (page !== value) {
+      dispatch(setPage(value));
       if (isBottomPagination) {
         setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
       }
@@ -121,8 +122,8 @@ const FestivalMatchesDisplay = withFallback(SuspenseFallback)(() => {
   };
 
   const showMatches = festivalMatches.slice(
-    (currentPage - 1) * ITEMS_PER_PAGE,
-    Math.min(currentPage * ITEMS_PER_PAGE, festivalMatches.length)
+    (page - 1) * ITEMS_PER_PAGE,
+    Math.min(page * ITEMS_PER_PAGE, festivalMatches.length)
   );
 
   const isAnyMatch = showMatches.length > 0;
@@ -145,10 +146,10 @@ const FestivalMatchesDisplay = withFallback(SuspenseFallback)(() => {
           <StyledPaginationBox>
             <Pagination
               count={numPages}
-              page={currentPage}
+              page={page}
               size={mediumOrBigScreen ? 'medium' : 'small'}
               onChange={(event: React.ChangeEvent<unknown>, value: number) =>
-                handleChange(event, value, false)
+                onPageChange(event, value, false)
               }
             />
           </StyledPaginationBox>
@@ -195,10 +196,10 @@ const FestivalMatchesDisplay = withFallback(SuspenseFallback)(() => {
         <StyledPaginationBox sx={{ mt: 3, mb: 2 }}>
           <Pagination
             count={numPages}
-            page={currentPage}
+            page={page}
             size={mediumOrBigScreen ? 'medium' : 'small'}
             onChange={(event: React.ChangeEvent<unknown>, value: number) =>
-              handleChange(event, value, true)
+              onPageChange(event, value, true)
             }
           />
         </StyledPaginationBox>

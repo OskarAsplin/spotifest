@@ -33,7 +33,7 @@ import { getDjangoFestival } from '../utils/api/djangoApi';
 import FallbackPage from './FallbackPage';
 import { CenteredLoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
 
-const SuspenseFallback = () => <CenteredLoadingSpinner show />;
+const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const ErrorFallback = () => (
   <FallbackPage fallbackText="There seems to be some issue with connecting to our database. Try refreshing the page." />
 );

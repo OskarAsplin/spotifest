@@ -19,16 +19,10 @@ import storage from 'redux-persist/lib/storage'; // defaults to localStorage for
 import authorizationReducer, {
   setLoggedOff,
 } from './reducers/authorizationSlice';
-import displayReducer from './reducers/displaySlice';
-import festivalMatchingReducer from './reducers/festivalMatchingSlice';
 import matchingReducer from './reducers/matchingSlice';
-import spotifyAccountReducer from './reducers/spotifyAccountSlice';
 
 const appReducer = combineReducers({
-  display: displayReducer,
   authorization: authorizationReducer,
-  spotifyAccount: spotifyAccountReducer,
-  festivalMatching: festivalMatchingReducer,
   matching: matchingReducer,
 });
 
