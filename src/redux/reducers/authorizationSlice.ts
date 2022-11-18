@@ -9,7 +9,7 @@ const initialState: AuthorizationState = {
   loggedIn: false,
 };
 
-export const authorizationSlice = createSlice({
+const authorizationSlice = createSlice({
   name: 'authorization',
   initialState,
   reducers: {

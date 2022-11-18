@@ -58,7 +58,9 @@
     "lint:fix": "eslint --fix 'src/**/*.{js,jsx,ts,tsx,json}'",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "find-unused-exports": "ts-prune",
+    "find-dead-code": "ts-prune | grep -v \"(used in module)\" || true"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -110,6 +112,7 @@
     "eslint-plugin-storybook": "^0.6.7",
     "prettier": "^2.7.1",
     "prop-types": "^15.8.1",
+    "ts-prune": "^0.10.3",
     "webpack": "^5.75.0"
   }
 }

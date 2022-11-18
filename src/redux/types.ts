@@ -29,17 +29,6 @@ export interface ArtistMinimal {
   userPopularity?: number;
 }
 
-export interface Lineup {
-  festival: string;
-  year: number;
-  from_date_iso: string;
-  to_date_iso: string;
-  date_str: string;
-  cancelled: boolean;
-  artists: Artist[];
-  poster: string;
-}
-
 export interface PopularArtistsDict {
   [id: string]: Artist[];
 }
@@ -84,8 +73,15 @@ export interface FestivalMatch {
   festivalImg: string;
 }
 
-export interface FestivalMatchExtended extends FestivalMatch {
-  popular_artists: Artist[];
+interface Lineup {
+  festival: string;
+  year: number;
+  from_date_iso: string;
+  to_date_iso: string;
+  date_str: string;
+  cancelled: boolean;
+  artists: Artist[];
+  poster: string;
 }
 
 export interface FestivalInfo {
@@ -99,6 +95,10 @@ export interface FestivalInfo {
   crawledWebpage: string;
   video: string;
   lineups: Lineup[];
+}
+
+interface FestivalMatchExtended extends FestivalMatch {
+  popular_artists: Artist[];
 }
 
 export interface ArtistInfo {

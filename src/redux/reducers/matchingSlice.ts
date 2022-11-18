@@ -15,7 +15,7 @@ const initialState: matchingState = {
   toDate: INITIAL_TO_DATE.toISOString(),
 };
 
-export const matchingSlice = createSlice({
+const matchingSlice = createSlice({
   name: 'matching',
   initialState,
   reducers: {

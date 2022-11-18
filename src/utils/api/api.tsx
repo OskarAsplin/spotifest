@@ -8,7 +8,7 @@ import { uniqueFunctionId } from './uniqueFunctionId';
 type OpBaseType<R = any> = (...args: any) => Promise<R>;
 type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
 
-export interface UseGetProps<Op extends OpBaseType>
+interface UseGetProps<Op extends OpBaseType>
   extends Omit<UseQueryOptions<ThenArg<ReturnType<Op>>>, 'useErrorBoundary'> {
   query?: Parameters<Op>[0];
 }
