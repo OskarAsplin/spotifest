@@ -4,9 +4,13 @@ import { styled } from '@mui/material/styles';
 import { forwardRef } from 'react';
 
 // eslint-disable-next-line react/display-name
-const HtmlTooltip = forwardRef<HTMLDivElement, TooltipProps>((props, ref) => {
-  return <StyledTooltip ref={ref} {...props} />;
-});
+const HtmlTooltip = forwardRef<HTMLDivElement, TooltipProps>(
+  ({ children, ...props }, ref) => (
+    <StyledTooltip ref={ref} {...props}>
+      <span>{children}</span>
+    </StyledTooltip>
+  )
+);
 
 const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
