@@ -49,8 +49,8 @@ const AppBarView = ({ setThemeMode }: Props) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const open = Boolean(anchorEl);
-  const popoverId = open ? 'simple-popover' : undefined;
+  const popoverOpen = Boolean(anchorEl);
+  const popoverId = popoverOpen ? 'simple-popover' : undefined;
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -150,7 +150,8 @@ const AppBarView = ({ setThemeMode }: Props) => {
       <AppBarProfilePopover
         id={popoverId}
         anchorEl={anchorEl}
-        setAnchorEl={setAnchorEl}
+        open={popoverOpen}
+        onClose={() => setAnchorEl(null)}
         userName={userInfo?.displayName}
         spotifyUrl={userInfo?.spotifyUrl}
         onClickLogout={() => dispatch(setLoggedOff())}

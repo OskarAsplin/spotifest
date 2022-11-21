@@ -23,9 +23,6 @@ const meta: Meta = {
     onClickLogout: action('onClickLogout'),
   },
   argTypes: {
-    id: { control: false },
-    anchorEl: { control: false },
-    setAnchorEl: { control: false },
     onClickLogout: { control: false },
   },
 };
@@ -39,17 +36,18 @@ const Template: Story = (args) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const open = Boolean(anchorEl);
-  const popoverId = open ? 'simple-popover' : undefined;
+  const popoverOpen = Boolean(anchorEl);
+  const popoverId = popoverOpen ? 'simple-popover' : undefined;
 
   return (
     <>
-      <button onClick={handleClick}>Click me</button>
+      <button onClick={handleClick}>Open Popover</button>
       <AppBarProfilePopover
         {...args}
         id={popoverId}
         anchorEl={anchorEl}
-        setAnchorEl={setAnchorEl}
+        open={popoverOpen}
+        onClose={() => setAnchorEl(null)}
       />
     </>
   );
