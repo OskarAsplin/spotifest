@@ -37,6 +37,8 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
   const { data: searchResults } = useGet(getDjangoSearchResults, {
     query: { search: inputText },
     enabled: !!inputText.length,
+    suspense: false,
+    keepPreviousData: true,
   });
 
   const debouncedOnChange = debounce(
