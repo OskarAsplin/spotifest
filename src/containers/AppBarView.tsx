@@ -18,7 +18,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { useDispatch } from 'react-redux';
-import { getBaseUrl, isMainPage } from '../utils/utils';
+import { isMainPage } from '../utils/utils';
 import SearchField from './SearchField';
 import { styled } from '@mui/material/styles';
 import AppBarProfilePopover from '../components/AppBarProfilePopover/AppBarProfilePopover';
@@ -26,6 +26,7 @@ import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import { useGet } from '../utils/api/api';
 import { getSpotifyUserInfo } from '../utils/api/spotifyApi';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
@@ -34,14 +35,14 @@ interface Props {
 const AppBarView = ({ setThemeMode }: Props) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
-
-  const { data: userInfo } = useGet(getSpotifyUserInfo);
   const dispatch = useDispatch();
-
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [showSearchFieldSmallScreen, setShowSearchFieldSmallScreen] =
     useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const { data: userInfo } = useGet(getSpotifyUserInfo);
 
   const trigger = useScrollTrigger({ threshold: 30 });
 
@@ -68,7 +69,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
   const onClickLogo = () => {
     const url = window.location.href;
     if (isMainPage(url)) window.scrollTo({ top: 0, behavior: 'smooth' });
-    else window.open(getBaseUrl(), '_self');
+    else navigate('/');
   };
 
   return (

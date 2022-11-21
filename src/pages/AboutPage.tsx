@@ -244,10 +244,8 @@ const AboutPage = () => {
                   purely a hobby project at this point. No personal data is
                   collected by this site, but youtube videos showed on the
                   festival pages collect cookies. When logging out or going to{' '}
-                  <StandardLink href="https://www.spotifest.app/login">
-                    spotifest.app/login
-                  </StandardLink>
-                  , all browser data linked to the site is deleted.
+                  <StandardLink to="/login">spotifest.app/login</StandardLink>,
+                  all browser data linked to the site is deleted.
                 </Typography>
               </div>
             </Collapse>

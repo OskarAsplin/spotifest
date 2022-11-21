@@ -12,7 +12,7 @@ import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import SearchIcon from '@mui/icons-material/Search';
 import StandardLink from '../components/StandardLink';
-import { getArtistUrl, getFestivalUrl } from '../utils/utils';
+import { getArtistPath, getFestivalPath } from '../utils/utils';
 import { createTheme } from '@mui/material/styles';
 import { getMainTheme } from '../theme/theme.styles';
 import MatchHighlighter, { escapeRegExp } from '../components/MatchHighlighter';
@@ -98,7 +98,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                         <StandardLink
                           color={'textSecondary'}
                           key={'searchResult festival: ' + festival.name}
-                          href={getFestivalUrl(festival.name)}
+                          to={getFestivalPath(festival.name)}
                           onClick={() => setInputText('')}
                           sx={{ mb: 1 }}
                           variant="body2"
@@ -134,7 +134,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                       <StandardLink
                         color={'textSecondary'}
                         key={'searchResult artist: ' + artist.name}
-                        href={getArtistUrl(artist.name, artist.spotifyId)}
+                        to={getArtistPath(artist.name, artist.spotifyId)}
                         onClick={() => setInputText('')}
                         sx={{ mb: 1 }}
                         variant="body2"

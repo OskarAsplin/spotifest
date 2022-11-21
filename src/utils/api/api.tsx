@@ -39,7 +39,6 @@ export function withFallback<Props extends object>(
   Error: ComponentType<FallbackProps> = () => null
 ) {
   return (Component: ComponentType<Props>) =>
-    // eslint-disable-next-line react/display-name
     forwardRef((props: Props, ref) => (
       <ErrorBoundary FallbackComponent={Error}>
         <Suspense fallback={Fallback ? <Fallback {...props} /> : false}>

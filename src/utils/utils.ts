@@ -110,17 +110,6 @@ export const getAreaFilters = (area?: Area, continents?: Area[]) => {
   return { continentFilter, countryFilter, stateFilter };
 };
 
-export const getBaseUrl = () => {
-  const url = window.location.href;
-  const spotifest_pos = url.search('spotifest.app');
-  if (spotifest_pos !== -1) {
-    return url.slice(0, spotifest_pos) + 'spotifest.app';
-  } else {
-    const localhost_pos = url.search('localhost:3000');
-    return url.slice(0, localhost_pos) + 'localhost:3000';
-  }
-};
-
 export const isMainPage = (url: string) =>
   /spotifest\.app\/?$/.test(url) || /localhost:3000\/?$/.test(url);
 
@@ -131,9 +120,3 @@ export const getArtistPath = (artistName: string, spotifyId?: string) => {
 
 export const getFestivalPath = (festivalName: string) =>
   '/festival/' + encodeURIComponent(festivalName);
-
-export const getArtistUrl = (artistName: string, spotifyId?: string) =>
-  getBaseUrl() + getArtistPath(artistName, spotifyId);
-
-export const getFestivalUrl = (festivalName: string) =>
-  getBaseUrl() + getFestivalPath(festivalName);
