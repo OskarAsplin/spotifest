@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import FestivalMatchesDisplay from '../containers/FestivalMatchesDisplay';
+import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
 import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
@@ -33,7 +33,7 @@ const MainPage = withFallback(
         }}
       />
       <FestivalMatchSettingsContainer />
-      <FestivalMatchesDisplay />
+      <FestivalMatchesContainer />
     </StyledRootDiv>
   );
 });

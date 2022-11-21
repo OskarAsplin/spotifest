@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Typography, Box, Stack } from '@mui/material';
+import {
+  Pagination,
+  PaginationProps,
+  Typography,
+  Box,
+  Stack,
+} from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import Pagination from '@mui/material/Pagination';
 import { useSelector, useDispatch } from 'react-redux';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import { styled } from '@mui/material/styles';
@@ -18,7 +23,7 @@ import {
   selectToDate,
 } from '../redux/reducers/matchingSlice';
 import { TOP_ARTISTS_CHOICE } from '../components/MatchCriteriaSelect/MatchCriteriaSelect';
-import { createMatchRequest } from './FestivalMatchesDisplay.utils';
+import { createMatchRequest } from './FestivalMatchesContainer.utils';
 import {
   getAllPlaylistArtists,
   getAllPlaylists,
@@ -32,7 +37,7 @@ const ITEMS_PER_PAGE = 15;
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
-const FestivalMatchesDisplay = withFallback(SuspenseFallback)(() => {
+const FestivalMatchesContainer = withFallback(SuspenseFallback)(() => {
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
   const dispatch = useDispatch();
 
@@ -128,6 +133,14 @@ const FestivalMatchesDisplay = withFallback(SuspenseFallback)(() => {
 
   const isAnyMatch = showMatches.length > 0;
 
+  const paginationProps: PaginationProps = {
+    count: numPages,
+    page: page,
+    size: mediumOrBigScreen ? 'medium' : 'small',
+    onChange: (event: React.ChangeEvent<unknown>, value: number) =>
+      onPageChange(event, value, true),
+  };
+
   return (
     <StyledRootBox>
       {showMatches.length > 0 && (
@@ -144,14 +157,7 @@ const FestivalMatchesDisplay = withFallback(SuspenseFallback)(() => {
             {festivalMatches.length + ' matches'}
           </StyledNumMatchesTypography>
           <StyledPaginationBox>
-            <Pagination
-              count={numPages}
-              page={page}
-              size={mediumOrBigScreen ? 'medium' : 'small'}
-              onChange={(event: React.ChangeEvent<unknown>, value: number) =>
-                onPageChange(event, value, false)
-              }
-            />
+            <Pagination {...paginationProps} />
           </StyledPaginationBox>
         </Box>
       )}
@@ -194,14 +200,7 @@ const FestivalMatchesDisplay = withFallback(SuspenseFallback)(() => {
       </Stack>
       {showMatches.length > 0 && (
         <StyledPaginationBox sx={{ mt: 3, mb: 2 }}>
-          <Pagination
-            count={numPages}
-            page={page}
-            size={mediumOrBigScreen ? 'medium' : 'small'}
-            onChange={(event: React.ChangeEvent<unknown>, value: number) =>
-              onPageChange(event, value, true)
-            }
-          />
+          <Pagination {...paginationProps} />
         </StyledPaginationBox>
       )}
       {!isAnyMatch && !!matchBasis && (
@@ -236,4 +235,4 @@ const StyledNumMatchesTypography = styled(Typography)(
   })
 );
 
-export default FestivalMatchesDisplay;
+export default FestivalMatchesContainer;
