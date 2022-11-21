@@ -29,22 +29,6 @@ $socialButtonSize: 46px;
   margin-top: 1 * $dis;
 }
 
-.paperTop {
-  @include centeredFlex(column);
-  width: 100%;
-  @media (min-width: $bigScreen) {
-    padding: 0.5 * $dis 2 * $dis;
-  }
-  @media (max-width: $bigScreen - 1) {
-    @media (min-width: $mediumScreen) {
-      padding: 0.5 * $dis 1 * $dis;
-    }
-  }
-  @media (max-width: $mediumScreen - 1) {
-    padding: 0.5 * $dis 0 * $dis;
-  }
-}
-
 .paper {
   @include centeredFlex(column);
   @media (min-width: $bigScreen) {

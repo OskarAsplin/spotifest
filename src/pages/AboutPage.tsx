@@ -98,7 +98,7 @@ const AboutPage = () => {
         >
           <Paper
             elevation={3}
-            className={clsx(styles.paperTop, styles.minWidth400)}
+            className={clsx(styles.paper, styles.minWidth400)}
           >
             <div
               className={styles.rowFlexCenterSpaceApart}
