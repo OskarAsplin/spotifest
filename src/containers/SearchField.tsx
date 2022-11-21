@@ -44,6 +44,11 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
     DEBOUNCE_WAIT
   );
 
+  const onResultClick = () => {
+    setInputText('');
+    setShowSearchFieldSmallScreen(false);
+  };
+
   return (
     <ThemeProvider theme={darkTheme}>
       <ClickAwayListener
@@ -99,7 +104,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                           color={'textSecondary'}
                           key={'searchResult festival: ' + festival.name}
                           to={getFestivalPath(festival.name)}
-                          onClick={() => setInputText('')}
+                          onClick={onResultClick}
                           sx={{ mb: 1 }}
                           variant="body2"
                         >
@@ -135,7 +140,7 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                         color={'textSecondary'}
                         key={'searchResult artist: ' + artist.name}
                         to={getArtistPath(artist.name, artist.spotifyId)}
-                        onClick={() => setInputText('')}
+                        onClick={onResultClick}
                         sx={{ mb: 1 }}
                         variant="body2"
                       >
