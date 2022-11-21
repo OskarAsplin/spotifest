@@ -16,22 +16,22 @@ import ReactPlayer from 'react-player/lazy';
 import { useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
 import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
-import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubble';
+import { StyledAvatarContainerdiv } from '../components/molecules/ArtistBubble/ArtistBubble';
 import '../styles/base.scss';
 import {
   getMaxArtistsInFullLineupWidth,
   displayedLocationName,
 } from '../utils/utils';
 import { styled, useTheme } from '@mui/material/styles';
-import StyledCookieConsent from '../components/CookieConsent';
+import StyledCookieConsent from '../components/molecules/CookieConsent';
 import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
-import TabPanel from '../components/TabPanel';
+import TabPanel from '../components/molecules/TabPanel';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
-import CustomSwitch from '../components/CustomSwitch/CustomSwitch';
+import CustomSwitch from '../components/atoms/CustomSwitch/CustomSwitch';
+import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import { useGet, withFallback } from '../utils/api/api';
 import { getDjangoFestival } from '../utils/api/djangoApi';
 import FallbackPage from './FallbackPage';
-import { CenteredLoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const ErrorFallback = () => (

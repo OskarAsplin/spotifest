@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import FestivalMatchCard, {
   FestivalMatchCardProps,
-} from '../components/FestivalMatchCard/FestivalMatchCard';
+} from '../components/organisms/FestivalMatchCard/FestivalMatchCard';
 import { getArtistPath } from '../utils/utils';
 
 type Props = Omit<

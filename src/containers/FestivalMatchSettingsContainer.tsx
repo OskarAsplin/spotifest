@@ -7,9 +7,9 @@ import {
   getAllTopArtistsWithPopularity,
   getSpotifyUserInfo,
 } from '../utils/api/spotifyApi';
-import SelectPlaylistModal from '../components/SelectPlaylistModal/SelectPlaylistModal';
-import FestivalMatchSettingsBar from '../components/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
-import { TOP_ARTISTS_CHOICE } from '../components/MatchCriteriaSelect/MatchCriteriaSelect';
+import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
+import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
+import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { useGet } from '../utils/api/api';
 import {
   getDjangoAvailableContinents,

@@ -3,7 +3,7 @@ import { Brightness2, Brightness4 } from '@mui/icons-material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import AppBarMenuDrawer from '../components/AppBarMenuDrawer/AppBarMenuDrawer';
+import AppBarMenuDrawer from '../components/organisms/AppBarMenuDrawer/AppBarMenuDrawer';
 
 interface Props {
   open: boolean;

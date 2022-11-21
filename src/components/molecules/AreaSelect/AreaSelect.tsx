@@ -1,8 +1,8 @@
 import { MenuItem, Select, ListSubheader, SelectProps } from '@mui/material';
-import { Area } from '../../redux/types';
+import { Area } from '../../../redux/types';
 import ReactCountryFlag from 'react-country-flag';
-import { displayedLocationName } from '../../utils/utils';
-import { europeanRegions, usRegions } from '../../utils/regionUtils';
+import { displayedLocationName } from '../../../utils/utils';
+import { europeanRegions, usRegions } from '../../../utils/regionUtils';
 
 export const WORLDWIDE_AREA: Area = { name: 'Worldwide', isoCode: 'XXX' };
 

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import BackCircleButton from '../components/BackCircleButton/BackCircleButton';
+import BackCircleButton from '../components/atoms/BackCircleButton/BackCircleButton';
 
 const BackCircleButtonContainer = () => {
   const navigate = useNavigate();

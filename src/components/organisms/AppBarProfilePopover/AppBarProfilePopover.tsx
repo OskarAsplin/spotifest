@@ -1,5 +1,5 @@
 import { PopoverProps, Typography, Popover } from '@mui/material';
-import StandardLink from '../StandardLink';
+import StandardLink from '../../atoms/StandardLink';
 import { styled } from '@mui/material/styles';
 
 interface AppBarProfilePopoverProps extends PopoverProps {

@@ -8,8 +8,8 @@ import {
   setLoggedIn,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import StandardLink from '../components/StandardLink';
-import LoginButton from '../components/LoginButton/LoginButton';
+import StandardLink from '../components/atoms/StandardLink';
+import LoginButton from '../components/atoms/LoginButton/LoginButton';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');

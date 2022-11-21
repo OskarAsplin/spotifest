@@ -5,7 +5,7 @@ import {
 } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { MATCHING_MAX_DATE, MATCHING_MIN_DATE } from '../config';
+import { MATCHING_MAX_DATE, MATCHING_MIN_DATE } from '../../config';
 
 const SettingsBarDatePicker = <TInputDate,>(
   props: Omit<MobileDatePickerProps<TInputDate, Date>, 'renderInput'>

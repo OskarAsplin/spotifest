@@ -21,7 +21,7 @@ import { useDispatch } from 'react-redux';
 import { isMainPage } from '../utils/utils';
 import SearchField from './SearchField';
 import { styled } from '@mui/material/styles';
-import AppBarProfilePopover from '../components/AppBarProfilePopover/AppBarProfilePopover';
+import AppBarProfilePopover from '../components/organisms/AppBarProfilePopover/AppBarProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import { useGet } from '../utils/api/api';

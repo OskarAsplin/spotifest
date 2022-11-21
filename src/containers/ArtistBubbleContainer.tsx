@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Artist } from '../redux/types';
 import { getArtistPath } from '../utils/utils';
-import ArtistBubble from '../components/ArtistBubble/ArtistBubble';
+import ArtistBubble from '../components/molecules/ArtistBubble/ArtistBubble';
 
 interface ArtistBubbleContainerProps {
   artist: Artist;

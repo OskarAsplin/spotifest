@@ -1,5 +1,4 @@
 import { CircularProgress, CircularProgressProps } from '@mui/material';
-import '../../styles/base.scss';
 import { styled } from '@mui/material/styles';
 
 const CIRCLE_RADIUS = 50;

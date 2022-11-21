@@ -22,7 +22,7 @@ import {
   selectMatchBasis,
   selectToDate,
 } from '../redux/reducers/matchingSlice';
-import { TOP_ARTISTS_CHOICE } from '../components/MatchCriteriaSelect/MatchCriteriaSelect';
+import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
 import {
   getAllPlaylistArtists,
@@ -31,7 +31,7 @@ import {
   getSpotifyUserInfo,
 } from '../utils/api/spotifyApi';
 import { getAreaFilters } from '../utils/utils';
-import { CenteredLoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
+import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 
 const ITEMS_PER_PAGE = 15;
 

@@ -1,5 +1,5 @@
 import { MenuItem, Select, ListSubheader, SelectProps } from '@mui/material';
-import { Artist, Playlist } from '../../redux/types';
+import { Artist, Playlist } from '../../../redux/types';
 
 export const TOP_ARTISTS_CHOICE = '__your__top__artists__';
 

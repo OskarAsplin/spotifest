@@ -1,8 +1,8 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import FestivalMatchCard from './FestivalMatchCard';
 import { action } from '@storybook/addon-actions';
-import { artistMock } from '../ArtistBubble/ArtistBubble.fixtures';
-import { setStoryDescription } from '../../utils/storyUtils';
+import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
+import { setStoryDescription } from '../../../utils/storyUtils';
 import { Box } from '@mui/material';
 
 type Meta = ComponentMeta<typeof FestivalMatchCard>;

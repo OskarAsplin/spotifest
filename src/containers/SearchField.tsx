@@ -11,11 +11,13 @@ import {
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import SearchIcon from '@mui/icons-material/Search';
-import StandardLink from '../components/StandardLink';
+import StandardLink from '../components/atoms/StandardLink';
 import { getArtistPath, getFestivalPath } from '../utils/utils';
 import { createTheme } from '@mui/material/styles';
 import { getMainTheme } from '../theme/theme.styles';
-import MatchHighlighter, { escapeRegExp } from '../components/MatchHighlighter';
+import MatchHighlighter, {
+  escapeRegExp,
+} from '../components/atoms/MatchHighlighter';
 import { debounce } from 'lodash-es';
 import { ChangeEvent, useState } from 'react';
 import { getDjangoSearchResults } from '../utils/api/djangoApi';

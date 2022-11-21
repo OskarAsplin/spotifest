@@ -7,7 +7,7 @@ import '../styles/base.scss';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
 import { withFallback } from '../utils/api/api';
-import { CenteredLoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
+import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;

@@ -10,16 +10,19 @@ import {
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import ReactCountryFlag from 'react-country-flag';
-import { FestivalMatch, Artist } from '../../redux/types';
-import { getMaxArtistsInWidth, displayedLocationName } from '../../utils/utils';
-import { StyledAvatarContainerdiv } from '../../components/ArtistBubble/ArtistBubble';
-import HtmlTooltip from '../HtmlTooltip';
+import { FestivalMatch, Artist } from '../../../redux/types';
+import {
+  getMaxArtistsInWidth,
+  displayedLocationName,
+} from '../../../utils/utils';
+import { StyledAvatarContainerdiv } from '../../molecules/ArtistBubble/ArtistBubble';
+import HtmlTooltip from '../../atoms/HtmlTooltip';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import ExpandButton from '../ExpandButton/ExpandButton';
-import { ArtistBox } from '../../layouts/StyledLayoutComponents';
-import MatchingCircle from '../MatchingCircle/MatchingCircle';
-import ArtistBubble from '../ArtistBubble/ArtistBubble';
+import ExpandButton from '../../atoms/ExpandButton/ExpandButton';
+import { ArtistBox } from '../../../layouts/StyledLayoutComponents';
+import MatchingCircle from '../../atoms/MatchingCircle/MatchingCircle';
+import ArtistBubble from '../../molecules/ArtistBubble/ArtistBubble';
 
 export interface FestivalMatchCardProps {
   festival: FestivalMatch;

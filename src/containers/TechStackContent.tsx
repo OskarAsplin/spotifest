@@ -1,22 +1,20 @@
 import { Fragment } from 'react';
-import { Typography, Grid, Box } from '@mui/material';
 import clsx from 'clsx';
+import { Typography, Grid, Box } from '@mui/material';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { useTheme } from '@mui/material/styles';
 import aboutPageStyles from '../pages/AboutPage.module.scss';
 import styles from './TechStackContent.module.scss';
-import StandardLink from '../components/StandardLink';
-import { useTheme } from '@mui/material/styles';
-import HtmlTooltip from '../components/HtmlTooltip';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-
-interface OwnProps {
-  pcScreen: boolean;
-}
-
-type Props = OwnProps;
+import StandardLink from '../components/atoms/StandardLink';
+import HtmlTooltip from '../components/atoms/HtmlTooltip';
 
 interface TechInfoRow {
   text: string;
   icons: { path: string; class: string }[];
+}
+
+interface Props {
+  pcScreen: boolean;
 }
 
 const TechStackContent = (props: Props) => {

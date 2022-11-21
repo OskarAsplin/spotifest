@@ -8,7 +8,7 @@ import {
 import { blueGrey } from '@mui/material/colors';
 import { Shadows } from '@mui/material/styles';
 import MusicNote from '@mui/icons-material/MusicNote';
-import { Artist } from '../../redux/types';
+import { Artist } from '../../../redux/types';
 import { styled } from '@mui/material/styles';
 
 interface ArtistBubbleProps {

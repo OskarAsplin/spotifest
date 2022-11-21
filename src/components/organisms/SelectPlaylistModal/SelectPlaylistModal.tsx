@@ -10,12 +10,12 @@ import {
   Button,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { Playlist, Artist } from '../../redux/types';
-import StandardLink from '../StandardLink';
+import { Playlist, Artist } from '../../../redux/types';
+import StandardLink from '../../atoms/StandardLink';
 import { styled } from '@mui/material/styles';
 import MatchCriteriaSelect, {
   TOP_ARTISTS_CHOICE,
-} from '../MatchCriteriaSelect/MatchCriteriaSelect';
+} from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 
 interface SelectPlaylistModalProps {
   open: boolean;

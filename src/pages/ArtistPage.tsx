@@ -12,7 +12,7 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { MusicNote } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
 import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
-import { StyledAvatarContainerdiv } from '../components/ArtistBubble/ArtistBubble';
+import { StyledAvatarContainerdiv } from '../components/molecules/ArtistBubble/ArtistBubble';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import '../styles/base.scss';
 import { getFestivalPath, getMaxArtistsInWidth } from '../utils/utils';
@@ -28,7 +28,7 @@ import {
   getSpotifyArtistRelatedArtists,
 } from '../utils/api/spotifyApi';
 import { useGet, withFallback } from '../utils/api/api';
-import { CenteredLoadingSpinner } from '../components/LoadingSpinner/LoadingSpinner';
+import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import FallbackPage from './FallbackPage';
 import { useSelector } from 'react-redux';
 import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
