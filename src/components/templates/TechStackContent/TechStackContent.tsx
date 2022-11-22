@@ -3,10 +3,10 @@ import clsx from 'clsx';
 import { Typography, Grid, Box, useMediaQuery } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTheme } from '@mui/material/styles';
-import aboutPageStyles from '../pages/AboutPage.module.scss';
+import aboutPageStyles from '../../../pages/AboutPage.module.scss';
 import styles from './TechStackContent.module.scss';
-import StandardLink from '../components/atoms/StandardLink';
-import HtmlTooltip from '../components/atoms/HtmlTooltip';
+import StandardLink from '../../atoms/StandardLink';
+import HtmlTooltip from '../../atoms/HtmlTooltip';
 
 const PC_SCREEN_MIN_WIDTH = '(min-width:1040px)';
 
