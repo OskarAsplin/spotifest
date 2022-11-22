@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import clsx from 'clsx';
-import { Typography, Grid, Box } from '@mui/material';
+import { Typography, Grid, Box, useMediaQuery } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTheme } from '@mui/material/styles';
 import aboutPageStyles from '../pages/AboutPage.module.scss';
@@ -8,20 +8,13 @@ import styles from './TechStackContent.module.scss';
 import StandardLink from '../components/atoms/StandardLink';
 import HtmlTooltip from '../components/atoms/HtmlTooltip';
 
-interface TechInfoRow {
-  text: string;
-  icons: { path: string; class: string }[];
-}
+const PC_SCREEN_MIN_WIDTH = '(min-width:1040px)';
 
-interface Props {
-  pcScreen: boolean;
-}
-
-const TechStackContent = (props: Props) => {
-  const { pcScreen } = props;
+const TechStackContent = () => {
   const isLightMode = useTheme().palette.mode === 'light';
+  const pcScreen = useMediaQuery(PC_SCREEN_MIN_WIDTH);
 
-  const techInfoRows: TechInfoRow[] = [
+  const techInfoRows: TechInfoRowProps[] = [
     {
       text: 'Frontend written in React with Typescript and Redux store',
       icons: [
@@ -137,34 +130,6 @@ const TechStackContent = (props: Props) => {
     },
   ];
 
-  const insertTechInfoRow = (techInfo: TechInfoRow) => {
-    return (
-      <Fragment key={'techRow:' + techInfo.text}>
-        <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-          <div className={styles.techInfoText}>
-            <Typography variant="body1" className={styles.textAlign}>
-              {techInfo.text}
-            </Typography>
-          </div>
-        </Grid>
-        <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
-          <div className={styles.iconsContainer}>
-            {techInfo.icons.map((icon) => {
-              return (
-                <img
-                  src={process.env.PUBLIC_URL + '/techIcons/' + icon.path}
-                  key={icon.path}
-                  className={icon.class}
-                  alt={icon.path}
-                />
-              );
-            })}
-          </div>
-        </Grid>
-      </Fragment>
-    );
-  };
-
   return (
     <Fragment>
       <div className={aboutPageStyles.expandedDiv}>
@@ -174,7 +139,9 @@ const TechStackContent = (props: Props) => {
           justifyContent="center"
           alignItems="center"
         >
-          {techInfoRows.map((techInfoRow) => insertTechInfoRow(techInfoRow))}
+          {techInfoRows.map((techInfo, i) => (
+            <TechInfoRow key={i} {...techInfo} />
+          ))}
         </Grid>
         <HtmlTooltip
           disableFocusListener
@@ -238,6 +205,40 @@ const TechStackContent = (props: Props) => {
           </Box>
         </HtmlTooltip>
       </div>
+    </Fragment>
+  );
+};
+
+interface TechInfoRowProps {
+  text: string;
+  icons: { path: string; class: string }[];
+}
+
+const TechInfoRow = ({ text, icons }: TechInfoRowProps) => {
+  const pcScreen = useMediaQuery(PC_SCREEN_MIN_WIDTH);
+  return (
+    <Fragment key={'techRow:' + text}>
+      <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
+        <div className={styles.techInfoText}>
+          <Typography variant="body1" className={styles.textAlign}>
+            {text}
+          </Typography>
+        </div>
+      </Grid>
+      <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
+        <div className={styles.iconsContainer}>
+          {icons.map((icon) => {
+            return (
+              <img
+                src={process.env.PUBLIC_URL + '/techIcons/' + icon.path}
+                key={icon.path}
+                className={icon.class}
+                alt={icon.path}
+              />
+            );
+          })}
+        </div>
+      </Grid>
     </Fragment>
   );
 };

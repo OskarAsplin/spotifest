@@ -17,6 +17,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material/styles';
 import { blueGrey } from '@mui/material/colors';
 import { SearchFieldContainerProps } from '../../../containers/SearchFieldContainer';
+import { SHARED_SEARCH_FIELD_WIDTH } from '../../molecules/SearchField/SearchField';
 
 interface AppBarProps {
   SearchFieldComponent: (props: SearchFieldContainerProps) => JSX.Element;
@@ -106,28 +107,22 @@ const AppBar = ({
 };
 
 const StyledSearchFieldSmallScreenPaper = styled(Paper)(
-  ({ theme: { palette, spacing } }) => {
-    return {
-      right: 0,
-      zIndex: 10,
-      position: 'fixed',
-      backgroundColor: palette.mode === 'dark' ? blueGrey[900] : blueGrey[500],
-      marginTop: spacing(6),
-      '@media (min-width: 610px)': { width: '250px' },
-      '@media (max-width: 609px)': {
-        position: 'absolute',
-        minHeight: '40px',
-        width: '200px',
-      },
-      '@media (min-width: 590px)': {
-        '@media (max-width: 609px)': { marginRight: '44px' },
-      },
-      '@media (min-width: 440px)': {
-        '@media (max-width: 589px)': { marginRight: '36px' },
-      },
-      '@media (max-width: 439px)': { marginRight: '28px' },
-    };
-  }
+  ({ theme: { palette, spacing } }) => ({
+    right: 0,
+    zIndex: 10,
+    position: 'fixed',
+    backgroundColor: palette.mode === 'dark' ? blueGrey[900] : blueGrey[500],
+    marginTop: spacing(6),
+    ...SHARED_SEARCH_FIELD_WIDTH,
+    '@media (max-width: 609px)': { position: 'absolute', minHeight: '40px' },
+    '@media (min-width: 590px)': {
+      '@media (max-width: 609px)': { marginRight: '44px' },
+    },
+    '@media (min-width: 440px)': {
+      '@media (max-width: 589px)': { marginRight: '36px' },
+    },
+    '@media (max-width: 439px)': { marginRight: '28px' },
+  })
 );
 
 const StyledToolbar = styled(Toolbar)(({ theme: { spacing } }) => ({

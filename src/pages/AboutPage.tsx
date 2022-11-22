@@ -25,7 +25,6 @@ import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
 const AboutPage = () => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const biggerScreen = useMediaQuery('(min-width:720px)');
-  const pcScreen = useMediaQuery('(min-width:1040px)');
   const bigPcScreen = useMediaQuery('(min-width:1300px)');
 
   const [usageExpanded, setUsageExpanded] = useState(false);
@@ -85,7 +84,7 @@ const AboutPage = () => {
               <ExpandButton expanded={techExpanded} />
             </div>
             <Collapse in={techExpanded} timeout="auto" unmountOnExit>
-              <TechStackContent pcScreen={pcScreen} />
+              <TechStackContent />
             </Collapse>
           </Paper>
         </Box>
