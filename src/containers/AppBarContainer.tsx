@@ -32,7 +32,7 @@ interface Props {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
 }
 
-const AppBarView = ({ setThemeMode }: Props) => {
+const AppBarContainer = ({ setThemeMode }: Props) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
   const dispatch = useDispatch();
@@ -95,11 +95,7 @@ const AppBarView = ({ setThemeMode }: Props) => {
                 </Typography>
               </Button>
               <Box sx={{ flexGrow: 1 }} />
-              {bigScreen && (
-                <SearchField
-                  setShowSearchFieldSmallScreen={setShowSearchFieldSmallScreen}
-                />
-              )}
+              {bigScreen && <SearchField />}
               {!bigScreen && (
                 <IconButton
                   sx={{ p: 1.5 }}
@@ -142,7 +138,9 @@ const AppBarView = ({ setThemeMode }: Props) => {
           {showSearchFieldSmallScreen && (
             <StyledSearchFieldSmallScreenPaper>
               <SearchField
-                setShowSearchFieldSmallScreen={setShowSearchFieldSmallScreen}
+                hideSearchFieldSmallScreen={() =>
+                  setShowSearchFieldSmallScreen(false)
+                }
               />
             </StyledSearchFieldSmallScreenPaper>
           )}
@@ -209,4 +207,4 @@ const StyledToolbar = styled(Toolbar)(({ theme: { spacing } }) => ({
   },
 }));
 
-export default AppBarView;
+export default AppBarContainer;

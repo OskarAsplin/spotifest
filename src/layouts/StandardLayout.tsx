@@ -1,8 +1,8 @@
-import { Outlet } from 'react-router-dom';
-import AppBarView from '../containers/AppBarView';
-import { PaletteMode } from '@mui/material';
-import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import { Suspense } from 'react';
+import { Outlet } from 'react-router-dom';
+import { PaletteMode } from '@mui/material';
+import AppBarContainer from '../containers/AppBarContainer';
+import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 
 interface Props {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
@@ -11,7 +11,7 @@ interface Props {
 export const StandardLayout = ({ setThemeMode }: Props) => {
   return (
     <>
-      <AppBarView setThemeMode={setThemeMode} />
+      <AppBarContainer setThemeMode={setThemeMode} />
       <Suspense fallback={<CenteredLoadingSpinner />}>
         <Outlet />
       </Suspense>

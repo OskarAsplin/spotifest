@@ -10,7 +10,7 @@ const LinkBehavior = forwardRef<any, RouterLinkProps>((props, ref) => (
   <RouterLink ref={ref} {...props} />
 ));
 
-interface StandardLinkProps extends LinkProps {
+export interface StandardLinkProps extends LinkProps {
   to?: To;
 }
 

@@ -11,7 +11,9 @@ import {
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import SearchIcon from '@mui/icons-material/Search';
-import StandardLink from '../components/atoms/StandardLink';
+import StandardLink, {
+  StandardLinkProps,
+} from '../components/atoms/StandardLink';
 import { getArtistPath, getFestivalPath } from '../utils/utils';
 import { createTheme } from '@mui/material/styles';
 import { getMainTheme } from '../theme/theme.styles';
@@ -24,12 +26,12 @@ import { getDjangoSearchResults } from '../utils/api/djangoApi';
 import { useGet } from '../utils/api/api';
 
 interface Props {
-  setShowSearchFieldSmallScreen: React.Dispatch<React.SetStateAction<boolean>>;
+  hideSearchFieldSmallScreen?: () => void;
 }
 
 const DEBOUNCE_WAIT = 500;
 
-const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
+const SearchField = ({ hideSearchFieldSmallScreen }: Props) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const darkTheme = createTheme(getMainTheme('dark'));
   const lightTheme = createTheme(getMainTheme('light'));
@@ -48,19 +50,21 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
     DEBOUNCE_WAIT
   );
 
-  const onResultClick = () => {
+  const resetSearchFieldState = () => {
     setInputText('');
-    setShowSearchFieldSmallScreen(false);
+    hideSearchFieldSmallScreen?.();
+  };
+
+  const standardLinkProps: StandardLinkProps = {
+    color: 'textSecondary',
+    onClick: resetSearchFieldState,
+    sx: { mb: 1 },
+    variant: 'body2',
   };
 
   return (
     <ThemeProvider theme={darkTheme}>
-      <ClickAwayListener
-        onClickAway={() => {
-          setInputText('');
-          setShowSearchFieldSmallScreen(false);
-        }}
-      >
+      <ClickAwayListener onClickAway={resetSearchFieldState}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           {!bigScreen && (
             <Box sx={{ minHeight: ({ spacing }) => spacing(5) }} />
@@ -105,12 +109,9 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                       .slice(0, 5)
                       .map((festival: any) => (
                         <StandardLink
-                          color={'textSecondary'}
                           key={'searchResult festival: ' + festival.name}
                           to={getFestivalPath(festival.name)}
-                          onClick={onResultClick}
-                          sx={{ mb: 1 }}
-                          variant="body2"
+                          {...standardLinkProps}
                         >
                           <MatchHighlighter
                             text={festival.name}
@@ -141,12 +142,9 @@ const SearchField = ({ setShowSearchFieldSmallScreen }: Props) => {
                     )}
                     {searchResults.artists.slice(0, 5).map((artist: any) => (
                       <StandardLink
-                        color={'textSecondary'}
                         key={'searchResult artist: ' + artist.name}
                         to={getArtistPath(artist.name, artist.spotifyId)}
-                        onClick={onResultClick}
-                        sx={{ mb: 1 }}
-                        variant="body2"
+                        {...standardLinkProps}
                       >
                         <MatchHighlighter
                           text={artist.name}
