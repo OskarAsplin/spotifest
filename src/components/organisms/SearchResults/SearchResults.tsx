@@ -1,8 +1,11 @@
 import { Typography, Paper, Box, ThemeProvider } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import StandardLink, { StandardLinkProps } from '../../atoms/StandardLink';
+import StandardLink, {
+  StandardLinkProps,
+} from '../../atoms/StandardLink/StandardLink';
 import { createTheme } from '@mui/material/styles';
-import MatchHighlighter, { escapeRegExp } from '../../atoms/MatchHighlighter';
+import MatchHighlighter from '../../atoms/MatchHighlighter/MatchHighlighter';
+import { escapeRegExp } from 'lodash-es';
 import { SearchResponse } from '../../../redux/types';
 import { getMainTheme } from '../../../theme/theme.styles';
 import { getArtistPath, getFestivalPath } from '../../../utils/utils';

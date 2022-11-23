@@ -8,7 +8,7 @@ import {
   setLoggedIn,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import StandardLink from '../components/atoms/StandardLink';
+import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import LoginButton from '../components/atoms/LoginButton/LoginButton';
 
 const LoginPage = () => {

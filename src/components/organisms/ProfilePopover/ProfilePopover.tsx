@@ -1,5 +1,5 @@
 import { PopoverProps, Typography, Popover } from '@mui/material';
-import StandardLink from '../../atoms/StandardLink';
+import StandardLink from '../../atoms/StandardLink/StandardLink';
 import { styled } from '@mui/material/styles';
 
 interface ProfilePopoverProps extends PopoverProps {

@@ -28,10 +28,6 @@ const MatchHighlighter = ({ text, regex }: MatchHighlighterProps) => {
   );
 };
 
-/** Escapes all special regexp characters with \ in front */
-export const escapeRegExp = (str: string) =>
-  str.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-
 const StyledMark = styled('mark')(({ theme: { palette } }) => ({
   color: palette.primary.main,
   backgroundColor: 'inherit',

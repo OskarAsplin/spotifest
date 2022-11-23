@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { Playlist, Artist } from '../../../redux/types';
-import StandardLink from '../../atoms/StandardLink';
+import StandardLink from '../../atoms/StandardLink/StandardLink';
 import { styled } from '@mui/material/styles';
 import MatchCriteriaSelect, {
   TOP_ARTISTS_CHOICE,

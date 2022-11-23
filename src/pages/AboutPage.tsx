@@ -17,7 +17,7 @@ import clsx from 'clsx';
 import TechStackContent from '../components/templates/TechStackContent/TechStackContent';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
-import StandardLink from '../components/atoms/StandardLink';
+import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import ExpandButton from '../components/atoms/ExpandButton/ExpandButton';
 import { useTheme } from '@mui/material/styles';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';

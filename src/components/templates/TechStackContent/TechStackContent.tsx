@@ -5,7 +5,7 @@ import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import { useTheme } from '@mui/material/styles';
 import aboutPageStyles from '../../../pages/AboutPage.module.scss';
 import styles from './TechStackContent.module.scss';
-import StandardLink from '../../atoms/StandardLink';
+import StandardLink from '../../atoms/StandardLink/StandardLink';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 
 const PC_SCREEN_MIN_WIDTH = '(min-width:1040px)';
