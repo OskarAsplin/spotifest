@@ -1,19 +1,18 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import AppBarProfilePopover from './AppBarProfilePopover';
+import ProfilePopover from './ProfilePopover';
 import { useState } from 'react';
 
-type Meta = ComponentMeta<typeof AppBarProfilePopover>;
-type Story = ComponentStory<typeof AppBarProfilePopover>;
+type Meta = ComponentMeta<typeof ProfilePopover>;
+type Story = ComponentStory<typeof ProfilePopover>;
 
 const meta: Meta = {
-  title: 'Other/AppBarProfilePopover',
-  component: AppBarProfilePopover,
+  title: 'Other/ProfilePopover',
+  component: ProfilePopover,
   parameters: {
     docs: {
       description: {
-        component:
-          'AppBarProfilePopover displays a drawer with a list of items',
+        component: 'ProfilePopover displays a drawer with a list of items',
       },
     },
   },
@@ -42,7 +41,7 @@ const Template: Story = (args) => {
   return (
     <>
       <button onClick={handleClick}>Open Popover</button>
-      <AppBarProfilePopover
+      <ProfilePopover
         {...args}
         id={popoverId}
         anchorEl={anchorEl}
@@ -53,4 +52,4 @@ const Template: Story = (args) => {
   );
 };
 
-export { Template as AppBarProfilePopover };
+export { Template as ProfilePopover };

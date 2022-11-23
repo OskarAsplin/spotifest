@@ -3,7 +3,7 @@ import { Brightness2, Brightness4 } from '@mui/icons-material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '@mui/material/styles';
-import AppBarMenuDrawer from '../components/organisms/AppBarMenuDrawer/AppBarMenuDrawer';
+import CustomDrawer from '../components/organisms/CustomDrawer/CustomDrawer';
 
 interface Props {
   open: boolean;
@@ -30,7 +30,7 @@ const AppBarMenuDrawerContainer = ({ open, onClose, setThemeMode }: Props) => {
     },
   ];
 
-  return <AppBarMenuDrawer open={open} onClose={onClose} items={items} />;
+  return <CustomDrawer open={open} onClose={onClose} items={items} />;
 };
 
 export default AppBarMenuDrawerContainer;

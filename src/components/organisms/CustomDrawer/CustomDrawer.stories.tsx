@@ -1,19 +1,19 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import AppBarMenuDrawer from './AppBarMenuDrawer';
+import CustomDrawer from './CustomDrawer';
 import { Brightness2 } from '@mui/icons-material';
 import InfoIcon from '@mui/icons-material/Info';
 
-type Meta = ComponentMeta<typeof AppBarMenuDrawer>;
-type Story = ComponentStory<typeof AppBarMenuDrawer>;
+type Meta = ComponentMeta<typeof CustomDrawer>;
+type Story = ComponentStory<typeof CustomDrawer>;
 
 const meta: Meta = {
-  title: 'Other/AppBarMenuDrawer',
-  component: AppBarMenuDrawer,
+  title: 'Other/CustomDrawer',
+  component: CustomDrawer,
   parameters: {
     docs: {
       description: {
-        component: 'AppBarMenuDrawer displays a drawer with a list of items',
+        component: 'CustomDrawer displays a drawer with a list of items',
       },
     },
     viewMode: 'canvas',
@@ -39,6 +39,6 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => <AppBarMenuDrawer {...args} />;
+const Template: Story = (args) => <CustomDrawer {...args} />;
 
-export { Template as AppBarMenuDrawer };
+export { Template as CustomDrawer };

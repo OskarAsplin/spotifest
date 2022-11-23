@@ -2,20 +2,20 @@ import { PopoverProps, Typography, Popover } from '@mui/material';
 import StandardLink from '../../atoms/StandardLink';
 import { styled } from '@mui/material/styles';
 
-interface AppBarProfilePopoverProps extends PopoverProps {
+interface ProfilePopoverProps extends PopoverProps {
   userName?: string;
   spotifyUrl?: string;
   onClickLogout: () => void;
 }
 
-const AppBarProfilePopover = ({
+const ProfilePopover = ({
   userName,
   spotifyUrl,
   onClickLogout,
   anchorOrigin = { vertical: 'bottom', horizontal: 'center' },
   transformOrigin = { vertical: 'top', horizontal: 'center' },
   ...restProps
-}: AppBarProfilePopoverProps) => (
+}: ProfilePopoverProps) => (
   <Popover
     {...restProps}
     anchorOrigin={anchorOrigin}
@@ -52,4 +52,4 @@ const StyledPopoverDiv = styled('div')(({ theme: { spacing } }) => ({
   alignItems: 'center',
 }));
 
-export default AppBarProfilePopover;
+export default ProfilePopover;

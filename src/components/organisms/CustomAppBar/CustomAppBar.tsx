@@ -5,7 +5,7 @@ import {
   Paper,
   Typography,
   Toolbar,
-  AppBar as MuiAppBar,
+  AppBar,
   Avatar,
   Button,
   toolbarClasses,
@@ -19,7 +19,7 @@ import { blueGrey } from '@mui/material/colors';
 import { SearchFieldContainerProps } from '../../../containers/SearchFieldContainer';
 import { SHARED_SEARCH_FIELD_WIDTH } from '../../molecules/SearchField/SearchField';
 
-interface AppBarProps {
+interface CustomAppBarProps {
   SearchFieldComponent: (props: SearchFieldContainerProps) => JSX.Element;
   onClickLogo: () => void;
   onClickProfilePicture: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -27,13 +27,13 @@ interface AppBarProps {
   profilePictureUrl?: string;
 }
 
-const AppBar = ({
+const CustomAppBar = ({
   SearchFieldComponent,
   onClickLogo,
   onClickProfilePicture,
   onClickMenu,
   profilePictureUrl,
-}: AppBarProps) => {
+}: CustomAppBarProps) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
   const [showSearchFieldSmallScreen, setShowSearchFieldSmallScreen] =
@@ -46,7 +46,7 @@ const AppBar = ({
 
   return (
     <>
-      <MuiAppBar
+      <AppBar
         id="oskarito-appbar"
         sx={{
           color: '#fff',
@@ -94,7 +94,7 @@ const AppBar = ({
             <MenuIcon />
           </IconButton>
         </StyledToolbar>
-      </MuiAppBar>
+      </AppBar>
       {showSearchFieldSmallScreen && (
         <StyledSearchFieldSmallScreenPaper>
           <SearchFieldComponent
@@ -132,4 +132,4 @@ const StyledToolbar = styled(Toolbar)(({ theme: { spacing } }) => ({
   },
 }));
 
-export default AppBar;
+export default CustomAppBar;

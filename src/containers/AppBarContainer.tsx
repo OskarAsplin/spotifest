@@ -4,19 +4,19 @@ import { useScrollTrigger, PaletteMode } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { isMainPage } from '../utils/utils';
 import SearchFieldContainer from './SearchFieldContainer';
-import AppBarProfilePopover from '../components/organisms/AppBarProfilePopover/AppBarProfilePopover';
+import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import { useGet } from '../utils/api/api';
 import { getSpotifyUserInfo } from '../utils/api/spotifyApi';
 import { useNavigate } from 'react-router-dom';
-import AppBar from '../components/organisms/AppBar/AppBar';
+import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
 
-interface Props {
+interface AppBarContainerProps {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
 }
 
-const AppBarContainer = ({ setThemeMode }: Props) => {
+const AppBarContainer = ({ setThemeMode }: AppBarContainerProps) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -55,7 +55,7 @@ const AppBarContainer = ({ setThemeMode }: Props) => {
     <Box sx={{ pb: 6 }}>
       <Slide appear={false} direction="down" in={!trigger}>
         <div>
-          <AppBar
+          <CustomAppBar
             SearchFieldComponent={SearchFieldContainer}
             onClickLogo={onClickLogo}
             onClickProfilePicture={onClickProfilePicture}
@@ -64,7 +64,7 @@ const AppBarContainer = ({ setThemeMode }: Props) => {
           />
         </div>
       </Slide>
-      <AppBarProfilePopover
+      <ProfilePopover
         id={popoverId}
         anchorEl={anchorEl}
         open={popoverOpen}

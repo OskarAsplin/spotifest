@@ -7,13 +7,13 @@ import {
   ListItemText,
 } from '@mui/material';
 
-interface Props {
+interface CustomDrawerProps {
   open: boolean;
   onClose: (event: React.KeyboardEvent | React.MouseEvent) => void;
   items: { Icon: React.ReactNode; label: string; onClick: () => void }[];
 }
 
-const AppBarMenuDrawer = ({ open, onClose, items }: Props) => (
+const CustomDrawer = ({ open, onClose, items }: CustomDrawerProps) => (
   <Drawer anchor={'right'} open={open} onClose={onClose}>
     <Box
       sx={{ width: 250 }}
@@ -33,4 +33,4 @@ const AppBarMenuDrawer = ({ open, onClose, items }: Props) => (
   </Drawer>
 );
 
-export default AppBarMenuDrawer;
+export default CustomDrawer;
