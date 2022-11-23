@@ -1,7 +1,6 @@
-import { Tooltip } from '@mui/material';
-import { TooltipProps, tooltipClasses } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { forwardRef } from 'react';
+import { Tooltip, TooltipProps, tooltipClasses } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const HtmlTooltip = forwardRef<HTMLDivElement, TooltipProps>(
   ({ children, ...props }, ref) => (

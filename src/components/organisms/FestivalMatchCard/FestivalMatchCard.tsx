@@ -16,7 +16,7 @@ import {
   displayedLocationName,
 } from '../../../utils/utils';
 import { StyledAvatarContainerdiv } from '../../molecules/ArtistBubble/ArtistBubble';
-import HtmlTooltip from '../../atoms/HtmlTooltip';
+import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import { useTheme } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import ExpandButton from '../../atoms/ExpandButton/ExpandButton';

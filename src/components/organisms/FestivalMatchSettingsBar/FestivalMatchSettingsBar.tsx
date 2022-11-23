@@ -12,7 +12,7 @@ import { indigo } from '@mui/material/colors';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import InfoIcon from '@mui/icons-material/Info';
 import { Playlist, Artist, Area, MatchSettings } from '../../../redux/types';
-import HtmlTooltip from '../../atoms/HtmlTooltip';
+import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import SettingsBarDatePicker from '../../molecules/SettingsBarDatePicker';
 import { styled, useTheme } from '@mui/material/styles';
 import MatchCriteriaSelect from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';
