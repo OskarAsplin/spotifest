@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   Box,
   IconButton,
-  Paper,
   Typography,
   Toolbar,
   AppBar,
@@ -15,9 +14,7 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import { styled } from '@mui/material/styles';
-import { blueGrey } from '@mui/material/colors';
 import { SearchFieldContainerProps } from '../../../containers/SearchFieldContainer';
-import { SHARED_SEARCH_FIELD_WIDTH } from '../../molecules/SearchField/SearchField';
 
 interface CustomAppBarProps {
   SearchFieldComponent: (props: SearchFieldContainerProps) => JSX.Element;
@@ -45,79 +42,75 @@ const CustomAppBar = ({
   const hideSearchFieldSmallScreen = () => setShowSearchFieldSmallScreen(false);
 
   return (
-    <>
-      <AppBar
-        id="oskarito-appbar"
-        sx={{
-          color: '#fff',
-          backgroundColor: ({ palette: { mode } }) =>
-            mode === 'dark' ? '#03293c' : '#065980',
-        }}
-      >
-        <StyledToolbar>
-          <Button
-            sx={{ textTransform: 'none' }}
-            color="inherit"
-            onClick={onClickLogo}
-          >
-            <Typography variant="h6">
-              {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
-            </Typography>
-          </Button>
-          <Box sx={{ flexGrow: 1 }} />
-          {bigScreen && <SearchFieldComponent />}
-          {!bigScreen && (
+    <AppBar
+      id="oskarito-appbar"
+      sx={{
+        color: '#fff',
+        backgroundColor: ({ palette: { mode } }) =>
+          mode === 'dark' ? '#03293c' : '#065980',
+      }}
+    >
+      <StyledToolbar>
+        <Button
+          sx={{ textTransform: 'none' }}
+          color="inherit"
+          onClick={onClickLogo}
+        >
+          <Typography variant="h6">
+            {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
+          </Typography>
+        </Button>
+        <Box sx={{ flexGrow: 1 }} />
+        {bigScreen && <SearchFieldComponent />}
+        {!bigScreen && (
+          <>
             <IconButton sx={{ p: 1.5 }} onClick={onClickSearchIcon}>
               <SearchIcon sx={{ color: '#fff' }} />
             </IconButton>
-          )}
-          <IconButton
-            sx={{
-              p: 1.5,
-              '@media (min-width: 610px)': { ml: 2 },
-              padding: profilePictureUrl ? '10px' : undefined,
-            }}
-            color="inherit"
-            onClick={onClickProfilePicture}
-          >
-            {profilePictureUrl ? (
-              <Avatar
-                src={profilePictureUrl}
-                alt=""
-                sx={{ height: 28, width: 28 }}
-              />
-            ) : (
-              <AccountCircleIcon />
+            {showSearchFieldSmallScreen && (
+              <PositionSearchFieldSmallScreen>
+                <SearchFieldComponent
+                  hideSearchFieldSmallScreen={hideSearchFieldSmallScreen}
+                />
+              </PositionSearchFieldSmallScreen>
             )}
-          </IconButton>
-          <IconButton sx={{ p: 1.5 }} color="inherit" onClick={onClickMenu}>
-            <MenuIcon />
-          </IconButton>
-        </StyledToolbar>
-      </AppBar>
-      {showSearchFieldSmallScreen && (
-        <StyledSearchFieldSmallScreenPaper>
-          <SearchFieldComponent
-            hideSearchFieldSmallScreen={hideSearchFieldSmallScreen}
-          />
-        </StyledSearchFieldSmallScreenPaper>
-      )}
-    </>
+          </>
+        )}
+        <IconButton
+          sx={{
+            p: 1.5,
+            '@media (min-width: 610px)': { ml: 2 },
+            padding: profilePictureUrl ? '10px' : undefined,
+          }}
+          color="inherit"
+          onClick={onClickProfilePicture}
+        >
+          {profilePictureUrl ? (
+            <Avatar
+              src={profilePictureUrl}
+              alt=""
+              sx={{ height: 28, width: 28 }}
+            />
+          ) : (
+            <AccountCircleIcon />
+          )}
+        </IconButton>
+        <IconButton sx={{ p: 1.5 }} color="inherit" onClick={onClickMenu}>
+          <MenuIcon />
+        </IconButton>
+      </StyledToolbar>
+    </AppBar>
   );
 };
 
-const StyledSearchFieldSmallScreenPaper = styled(Paper)(
-  ({ theme: { palette, spacing } }) => ({
-    right: 0,
-    zIndex: 10,
+const PositionSearchFieldSmallScreen = styled('div')(
+  ({ theme: { spacing } }) => ({
     position: 'fixed',
-    backgroundColor: palette.mode === 'dark' ? blueGrey[900] : blueGrey[500],
-    marginTop: spacing(6),
-    ...SHARED_SEARCH_FIELD_WIDTH,
-    '@media (max-width: 609px)': { position: 'absolute', minHeight: '40px' },
-    '@media (min-width: 590px)': {
-      '@media (max-width: 609px)': { marginRight: '44px' },
-    },
+    right: 0,
+    top: spacing(6),
+    zIndex: 10,
+    width: '200px',
+    '@media (min-width: 590px)': { marginRight: '44px' },
     '@media (min-width: 440px)': {
       '@media (max-width: 589px)': { marginRight: '36px' },
     },

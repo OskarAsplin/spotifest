@@ -6,7 +6,7 @@ import MatchHighlighter, { escapeRegExp } from '../../atoms/MatchHighlighter';
 import { SearchResponse } from '../../../redux/types';
 import { getMainTheme } from '../../../theme/theme.styles';
 import { getArtistPath, getFestivalPath } from '../../../utils/utils';
-import { SHARED_SEARCH_FIELD_WIDTH } from '../../molecules/SearchField/SearchField';
+import { SHARED_SEARCH_FIELD_WIDTH_BIG_SCREEN } from '../../molecules/SearchField/SearchField';
 
 export interface SearchResultsProps {
   searchResults: SearchResponse;
@@ -102,7 +102,7 @@ const SearchResults = ({
 };
 
 const StyledAbsolutePaper = styled(Paper)(({ theme: { spacing } }) => ({
-  ...SHARED_SEARCH_FIELD_WIDTH,
+  ...SHARED_SEARCH_FIELD_WIDTH_BIG_SCREEN,
   position: 'absolute',
   padding: spacing(1),
 }));

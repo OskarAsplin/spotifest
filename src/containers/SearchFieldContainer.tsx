@@ -1,5 +1,4 @@
 import { Box, ClickAwayListener, ThemeProvider } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { createTheme } from '@mui/material/styles';
 import { getMainTheme } from '../theme/theme.styles';
 import { debounce } from 'lodash-es';
@@ -18,7 +17,6 @@ const DEBOUNCE_WAIT = 500;
 const SearchFieldContainer = ({
   hideSearchFieldSmallScreen,
 }: SearchFieldContainerProps) => {
-  const bigScreen = useMediaQuery('(min-width:610px)');
   const darkTheme = createTheme(getMainTheme('dark'));
 
   const [inputText, setInputText] = useState('');
@@ -44,9 +42,6 @@ const SearchFieldContainer = ({
     <ThemeProvider theme={darkTheme}>
       <ClickAwayListener onClickAway={resetSearchFieldState}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          {!bigScreen && (
-            <Box sx={{ minHeight: ({ spacing }) => spacing(5) }} />
-          )}
           <SearchField onChange={debouncedOnChange} />
           {searchResults && inputText && (
             <SearchResults
