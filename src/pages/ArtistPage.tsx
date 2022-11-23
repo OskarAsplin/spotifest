@@ -18,7 +18,7 @@ import '../styles/base.scss';
 import { getFestivalPath, getMaxArtistsInWidth } from '../utils/utils';
 import { useTheme, styled } from '@mui/material/styles';
 import { ArtistBox, StyledRootDiv } from '../layouts/StyledLayoutComponents';
-import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
+import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import {
   getDjangoArtistByName,
   getDjangoArtistBySpotifyId,
@@ -92,7 +92,7 @@ const ArtistPage = withFallback(
 
   return (
     <>
-      {pcScreen && <BackCircleButtonContainer />}
+      {pcScreen && <TopLeftBackButtonContainer />}
       <VerticalSpaceDiv />
 
       <StyledRootDiv>

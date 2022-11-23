@@ -2,15 +2,19 @@ import { IconButton } from '@mui/material';
 import { ArrowBackOutlined } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 
-interface BackCircleButtonProps {
+interface TopLeftBackButtonProps {
   onClick: () => void;
 }
 
-const BackCircleButton = ({ onClick }: BackCircleButtonProps) => (
+const BackButton = ({ onClick }: TopLeftBackButtonProps) => (
+  <IconButton onClick={onClick}>
+    <ArrowBackOutlined fontSize="large" />
+  </IconButton>
+);
+
+export const TopLeftBackButton = ({ onClick }: TopLeftBackButtonProps) => (
   <StyledTopLeftDiv>
-    <IconButton onClick={onClick}>
-      <ArrowBackOutlined fontSize="large" />
-    </IconButton>
+    <BackButton onClick={onClick} />
   </StyledTopLeftDiv>
 );
 
@@ -20,4 +24,4 @@ const StyledTopLeftDiv = styled('div')(({ theme: { spacing } }) => ({
   left: spacing(2),
 }));
 
-export default BackCircleButton;
+export default BackButton;

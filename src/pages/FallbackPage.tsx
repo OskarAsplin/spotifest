@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
+import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import { styled } from '@mui/material/styles';
 
 interface FallbackPageProps {
@@ -11,7 +11,7 @@ const FallbackPage = ({ fallbackText }: FallbackPageProps) => {
   const pcScreen = useMediaQuery('(min-width:1300px)');
   return (
     <>
-      {pcScreen && <BackCircleButtonContainer />}
+      {pcScreen && <TopLeftBackButtonContainer />}
       <StyledCenteredDiv>
         <VerticalSpaceDiv />
         <VerticalSpaceDiv />

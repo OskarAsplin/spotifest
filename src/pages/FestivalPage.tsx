@@ -24,7 +24,7 @@ import {
 } from '../utils/utils';
 import { styled, useTheme } from '@mui/material/styles';
 import StyledCookieConsent from '../components/molecules/CookieConsent';
-import BackCircleButtonContainer from '../containers/BackCircleButtonContainer';
+import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import TabPanel from '../components/molecules/TabPanel';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
 import CustomSwitch from '../components/atoms/CustomSwitch/CustomSwitch';
@@ -75,7 +75,7 @@ const FestivalPage = withFallback(
 
   return (
     <>
-      {pcScreen && <BackCircleButtonContainer />}
+      {pcScreen && <TopLeftBackButtonContainer />}
       <VerticalSpaceDiv />
       <StyledCenteredColumnDiv>
         <StyledRootDiv>

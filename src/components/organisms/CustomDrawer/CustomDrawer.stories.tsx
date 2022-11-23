@@ -17,11 +17,6 @@ const meta: Meta = {
       },
     },
     viewMode: 'canvas',
-    previewTabs: {
-      'storybook/docs/panel': {
-        hidden: true,
-      },
-    },
   },
   args: {
     open: true,
