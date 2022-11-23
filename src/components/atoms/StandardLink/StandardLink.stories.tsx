@@ -1,6 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 import StandardLink from './StandardLink';
-import { setStoryDescription } from '../../../utils/storyUtils';
 
 type Meta = ComponentMeta<typeof StandardLink>;
 type Story = ComponentStory<typeof StandardLink>;
