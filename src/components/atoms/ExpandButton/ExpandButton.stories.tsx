@@ -6,7 +6,7 @@ type Meta = ComponentMeta<typeof ExpandButton>;
 type Story = ComponentStory<typeof ExpandButton>;
 
 const meta: Meta = {
-  title: 'Buttons/ExpandButton',
+  title: 'Atoms/Buttons/ExpandButton',
   component: ExpandButton,
 };
 

@@ -5,7 +5,7 @@ type Meta = ComponentMeta<typeof MatchingCircle>;
 type Story = ComponentStory<typeof MatchingCircle>;
 
 const meta: Meta = {
-  title: 'Other/MatchingCircle',
+  title: 'Atoms/MatchingCircle',
   component: MatchingCircle,
   parameters: {
     docs: {

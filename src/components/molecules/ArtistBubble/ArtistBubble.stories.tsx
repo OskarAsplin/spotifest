@@ -7,7 +7,7 @@ type Meta = ComponentMeta<typeof ArtistBubble>;
 type Story = ComponentStory<typeof ArtistBubble>;
 
 const meta: Meta = {
-  title: 'Other/ArtistBubble',
+  title: 'Molecules/ArtistBubble',
   component: ArtistBubble,
   parameters: {
     docs: {

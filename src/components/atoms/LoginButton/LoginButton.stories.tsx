@@ -6,7 +6,7 @@ type Meta = ComponentMeta<typeof LoginButton>;
 type Story = ComponentStory<typeof LoginButton>;
 
 const meta: Meta = {
-  title: 'Buttons/LoginButton',
+  title: 'Atoms/Buttons/LoginButton',
   component: LoginButton,
   parameters: {
     docs: {

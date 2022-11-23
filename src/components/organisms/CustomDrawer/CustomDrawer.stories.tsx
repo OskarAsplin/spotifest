@@ -8,7 +8,7 @@ type Meta = ComponentMeta<typeof CustomDrawer>;
 type Story = ComponentStory<typeof CustomDrawer>;
 
 const meta: Meta = {
-  title: 'Other/CustomDrawer',
+  title: 'Organisms/CustomDrawer',
   component: CustomDrawer,
   parameters: {
     docs: {

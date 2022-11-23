@@ -9,7 +9,7 @@ type Meta = ComponentMeta<typeof FestivalMatchCard>;
 type Story = ComponentStory<typeof FestivalMatchCard>;
 
 const meta: Meta = {
-  title: 'Other/FestivalMatchCard',
+  title: 'Organisms/FestivalMatchCard',
   component: FestivalMatchCard,
   parameters: {
     docs: {

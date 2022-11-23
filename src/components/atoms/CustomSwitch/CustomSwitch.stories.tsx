@@ -6,7 +6,7 @@ type Meta = ComponentMeta<typeof CustomSwitch>;
 type Story = ComponentStory<typeof CustomSwitch>;
 
 const meta: Meta = {
-  title: 'Other/CustomSwitch',
+  title: 'Atoms/CustomSwitch',
   component: CustomSwitch,
   args: {
     leftOptionText: 'Popularity',

@@ -5,7 +5,7 @@ type Meta = ComponentMeta<typeof LoadingSpinner>;
 type Story = ComponentStory<typeof LoadingSpinner>;
 
 const meta: Meta = {
-  title: 'Other/LoadingSpinner',
+  title: 'Atoms/LoadingSpinner',
   component: LoadingSpinner,
   parameters: {
     docs: {

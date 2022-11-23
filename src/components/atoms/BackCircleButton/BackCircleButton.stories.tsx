@@ -6,7 +6,7 @@ type Meta = ComponentMeta<typeof BackCircleButton>;
 type Story = ComponentStory<typeof BackCircleButton>;
 
 const meta: Meta = {
-  title: 'Buttons/BackCircleButton',
+  title: 'Atoms/Buttons/BackCircleButton',
   component: BackCircleButton,
   parameters: {
     docs: {

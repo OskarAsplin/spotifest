@@ -7,7 +7,7 @@ type Meta = ComponentMeta<typeof ProfilePopover>;
 type Story = ComponentStory<typeof ProfilePopover>;
 
 const meta: Meta = {
-  title: 'Other/ProfilePopover',
+  title: 'Organisms/ProfilePopover',
   component: ProfilePopover,
   parameters: {
     docs: {
