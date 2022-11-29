@@ -7,7 +7,7 @@ import {
   Stack,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import { styled } from '@mui/material/styles';
 import { useGet, withFallback } from '../utils/api/api';
@@ -39,7 +39,6 @@ const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const FestivalMatchesContainer = withFallback(SuspenseFallback)(() => {
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
-  const dispatch = useDispatch();
 
   const [page, setPage] = useState(1);
   const matchBasis = useSelector(selectMatchBasis);
@@ -119,7 +118,7 @@ const FestivalMatchesContainer = withFallback(SuspenseFallback)(() => {
     isBottomPagination: boolean
   ) => {
     if (page !== value) {
-      dispatch(setPage(value));
+      setPage(value);
       if (isBottomPagination) {
         setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
       }
