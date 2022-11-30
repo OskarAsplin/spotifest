@@ -57,22 +57,7 @@ $bigMarginsWidth: 500px;
   }
 }
 
-.reactIconSize {
-  height: 54px;
-  margin: -7px -15px;
-}
-
-.djangoIconSize {
-  height: 50px;
-  margin: {
-    top: -5px;
-    bottom: -5px;
-    right: -8px;
-  }
-}
-
-.pythonRemoveRightSpace {
-  margin-right: -18px; // -10 for python and -8 for Django
+.pythonAdjustDown {
   margin-bottom: -4px;
 }
 

@@ -16,15 +16,19 @@ const TechStackContent = () => {
 
   const techInfoRows: TechInfoRowProps[] = [
     {
-      text: 'Frontend written in React with Typescript and Redux store',
+      text: 'Frontend made with React, Typescript, Redux and React Query',
       icons: [
-        { path: 'React.svg', class: styles.reactIconSize },
+        { path: 'React.svg', class: styles.iconDefaultHeight },
         {
           path: 'Typescript.svg',
           class: clsx(styles.iconDefaultHeight, styles.iconMarginLeft),
         },
         {
           path: 'Redux.svg',
+          class: clsx(styles.iconDefaultHeight, styles.iconMarginLeft),
+        },
+        {
+          path: 'ReactQuery.svg',
           class: clsx(styles.iconDefaultHeight, styles.iconMarginLeft),
         },
       ],
@@ -47,11 +51,11 @@ const TechStackContent = () => {
       icons: [
         {
           path: isLightMode ? 'Python.svg' : 'Python-white.svg',
-          class: clsx(styles.iconDefaultHeight, styles.pythonRemoveRightSpace),
+          class: clsx(styles.iconDefaultHeight, styles.pythonAdjustDown),
         },
         {
           path: 'Django.svg',
-          class: clsx(styles.djangoIconSize, styles.iconMarginLeft),
+          class: clsx(styles.iconDefaultHeight, styles.iconMarginLeft),
         },
         {
           path: isLightMode ? 'SQLite.svg' : 'SQLite-white.png',
@@ -227,16 +231,14 @@ const TechInfoRow = ({ text, icons }: TechInfoRowProps) => {
       </Grid>
       <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
         <div className={styles.iconsContainer}>
-          {icons.map((icon) => {
-            return (
-              <img
-                src={process.env.PUBLIC_URL + '/techIcons/' + icon.path}
-                key={icon.path}
-                className={icon.class}
-                alt={icon.path}
-              />
-            );
-          })}
+          {icons.map((icon) => (
+            <img
+              src={process.env.PUBLIC_URL + '/techIcons/' + icon.path}
+              key={icon.path}
+              className={icon.class}
+              alt={icon.path}
+            />
+          ))}
         </div>
       </Grid>
     </Fragment>
