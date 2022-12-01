@@ -54,11 +54,11 @@ const FestivalMatchSettingsContainer = () => {
 
   if (!matchArea) return <div />;
 
-  const onPlaylistChange = async (event: SelectChangeEvent) => {
+  const onMatchBasisChange = async (event: SelectChangeEvent) => {
     if (!event.target.value) return;
-    const playlistName = event.target.value;
-    if (playlistName === matchBasis) return;
-    dispatch(setMatchBasis(playlistName));
+    const matchBasisId = event.target.value;
+    if (matchBasisId === matchBasis) return;
+    dispatch(setMatchBasis(matchBasisId));
   };
 
   const onAreaChange = async (event: SelectChangeEvent) => {
@@ -110,7 +110,7 @@ const FestivalMatchSettingsContainer = () => {
         continents={continents}
         matchSettings={matchSettings}
         onChangeHandlers={{
-          onPlaylistChange,
+          onMatchBasisChange,
           onAreaChange,
           onFromDateChange,
           onToDateChange,
@@ -118,7 +118,7 @@ const FestivalMatchSettingsContainer = () => {
       />
       <SelectPlaylistModal
         open={!matchBasis}
-        onPlaylistChange={onPlaylistChange}
+        onMatchBasisChange={onMatchBasisChange}
         onClickGoButton={onClickModalGoButton}
         playlists={playlists}
         topArtists={topArtists}

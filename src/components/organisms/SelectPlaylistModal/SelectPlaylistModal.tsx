@@ -19,7 +19,7 @@ import MatchCriteriaSelect, {
 
 interface SelectPlaylistModalProps {
   open: boolean;
-  onPlaylistChange: (event: SelectChangeEvent) => Promise<void>;
+  onMatchBasisChange: (event: SelectChangeEvent) => Promise<void>;
   onClickGoButton: () => void;
   playlists: Playlist[];
   topArtists: Artist[];
@@ -28,7 +28,7 @@ interface SelectPlaylistModalProps {
 
 const SelectPlaylistModal = ({
   open,
-  onPlaylistChange,
+  onMatchBasisChange,
   onClickGoButton,
   playlists,
   topArtists,
@@ -86,7 +86,7 @@ const SelectPlaylistModal = ({
               <MatchCriteriaSelect
                 value={topArtists.length !== 0 ? TOP_ARTISTS_CHOICE : ''}
                 label={topArtists.length === 0 ? 'Playlist' : undefined}
-                onChange={onPlaylistChange}
+                onChange={onMatchBasisChange}
                 topArtists={topArtists}
                 playlists={playlists}
               />

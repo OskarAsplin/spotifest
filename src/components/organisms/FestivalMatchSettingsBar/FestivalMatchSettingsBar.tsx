@@ -25,7 +25,7 @@ interface FestivalMatchSettingsBarProps {
   continents: Area[];
   matchSettings: MatchSettings;
   onChangeHandlers: {
-    onPlaylistChange: (event: SelectChangeEvent) => Promise<void>;
+    onMatchBasisChange: (event: SelectChangeEvent) => Promise<void>;
     onAreaChange: (event: SelectChangeEvent) => Promise<void>;
     onFromDateChange: (date: Date | null) => void;
     onToDateChange: (date: Date | null) => void;
@@ -39,7 +39,7 @@ const FestivalMatchSettingsBar = ({
   continents,
   matchSettings,
   onChangeHandlers: {
-    onPlaylistChange,
+    onMatchBasisChange,
     onAreaChange,
     onFromDateChange,
     onToDateChange,
@@ -80,7 +80,7 @@ const FestivalMatchSettingsBar = ({
           <InputLabel id="choose-playlist-label">Match with</InputLabel>
           <MatchCriteriaSelect
             value={matchSettings.matchBasis}
-            onChange={onPlaylistChange}
+            onChange={onMatchBasisChange}
             label="Match with"
             topArtists={topArtists}
             playlists={playlists}

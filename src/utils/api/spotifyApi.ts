@@ -138,15 +138,16 @@ async function getAllArtists({
 }
 
 async function getAllArtistIdsFromPlaylist({
-  playlist,
+  ownerId,
+  id,
   offset = 0,
   allArtistIds = [],
 }: {
-  playlist: Playlist;
+  ownerId: string;
+  id: string;
   offset?: number;
   allArtistIds?: string[];
 }): Promise<string[]> {
-  const { id, ownerId, numTracks } = playlist;
   const tracks = await spotifyApi.getPlaylistTracks(ownerId, id, { offset });
   const newArtistIds: string[] = tracks.items.flatMap((trackItem) =>
     trackItem.track.artists.map((trackArtist) => trackArtist.id)
@@ -154,9 +155,10 @@ async function getAllArtistIdsFromPlaylist({
 
   const updatedAllArtistIds = allArtistIds.concat(newArtistIds);
 
-  if (offset + 100 < numTracks) {
+  if (offset + 100 < tracks.total) {
     return getAllArtistIdsFromPlaylist({
-      playlist,
+      ownerId,
+      id,
       offset: offset + 100,
       allArtistIds: updatedAllArtistIds,
     });
@@ -164,15 +166,17 @@ async function getAllArtistIdsFromPlaylist({
 }
 
 export async function getAllPlaylistArtists({
-  playlist,
+  ownerId,
+  id,
 }: {
-  playlist?: Playlist;
+  ownerId?: string;
+  id?: string;
 }): Promise<{
   playlistArtists: Artist[];
   numTracks: number;
 }> {
-  if (!playlist) return { playlistArtists: [], numTracks: 0 };
-  const allArtistIdsRaw = await getAllArtistIdsFromPlaylist({ playlist });
+  if (!id || !ownerId) return { playlistArtists: [], numTracks: 0 };
+  const allArtistIdsRaw = await getAllArtistIdsFromPlaylist({ ownerId, id });
 
   const count: { [id: string]: number } = {};
   allArtistIdsRaw.forEach(

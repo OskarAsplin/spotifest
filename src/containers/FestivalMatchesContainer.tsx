@@ -7,7 +7,7 @@ import {
   Stack,
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import { styled } from '@mui/material/styles';
 import { useGet, withFallback } from '../utils/api/api';
@@ -21,17 +21,20 @@ import {
   selectMatchArea,
   selectMatchBasis,
   selectToDate,
+  setMatchBasis,
 } from '../redux/reducers/matchingSlice';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
 import {
   getAllPlaylistArtists,
-  getAllPlaylists,
   getAllTopArtistsWithPopularity,
-  getSpotifyUserInfo,
 } from '../utils/api/spotifyApi';
 import { getAreaFilters } from '../utils/utils';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
+import {
+  PLAYLIST_ID_SEPARATOR,
+  getIdsFromMatchBasis,
+} from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 
 const ITEMS_PER_PAGE = 15;
 
@@ -46,23 +49,30 @@ const FestivalMatchesContainer = withFallback(SuspenseFallback)(() => {
   const fromDate = useSelector(selectFromDate);
   const toDate = useSelector(selectToDate);
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Temporary matchBasis migration. Set Top artists as matchBasis if user has old matchBasis on page refresh
+    if (
+      matchBasis &&
+      matchBasis !== TOP_ARTISTS_CHOICE &&
+      matchBasis.indexOf(PLAYLIST_ID_SEPARATOR) === -1
+    ) {
+      dispatch(setMatchBasis(TOP_ARTISTS_CHOICE));
+    }
+  }, []);
+
   const { data: continents } = useGet(getDjangoAvailableContinents);
 
   const { data: allTopArtistsData } = useGet(getAllTopArtistsWithPopularity);
   const topArtists = allTopArtistsData?.topArtists ?? [];
   const topArtistsCount = allTopArtistsData?.countTopArtists ?? 0;
 
-  const { data: userInfo } = useGet(getSpotifyUserInfo);
-  const { data: playlists } = useGet(getAllPlaylists, {
-    query: { userId: userInfo?.id ?? '' },
-    enabled: !!userInfo?.id,
-  });
-
-  const playlist = playlists?.find(({ name }) => name === matchBasis);
+  const { ownerId, playlistId } = getIdsFromMatchBasis(matchBasis);
 
   const { data: playlistArtistsData } = useGet(getAllPlaylistArtists, {
-    query: { playlist },
-    enabled: !!playlist,
+    query: { ownerId, id: playlistId },
+    enabled: !!ownerId && !!playlistId,
   });
 
   const playlistArtists = playlistArtistsData?.playlistArtists ?? [];
@@ -140,6 +150,9 @@ const FestivalMatchesContainer = withFallback(SuspenseFallback)(() => {
       onPageChange(event, value, true),
   };
 
+  const matchBasisArtists =
+    matchBasis === TOP_ARTISTS_CHOICE ? topArtists : playlistArtists;
+
   return (
     <StyledRootBox>
       {showMatches.length > 0 && (
@@ -166,26 +179,13 @@ const FestivalMatchesContainer = withFallback(SuspenseFallback)(() => {
             festival.lineup_id in popularArtistsDict
               ? popularArtistsDict[festival.lineup_id]
               : [];
-          const matchingArtists =
-            matchBasis === TOP_ARTISTS_CHOICE
-              ? topArtists
-                  .filter(
-                    (artist) =>
-                      artist.spotifyId &&
-                      festival.matching_artists.includes(artist.spotifyId)
-                  )
-                  .sort((a, b) =>
-                    a.userPopularity! < b.userPopularity! ? 1 : -1
-                  )
-              : playlistArtists
-                  .filter(
-                    (artist) =>
-                      artist.spotifyId &&
-                      festival.matching_artists.includes(artist.spotifyId)
-                  )
-                  .sort((a, b) =>
-                    a.userPopularity! < b.userPopularity! ? 1 : -1
-                  );
+          const matchingArtists = matchBasisArtists
+            .filter(
+              (artist) =>
+                artist.spotifyId &&
+                festival.matching_artists.includes(artist.spotifyId)
+            )
+            .sort((a, b) => (a.userPopularity! < b.userPopularity! ? 1 : -1));
           return (
             <FestivalMatchCardContainer
               festival={festival}

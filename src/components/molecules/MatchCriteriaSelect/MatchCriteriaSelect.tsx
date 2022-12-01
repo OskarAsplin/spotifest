@@ -1,5 +1,6 @@
 import { MenuItem, Select, ListSubheader, SelectProps } from '@mui/material';
 import { Artist, Playlist } from '../../../redux/types';
+import { getPlaylistKey } from './MatchCriteriaSelect.utils';
 
 export const TOP_ARTISTS_CHOICE = '__your__top__artists__';
 
@@ -28,8 +29,8 @@ const MatchCriteriaSelect = ({
       )}
       {playlists.map((playlist) => (
         <MenuItem
-          key={playlist.name}
-          value={playlist.name}
+          key={getPlaylistKey(playlist)}
+          value={getPlaylistKey(playlist)}
           style={{ minWidth: 200, maxWidth: 400 }}
         >
           {playlist.name}
