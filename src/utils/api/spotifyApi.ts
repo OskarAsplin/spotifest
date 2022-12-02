@@ -86,7 +86,8 @@ export async function getAllPlaylists({
       offset: offset + 50,
       allPlaylists: updatedAllPlaylists,
     });
-  } else return updatedAllPlaylists;
+  } else
+    return updatedAllPlaylists.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 async function getTopArtistsWithPopularity({
