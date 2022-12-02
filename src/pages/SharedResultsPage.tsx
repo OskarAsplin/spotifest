@@ -34,10 +34,12 @@ const SharedResultsPage = withFallback(
   SuspenseFallback,
   ErrorFallback
 )(() => {
-  const { matchBasis } = useParams();
+  const { matchBasis: matchBasisFromParams } = useParams();
   const dispatch = useDispatch();
   const loggedIn = useSelector(selectLoggedIn);
   const navigate = useNavigate();
+
+  const matchBasis = matchBasisFromParams ?? getSharedMatchBasis() ?? undefined;
 
   const { ownerId, playlistId } = getIdsFromMatchBasis(matchBasis);
   const { data: sharedPlaylist } = useGet(getPlaylist, {
@@ -62,11 +64,11 @@ const SharedResultsPage = withFallback(
       dispatch(setLoggedIn());
       setSharedMatchBasis(matchBasis);
       window.open(getAuthorizeHref('/share'), '_self');
-    } else if (!matchBasis && getSharedMatchBasis()) {
+    } else if (!matchBasisFromParams && getSharedMatchBasis()) {
       // This happens on return from the Spotify login in the if statement above.
       navigate(`/share/${getSharedMatchBasis()}`);
     }
-  }, [loggedIn]);
+  }, []);
 
   if (!loggedIn || !matchBasis) return null;
 
