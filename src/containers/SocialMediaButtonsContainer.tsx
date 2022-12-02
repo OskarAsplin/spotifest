@@ -26,15 +26,12 @@ const SocialMediaButtonsContainer = () => {
   const { playlistId } = getIdsFromMatchBasis(matchBasis);
   const playlist = playlists.find((p) => p.id === playlistId);
 
-  const isPublicPlaylist = !!playlist?.isPublic;
   const isOwnPlaylist = !!(playlist?.ownerId === userInfo?.id);
-
-  const isDisabled =
-    !matchBasis || matchBasis === TOP_ARTISTS_CHOICE || !isPublicPlaylist;
+  const isDisabled = !matchBasis || matchBasis === TOP_ARTISTS_CHOICE;
 
   const shareMessage = getShareMessage(isOwnPlaylist, playlist?.name);
   const shareUrl = getShareUrl(matchBasis);
-  const tooltipText = getTooltipText(isPublicPlaylist, matchBasis);
+  const tooltipText = getTooltipText(matchBasis);
 
   return (
     <SocialMediaButtons

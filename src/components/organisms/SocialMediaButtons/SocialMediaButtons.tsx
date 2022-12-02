@@ -1,31 +1,18 @@
 import {
-  // EmailShareButton,
+  TelegramIcon,
+  TelegramShareButton,
   TwitterShareButton,
   TwitterIcon,
-  // HatenaShareButton,
-  // InstapaperShareButton,
-  // LineShareButton,
-  // LinkedinShareButton,
-  // LivejournalShareButton,
-  // MailruShareButton,
-  // OKShareButton,
-  // PinterestShareButton,
-  // PocketShareButton,
-  // RedditShareButton,
-  // TelegramShareButton,
-  // TumblrShareButton,
-  // TwitterShareButton,
-  // ViberShareButton,
-  // VKShareButton,
   WhatsappShareButton,
   WhatsappIcon,
-  // WorkplaceShareButton
 } from 'react-share';
 import copy from 'copy-to-clipboard';
 import { Box, IconButton } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import { Fragment } from 'react';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
+
+const BUTTON_SIZE = 32;
 
 interface SocialMediaButtonsProps {
   message: string;
@@ -45,23 +32,32 @@ const SocialMediaButtons = ({
       <ButtonWrapper tooltipText={tooltipText}>
         <TwitterShareButton
           url={shareUrl}
-          disabled={isDisabled}
           title={message}
           hashtags={['spotifest']}
+          disabled={isDisabled}
         >
-          <TwitterIcon size={32} round />
+          <TwitterIcon size={BUTTON_SIZE} round />
         </TwitterShareButton>
+      </ButtonWrapper>
+      <ButtonWrapper tooltipText={tooltipText}>
+        <TelegramShareButton
+          url={shareUrl}
+          title={message}
+          disabled={isDisabled}
+        >
+          <TelegramIcon size={BUTTON_SIZE} round />
+        </TelegramShareButton>
       </ButtonWrapper>
       <ButtonWrapper tooltipText={tooltipText}>
         <WhatsappShareButton
           url={shareUrl}
-          disabled={isDisabled}
           title={message}
+          disabled={isDisabled}
         >
-          <WhatsappIcon size={32} round />
+          <WhatsappIcon size={BUTTON_SIZE} round />
         </WhatsappShareButton>
       </ButtonWrapper>
-      <ButtonWrapper tooltipText="Copy share link to clipboard">
+      <ButtonWrapper tooltipText={isDisabled ? tooltipText : 'Copy share link'}>
         <IconButton
           onClick={() => copy(shareUrl)}
           sx={{ p: 0 }}
@@ -97,6 +93,7 @@ const ButtonWrapper = ({ tooltipText, children }: ButtonWrapperProps) => (
   <HtmlTooltip
     disableFocusListener
     enterTouchDelay={0}
+    leaveTouchDelay={3000}
     title={<Fragment>{tooltipText}</Fragment>}
   >
     <Box sx={{ mr: 2 }}>{children}</Box>
