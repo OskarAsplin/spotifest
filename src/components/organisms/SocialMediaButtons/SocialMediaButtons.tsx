@@ -21,7 +21,9 @@ import {
   WhatsappIcon,
   // WorkplaceShareButton
 } from 'react-share';
-import { Box } from '@mui/material';
+import copy from 'copy-to-clipboard';
+import { Box, IconButton } from '@mui/material';
+import LinkIcon from '@mui/icons-material/Link';
 import { Fragment } from 'react';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 
@@ -58,6 +60,29 @@ const SocialMediaButtons = ({
         >
           <WhatsappIcon size={32} round />
         </WhatsappShareButton>
+      </ButtonWrapper>
+      <ButtonWrapper tooltipText="Copy share link to clipboard">
+        <IconButton
+          onClick={() => copy(shareUrl)}
+          sx={{ p: 0 }}
+          disabled={isDisabled}
+        >
+          <Box
+            sx={{
+              backgroundColor: `rgba(255, 255, 255, ${
+                isDisabled ? '0.3' : '0.5'
+              })`,
+              borderRadius: '50%',
+              width: ({ spacing }) => spacing(4),
+              height: ({ spacing }) => spacing(4),
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <LinkIcon />
+          </Box>
+        </IconButton>
       </ButtonWrapper>
     </Box>
   );
