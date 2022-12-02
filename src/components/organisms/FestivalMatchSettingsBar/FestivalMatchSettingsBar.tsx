@@ -30,6 +30,7 @@ interface FestivalMatchSettingsBarProps {
     onFromDateChange: (date: Date | null) => void;
     onToDateChange: (date: Date | null) => void;
   };
+  isMatchBasisFieldDisabled?: boolean;
 }
 
 const FestivalMatchSettingsBar = ({
@@ -44,6 +45,7 @@ const FestivalMatchSettingsBar = ({
     onFromDateChange,
     onToDateChange,
   },
+  isMatchBasisFieldDisabled,
 }: FestivalMatchSettingsBarProps) => {
   const themeMode = useTheme().palette.mode;
   const pcScreen = useMediaQuery('(min-width:1200px)');
@@ -84,6 +86,7 @@ const FestivalMatchSettingsBar = ({
             label="Match with"
             topArtists={topArtists}
             playlists={playlists}
+            disabled={isMatchBasisFieldDisabled}
           />
         </FormControl>
       </StyledBox>

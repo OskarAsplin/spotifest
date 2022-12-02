@@ -1,10 +1,17 @@
 import SpotifyWebApi from 'spotify-web-api-js';
-import { Artist, ArtistInfo, Playlist, UserInfo } from '../../redux/types';
+import {
+  Artist,
+  ArtistInfo,
+  MinimalUserInfo,
+  Playlist,
+  UserInfo,
+} from '../../redux/types';
 import {
   mapSpotifyArtistToArtist,
   mapSpotifyArtistToArtistInfo,
   mapSpotifyPlaylistToPlaylist,
   mapToArtistWithPopularity,
+  mapToMinimalUserInfo,
   mapToUserInfo,
 } from './mappers';
 
@@ -13,8 +20,16 @@ const spotifyApi = new SpotifyWebApi();
 export const setSpotifyToken = (token: string) =>
   spotifyApi.setAccessToken(token);
 
-export async function getSpotifyUserInfo(): Promise<UserInfo> {
+export async function getSpotifyLoggedInUserInfo(): Promise<UserInfo> {
   return mapToUserInfo(await spotifyApi.getMe());
+}
+
+export async function getSpotifyUserInfo({
+  userId,
+}: {
+  userId: string;
+}): Promise<MinimalUserInfo> {
+  return mapToMinimalUserInfo(await spotifyApi.getUser(userId));
 }
 
 export async function getSpotifyArtistInfo({
@@ -33,6 +48,18 @@ export async function getSpotifyArtistRelatedArtists({
   return (await spotifyApi.getArtistRelatedArtists(spotifyId)).artists.map(
     mapSpotifyArtistToArtist
   );
+}
+
+export async function getPlaylist({
+  ownerId,
+  id,
+}: {
+  ownerId?: string;
+  id?: string;
+}): Promise<Playlist | undefined> {
+  if (!id || !ownerId) return undefined;
+  const playlist = await spotifyApi.getPlaylist(ownerId, id);
+  return mapSpotifyPlaylistToPlaylist(playlist);
 }
 
 export async function getAllPlaylists({

@@ -9,6 +9,7 @@ import ArtistPage from './pages/ArtistPage';
 import FestivalPage from './pages/FestivalPage';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
+import SharedResultsPage from './pages/SharedResultsPage';
 import PageNotFound from './pages/PageNotFound';
 import { StandardLayout } from './layouts/StandardLayout';
 import {
@@ -38,6 +39,11 @@ const App = () => {
                   <Route element={<WithSpotifyTokenRoute />}>
                     <Route element={<StandardLayout setThemeMode={setMode} />}>
                       <Route path="/" element={<MainPage />} />
+                      <Route
+                        path="/share/:matchBasis"
+                        element={<SharedResultsPage />}
+                      />
+                      <Route path="/share" element={<SharedResultsPage />} />
                       <Route
                         path="/artist/:artistId"
                         element={<ArtistPage />}

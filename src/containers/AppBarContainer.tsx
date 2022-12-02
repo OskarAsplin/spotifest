@@ -8,7 +8,7 @@ import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopove
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import { useGet } from '../utils/api/api';
-import { getSpotifyUserInfo } from '../utils/api/spotifyApi';
+import { getSpotifyLoggedInUserInfo } from '../utils/api/spotifyApi';
 import { useNavigate } from 'react-router-dom';
 import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
 
@@ -22,7 +22,7 @@ const AppBarContainer = ({ setThemeMode }: AppBarContainerProps) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
 
-  const { data: userInfo } = useGet(getSpotifyUserInfo);
+  const { data: userInfo } = useGet(getSpotifyLoggedInUserInfo);
 
   const trigger = useScrollTrigger({ threshold: 30 });
 

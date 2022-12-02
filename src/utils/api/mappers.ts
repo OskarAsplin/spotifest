@@ -1,5 +1,11 @@
 import { getBigPicture, getIconPicture } from '../utils';
-import { Artist, ArtistInfo, Playlist, UserInfo } from '../../redux/types';
+import {
+  Artist,
+  ArtistInfo,
+  MinimalUserInfo,
+  Playlist,
+  UserInfo,
+} from '../../redux/types';
 
 export const mapSpotifyArtistToArtistInfo = (
   response: SpotifyApi.SingleArtistResponse | SpotifyApi.ArtistObjectFull
@@ -41,18 +47,32 @@ export const mapSpotifyPlaylistToPlaylist = (
   images: playlist.images.map((image) => image.url),
   ownerId: playlist.owner.id,
   numTracks: playlist.tracks.total,
+  spotifyUrl: playlist.external_urls.spotify,
 });
 
 export const mapToUserInfo = (
-  getMe: SpotifyApi.CurrentUsersProfileResponse
+  user: SpotifyApi.CurrentUsersProfileResponse
 ): UserInfo => ({
-  country: getMe.country,
-  displayName: getMe.display_name,
-  profilePictureUrl: getMe.images
-    ? getMe.images[0]
-      ? getMe.images[0].url
+  country: user.country,
+  displayName: user.display_name,
+  profilePictureUrl: user.images
+    ? user.images[0]
+      ? user.images[0].url
       : undefined
     : undefined,
-  spotifyUrl: getMe.external_urls.spotify,
-  id: getMe.id,
+  spotifyUrl: user.external_urls.spotify,
+  id: user.id,
+});
+
+export const mapToMinimalUserInfo = (
+  user: SpotifyApi.UserProfileResponse
+): MinimalUserInfo => ({
+  displayName: user.display_name,
+  profilePictureUrl: user.images
+    ? user.images[0]
+      ? user.images[0].url
+      : undefined
+    : undefined,
+  spotifyUrl: user.external_urls.spotify,
+  id: user.id,
 });

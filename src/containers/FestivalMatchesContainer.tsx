@@ -40,11 +40,17 @@ const ITEMS_PER_PAGE = 15;
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
-const FestivalMatchesContainer = withFallback(SuspenseFallback)(() => {
+interface FestivalMatchesContainerProps {
+  sharedMatchBasis?: string;
+}
+
+const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
+  SuspenseFallback
+)(({ sharedMatchBasis }) => {
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
 
   const [page, setPage] = useState(1);
-  const matchBasis = useSelector(selectMatchBasis);
+  const matchBasis = sharedMatchBasis ?? useSelector(selectMatchBasis);
   const matchArea = useSelector(selectMatchArea);
   const fromDate = useSelector(selectFromDate);
   const toDate = useSelector(selectToDate);
@@ -64,7 +70,9 @@ const FestivalMatchesContainer = withFallback(SuspenseFallback)(() => {
 
   const { data: continents } = useGet(getDjangoAvailableContinents);
 
-  const { data: allTopArtistsData } = useGet(getAllTopArtistsWithPopularity);
+  const { data: allTopArtistsData } = useGet(getAllTopArtistsWithPopularity, {
+    enabled: !sharedMatchBasis,
+  });
   const topArtists = allTopArtistsData?.topArtists ?? [];
   const topArtistsCount = allTopArtistsData?.countTopArtists ?? 0;
 

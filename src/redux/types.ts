@@ -1,9 +1,12 @@
-export interface UserInfo {
-  country: string;
+export interface MinimalUserInfo {
   displayName?: string;
   profilePictureUrl?: string;
   spotifyUrl: string;
   id: string;
+}
+
+export interface UserInfo extends MinimalUserInfo {
+  country: string;
 }
 
 export interface Playlist {
@@ -12,6 +15,7 @@ export interface Playlist {
   images: string[];
   ownerId: string;
   numTracks: number;
+  spotifyUrl?: string;
 }
 
 export interface Artist {
