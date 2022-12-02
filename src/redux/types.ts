@@ -74,8 +74,6 @@ export interface FestivalMatch {
   matching_percent_genres: number;
   matching_percent_combined: number;
   top_genres: string[];
-  lineupImg: string;
-  festivalImg: string;
 }
 
 interface Lineup {
@@ -94,7 +92,6 @@ export interface FestivalInfo {
   locationText: string;
   country: string;
   genres: string[];
-  festivalImg: string;
   webpage: string;
   ticketWebpage: string;
   crawledWebpage: string;

@@ -59,7 +59,7 @@ const SocialMediaButtons = ({
       </ButtonWrapper>
       <ButtonWrapper tooltipText={isDisabled ? tooltipText : 'Copy share link'}>
         <IconButton
-          onClick={() => copy(shareUrl)}
+          onClick={() => copy(`${message} ${shareUrl}`)}
           sx={{ p: 0 }}
           disabled={isDisabled}
         >

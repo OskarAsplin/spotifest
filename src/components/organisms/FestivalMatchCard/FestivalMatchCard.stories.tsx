@@ -34,8 +34,6 @@ const meta: Meta = {
       matching_percent_genres: 80,
       matching_percent_combined: 90,
       top_genres: ['Funky fever', 'Groovy hipbangers', 'Swifty footsies'],
-      lineupImg: '',
-      festivalImg: '',
     },
     popularArtists: Array(14).fill(artistMock),
     matchingArtists: Array(2).fill(artistMock),
