@@ -15,7 +15,8 @@ export interface Playlist {
   images: string[];
   ownerId: string;
   numTracks: number;
-  spotifyUrl?: string;
+  spotifyUrl: string;
+  isPublic: boolean;
 }
 
 export interface Artist {

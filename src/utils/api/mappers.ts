@@ -48,6 +48,7 @@ export const mapSpotifyPlaylistToPlaylist = (
   ownerId: playlist.owner.id,
   numTracks: playlist.tracks.total,
   spotifyUrl: playlist.external_urls.spotify,
+  isPublic: playlist.public,
 });
 
 export const mapToUserInfo = (

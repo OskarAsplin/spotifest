@@ -9,7 +9,7 @@ import FallbackPage from './FallbackPage';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   getIdsFromMatchBasis,
-  isValidMatchBasis,
+  isValidPlaylistMatchBasis,
 } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,7 +52,7 @@ const SharedResultsPage = withFallback(
     query: { userId: ownerId ?? '' },
   });
 
-  if (!getSharedMatchBasis() && !isValidMatchBasis(matchBasis))
+  if (!getSharedMatchBasis() && !isValidPlaylistMatchBasis(matchBasis))
     throw 'Invalid match basis';
 
   useEffect(() => {
