@@ -9,6 +9,7 @@ import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsC
 import { withFallback } from '../utils/api/api';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import FallbackPage from './FallbackPage';
+import SocialMediaButtons from '../components/organisms/SocialMediaButtons/SocialMediaButtons';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const ErrorFallback = () => (
@@ -33,6 +34,7 @@ const MainPage = withFallback(
         }}
       />
       <FestivalMatchSettingsContainer />
+      <SocialMediaButtons />
       <FestivalMatchesContainer />
     </StyledRootDiv>
   );
