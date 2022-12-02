@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { Box, Slide } from '@mui/material';
 import { useScrollTrigger, PaletteMode } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { isMainPage } from '../utils/utils';
 import SearchFieldContainer from './SearchFieldContainer';
 import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
-import { setLoggedOff } from '../redux/reducers/authorizationSlice';
+import {
+  selectLoggedIn,
+  setLoggedOff,
+} from '../redux/reducers/authorizationSlice';
 import { useGet } from '../utils/api/api';
 import { getSpotifyLoggedInUserInfo } from '../utils/api/spotifyApi';
 import { useNavigate } from 'react-router-dom';
@@ -21,8 +24,11 @@ const AppBarContainer = ({ setThemeMode }: AppBarContainerProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
+  const loggedIn = useSelector(selectLoggedIn);
 
-  const { data: userInfo } = useGet(getSpotifyLoggedInUserInfo);
+  const { data: userInfo } = useGet(getSpotifyLoggedInUserInfo, {
+    enabled: loggedIn,
+  });
 
   const trigger = useScrollTrigger({ threshold: 30 });
 

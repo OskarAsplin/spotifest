@@ -41,12 +41,12 @@ const SharedResultsPage = withFallback(
 
   const { ownerId, playlistId } = getIdsFromMatchBasis(matchBasis);
   const { data: sharedPlaylist } = useGet(getPlaylist, {
-    enabled: !!matchBasis,
+    enabled: !!matchBasis && loggedIn,
     query: { ownerId, id: playlistId },
   });
 
   const { data: user } = useGet(getSpotifyUserInfo, {
-    enabled: !!ownerId,
+    enabled: !!ownerId && loggedIn,
     query: { userId: ownerId ?? '' },
   });
 
@@ -67,6 +67,8 @@ const SharedResultsPage = withFallback(
       navigate(`/share/${getSharedMatchBasis()}`);
     }
   }, [loggedIn]);
+
+  if (!loggedIn || !matchBasis) return null;
 
   return (
     <StyledRootDiv>
