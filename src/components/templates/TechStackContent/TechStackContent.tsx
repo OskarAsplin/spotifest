@@ -34,6 +34,17 @@ const TechStackContent = () => {
       ],
     },
     {
+      text: (
+        <Typography>
+          {'Components developed and documented with '}
+          <StandardLink href="https://638b82b31acca1e593c75c8d-swogowicas.chromatic.com/">
+            Storybook
+          </StandardLink>
+        </Typography>
+      ),
+      icons: [{ path: 'Storybook.png', class: styles.iconDefaultHeight }],
+    },
+    {
       text: 'UI based on Material-UI',
       icons: [{ path: 'MUI.svg', class: styles.iconDefaultHeight }],
     },
@@ -115,7 +126,14 @@ const TechStackContent = () => {
       ],
     },
     {
-      text: 'Code version control on GitHub',
+      text: (
+        <Typography>
+          {'Code version control on '}
+          <StandardLink href="https://github.com/OskarAsplin/spotifest">
+            GitHub
+          </StandardLink>
+        </Typography>
+      ),
       icons: [
         {
           path: isLightMode ? 'GitHub.png' : 'GitHub-white.png',
@@ -214,7 +232,7 @@ const TechStackContent = () => {
 };
 
 interface TechInfoRowProps {
-  text: string;
+  text: string | React.ReactNode;
   icons: { path: string; class: string }[];
 }
 

@@ -20,7 +20,7 @@ const StandardLink = ({ to, ...restProps }: StandardLinkProps) =>
   ) : (
     <Link
       {...restProps}
-      target={'_blank'}
+      target="_blank"
       rel="noopener noreferrer"
       underline="hover"
     />

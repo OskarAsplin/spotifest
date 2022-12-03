@@ -14,7 +14,7 @@ interface CustomDrawerProps {
 }
 
 const CustomDrawer = ({ open, onClose, items }: CustomDrawerProps) => (
-  <Drawer anchor={'right'} open={open} onClose={onClose}>
+  <Drawer anchor="right" open={open} onClose={onClose}>
     <Box
       sx={{ width: 250 }}
       role="presentation"

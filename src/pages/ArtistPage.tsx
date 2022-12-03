@@ -142,7 +142,7 @@ const ArtistPage = withFallback(
                   '@media (max-width: 689px)': { fontSize: '80px' },
                 }}
               >
-                <MusicNote fontSize={'inherit'} />
+                <MusicNote fontSize="inherit" />
               </Box>
             )}
           </Box>

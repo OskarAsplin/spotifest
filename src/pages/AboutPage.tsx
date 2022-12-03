@@ -56,11 +56,23 @@ const AboutPage = () => {
               'Festival matching with more than 1000 festivals worldwide',
               'Festival pages with current and previous lineups',
               'Artist pages to see which festivals each artist is attending',
+              <Typography key="features: GitHub">
+                {'Open source frontend code on '}
+                <StandardLink href="https://github.com/OskarAsplin/spotifest">
+                  GitHub
+                </StandardLink>
+              </Typography>,
+              <Typography key="features: Storybook">
+                {'Documentation of React components on '}
+                <StandardLink href="https://638b82b31acca1e593c75c8d-swogowicas.chromatic.com/">
+                  Storybook
+                </StandardLink>
+              </Typography>,
             ].map((text, i) => {
               return (
                 <ListItem key={'feature:' + i}>
                   <ListItemIcon>
-                    <MusicNote fontSize={'large'} />
+                    <MusicNote fontSize="large" />
                   </ListItemIcon>
                   <ListItemText primary={text} />
                 </ListItem>
@@ -139,7 +151,7 @@ const AboutPage = () => {
                     return (
                       <ListItem key={'supportListItem: ' + idx}>
                         <ListItemIcon>
-                          <MusicNote fontSize={'large'} />
+                          <MusicNote fontSize="large" />
                         </ListItemIcon>
                         {listItemText}
                       </ListItem>

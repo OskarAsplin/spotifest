@@ -30,7 +30,7 @@ const ArtistBubble = ({ artist, onClick }: ArtistBubbleProps) => (
         />
       ) : (
         <StyledAvatarDiv isClickable={!!artist.spotifyId}>
-          <MusicNote fontSize={'large'} />
+          <MusicNote fontSize="large" />
         </StyledAvatarDiv>
       )}
     </StyledIconButton>
