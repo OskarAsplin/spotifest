@@ -7,9 +7,9 @@ import {
   UserInfo,
 } from '../redux/types';
 import {
-  mapSpotifyArtistToArtist,
-  mapSpotifyArtistToArtistInfo,
-  mapSpotifyPlaylistToPlaylist,
+  mapToArtist,
+  mapToArtistInfo,
+  mapToPlaylist,
   mapToArtistWithPopularity,
   mapToMinimalUserInfo,
   mapToUserInfo,
@@ -20,11 +20,11 @@ const spotifyApi = new SpotifyWebApi();
 export const setSpotifyToken = (token: string) =>
   spotifyApi.setAccessToken(token);
 
-export async function getSpotifyLoggedInUserInfo(): Promise<UserInfo> {
+export async function getLoggedInUserInfo(): Promise<UserInfo> {
   return mapToUserInfo(await spotifyApi.getMe());
 }
 
-export async function getSpotifyUserInfo({
+export async function getUserInfo({
   userId,
 }: {
   userId: string;
@@ -32,21 +32,21 @@ export async function getSpotifyUserInfo({
   return mapToMinimalUserInfo(await spotifyApi.getUser(userId));
 }
 
-export async function getSpotifyArtistInfo({
+export async function getArtistInfo({
   spotifyId,
 }: {
   spotifyId: string;
 }): Promise<ArtistInfo> {
-  return mapSpotifyArtistToArtistInfo(await spotifyApi.getArtist(spotifyId));
+  return mapToArtistInfo(await spotifyApi.getArtist(spotifyId));
 }
 
-export async function getSpotifyArtistRelatedArtists({
+export async function getArtistRelatedArtists({
   spotifyId,
 }: {
   spotifyId: string;
 }): Promise<Artist[]> {
   return (await spotifyApi.getArtistRelatedArtists(spotifyId)).artists.map(
-    mapSpotifyArtistToArtist
+    mapToArtist
   );
 }
 
@@ -59,7 +59,7 @@ export async function getPlaylist({
 }): Promise<Playlist | undefined> {
   if (!id || !ownerId) return undefined;
   const playlist = await spotifyApi.getPlaylist(ownerId, id);
-  return mapSpotifyPlaylistToPlaylist(playlist);
+  return mapToPlaylist(playlist);
 }
 
 export async function getAllPlaylists({
@@ -77,7 +77,7 @@ export async function getAllPlaylists({
   });
   const playlistsWithTracks: Playlist[] = userPlaylists.items
     .filter((playlist) => playlist.tracks.total > 0)
-    .map(mapSpotifyPlaylistToPlaylist);
+    .map(mapToPlaylist);
 
   const updatedAllPlaylists = allPlaylists.concat(playlistsWithTracks);
   if (userPlaylists.total > offset + 50) {

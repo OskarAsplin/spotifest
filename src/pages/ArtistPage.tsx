@@ -23,10 +23,7 @@ import {
   getDjangoArtistByName,
   getDjangoArtistBySpotifyId,
 } from '../api/djangoApi';
-import {
-  getSpotifyArtistInfo,
-  getSpotifyArtistRelatedArtists,
-} from '../api/spotifyApi';
+import { getArtistInfo, getArtistRelatedArtists } from '../api/spotifyApi';
 import { useGet, withFallback } from '../api/api';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import FallbackPage from './FallbackPage';
@@ -64,14 +61,14 @@ const ArtistPage = withFallback(
     enabled: !hasSpotifyId && !!artistId,
   });
 
-  const { data: spotifyArtist } = useGet(getSpotifyArtistInfo, {
+  const { data: spotifyArtist } = useGet(getArtistInfo, {
     query: { spotifyId: spotifyId || '' },
     enabled: loggedIn && !!isArtistBySpotifyIdError,
   });
 
   const spotifyIdFromDjango = artistByName?.artist.spotifyId;
 
-  const { data: relatedArtists = [] } = useGet(getSpotifyArtistRelatedArtists, {
+  const { data: relatedArtists = [] } = useGet(getArtistRelatedArtists, {
     query: { spotifyId: spotifyId || spotifyIdFromDjango || '' },
     enabled: loggedIn && (hasSpotifyId || !!spotifyIdFromDjango),
   });

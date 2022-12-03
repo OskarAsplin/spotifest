@@ -8,15 +8,15 @@ import {
   UserInfo,
 } from '../redux/types';
 
-export const mapSpotifyArtistToArtistInfo = (
+export const mapToArtistInfo = (
   response: SpotifyApi.SingleArtistResponse | SpotifyApi.ArtistObjectFull
 ): ArtistInfo => ({
-  artist: mapSpotifyArtistToArtist(response),
+  artist: mapToArtist(response),
   festivalsFuture: [],
   festivalsPast: [],
 });
 
-export const mapSpotifyArtistToArtist = (
+export const mapToArtist = (
   response: SpotifyApi.SingleArtistResponse | SpotifyApi.ArtistObjectFull
 ): Artist => ({
   name: response.name,
@@ -45,7 +45,7 @@ export const mapToArtistMinimal = (artist: Artist): ArtistMinimal => ({
   userPopularity: artist.userPopularity,
 });
 
-export const mapSpotifyPlaylistToPlaylist = (
+export const mapToPlaylist = (
   playlist: SpotifyApi.PlaylistObjectSimplified
 ): Playlist => ({
   name: playlist.name,

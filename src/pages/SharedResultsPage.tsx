@@ -22,7 +22,7 @@ import {
   getSharedMatchBasis,
   setSharedMatchBasis,
 } from '../utils/localStorageUtils';
-import { getPlaylist, getSpotifyUserInfo } from '../api/spotifyApi';
+import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { StandardLink } from '../components/atoms/StandardLink/StandardLink.stories';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
@@ -47,7 +47,7 @@ const SharedResultsPage = withFallback(
     query: { ownerId, id: playlistId },
   });
 
-  const { data: user } = useGet(getSpotifyUserInfo, {
+  const { data: user } = useGet(getUserInfo, {
     enabled: !!ownerId && loggedIn,
     query: { userId: ownerId ?? '' },
   });

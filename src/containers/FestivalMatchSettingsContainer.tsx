@@ -6,7 +6,7 @@ import {
   getAllPlaylists,
   getAllTopArtistsWithPopularity,
   getPlaylist,
-  getSpotifyLoggedInUserInfo,
+  getLoggedInUserInfo,
 } from '../api/spotifyApi';
 import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
 import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
@@ -56,7 +56,7 @@ const FestivalMatchSettingsContainer = ({
   });
 
   // Not shared results - get all playlists and top artists
-  const { data: userInfo } = useGet(getSpotifyLoggedInUserInfo, {
+  const { data: userInfo } = useGet(getLoggedInUserInfo, {
     enabled: !isSharedResults,
   });
   const { data: playlists = [] } = useGet(getAllPlaylists, {

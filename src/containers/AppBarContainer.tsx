@@ -11,7 +11,7 @@ import {
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
 import { useGet } from '../api/api';
-import { getSpotifyLoggedInUserInfo } from '../api/spotifyApi';
+import { getLoggedInUserInfo } from '../api/spotifyApi';
 import { useNavigate } from 'react-router-dom';
 import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
 
@@ -26,7 +26,7 @@ const AppBarContainer = ({ setThemeMode }: AppBarContainerProps) => {
   const navigate = useNavigate();
   const loggedIn = useSelector(selectLoggedIn);
 
-  const { data: userInfo } = useGet(getSpotifyLoggedInUserInfo, {
+  const { data: userInfo } = useGet(getLoggedInUserInfo, {
     enabled: loggedIn,
   });
 
