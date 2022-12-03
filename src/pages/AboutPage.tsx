@@ -1,5 +1,11 @@
-import { MusicNote } from '@mui/icons-material';
-import StarIcon from '@mui/icons-material/Star';
+import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
+import CampaignTwoToneIcon from '@mui/icons-material/CampaignTwoTone';
+import CodeIcon from '@mui/icons-material/Code';
+import EngineeringTwoToneIcon from '@mui/icons-material/EngineeringTwoTone';
+import FestivalTwoToneIcon from '@mui/icons-material/FestivalTwoTone';
+import Groups2TwoToneIcon from '@mui/icons-material/Groups2TwoTone';
+import LibraryMusicTwoToneIcon from '@mui/icons-material/LibraryMusicTwoTone';
+import StarRateTwoToneIcon from '@mui/icons-material/StarRateTwoTone';
 import {
   Box,
   Collapse,
@@ -52,32 +58,40 @@ const AboutPage = () => {
           </Typography>
           <div className={styles.verticalSpace} />
           <List className={styles.noPadding}>
-            {[
-              'Festival matching with more than 1000 festivals worldwide',
-              'Festival pages with current and previous lineups',
-              'Artist pages to see which festivals each artist is attending',
-              <Typography key="features: GitHub">
-                {'Open source frontend code on '}
-                <StandardLink href="https://github.com/OskarAsplin/spotifest">
-                  GitHub
-                </StandardLink>
-              </Typography>,
-              <Typography key="features: Storybook">
-                {'Documentation of React components on '}
-                <StandardLink href="https://638b82b31acca1e593c75c8d-swogowicas.chromatic.com/">
-                  Storybook
-                </StandardLink>
-              </Typography>,
-            ].map((text, i) => {
-              return (
-                <ListItem key={'feature:' + i}>
-                  <ListItemIcon>
-                    <MusicNote fontSize="large" />
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItem>
-              );
-            })}
+            <CustomListItem
+              text="Festival matching with more than 2000 festivals worldwide"
+              Icon={<LibraryMusicTwoToneIcon fontSize="large" color="info" />}
+            />
+            <CustomListItem
+              text="Festival pages with current and previous lineups"
+              Icon={<FestivalTwoToneIcon fontSize="large" color="error" />}
+            />
+            <CustomListItem
+              text="Artist pages to see which festivals each artist is attending"
+              Icon={<Groups2TwoToneIcon fontSize="large" color="secondary" />}
+            />
+            <CustomListItem
+              text={
+                <Typography>
+                  {'Open source frontend code on '}
+                  <StandardLink href="https://github.com/OskarAsplin/spotifest">
+                    GitHub
+                  </StandardLink>
+                </Typography>
+              }
+              Icon={<CodeIcon fontSize="large" color="success" />}
+            />
+            <CustomListItem
+              text={
+                <Typography>
+                  {'Documentation of React components on '}
+                  <StandardLink href="https://638b82b31acca1e593c75c8d-swogowicas.chromatic.com/">
+                    Storybook
+                  </StandardLink>
+                </Typography>
+              }
+              Icon={<EngineeringTwoToneIcon fontSize="large" color="warning" />}
+            />
           </List>
         </Box>
         <Box className={styles.techBox}>
@@ -124,39 +138,43 @@ const AboutPage = () => {
             <Collapse in={supportExpanded} timeout="auto" unmountOnExit>
               <div className={styles.expandedDiv}>
                 <List className={styles.noPadding}>
-                  {[
-                    <ListItemText
-                      key="spread"
-                      primary="Spread the word! Tell everyone about Oskarito SpotiFest"
-                    />,
-                    <ListItemText
-                      key="tickets"
-                      primary="Buy your festival tickets through the ticket links on the site"
-                    />,
-                    <ListItemText
-                      key="github"
-                      disableTypography
-                      className={styles.adjustTextForStar}
-                    >
-                      <Typography variant="body1">Give the code a </Typography>
-                      <StarIcon className={styles.starIcon} />
-                      <Typography variant="body1">
-                        {' on '}
-                        <StandardLink href="https://github.com/OskarAsplin/spotifest">
-                          GitHub
-                        </StandardLink>
-                      </Typography>
-                    </ListItemText>,
-                  ].map((listItemText, idx) => {
-                    return (
-                      <ListItem key={'supportListItem: ' + idx}>
-                        <ListItemIcon>
-                          <MusicNote fontSize="large" />
-                        </ListItemIcon>
-                        {listItemText}
-                      </ListItem>
-                    );
-                  })}
+                  <CustomListItem
+                    text={
+                      <ListItemText primary="Spread the word! Tell everyone about Oskarito SpotiFest" />
+                    }
+                    Icon={
+                      <CampaignTwoToneIcon fontSize="large" color="primary" />
+                    }
+                  />
+                  <CustomListItem
+                    text={
+                      <ListItemText primary="Buy your festival tickets through the ticket links on the site" />
+                    }
+                    Icon={
+                      <CurrencyBitcoinIcon fontSize="large" color="warning" />
+                    }
+                  />
+                  <CustomListItem
+                    text={
+                      <ListItemText
+                        key="github"
+                        disableTypography
+                        className={styles.adjustTextForStar}
+                      >
+                        <Typography variant="body1">
+                          Give the code a{' '}
+                        </Typography>
+                        <StarRateTwoToneIcon className={styles.starIcon} />
+                        <Typography variant="body1">
+                          {' on '}
+                          <StandardLink href="https://github.com/OskarAsplin/spotifest">
+                            GitHub
+                          </StandardLink>
+                        </Typography>
+                      </ListItemText>
+                    }
+                    Icon={<StarRateTwoToneIcon fontSize="large" />}
+                  />
                 </List>
               </div>
             </Collapse>
@@ -326,5 +344,17 @@ const AboutPage = () => {
     </>
   );
 };
+
+interface CustomListItemProps {
+  text: string | React.ReactNode;
+  Icon: JSX.Element;
+}
+
+const CustomListItem = ({ text, Icon }: CustomListItemProps) => (
+  <ListItem>
+    <ListItemIcon>{Icon}</ListItemIcon>
+    <ListItemText primary={text} />
+  </ListItem>
+);
 
 export default AboutPage;
