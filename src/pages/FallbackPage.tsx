@@ -15,7 +15,9 @@ const FallbackPage = ({ fallbackText }: FallbackPageProps) => {
       <StyledCenteredDiv>
         <VerticalSpaceDiv />
         <VerticalSpaceDiv />
-        <Typography variant="subtitle1">{fallbackText}</Typography>
+        <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
+          {fallbackText}
+        </Typography>
       </StyledCenteredDiv>
     </>
   );
