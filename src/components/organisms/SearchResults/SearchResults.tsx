@@ -8,7 +8,7 @@ import MatchHighlighter from '../../atoms/MatchHighlighter/MatchHighlighter';
 import { escapeRegExp } from 'lodash-es';
 import { SearchResponse } from '../../../redux/types';
 import { getMainTheme } from '../../../theme/theme.styles';
-import { getArtistPath, getFestivalPath } from '../../../utils/utils';
+import { getArtistPath, getFestivalPath } from '../../../utils/routeUtils';
 import { SHARED_SEARCH_FIELD_WIDTH_BIG_SCREEN } from '../../molecules/SearchField/SearchField';
 
 export interface SearchResultsProps {

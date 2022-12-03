@@ -14,7 +14,7 @@ import { FestivalMatch, Artist } from '../../../redux/types';
 import {
   getMaxArtistsInWidth,
   displayedLocationName,
-} from '../../../utils/utils';
+} from '../../../utils/displayUtils';
 import { StyledAvatarContainerdiv } from '../../molecules/ArtistBubble/ArtistBubble';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import { useTheme } from '@mui/material/styles';

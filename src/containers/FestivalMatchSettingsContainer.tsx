@@ -16,7 +16,7 @@ import {
   getDjangoAvailableContinents,
   getDjangoAvailableCountries,
 } from '../api/djangoApi';
-import { getInitialContinent } from '../utils/utils';
+import { getInitialContinent } from '../utils/areaUtils';
 import {
   selectFromDate,
   selectMatchArea,

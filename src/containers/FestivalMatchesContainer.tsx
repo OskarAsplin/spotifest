@@ -29,7 +29,7 @@ import {
   getAllPlaylistArtists,
   getAllTopArtistsWithPopularity,
 } from '../api/spotifyApi';
-import { getAreaFilters } from '../utils/utils';
+import { getAreaFilters } from '../utils/areaUtils';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import {
   PLAYLIST_ID_SEPARATOR,

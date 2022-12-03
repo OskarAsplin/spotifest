@@ -21,7 +21,7 @@ import '../styles/base.scss';
 import {
   getMaxArtistsInFullLineupWidth,
   displayedLocationName,
-} from '../utils/utils';
+} from '../utils/displayUtils';
 import { styled, useTheme } from '@mui/material/styles';
 import StyledCookieConsent from '../components/molecules/CookieConsent';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';

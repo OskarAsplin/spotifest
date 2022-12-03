@@ -1,4 +1,4 @@
-import { getBigPicture, getIconPicture } from '../utils/utils';
+import { getBigPicture, getIconPicture } from './mappers.utils';
 import {
   Artist,
   ArtistInfo,

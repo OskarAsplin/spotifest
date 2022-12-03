@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Box, Slide } from '@mui/material';
 import { useScrollTrigger, PaletteMode } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { isMainPage } from '../utils/utils';
+import { isMainPage } from '../utils/routeUtils';
 import SearchFieldContainer from './SearchFieldContainer';
 import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
