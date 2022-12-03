@@ -58,6 +58,8 @@ const Template: Story = (args) => (
 export { Template as FestivalMatchCard };
 export const FestivalMatchCardMatching = Template.bind({});
 export const FestivalMatchCardNoMatching = Template.bind({});
+export const FestivalMatchCardNoArtists = Template.bind({});
+export const FestivalMatchCardNoMatchingArtists = Template.bind({});
 
 FestivalMatchCardMatching.args = { showMatching: true };
 setStoryDescription(
@@ -69,4 +71,13 @@ FestivalMatchCardNoMatching.args = { showMatching: false };
 setStoryDescription(
   FestivalMatchCardNoMatching,
   'Without matching. `showMatching: false`'
+);
+
+FestivalMatchCardNoArtists.args = { popularArtists: [] };
+setStoryDescription(FestivalMatchCardNoArtists, 'Without popular artists');
+
+FestivalMatchCardNoMatchingArtists.args = { matchingArtists: [] };
+setStoryDescription(
+  FestivalMatchCardNoMatchingArtists,
+  'Without matching artists'
 );

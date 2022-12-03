@@ -197,7 +197,7 @@ const FestivalMatchCard = ({
           <Typography
             variant="body1"
             color={({ palette }) => palette.text.disabled}
-            sx={{ my: 2, fontWeight: 700 }}
+            sx={{ py: 2, fontWeight: 700 }}
           >
             No lineup registered yet
           </Typography>
