@@ -26,3 +26,4 @@ yarn-error.log*
 /src/*.json
 .env
 *sublime*
+build-storybook.log

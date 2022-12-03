@@ -104,6 +104,7 @@
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
     "babel-plugin-named-exports-order": "^0.0.2",
+    "chromatic": "^6.11.4",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.3.0",
