@@ -10,7 +10,7 @@ const HtmlTooltip = forwardRef<HTMLDivElement, TooltipProps>(
   )
 );
 
-const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
+export const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(({ theme: { typography } }) => ({
   [`& .${tooltipClasses.tooltip}`]: {

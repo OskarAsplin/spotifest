@@ -6,11 +6,11 @@ import {
   WhatsappShareButton,
   WhatsappIcon,
 } from 'react-share';
-import copy from 'copy-to-clipboard';
 import { Box, IconButton } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import { Fragment } from 'react';
-import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
+import { StyledTooltip } from '../../atoms/HtmlTooltip/HtmlTooltip';
+import CopyToClipboard from '../../atoms/CopyToClipboard/CopyToClipboard';
 
 const BUTTON_SIZE = 32;
 
@@ -57,28 +57,34 @@ const SocialMediaButtons = ({
           <WhatsappIcon size={BUTTON_SIZE} round />
         </WhatsappShareButton>
       </ButtonWrapper>
-      <ButtonWrapper tooltipText={isDisabled ? tooltipText : 'Copy share link'}>
-        <IconButton
-          onClick={() => copy(`${message} ${shareUrl}`)}
-          sx={{ p: 0 }}
-          disabled={isDisabled}
-        >
-          <Box
-            sx={{
-              backgroundColor: `rgba(255, 255, 255, ${
-                isDisabled ? '0.3' : '0.5'
-              })`,
-              borderRadius: '50%',
-              width: ({ spacing }) => spacing(4),
-              height: ({ spacing }) => spacing(4),
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <LinkIcon />
-          </Box>
-        </IconButton>
+      <ButtonWrapper
+        tooltipText={isDisabled ? tooltipText : 'Copy link and message'}
+      >
+        <CopyToClipboard>
+          {({ copy }) => (
+            <IconButton
+              onClick={() => copy(`${message} ${shareUrl}`)}
+              sx={{ p: 0 }}
+              disabled={isDisabled}
+            >
+              <Box
+                sx={{
+                  backgroundColor: `rgba(255, 255, 255, ${
+                    isDisabled ? '0.3' : '0.5'
+                  })`,
+                  borderRadius: '50%',
+                  width: ({ spacing }) => spacing(4),
+                  height: ({ spacing }) => spacing(4),
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <LinkIcon />
+              </Box>
+            </IconButton>
+          )}
+        </CopyToClipboard>
       </ButtonWrapper>
     </Box>
   );
@@ -90,14 +96,14 @@ interface ButtonWrapperProps
 }
 
 const ButtonWrapper = ({ tooltipText, children }: ButtonWrapperProps) => (
-  <HtmlTooltip
+  <StyledTooltip
     disableFocusListener
     enterTouchDelay={0}
     leaveTouchDelay={3000}
     title={<Fragment>{tooltipText}</Fragment>}
   >
     <Box sx={{ mr: 2 }}>{children}</Box>
-  </HtmlTooltip>
+  </StyledTooltip>
 );
 
 export default SocialMediaButtons;
