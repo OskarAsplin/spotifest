@@ -1,6 +1,6 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import MatchHighlighter from './MatchHighlighter';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { escapeRegExp } from 'lodash-es';
+import MatchHighlighter from './MatchHighlighter';
 
 type Meta = ComponentMeta<typeof MatchHighlighter>;
 type Story = ComponentStory<typeof MatchHighlighter>;

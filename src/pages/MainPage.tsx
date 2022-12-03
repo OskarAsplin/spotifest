@@ -1,15 +1,15 @@
 import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
-import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
-import '../styles/base.scss';
-import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
-import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
 import { withFallback } from '../api/api';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import FallbackPage from './FallbackPage';
+import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
+import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
 import SocialMediaButtonsContainer from '../containers/SocialMediaButtonsContainer';
+import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
+import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
+import '../styles/base.scss';
+import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const ErrorFallback = () => (

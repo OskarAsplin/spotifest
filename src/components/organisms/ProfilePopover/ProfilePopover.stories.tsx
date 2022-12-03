@@ -1,7 +1,7 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
-import ProfilePopover from './ProfilePopover';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useState } from 'react';
+import ProfilePopover from './ProfilePopover';
 
 type Meta = ComponentMeta<typeof ProfilePopover>;
 type Story = ComponentStory<typeof ProfilePopover>;

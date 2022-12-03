@@ -1,26 +1,26 @@
+import { CssBaseline, PaletteMode } from '@mui/material';
+import {
+  createTheme,
+  StyledEngineProvider,
+  ThemeProvider,
+} from '@mui/material/styles';
 import { useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
+import ApiProvider from './api/ApiProvider';
 import './App.scss';
-import { store, persistor } from './redux/store';
+import { StandardLayout } from './layouts/StandardLayout';
+import WithSpotifyTokenRoute from './layouts/WithSpotifyTokenRoute';
 import AboutPage from './pages/AboutPage';
 import ArtistPage from './pages/ArtistPage';
 import FestivalPage from './pages/FestivalPage';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
-import SharedResultsPage from './pages/SharedResultsPage';
 import PageNotFound from './pages/PageNotFound';
-import { StandardLayout } from './layouts/StandardLayout';
-import {
-  ThemeProvider,
-  createTheme,
-  StyledEngineProvider,
-} from '@mui/material/styles';
+import SharedResultsPage from './pages/SharedResultsPage';
+import { persistor, store } from './redux/store';
 import { getMainTheme } from './theme/theme.styles';
-import { PaletteMode, CssBaseline } from '@mui/material';
-import ApiProvider from './api/ApiProvider';
-import WithSpotifyTokenRoute from './layouts/WithSpotifyTokenRoute';
 
 const App = () => {
   const [mode, setMode] = useState<PaletteMode>('dark');

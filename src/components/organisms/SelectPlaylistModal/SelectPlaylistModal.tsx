@@ -1,18 +1,18 @@
 import {
-  Typography,
   Box,
-  Paper,
-  InputLabel,
-  FormControl,
-  SelectChangeEvent,
-  Modal,
-  Fade,
   Button,
+  Fade,
+  FormControl,
+  InputLabel,
+  Modal,
+  Paper,
+  SelectChangeEvent,
+  Typography,
 } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { Playlist, Artist } from '../../../api/types';
-import StandardLink from '../../atoms/StandardLink/StandardLink';
 import { styled } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { Artist, Playlist } from '../../../api/types';
+import StandardLink from '../../atoms/StandardLink/StandardLink';
 import MatchCriteriaSelect, {
   TOP_ARTISTS_CHOICE,
 } from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';

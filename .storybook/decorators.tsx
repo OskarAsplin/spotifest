@@ -1,7 +1,7 @@
-import { Story, StoryContext } from '@storybook/react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { getMainTheme } from '../src/theme/theme.styles';
 import { CssBaseline, PaletteMode } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Story, StoryContext } from '@storybook/react';
+import { getMainTheme } from '../src/theme/theme.styles';
 
 export const withTheme = (story: Story, context: StoryContext) => {
   const mode: PaletteMode =

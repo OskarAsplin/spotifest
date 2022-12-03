@@ -1,36 +1,36 @@
-import { useState } from 'react';
+import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import PublicIcon from '@mui/icons-material/Public';
 import {
-  Typography,
-  Paper,
   Box,
   Button,
-  Tabs,
+  Paper,
   Tab,
   tabClasses,
+  Tabs,
+  Typography,
 } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import PublicIcon from '@mui/icons-material/Public';
-import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import ReactPlayer from 'react-player/lazy';
 import { useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
-import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
-import { StyledAvatarContainerdiv } from '../components/molecules/ArtistBubble/ArtistBubble';
-import '../styles/base.scss';
-import {
-  getMaxArtistsInFullLineupWidth,
-  displayedLocationName,
-} from '../utils/displayUtils';
-import { styled, useTheme } from '@mui/material/styles';
-import StyledCookieConsent from '../components/molecules/CookieConsent';
-import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
-import TabPanel from '../components/molecules/TabPanel';
-import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
-import CustomSwitch from '../components/atoms/CustomSwitch/CustomSwitch';
-import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import { useGet, withFallback } from '../api/api';
 import { getDjangoFestival } from '../api/djangoApi';
+import CustomSwitch from '../components/atoms/CustomSwitch/CustomSwitch';
+import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
+import { StyledAvatarContainerdiv } from '../components/molecules/ArtistBubble/ArtistBubble';
+import StyledCookieConsent from '../components/molecules/CookieConsent';
+import TabPanel from '../components/molecules/TabPanel';
+import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
+import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
+import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
+import '../styles/base.scss';
+import {
+  displayedLocationName,
+  getMaxArtistsInFullLineupWidth,
+} from '../utils/displayUtils';
 import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;

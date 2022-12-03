@@ -1,22 +1,22 @@
-import { Fragment } from 'react';
+import InfoIcon from '@mui/icons-material/Info';
 import {
-  SelectChangeEvent,
-  Typography,
   Box,
-  Paper,
+  FormControl,
   Grid,
   InputLabel,
-  FormControl,
+  Paper,
+  SelectChangeEvent,
+  Typography,
 } from '@mui/material';
 import { indigo } from '@mui/material/colors';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import InfoIcon from '@mui/icons-material/Info';
-import { Playlist, Artist, Area, MatchSettings } from '../../../api/types';
-import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
-import SettingsBarDatePicker from '../../molecules/SettingsBarDatePicker';
 import { styled, useTheme } from '@mui/material/styles';
-import MatchCriteriaSelect from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { Fragment } from 'react';
+import { Area, Artist, MatchSettings, Playlist } from '../../../api/types';
+import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import AreaSelect from '../../molecules/AreaSelect/AreaSelect';
+import MatchCriteriaSelect from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import SettingsBarDatePicker from '../../molecules/SettingsBarDatePicker';
 
 interface FestivalMatchSettingsBarProps {
   playlists: Playlist[];

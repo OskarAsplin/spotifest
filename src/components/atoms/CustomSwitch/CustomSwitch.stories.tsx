@@ -1,6 +1,6 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import CustomSwitch from './CustomSwitch';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useState } from 'react';
+import CustomSwitch from './CustomSwitch';
 
 type Meta = ComponentMeta<typeof CustomSwitch>;
 type Story = ComponentStory<typeof CustomSwitch>;

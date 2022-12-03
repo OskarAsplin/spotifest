@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
-import { setLoggedOff } from '../redux/reducers/authorizationSlice';
-import { setSpotifyToken } from '../api/spotifyApi';
 import { withFallback } from '../api/api';
-import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
+import { setSpotifyToken } from '../api/spotifyApi';
 import { getAuthorizeHref } from '../oauthConfig';
+import { setLoggedOff } from '../redux/reducers/authorizationSlice';
+import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
 import {
   getStoredAccessToken,
   getStoredExpiryTime,

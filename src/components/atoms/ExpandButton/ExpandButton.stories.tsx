@@ -1,6 +1,6 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import ExpandButton from './ExpandButton';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useState } from 'react';
+import ExpandButton from './ExpandButton';
 
 type Meta = ComponentMeta<typeof ExpandButton>;
 type Story = ComponentStory<typeof ExpandButton>;

@@ -1,4 +1,4 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { LoadingSpinner } from './LoadingSpinner';
 
 type Meta = ComponentMeta<typeof LoadingSpinner>;

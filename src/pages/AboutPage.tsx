@@ -1,26 +1,26 @@
-import { useState } from 'react';
+import { MusicNote } from '@mui/icons-material';
+import StarIcon from '@mui/icons-material/Star';
 import {
   Box,
-  Paper,
-  Typography,
-  IconButton,
   Collapse,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Paper,
+  Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { MusicNote } from '@mui/icons-material';
-import StarIcon from '@mui/icons-material/Star';
 import clsx from 'clsx';
+import { useState } from 'react';
+import ExpandButton from '../components/atoms/ExpandButton/ExpandButton';
+import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import TechStackContent from '../components/templates/TechStackContent/TechStackContent';
+import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
-import StandardLink from '../components/atoms/StandardLink/StandardLink';
-import ExpandButton from '../components/atoms/ExpandButton/ExpandButton';
-import { useTheme } from '@mui/material/styles';
-import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 
 const AboutPage = () => {
   const bigScreen = useMediaQuery('(min-width:610px)');

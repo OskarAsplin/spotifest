@@ -1,8 +1,7 @@
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import { useTheme } from '@mui/material/styles';
-import { styled } from '@mui/material/styles';
 
 interface Props {
   matchingPercent: number;

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import copy from 'copy-to-clipboard';
 import { Tooltip } from '@mui/material';
+import copy from 'copy-to-clipboard';
+import { useState } from 'react';
 
 interface CopyToClipboardProps {
   children: (props: { copy: (content: string) => void }) => JSX.Element;

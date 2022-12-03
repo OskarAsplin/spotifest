@@ -1,8 +1,8 @@
+import { PaletteMode } from '@mui/material';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
-import { PaletteMode } from '@mui/material';
-import AppBarContainer from '../containers/AppBarContainer';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
+import AppBarContainer from '../containers/AppBarContainer';
 
 interface Props {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;

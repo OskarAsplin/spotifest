@@ -1,5 +1,5 @@
-import { IconButton } from '@mui/material';
 import { ArrowBackOutlined } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 interface TopLeftBackButtonProps {

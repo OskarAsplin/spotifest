@@ -1,8 +1,8 @@
+import { PaletteMode } from '@mui/material';
+import { deepOrange, lightBlue, pink } from '@mui/material/colors';
 import { ThemeOptions } from '@mui/material/styles';
 import { PaletteOptions } from '@mui/material/styles/createPalette';
 import { TypographyOptions } from '@mui/material/styles/createTypography';
-import { deepOrange, pink, lightBlue } from '@mui/material/colors';
-import { PaletteMode } from '@mui/material';
 
 const typography: TypographyOptions = {
   fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,

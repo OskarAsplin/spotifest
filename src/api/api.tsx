@@ -1,6 +1,6 @@
-import { ComponentType, Suspense, forwardRef } from 'react';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { ComponentType, forwardRef, Suspense } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
-import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import { uniqueFunctionId } from './uniqueFunctionId';

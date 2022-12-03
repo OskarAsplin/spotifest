@@ -1,5 +1,5 @@
-import { Fragment } from 'react';
 import { styled } from '@mui/material/styles';
+import { Fragment } from 'react';
 
 interface MatchHighlighterProps {
   text: string;

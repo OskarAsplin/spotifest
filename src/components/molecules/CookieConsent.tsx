@@ -1,6 +1,6 @@
-import CookieConsent from 'react-cookie-consent';
 import { Theme } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
+import CookieConsent from 'react-cookie-consent';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

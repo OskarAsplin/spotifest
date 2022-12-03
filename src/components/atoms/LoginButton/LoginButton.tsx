@@ -1,4 +1,4 @@
-import { buttonClasses, Box, Typography, Button } from '@mui/material';
+import { Box, Button, buttonClasses, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 

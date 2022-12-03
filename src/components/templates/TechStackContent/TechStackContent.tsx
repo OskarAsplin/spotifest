@@ -1,12 +1,12 @@
-import { Fragment } from 'react';
-import clsx from 'clsx';
-import { Typography, Grid, Box, useMediaQuery } from '@mui/material';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import clsx from 'clsx';
+import { Fragment } from 'react';
 import aboutPageStyles from '../../../pages/AboutPage.module.scss';
-import styles from './TechStackContent.module.scss';
-import StandardLink from '../../atoms/StandardLink/StandardLink';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
+import StandardLink from '../../atoms/StandardLink/StandardLink';
+import styles from './TechStackContent.module.scss';
 
 const PC_SCREEN_MIN_WIDTH = '(min-width:1040px)';
 

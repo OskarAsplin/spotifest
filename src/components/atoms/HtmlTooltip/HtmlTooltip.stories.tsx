@@ -1,6 +1,6 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import HtmlTooltip from './HtmlTooltip';
 import { Button } from '@mui/material';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import HtmlTooltip from './HtmlTooltip';
 
 type Meta = ComponentMeta<typeof HtmlTooltip>;
 type Story = ComponentStory<typeof HtmlTooltip>;

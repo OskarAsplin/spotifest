@@ -1,19 +1,19 @@
-import { useState } from 'react';
-import {
-  Box,
-  IconButton,
-  Typography,
-  Toolbar,
-  AppBar,
-  Avatar,
-  Button,
-  toolbarClasses,
-} from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import {
+  AppBar,
+  Avatar,
+  Box,
+  Button,
+  IconButton,
+  Toolbar,
+  toolbarClasses,
+  Typography,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { useState } from 'react';
 import { SearchFieldContainerProps } from '../../../containers/SearchFieldContainer';
 
 interface CustomAppBarProps {

@@ -1,15 +1,14 @@
-import { useEffect, useState } from 'react';
 import {
+  Box,
   Pagination,
   PaginationProps,
-  Typography,
-  Box,
   Stack,
+  Typography,
 } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { useDispatch, useSelector } from 'react-redux';
-import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import { styled } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGet, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
@@ -17,24 +16,25 @@ import {
   postDjangoPopularArtistsInLineups,
 } from '../api/djangoApi';
 import {
+  getAllPlaylistArtists,
+  getAllTopArtistsWithPopularity,
+} from '../api/spotifyApi';
+import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
+import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import {
+  getIdsFromMatchBasis,
+  PLAYLIST_ID_SEPARATOR,
+} from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
+import {
   selectFromDate,
   selectMatchArea,
   selectMatchBasis,
   selectToDate,
   setMatchBasis,
 } from '../redux/reducers/matchingSlice';
-import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import { createMatchRequest } from './FestivalMatchesContainer.utils';
-import {
-  getAllPlaylistArtists,
-  getAllTopArtistsWithPopularity,
-} from '../api/spotifyApi';
 import { getAreaFilters } from '../utils/areaUtils';
-import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import {
-  PLAYLIST_ID_SEPARATOR,
-  getIdsFromMatchBasis,
-} from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import { createMatchRequest } from './FestivalMatchesContainer.utils';
 
 const ITEMS_PER_PAGE = 15;
 

@@ -1,14 +1,13 @@
-import { Typography, Paper, Box, ThemeProvider } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import StandardLink, {
-  StandardLinkProps,
-} from '../../atoms/StandardLink/StandardLink';
-import { createTheme } from '@mui/material/styles';
-import MatchHighlighter from '../../atoms/MatchHighlighter/MatchHighlighter';
+import { Box, Paper, ThemeProvider, Typography } from '@mui/material';
+import { createTheme, styled } from '@mui/material/styles';
 import { escapeRegExp } from 'lodash-es';
 import { SearchResponse } from '../../../api/types';
 import { getMainTheme } from '../../../theme/theme.styles';
 import { getArtistPath, getFestivalPath } from '../../../utils/routeUtils';
+import MatchHighlighter from '../../atoms/MatchHighlighter/MatchHighlighter';
+import StandardLink, {
+  StandardLinkProps,
+} from '../../atoms/StandardLink/StandardLink';
 import { SHARED_SEARCH_FIELD_WIDTH_BIG_SCREEN } from '../../molecules/SearchField/SearchField';
 
 export interface SearchResultsProps {

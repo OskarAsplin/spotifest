@@ -1,10 +1,10 @@
-import { TextField, outlinedInputClasses } from '@mui/material';
+import { outlinedInputClasses, TextField } from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import {
   MobileDatePicker,
   MobileDatePickerProps,
 } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { MATCHING_MAX_DATE, MATCHING_MIN_DATE } from '../../config';
 
 const SettingsBarDatePicker = <TInputDate,>(

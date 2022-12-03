@@ -1,16 +1,16 @@
+import LinkIcon from '@mui/icons-material/Link';
+import { Box, IconButton } from '@mui/material';
+import { Fragment } from 'react';
 import {
   TelegramIcon,
   TelegramShareButton,
-  TwitterShareButton,
   TwitterIcon,
-  WhatsappShareButton,
+  TwitterShareButton,
   WhatsappIcon,
+  WhatsappShareButton,
 } from 'react-share';
-import { Box, IconButton } from '@mui/material';
-import LinkIcon from '@mui/icons-material/Link';
-import { Fragment } from 'react';
-import { StyledTooltip } from '../../atoms/HtmlTooltip/HtmlTooltip';
 import CopyToClipboard from '../../atoms/CopyToClipboard/CopyToClipboard';
+import { StyledTooltip } from '../../atoms/HtmlTooltip/HtmlTooltip';
 
 const BUTTON_SIZE = 32;
 

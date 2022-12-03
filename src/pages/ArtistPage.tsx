@@ -1,35 +1,35 @@
+import { MusicNote } from '@mui/icons-material';
 import {
   Avatar,
-  Divider,
   Box,
-  Paper,
-  Typography,
   Button,
+  Divider,
   IconButton,
+  Paper,
   Stack,
+  Typography,
 } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { MusicNote } from '@mui/icons-material';
+import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
-import { StyledAvatarContainerdiv } from '../components/molecules/ArtistBubble/ArtistBubble';
-import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
-import '../styles/base.scss';
-import { getMaxArtistsInWidth } from '../utils/displayUtils';
-import { getFestivalPath } from '../utils/routeUtils';
-import { useTheme, styled } from '@mui/material/styles';
-import { ArtistBox, StyledRootDiv } from '../layouts/StyledLayoutComponents';
-import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
+import { useGet, withFallback } from '../api/api';
 import {
   getDjangoArtistByName,
   getDjangoArtistBySpotifyId,
 } from '../api/djangoApi';
 import { getArtistInfo, getArtistRelatedArtists } from '../api/spotifyApi';
-import { useGet, withFallback } from '../api/api';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import FallbackPage from './FallbackPage';
-import { useSelector } from 'react-redux';
+import { StyledAvatarContainerdiv } from '../components/molecules/ArtistBubble/ArtistBubble';
+import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
+import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
+import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
+import { ArtistBox, StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
+import '../styles/base.scss';
+import { getMaxArtistsInWidth } from '../utils/displayUtils';
+import { getFestivalPath } from '../utils/routeUtils';
+import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const ErrorFallback = () => (

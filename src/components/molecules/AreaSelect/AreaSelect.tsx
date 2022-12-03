@@ -1,6 +1,6 @@
-import { MenuItem, Select, ListSubheader, SelectProps } from '@mui/material';
-import { Area } from '../../../api/types';
+import { ListSubheader, MenuItem, Select, SelectProps } from '@mui/material';
 import ReactCountryFlag from 'react-country-flag';
+import { Area } from '../../../api/types';
 import { displayedLocationName } from '../../../utils/displayUtils';
 import { europeanRegions, usRegions } from '../../../utils/regionUtils';
 

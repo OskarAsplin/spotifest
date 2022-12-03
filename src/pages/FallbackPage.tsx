@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
-import { styled } from '@mui/material/styles';
 
 interface FallbackPageProps {
   fallbackText: string;

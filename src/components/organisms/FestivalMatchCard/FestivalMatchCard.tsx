@@ -1,28 +1,28 @@
-import { useState, Fragment } from 'react';
 import {
-  Divider,
-  Paper,
+  Box,
   Button,
   buttonClasses,
   Collapse,
+  Divider,
+  Paper,
   Typography,
-  Box,
 } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { Fragment, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
-import { FestivalMatch, Artist } from '../../../api/types';
-import {
-  getMaxArtistsInWidth,
-  displayedLocationName,
-} from '../../../utils/displayUtils';
-import { StyledAvatarContainerdiv } from '../../molecules/ArtistBubble/ArtistBubble';
-import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
-import { useTheme } from '@mui/material/styles';
-import { styled } from '@mui/material/styles';
-import ExpandButton from '../../atoms/ExpandButton/ExpandButton';
+import { Artist, FestivalMatch } from '../../../api/types';
 import { ArtistBox } from '../../../layouts/StyledLayoutComponents';
+import {
+  displayedLocationName,
+  getMaxArtistsInWidth,
+} from '../../../utils/displayUtils';
+import ExpandButton from '../../atoms/ExpandButton/ExpandButton';
+import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import MatchingCircle from '../../atoms/MatchingCircle/MatchingCircle';
-import ArtistBubble from '../../molecules/ArtistBubble/ArtistBubble';
+import ArtistBubble, {
+  StyledAvatarContainerdiv,
+} from '../../molecules/ArtistBubble/ArtistBubble';
 
 export interface FestivalMatchCardProps {
   festival: FestivalMatch;

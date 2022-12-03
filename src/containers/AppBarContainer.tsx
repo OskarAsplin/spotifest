@@ -1,19 +1,18 @@
+import { Box, PaletteMode, Slide, useScrollTrigger } from '@mui/material';
 import { useState } from 'react';
-import { Box, Slide } from '@mui/material';
-import { useScrollTrigger, PaletteMode } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { isMainPage } from '../utils/routeUtils';
-import SearchFieldContainer from './SearchFieldContainer';
+import { useNavigate } from 'react-router-dom';
+import { useGet } from '../api/api';
+import { getLoggedInUserInfo } from '../api/spotifyApi';
+import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
 import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 import {
   selectLoggedIn,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import { useGet } from '../api/api';
-import { getLoggedInUserInfo } from '../api/spotifyApi';
-import { useNavigate } from 'react-router-dom';
-import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
+import { isMainPage } from '../utils/routeUtils';
+import SearchFieldContainer from './SearchFieldContainer';
 
 interface AppBarContainerProps {
   setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;

@@ -1,10 +1,10 @@
-import { ReactNode } from 'react';
 import {
   QueryClient,
   QueryClientProvider,
   QueryObserverOptions,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactNode } from 'react';
 
 const DEFAULT_QUERY_OPTIONS: QueryObserverOptions = {
   cacheTime: Infinity,

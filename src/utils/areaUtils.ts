@@ -1,6 +1,6 @@
-import { WORLDWIDE_AREA } from '../components/molecules/AreaSelect/AreaSelect';
 import countries_list from 'countries-list/dist/data.json';
 import { Area } from '../api/types';
+import { WORLDWIDE_AREA } from '../components/molecules/AreaSelect/AreaSelect';
 import { europeanRegions, regionMap, usRegions } from './regionUtils';
 
 export const getInitialContinent = (

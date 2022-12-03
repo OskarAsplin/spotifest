@@ -1,12 +1,12 @@
 import { Box, ClickAwayListener, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import { getMainTheme } from '../theme/theme.styles';
 import { debounce } from 'lodash-es';
 import { ChangeEvent, useState } from 'react';
-import { getDjangoSearchResults } from '../api/djangoApi';
 import { useGet } from '../api/api';
-import SearchResults from '../components/organisms/SearchResults/SearchResults';
+import { getDjangoSearchResults } from '../api/djangoApi';
 import SearchField from '../components/molecules/SearchField/SearchField';
+import SearchResults from '../components/organisms/SearchResults/SearchResults';
+import { getMainTheme } from '../theme/theme.styles';
 
 export interface SearchFieldContainerProps {
   hideSearchFieldSmallScreen?: () => void;

@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
 import { Box, Typography, typographyClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import LoginButton from '../components/atoms/LoginButton/LoginButton';
+import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import { getAuthorizeHref } from '../oauthConfig';
 import {
   setLoggedIn,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import StandardLink from '../components/atoms/StandardLink/StandardLink';
-import LoginButton from '../components/atoms/LoginButton/LoginButton';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');

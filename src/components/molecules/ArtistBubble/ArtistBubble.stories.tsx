@@ -1,5 +1,5 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
 import ArtistBubble from './ArtistBubble';
 import { artistMock } from './ArtistBubble.fixtures';
 

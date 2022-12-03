@@ -1,14 +1,14 @@
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import { combineReducers, AnyAction, Reducer } from 'redux';
+import { AnyAction, combineReducers, Reducer } from 'redux';
 import {
-  persistStore,
-  persistReducer,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
+  persistStore,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import authorizationReducer, {

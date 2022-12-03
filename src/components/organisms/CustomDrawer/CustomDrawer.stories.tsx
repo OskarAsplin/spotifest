@@ -1,8 +1,8 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { action } from '@storybook/addon-actions';
-import CustomDrawer from './CustomDrawer';
 import { Brightness2 } from '@mui/icons-material';
 import InfoIcon from '@mui/icons-material/Info';
+import { action } from '@storybook/addon-actions';
+import { ComponentMeta, ComponentStory } from '@storybook/react';
+import CustomDrawer from './CustomDrawer';
 
 type Meta = ComponentMeta<typeof CustomDrawer>;
 type Story = ComponentStory<typeof CustomDrawer>;

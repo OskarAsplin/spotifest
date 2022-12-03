@@ -1,3 +1,4 @@
+import MusicNote from '@mui/icons-material/MusicNote';
 import {
   Avatar,
   avatarClasses,
@@ -6,10 +7,8 @@ import {
   Typography,
 } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
-import { Shadows } from '@mui/material/styles';
-import MusicNote from '@mui/icons-material/MusicNote';
+import { Shadows, styled } from '@mui/material/styles';
 import { Artist } from '../../../api/types';
-import { styled } from '@mui/material/styles';
 
 interface ArtistBubbleProps {
   artist: Artist;

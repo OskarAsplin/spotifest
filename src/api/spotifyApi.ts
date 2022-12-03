@@ -1,19 +1,19 @@
 import SpotifyWebApi from 'spotify-web-api-js';
 import {
+  mapToArtist,
+  mapToArtistInfo,
+  mapToArtistWithPopularity,
+  mapToMinimalUserInfo,
+  mapToPlaylist,
+  mapToUserInfo,
+} from './mappers';
+import {
   Artist,
   ArtistInfo,
   MinimalUserInfo,
   Playlist,
   UserInfo,
 } from './types';
-import {
-  mapToArtist,
-  mapToArtistInfo,
-  mapToPlaylist,
-  mapToArtistWithPopularity,
-  mapToMinimalUserInfo,
-  mapToUserInfo,
-} from './mappers';
 
 const spotifyApi = new SpotifyWebApi();
 

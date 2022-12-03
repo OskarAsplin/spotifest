@@ -1,13 +1,13 @@
+import SearchIcon from '@mui/icons-material/Search';
 import {
   IconButton,
-  TextFieldProps,
   InputAdornment,
   TextField,
+  TextFieldProps,
 } from '@mui/material';
+import { blueGrey } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import SearchIcon from '@mui/icons-material/Search';
-import { blueGrey } from '@mui/material/colors';
 
 const SearchField = (props: TextFieldProps) => {
   const bigScreen = useMediaQuery('(min-width:610px)');

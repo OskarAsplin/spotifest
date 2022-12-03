@@ -1,22 +1,22 @@
-import { useEffect } from 'react';
 import { SelectChangeEvent } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
-import { Area } from '../api/types';
-import {
-  getAllPlaylists,
-  getAllTopArtistsWithPopularity,
-  getPlaylist,
-  getLoggedInUserInfo,
-} from '../api/spotifyApi';
-import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
-import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
-import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGet } from '../api/api';
 import {
   getDjangoAvailableContinents,
   getDjangoAvailableCountries,
 } from '../api/djangoApi';
-import { getInitialContinent } from '../utils/areaUtils';
+import {
+  getAllPlaylists,
+  getAllTopArtistsWithPopularity,
+  getLoggedInUserInfo,
+  getPlaylist,
+} from '../api/spotifyApi';
+import { Area } from '../api/types';
+import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
+import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
 import {
   selectFromDate,
   selectMatchArea,
@@ -28,7 +28,7 @@ import {
   setMatchBasis,
   setToDate,
 } from '../redux/reducers/matchingSlice';
-import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import { getInitialContinent } from '../utils/areaUtils';
 
 interface FestivalMatchSettingsContainerProps {
   sharedMatchBasis?: string;

@@ -1,10 +1,10 @@
 import { useSelector } from 'react-redux';
 import { useGet } from '../api/api';
 import { getAllPlaylists, getLoggedInUserInfo } from '../api/spotifyApi';
+import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import SocialMediaButtons from '../components/organisms/SocialMediaButtons/SocialMediaButtons';
 import { selectMatchBasis } from '../redux/reducers/matchingSlice';
-import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import {
   getShareMessage,
   getShareUrl,

@@ -1,29 +1,29 @@
 import { Box, Typography } from '@mui/material';
-import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
-import '../styles/base.scss';
-import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
-import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
-import { useGet, withFallback } from '../api/api';
-import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import FallbackPage from './FallbackPage';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useGet, withFallback } from '../api/api';
+import { getPlaylist, getUserInfo } from '../api/spotifyApi';
+import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
+import { StandardLink } from '../components/atoms/StandardLink/StandardLink.stories';
 import {
   getIdsFromMatchBasis,
   isValidPlaylistMatchBasis,
 } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
+import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
+import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { getAuthorizeHref } from '../oauthConfig';
 import {
   selectLoggedIn,
   setLoggedIn,
 } from '../redux/reducers/authorizationSlice';
+import '../styles/base.scss';
 import {
   getSharedMatchBasis,
   setSharedMatchBasis,
 } from '../utils/localStorageUtils';
-import { getPlaylist, getUserInfo } from '../api/spotifyApi';
-import { StandardLink } from '../components/atoms/StandardLink/StandardLink.stories';
+import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const ErrorFallback = () => (
