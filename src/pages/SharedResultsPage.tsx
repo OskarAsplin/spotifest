@@ -27,7 +27,7 @@ import { StandardLink } from '../components/atoms/StandardLink/StandardLink.stor
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const ErrorFallback = () => (
-  <FallbackPage fallbackText="The url is incorrect or the playlist is not public. Makes sure the playlist is public when using the share function." />
+  <FallbackPage fallbackText="The url is incorrect or something else funky happened here. Double check the url and try again." />
 );
 
 const SharedResultsPage = withFallback(
@@ -81,7 +81,7 @@ const SharedResultsPage = withFallback(
           '@media (max-width: 799px)': { py: 1 },
         }}
       />
-      <Typography variant="subtitle1">
+      <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
         {`Festival matches for `}
         <StandardLink href={sharedPlaylist?.spotifyUrl}>
           {sharedPlaylist?.name}
