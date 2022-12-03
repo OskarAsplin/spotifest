@@ -5,7 +5,7 @@ import {
   MinimalUserInfo,
   Playlist,
   UserInfo,
-} from '../redux/types';
+} from './types';
 import {
   mapToArtist,
   mapToArtistInfo,

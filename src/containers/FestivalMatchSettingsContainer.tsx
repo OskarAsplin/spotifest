@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
-import { Area } from '../redux/types';
+import { Area } from '../api/types';
 import {
   getAllPlaylists,
   getAllTopArtistsWithPopularity,

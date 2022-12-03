@@ -1,4 +1,4 @@
-import { Artist } from '../../../redux/types';
+import { Artist } from '../../../api/types';
 import Stromae_Spotify_Img from '../../../storyAssets/stromae_spotify.jpeg';
 
 export const artistMock: Artist = {

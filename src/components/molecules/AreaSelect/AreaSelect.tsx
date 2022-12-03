@@ -1,5 +1,5 @@
 import { MenuItem, Select, ListSubheader, SelectProps } from '@mui/material';
-import { Area } from '../../../redux/types';
+import { Area } from '../../../api/types';
 import ReactCountryFlag from 'react-country-flag';
 import { displayedLocationName } from '../../../utils/displayUtils';
 import { europeanRegions, usRegions } from '../../../utils/regionUtils';

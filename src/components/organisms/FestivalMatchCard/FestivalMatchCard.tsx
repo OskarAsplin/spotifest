@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import ReactCountryFlag from 'react-country-flag';
-import { FestivalMatch, Artist } from '../../../redux/types';
+import { FestivalMatch, Artist } from '../../../api/types';
 import {
   getMaxArtistsInWidth,
   displayedLocationName,

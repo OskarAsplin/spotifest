@@ -6,7 +6,7 @@ import {
   MinimalUserInfo,
   Playlist,
   UserInfo,
-} from '../redux/types';
+} from './types';
 
 export const mapToArtistInfo = (
   response: SpotifyApi.SingleArtistResponse | SpotifyApi.ArtistObjectFull

@@ -6,7 +6,7 @@ import StandardLink, {
 import { createTheme } from '@mui/material/styles';
 import MatchHighlighter from '../../atoms/MatchHighlighter/MatchHighlighter';
 import { escapeRegExp } from 'lodash-es';
-import { SearchResponse } from '../../../redux/types';
+import { SearchResponse } from '../../../api/types';
 import { getMainTheme } from '../../../theme/theme.styles';
 import { getArtistPath, getFestivalPath } from '../../../utils/routeUtils';
 import { SHARED_SEARCH_FIELD_WIDTH_BIG_SCREEN } from '../../molecules/SearchField/SearchField';

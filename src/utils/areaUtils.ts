@@ -1,6 +1,6 @@
 import { WORLDWIDE_AREA } from '../components/molecules/AreaSelect/AreaSelect';
 import countries_list from 'countries-list/dist/data.json';
-import { Area } from '../redux/types';
+import { Area } from '../api/types';
 import { europeanRegions, regionMap, usRegions } from './regionUtils';
 
 export const getInitialContinent = (

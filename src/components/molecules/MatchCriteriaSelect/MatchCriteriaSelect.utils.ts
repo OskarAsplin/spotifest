@@ -1,4 +1,4 @@
-import { Playlist } from '../../../redux/types';
+import { Playlist } from '../../../api/types';
 
 export const PLAYLIST_ID_SEPARATOR = '__PID__';
 

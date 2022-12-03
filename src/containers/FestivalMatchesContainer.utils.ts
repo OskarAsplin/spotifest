@@ -1,4 +1,4 @@
-import { MatchCriteria, MatchRequest } from '../redux/types';
+import { MatchCriteria, MatchRequest } from '../api/types';
 import { getLocalISODate } from '../utils/dateUtils';
 import { mapToArtistMinimal } from '../api/mappers';
 
