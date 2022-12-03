@@ -6,7 +6,7 @@ import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
-import { withFallback } from '../utils/api/api';
+import { withFallback } from '../api/api';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import FallbackPage from './FallbackPage';
 import SocialMediaButtonsContainer from '../containers/SocialMediaButtonsContainer';

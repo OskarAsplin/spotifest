@@ -1,6 +1,6 @@
 import { MatchCriteria, MatchRequest } from '../redux/types';
 import { getLocalISODate } from '../utils/utils';
-import { mapToArtistMinimal } from '../utils/mappers';
+import { mapToArtistMinimal } from '../api/mappers';
 
 export const createMatchRequest = ({
   artists,

@@ -29,8 +29,8 @@ import TabPanel from '../components/molecules/TabPanel';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
 import CustomSwitch from '../components/atoms/CustomSwitch/CustomSwitch';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import { useGet, withFallback } from '../utils/api/api';
-import { getDjangoFestival } from '../utils/api/djangoApi';
+import { useGet, withFallback } from '../api/api';
+import { getDjangoFestival } from '../api/djangoApi';
 import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;

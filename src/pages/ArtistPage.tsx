@@ -22,12 +22,12 @@ import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer
 import {
   getDjangoArtistByName,
   getDjangoArtistBySpotifyId,
-} from '../utils/api/djangoApi';
+} from '../api/djangoApi';
 import {
   getSpotifyArtistInfo,
   getSpotifyArtistRelatedArtists,
-} from '../utils/api/spotifyApi';
-import { useGet, withFallback } from '../utils/api/api';
+} from '../api/spotifyApi';
+import { useGet, withFallback } from '../api/api';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import FallbackPage from './FallbackPage';
 import { useSelector } from 'react-redux';

@@ -10,12 +10,12 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useDispatch, useSelector } from 'react-redux';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import { styled } from '@mui/material/styles';
-import { useGet, withFallback } from '../utils/api/api';
+import { useGet, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
   postDjangoFestivalMatches,
   postDjangoPopularArtistsInLineups,
-} from '../utils/api/djangoApi';
+} from '../api/djangoApi';
 import {
   selectFromDate,
   selectMatchArea,
@@ -28,7 +28,7 @@ import { createMatchRequest } from './FestivalMatchesContainer.utils';
 import {
   getAllPlaylistArtists,
   getAllTopArtistsWithPopularity,
-} from '../utils/api/spotifyApi';
+} from '../api/spotifyApi';
 import { getAreaFilters } from '../utils/utils';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import {

@@ -7,7 +7,7 @@ import {
   MatchRequest,
   PopularArtistsDict,
   SearchResponse,
-} from '../../redux/types';
+} from '../redux/types';
 
 const getOntourBase = () => `${getApiBaseUrl()}/onTour`;
 

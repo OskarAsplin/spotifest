@@ -7,15 +7,15 @@ import {
   getAllTopArtistsWithPopularity,
   getPlaylist,
   getSpotifyLoggedInUserInfo,
-} from '../utils/api/spotifyApi';
+} from '../api/spotifyApi';
 import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
 import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import { useGet } from '../utils/api/api';
+import { useGet } from '../api/api';
 import {
   getDjangoAvailableContinents,
   getDjangoAvailableCountries,
-} from '../utils/api/djangoApi';
+} from '../api/djangoApi';
 import { getInitialContinent } from '../utils/utils';
 import {
   selectFromDate,

@@ -3,7 +3,7 @@ import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
 import '../styles/base.scss';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
-import { useGet, withFallback } from '../utils/api/api';
+import { useGet, withFallback } from '../api/api';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import FallbackPage from './FallbackPage';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -22,7 +22,7 @@ import {
   getSharedMatchBasis,
   setSharedMatchBasis,
 } from '../utils/localStorageUtils';
-import { getPlaylist, getSpotifyUserInfo } from '../utils/api/spotifyApi';
+import { getPlaylist, getSpotifyUserInfo } from '../api/spotifyApi';
 import { StandardLink } from '../components/atoms/StandardLink/StandardLink.stories';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;

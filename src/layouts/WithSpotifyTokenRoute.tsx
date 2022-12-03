@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 import { setLoggedOff } from '../redux/reducers/authorizationSlice';
-import { setSpotifyToken } from '../utils/api/spotifyApi';
-import { withFallback } from '../utils/api/api';
+import { setSpotifyToken } from '../api/spotifyApi';
+import { withFallback } from '../api/api';
 import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
 import { getAuthorizeHref } from '../oauthConfig';
 import {

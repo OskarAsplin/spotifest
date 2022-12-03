@@ -3,8 +3,8 @@ import { createTheme } from '@mui/material/styles';
 import { getMainTheme } from '../theme/theme.styles';
 import { debounce } from 'lodash-es';
 import { ChangeEvent, useState } from 'react';
-import { getDjangoSearchResults } from '../utils/api/djangoApi';
-import { useGet } from '../utils/api/api';
+import { getDjangoSearchResults } from '../api/djangoApi';
+import { useGet } from '../api/api';
 import SearchResults from '../components/organisms/SearchResults/SearchResults';
 import SearchField from '../components/molecules/SearchField/SearchField';
 

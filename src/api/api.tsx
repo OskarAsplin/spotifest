@@ -2,7 +2,7 @@ import { ComponentType, Suspense, forwardRef } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { UseQueryOptions, useQuery } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
-import { setLoggedOff } from '../../redux/reducers/authorizationSlice';
+import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import { uniqueFunctionId } from './uniqueFunctionId';
 
 type OpBaseType<R = any> = (...args: any) => Promise<R>;

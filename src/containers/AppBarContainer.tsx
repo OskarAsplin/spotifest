@@ -10,8 +10,8 @@ import {
   selectLoggedIn,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import { useGet } from '../utils/api/api';
-import { getSpotifyLoggedInUserInfo } from '../utils/api/spotifyApi';
+import { useGet } from '../api/api';
+import { getSpotifyLoggedInUserInfo } from '../api/spotifyApi';
 import { useNavigate } from 'react-router-dom';
 import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
 

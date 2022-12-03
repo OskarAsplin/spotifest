@@ -19,7 +19,7 @@ import {
 } from '@mui/material/styles';
 import { getMainTheme } from './theme/theme.styles';
 import { PaletteMode, CssBaseline } from '@mui/material';
-import ApiProvider from './utils/api/ApiProvider';
+import ApiProvider from './api/ApiProvider';
 import WithSpotifyTokenRoute from './layouts/WithSpotifyTokenRoute';
 
 const App = () => {

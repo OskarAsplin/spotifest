@@ -1,9 +1,6 @@
 import { useSelector } from 'react-redux';
-import { useGet } from '../utils/api/api';
-import {
-  getAllPlaylists,
-  getSpotifyLoggedInUserInfo,
-} from '../utils/api/spotifyApi';
+import { useGet } from '../api/api';
+import { getAllPlaylists, getSpotifyLoggedInUserInfo } from '../api/spotifyApi';
 import SocialMediaButtons from '../components/organisms/SocialMediaButtons/SocialMediaButtons';
 import { selectMatchBasis } from '../redux/reducers/matchingSlice';
 import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';

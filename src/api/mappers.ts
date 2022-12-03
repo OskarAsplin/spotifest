@@ -1,11 +1,12 @@
-import { getBigPicture, getIconPicture } from '../utils';
+import { getBigPicture, getIconPicture } from '../utils/utils';
 import {
   Artist,
   ArtistInfo,
+  ArtistMinimal,
   MinimalUserInfo,
   Playlist,
   UserInfo,
-} from '../../redux/types';
+} from '../redux/types';
 
 export const mapSpotifyArtistToArtistInfo = (
   response: SpotifyApi.SingleArtistResponse | SpotifyApi.ArtistObjectFull
@@ -37,6 +38,11 @@ export const mapToArtistWithPopularity = (
   popularity: artist.popularity,
   userPopularity: userPopularity,
   genres: artist.genres,
+});
+
+export const mapToArtistMinimal = (artist: Artist): ArtistMinimal => ({
+  spotifyId: artist.spotifyId,
+  userPopularity: artist.userPopularity,
 });
 
 export const mapSpotifyPlaylistToPlaylist = (
