@@ -33,7 +33,6 @@ const AboutPage = () => {
   const biggerScreen = useMediaQuery('(min-width:720px)');
   const bigPcScreen = useMediaQuery('(min-width:1300px)');
 
-  const [usageExpanded, setUsageExpanded] = useState(false);
   const [techExpanded, setTechExpanded] = useState(false);
   const [supportExpanded, setSupportExpanded] = useState(false);
   const [disclaimerExpanded, setDisclaimerExpanded] = useState(false);
@@ -140,7 +139,7 @@ const AboutPage = () => {
                 <List className={styles.noPadding}>
                   <CustomListItem
                     text={
-                      <ListItemText primary="Spread the word! Tell everyone about Oskarito SpotiFest" />
+                      <ListItemText primary="Spread the word! Share your matching results and tell everyone about Oskarito SpotiFest" />
                     }
                     Icon={
                       <CampaignTwoToneIcon fontSize="large" color="primary" />
@@ -176,76 +175,6 @@ const AboutPage = () => {
                     Icon={<StarRateTwoToneIcon fontSize="large" />}
                   />
                 </List>
-              </div>
-            </Collapse>
-          </Paper>
-        </Box>
-        <Box className={styles.box}>
-          <Paper
-            elevation={3}
-            className={clsx(styles.paper, styles.minWidth400)}
-          >
-            <div
-              className={styles.rowFlexCenterSpaceApart}
-              onClick={() => setUsageExpanded(!usageExpanded)}
-            >
-              <ExpandButton expanded={usageExpanded} />
-              <Typography variant="h5" sx={{ cursor: 'pointer' }}>
-                How to use
-              </Typography>
-              <ExpandButton expanded={usageExpanded} />
-            </div>
-            <Collapse in={usageExpanded} timeout="auto" unmountOnExit>
-              <div className={styles.expandedDiv}>
-                <div className={styles.usageBox}>
-                  <div className={styles.usagePart}>
-                    <img
-                      src={PUBLIC_URL + '/usageImages/match-settings.jpg'}
-                      className={styles.usageImg}
-                      alt="match-settings-box"
-                    />
-                    <Typography
-                      variant="body1"
-                      className={clsx(styles.textAlign, styles.usageText)}
-                    >
-                      {
-                        'Adjust the match settings on the main page to get your festival matches.'
-                      }
-                    </Typography>
-                  </div>
-                  <div className={styles.usagePart}>
-                    <img
-                      src={
-                        PUBLIC_URL + '/usageImages/festival-match-marked.jpg'
-                      }
-                      className={styles.usageImg}
-                      alt="festival-match-marked"
-                    />
-                    <Typography
-                      variant="body1"
-                      className={clsx(styles.textAlign, styles.usageText)}
-                    >
-                      {
-                        "Click on a festival title or image to see full lineups and more. Click on an artist icon to see the artist's future and past festivals and more. Click on 'popular artists at this festival' to see the most popular artists in the festival lineup."
-                      }
-                    </Typography>
-                  </div>
-                  <div className={styles.usagePart}>
-                    <img
-                      src={PUBLIC_URL + '/usageImages/top-bar.jpg'}
-                      className={clsx(styles.usageImg, styles.topBarImg)}
-                      alt="top-bar"
-                    />
-                    <Typography
-                      variant="body1"
-                      className={clsx(styles.textAlign, styles.usageText)}
-                    >
-                      {
-                        "Clicking 'Oskarito SpotiFest' takes you back to the festival matching. Click the search icon to search for festivals and artists. Click the account avatar to log out. Click the hamburger menu to get to the about page or to switch between dark/light mode."
-                      }
-                    </Typography>
-                  </div>
-                </div>
               </div>
             </Collapse>
           </Paper>
