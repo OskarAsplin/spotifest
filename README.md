@@ -12,12 +12,12 @@ Check it out at [spotifest.app](https://spotifest.app)
 
 ## Features
 
-- Festival matching with more than 500 festivals worldwide
+- Festival matching with more than 2000 festivals worldwide
+- Sharing results on social media
 - Festival pages with current and previous lineups
 - Artist pages to see which festivals each artist is attending
 - Adjustable matching parameters: playlist selector, area, time frame
-- Search bar to search up artists and festivals
-- Simple and intuitive UI
+- Search bar to search for artists and festivals
 
 ## How it works
 
@@ -29,7 +29,8 @@ By clicking an artist icon you are taken to the corresponding artist page. There
 
 ## Built with
 
-- [React](https://reactjs.org/) with [Typescript](https://www.typescriptlang.org/) and [Redux store](https://redux.js.org).
+- [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [Redux](https://redux.js.org) and [React Query](https://tanstack.com/query/v4/docs/adapters/react-query).
+- [Storybook](https://developer.spotify.com/documentation/web-api). See deploy [here](https://638b82b31acca1e593c75c8d-swogowicas.chromatic.com/)
 - [Spotify Web API](https://developer.spotify.com/documentation/web-api)
 
 Full technology stack on [spotifest.app/about](https://spotifest.app/about)
