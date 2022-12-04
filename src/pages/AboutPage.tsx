@@ -58,7 +58,7 @@ const AboutPage = () => {
           <div className={styles.verticalSpace} />
           <List className={styles.noPadding}>
             <CustomListItem
-              text="Festival matching with more than 2000 festivals worldwide"
+              text="Festival matching with more than 1000 festivals worldwide"
               Icon={<LibraryMusicTwoToneIcon fontSize="large" color="info" />}
             />
             <CustomListItem

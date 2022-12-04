@@ -25,7 +25,7 @@ Check it out at [spotifest.app](https://spotifest.app)
 
 ## Features
 
-- Festival matching with more than 2000 festivals worldwide
+- Festival matching with more than 1000 festivals worldwide
 - Sharing results on social media
 - Festival pages with current and previous lineups
 - Artist pages to see which festivals each artist is attending
