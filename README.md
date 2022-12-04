@@ -6,9 +6,22 @@ Check it out at [spotifest.app](https://spotifest.app)
 
 ## Screenshots
 
-|                                      Festival matches                                       |                                              Festival page                                              |                                             Artist Page                                             |
-| :-----------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------------------: |
-| ![matches.png](https://github.com/OskarAsplin/spotifest/raw/master/screenshots/matches.png) | ![festival-page.png](https://github.com/OskarAsplin/spotifest/raw/master/screenshots/festival-page.png) | ![artist-page.png](https://github.com/OskarAsplin/spotifest/raw/master/screenshots/artist-page.png) |
+<table width="100%">
+  <thead>
+    <tr>
+      <th width="33.3%">Festival matches</th>
+      <th width="33.3%">Festival page</th>
+      <th width="33.3%">Artist page</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td width="33.3%"><img src="https://github.com/OskarAsplin/spotifest/raw/master/screenshots/matches.png"/></td>
+      <td width="33.3%"><img src="https://github.com/OskarAsplin/spotifest/raw/master/screenshots/festival-page.png"/></td>
+      <td width="33.3%"><img src="https://github.com/OskarAsplin/spotifest/raw/master/screenshots/artist-page.png"/></td>
+    </tr>
+  </tbody>
+</table>
 
 ## Features
 
