@@ -29,8 +29,8 @@ By clicking an artist icon you are taken to the corresponding artist page. There
 
 ## Built with
 
-- [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [Redux](https://redux.js.org) and [React Query](https://tanstack.com/query/v4/docs/adapters/react-query).
-- [Storybook](https://developer.spotify.com/documentation/web-api). See deploy [here](https://638b82b31acca1e593c75c8d-swogowicas.chromatic.com/)
+- [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [Redux](https://redux.js.org) and [React Query](https://tanstack.com/query/v4/docs/adapters/react-query)
+- [Storybook](https://developer.spotify.com/documentation/web-api). See deploy [here](https://master--638b82b31acca1e593c75c8d.chromatic.com)
 - [Spotify Web API](https://developer.spotify.com/documentation/web-api)
 
 Full technology stack on [spotifest.app/about](https://spotifest.app/about)

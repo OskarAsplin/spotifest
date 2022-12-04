@@ -84,7 +84,7 @@ const AboutPage = () => {
               text={
                 <Typography>
                   {'Documentation of React components on '}
-                  <StandardLink href="https://638b82b31acca1e593c75c8d-swogowicas.chromatic.com/">
+                  <StandardLink href="https://master--638b82b31acca1e593c75c8d.chromatic.com">
                     Storybook
                   </StandardLink>
                 </Typography>
