@@ -27,11 +27,13 @@ import TechStackContent from '../components/templates/TechStackContent/TechStack
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
+import { Trans, useTranslation } from 'react-i18next';
 
 const AboutPage = () => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const biggerScreen = useMediaQuery('(min-width:720px)');
   const bigPcScreen = useMediaQuery('(min-width:1300px)');
+  const { t } = useTranslation('translation', { keyPrefix: 'about_page' });
 
   const [techExpanded, setTechExpanded] = useState(false);
   const [supportExpanded, setSupportExpanded] = useState(false);
@@ -58,36 +60,32 @@ const AboutPage = () => {
           <div className={styles.verticalSpace} />
           <List className={styles.noPadding}>
             <CustomListItem
-              text="Festival matching with more than 1000 festivals worldwide"
+              text={t('features.matching')}
               Icon={<LibraryMusicTwoToneIcon fontSize="large" color="info" />}
             />
             <CustomListItem
-              text="Festival pages with current and previous lineups"
+              text={t('features.festivals')}
               Icon={<FestivalTwoToneIcon fontSize="large" color="error" />}
             />
             <CustomListItem
-              text="Artist pages to see which festivals each artist is attending"
+              text={t('features.artists')}
               Icon={<Groups2TwoToneIcon fontSize="large" color="secondary" />}
             />
             <CustomListItem
               text={
-                <Typography>
-                  {'Open source frontend code on '}
-                  <StandardLink href="https://github.com/OskarAsplin/spotifest">
-                    GitHub
-                  </StandardLink>
-                </Typography>
+                <Trans
+                  i18nKey="about_page.features.code"
+                  components={{ Link: <StandardLink /> }}
+                />
               }
               Icon={<CodeIcon fontSize="large" color="success" />}
             />
             <CustomListItem
               text={
-                <Typography>
-                  {'Documentation of React components on '}
-                  <StandardLink href="https://master--638b82b31acca1e593c75c8d.chromatic.com">
-                    Storybook
-                  </StandardLink>
-                </Typography>
+                <Trans
+                  i18nKey="about_page.features.storybook"
+                  components={{ Link: <StandardLink /> }}
+                />
               }
               Icon={<EngineeringTwoToneIcon fontSize="large" color="warning" />}
             />

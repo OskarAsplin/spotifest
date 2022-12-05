@@ -1,0 +1,11 @@
+{
+  "about_page": {
+    "features": {
+      "matching": "Festival matching with more than 1000 festivals worldwide",
+      "festivals": "Festival pages with current and previous lineups",
+      "artists": "Artist pages to see which festivals each artist is attending",
+      "code": "Open source frontend code on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>",
+      "storybook": "Documentation of React components on <Link href=\"https://master--638b82b31acca1e593c75c8d.chromatic.com\">Storybook</Link>"
+    }
+  }
+}

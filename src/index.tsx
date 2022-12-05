@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.scss';
+import './translations/i18n';
 
 const container = document.getElementById('app');
 const root = createRoot(container!);
