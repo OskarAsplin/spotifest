@@ -41,5 +41,12 @@
       "title": "Created by",
       "text": "Oskar Asplin"
     }
+  },
+  "app_bar": {
+    "profile_popover": {
+      "view_profile": "View profile in Spotify",
+      "log_out": "Log out",
+      "log_in": "<Link>Log in</Link> to match your Spotify profile with music festivals!"
+    }
   }
 }

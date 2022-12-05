@@ -2,6 +2,7 @@ import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { useState } from 'react';
 import ProfilePopover from './ProfilePopover';
+import { setStoryDescription } from '../../../utils/storyUtils';
 
 type Meta = ComponentMeta<typeof ProfilePopover>;
 type Story = ComponentStory<typeof ProfilePopover>;
@@ -54,3 +55,14 @@ const Template: Story = (args) => {
 };
 
 export { Template as ProfilePopover };
+export const ProfilePopoverNoUserName = Template.bind({});
+export const ProfilePopoverNoSpotifyUrl = Template.bind({});
+
+ProfilePopoverNoUserName.args = { userName: undefined };
+setStoryDescription(ProfilePopoverNoUserName, 'Without userName');
+
+ProfilePopoverNoSpotifyUrl.args = { spotifyUrl: undefined };
+setStoryDescription(
+  ProfilePopoverNoSpotifyUrl,
+  'Without spotifyUrl. Displays a link to login page'
+);
