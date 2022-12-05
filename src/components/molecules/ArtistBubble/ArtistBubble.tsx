@@ -38,47 +38,26 @@ const ArtistBubble = ({ artist, onClick }: ArtistBubbleProps) => (
   </StyledAvatarContainerdiv>
 );
 
-export const StyledAvatarContainerdiv = styled('div')(() => {
-  return {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
-    '@media (min-width: 690px)': {
-      width: '100px',
-    },
-    '@media (max-width: 689px)': {
-      width: '75px',
-      marginBottom: '6px',
-    },
-  };
-});
+export const StyledAvatarContainerdiv = styled('div')(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  textAlign: 'center',
+  '@media (min-width: 690px)': { width: '100px' },
+  '@media (max-width: 689px)': { width: '75px', marginBottom: '6px' },
+}));
 
-const StyledIconButton = styled(IconButton)(() => {
-  return {
-    [`&.${iconButtonClasses.root}`]: {
-      textAlign: 'center',
-      '@media (min-width: 690px)': {
-        width: '104px',
-        padding: '12px',
-      },
-      '@media (max-width: 689px)': {
-        width: '75px',
-        padding: '6px',
-      },
-    },
-  };
-});
+const StyledIconButton = styled(IconButton)(() => ({
+  [`&.${iconButtonClasses.root}`]: {
+    textAlign: 'center',
+    '@media (min-width: 690px)': { width: '104px', padding: '12px' },
+    '@media (max-width: 689px)': { width: '75px', padding: '6px' },
+  },
+}));
 
 const sharedAvatarStyle = (isClickable: boolean, shadows: Shadows) => ({
-  '@media (min-width: 690px)': {
-    height: 80,
-    width: 80,
-  },
-  '@media (max-width: 689px)': {
-    height: 60,
-    width: 60,
-  },
+  '@media (min-width: 690px)': { height: 80, width: 80 },
+  '@media (max-width: 689px)': { height: 60, width: 60 },
   boxShadow: isClickable ? shadows[3] : undefined,
 });
 
@@ -90,15 +69,15 @@ const StyledAvatar = styled(Avatar, {
 
 const StyledAvatarDiv = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isClickable',
-})<{ isClickable: boolean }>(({ theme: { shadows, palette }, isClickable }) => {
-  return {
+})<{ isClickable: boolean }>(
+  ({ theme: { shadows, palette }, isClickable }) => ({
     ...sharedAvatarStyle(isClickable, shadows),
     borderRadius: '50%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     background: blueGrey[palette.mode === 'light' ? 300 : 700],
-  };
-});
+  })
+);
 
 export default ArtistBubble;

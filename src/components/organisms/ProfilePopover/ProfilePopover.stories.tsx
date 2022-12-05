@@ -12,7 +12,8 @@ const meta: Meta = {
   parameters: {
     docs: {
       description: {
-        component: 'ProfilePopover displays a drawer with a list of items',
+        component:
+          'ProfilePopover displays a user name and shows links to view porfile in Spotify and to log out',
       },
     },
   },
