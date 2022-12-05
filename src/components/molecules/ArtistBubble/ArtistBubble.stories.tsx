@@ -33,7 +33,7 @@ export const ArtistBubbleWithoutSpotifyId = Template.bind({});
 export const ArtistBubbleWithoutIconPicture = Template.bind({});
 
 ArtistBubbleWithoutSpotifyId.args = {
-  artist: { ...artistMock, ...Template.args?.artist, spotifyId: undefined },
+  artist: { ...artistMock, spotifyId: undefined },
 };
 setStoryDescription(
   ArtistBubbleWithoutSpotifyId,
@@ -41,7 +41,7 @@ setStoryDescription(
 );
 
 ArtistBubbleWithoutIconPicture.args = {
-  artist: { ...artistMock, ...Template.args?.artist, iconPicture: undefined },
+  artist: { ...artistMock, iconPicture: undefined },
 };
 setStoryDescription(
   ArtistBubbleWithoutIconPicture,
