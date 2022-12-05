@@ -10,6 +10,7 @@ import {
   setLoggedIn,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
+import { useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');
@@ -18,6 +19,7 @@ const LoginPage = () => {
   const verySmallScreen = useMediaQuery('(max-width:330px)');
 
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(setLoggedOff());
@@ -42,7 +44,7 @@ const LoginPage = () => {
         <StyledTitleTypography
           variant={bigScreen ? 'h2' : verySmallScreen ? 'h5' : 'h4'}
         >
-          Oskarito SpotiFest
+          {t('common.app_title')}
         </StyledTitleTypography>
       </Box>
       <Box

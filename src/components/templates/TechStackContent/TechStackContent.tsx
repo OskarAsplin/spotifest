@@ -7,16 +7,18 @@ import aboutPageStyles from '../../../pages/AboutPage.module.scss';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import StandardLink from '../../atoms/StandardLink/StandardLink';
 import styles from './TechStackContent.module.scss';
+import { Trans, useTranslation } from 'react-i18next';
 
 const PC_SCREEN_MIN_WIDTH = '(min-width:1040px)';
 
 const TechStackContent = () => {
   const isLightMode = useTheme().palette.mode === 'light';
   const pcScreen = useMediaQuery(PC_SCREEN_MIN_WIDTH);
+  const { t } = useTranslation();
 
   const techInfoRows: TechInfoRowProps[] = [
     {
-      text: 'Frontend made with React, Typescript, Redux and React Query',
+      text: t('about_page.tech_stack.frontend_code'),
       icons: [
         { path: 'React.svg', class: styles.iconDefaultHeight },
         {
@@ -35,21 +37,19 @@ const TechStackContent = () => {
     },
     {
       text: (
-        <Typography>
-          {'Components developed and documented with '}
-          <StandardLink href="https://master--638b82b31acca1e593c75c8d.chromatic.com">
-            Storybook
-          </StandardLink>
-        </Typography>
+        <Trans
+          i18nKey="about_page.tech_stack.frontend_storybook"
+          components={{ Link: <StandardLink /> }}
+        />
       ),
       icons: [{ path: 'Storybook.png', class: styles.iconDefaultHeight }],
     },
     {
-      text: 'UI based on Material-UI',
+      text: t('about_page.tech_stack.frontend_ui'),
       icons: [{ path: 'MUI.svg', class: styles.iconDefaultHeight }],
     },
     {
-      text: 'Frontend hosted on Netlify',
+      text: t('about_page.tech_stack.frontend_host'),
       icons: [
         {
           path: isLightMode ? 'Netlify.svg' : 'Netlify-white.svg',
@@ -58,7 +58,7 @@ const TechStackContent = () => {
       ],
     },
     {
-      text: 'Backend written in Python with Django and SQLite as database',
+      text: t('about_page.tech_stack.backend_code'),
       icons: [
         {
           path: isLightMode ? 'Python.svg' : 'Python-white.svg',
@@ -75,7 +75,7 @@ const TechStackContent = () => {
       ],
     },
     {
-      text: 'Django server set up with Gunicorn and Nginx',
+      text: t('about_page.tech_stack.backend_server'),
       icons: [
         {
           path: isLightMode ? 'Gunicorn.png' : 'Gunicorn-white.png',
@@ -88,7 +88,7 @@ const TechStackContent = () => {
       ],
     },
     {
-      text: 'Backend server environment contained with Docker',
+      text: t('about_page.tech_stack.backend_container'),
       icons: [
         {
           path: isLightMode ? 'Docker.png' : 'Docker-white.png',
@@ -97,7 +97,7 @@ const TechStackContent = () => {
       ],
     },
     {
-      text: 'Backend hosted on DigitalOcean running Ubuntu 20.04',
+      text: t('about_page.tech_stack.backend_host'),
       icons: [
         { path: 'Digitalocean.svg', class: styles.mediumSize },
         {
@@ -107,7 +107,7 @@ const TechStackContent = () => {
       ],
     },
     {
-      text: 'Playlists and artists from Spotify using OAuth 2.0 authorization',
+      text: t('about_page.tech_stack.music_info'),
       icons: [
         { path: 'Spotify.png', class: styles.iconDefaultHeight },
         {
@@ -117,7 +117,7 @@ const TechStackContent = () => {
       ],
     },
     {
-      text: 'Lineup and festival information from Music Festival Wizard',
+      text: t('about_page.tech_stack.festival_info'),
       icons: [
         {
           path: isLightMode ? 'MFW.png' : 'MFW-white.png',
@@ -127,12 +127,10 @@ const TechStackContent = () => {
     },
     {
       text: (
-        <Typography>
-          {'Code version control on '}
-          <StandardLink href="https://github.com/OskarAsplin/spotifest">
-            GitHub
-          </StandardLink>
-        </Typography>
+        <Trans
+          i18nKey="about_page.tech_stack.version_control"
+          components={{ Link: <StandardLink /> }}
+        />
       ),
       icons: [
         {
@@ -142,7 +140,7 @@ const TechStackContent = () => {
       ],
     },
     {
-      text: 'Domain bought on NameCheap',
+      text: t('about_page.tech_stack.domain'),
       icons: [
         {
           path: isLightMode ? 'Namecheap.svg' : 'Namecheap-white.png',

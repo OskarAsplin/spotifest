@@ -43,6 +43,8 @@ const AboutPage = () => {
 
   const { PUBLIC_URL } = process.env;
 
+  const app_title = t('common.app_title');
+
   return (
     <>
       {bigPcScreen && <TopLeftBackButtonContainer />}
@@ -53,9 +55,9 @@ const AboutPage = () => {
         <Box className={styles.box}>
           <Typography
             variant={bigScreen ? 'h4' : 'h5'}
-            className={clsx(styles.title, styles.textAlign)}
+            sx={{ textAlign: 'center', my: 2 }}
           >
-            Oskarito SpotiFest features
+            {t('about_page.features.title', { app_title })}
           </Typography>
           <div className={styles.verticalSpace} />
           <List className={styles.noPadding}>
@@ -102,7 +104,7 @@ const AboutPage = () => {
             >
               <ExpandButton expanded={techExpanded} />
               <Typography variant="h5" sx={{ cursor: 'pointer' }}>
-                Technology stack
+                {t('about_page.tech_stack.title')}
               </Typography>
               <ExpandButton expanded={techExpanded} />
             </div>
@@ -128,7 +130,7 @@ const AboutPage = () => {
             >
               <ExpandButton expanded={supportExpanded} />
               <Typography variant="h5" sx={{ cursor: 'pointer' }}>
-                Ways to support
+                {t('about_page.support.title')}
               </Typography>
               <ExpandButton expanded={supportExpanded} />
             </div>
@@ -137,7 +139,7 @@ const AboutPage = () => {
                 <List className={styles.noPadding}>
                   <CustomListItem
                     text={
-                      <ListItemText primary="Spread the word! Share your matching results and tell everyone about Oskarito SpotiFest" />
+                      <ListItemText primary={t('about_page.support.share')} />
                     }
                     Icon={
                       <CampaignTwoToneIcon fontSize="large" color="primary" />
@@ -153,21 +155,14 @@ const AboutPage = () => {
                   />
                   <CustomListItem
                     text={
-                      <ListItemText
-                        key="github"
-                        disableTypography
-                        className={styles.adjustTextForStar}
-                      >
-                        <Typography variant="body1">
-                          Give the code a{' '}
-                        </Typography>
-                        <StarRateTwoToneIcon className={styles.starIcon} />
-                        <Typography variant="body1">
-                          {' on '}
-                          <StandardLink href="https://github.com/OskarAsplin/spotifest">
-                            GitHub
-                          </StandardLink>
-                        </Typography>
+                      <ListItemText>
+                        <Trans
+                          i18nKey="about_page.support.code"
+                          components={{
+                            StarIcon: <StarRateTwoToneIcon sx={{ my: -0.5 }} />,
+                            Link: <StandardLink />,
+                          }}
+                        />
                       </ListItemText>
                     }
                     Icon={<StarRateTwoToneIcon fontSize="large" />}
@@ -188,20 +183,14 @@ const AboutPage = () => {
             >
               <ExpandButton expanded={disclaimerExpanded} />
               <Typography variant="h5" sx={{ cursor: 'pointer' }}>
-                Disclaimer
+                {t('about_page.disclaimer.title')}
               </Typography>
               <ExpandButton expanded={disclaimerExpanded} />
             </div>
             <Collapse in={disclaimerExpanded} timeout="auto" unmountOnExit>
               <div className={styles.expandedDiv}>
-                <Typography variant="body1" className={styles.textAlign}>
-                  The creator of Oskarito SpotiFest takes no responsibility for
-                  any inaccuracies in the information on the site, as this is
-                  purely a hobby project at this point. No personal data is
-                  collected by this site, but youtube videos showed on the
-                  festival pages collect cookies. When logging out or going to{' '}
-                  <StandardLink to="/login">spotifest.app/login</StandardLink>,
-                  all browser data linked to the site is deleted.
+                <Typography variant="body1" sx={{ textAlign: 'center' }}>
+                  {t('about_page.disclaimer.text')}
                 </Typography>
               </div>
             </Collapse>
@@ -213,8 +202,8 @@ const AboutPage = () => {
             className={clsx(styles.creatorPaper, styles.maxWidth400)}
           >
             <div className={styles.flexColumn}>
-              <Typography variant="h5" className={styles.textAlign}>
-                Created by
+              <Typography variant="h5" sx={{ textAlign: 'center' }}>
+                {t('about_page.creator.title')}
               </Typography>
               <Box
                 className={clsx(
@@ -228,8 +217,8 @@ const AboutPage = () => {
                   alt="Creator"
                 />
               </Box>
-              <Typography variant="h6" className={styles.textAlign}>
-                Oskar Asplin
+              <Typography variant="h6" sx={{ textAlign: 'center' }}>
+                {t('about_page.creator.text')}
               </Typography>
               <div className={styles.rowFlexCenter}>
                 <IconButton

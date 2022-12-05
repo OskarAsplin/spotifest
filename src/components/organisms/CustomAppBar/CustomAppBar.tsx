@@ -15,6 +15,7 @@ import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useState } from 'react';
 import { SearchFieldContainerProps } from '../../../containers/SearchFieldContainer';
+import { useTranslation } from 'react-i18next';
 
 interface CustomAppBarProps {
   SearchFieldComponent: (props: SearchFieldContainerProps) => JSX.Element;
@@ -35,6 +36,7 @@ const CustomAppBar = ({
   const smallMobileScreen = useMediaQuery('(max-width:355px)');
   const [showSearchFieldSmallScreen, setShowSearchFieldSmallScreen] =
     useState(false);
+  const { t } = useTranslation();
 
   const onClickSearchIcon = () =>
     setShowSearchFieldSmallScreen(!showSearchFieldSmallScreen);
@@ -57,7 +59,9 @@ const CustomAppBar = ({
           onClick={onClickLogo}
         >
           <Typography variant="h6">
-            {smallMobileScreen ? 'SpotiFest' : 'Oskarito SpotiFest'}
+            {smallMobileScreen
+              ? t('common.app_title_short')
+              : t('common.app_title')}
           </Typography>
         </Button>
         <Box sx={{ flexGrow: 1 }} />

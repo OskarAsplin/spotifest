@@ -109,11 +109,6 @@ $socialButtonSize: 46px;
   }
 }
 
-.title {
-  @include centeredFlex(column);
-  min-height: 48px;
-}
-
 .rowFlexCenter {
   @include centeredFlex(row);
 }
@@ -148,18 +143,6 @@ $socialButtonSize: 46px;
 
 .noPadding {
   padding: 0 !important;
-}
-
-.starIcon {
-  margin: {
-    left: 4px;
-    right: 4px;
-  }
-}
-
-.adjustTextForStar {
-  display: flex;
-  align-items: center;
 }
 
 @mixin socialButtonDimensions {

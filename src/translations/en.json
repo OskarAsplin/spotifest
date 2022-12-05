@@ -1,14 +1,45 @@
 {
   "common": {
-    "app_title": "Oskarito SpotiFest"
+    "app_title": "Oskarito SpotiFest",
+    "app_title_short": "SpotiFest"
   },
   "about_page": {
     "features": {
+      "title": "{{app_title}} features",
       "matching": "Festival matching with more than 1000 festivals worldwide",
       "festivals": "Festival pages with current and previous lineups",
       "artists": "Artist pages to see which festivals each artist is attending",
       "code": "Open source frontend code on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>",
       "storybook": "Documentation of React components on <Link href=\"https://master--638b82b31acca1e593c75c8d.chromatic.com\">Storybook</Link>"
+    },
+    "tech_stack": {
+      "title": "Technology stack",
+      "frontend_code": "Frontend made with React, Typescript, Redux and React Query",
+      "frontend_storybook": "Components developed and documented with <Link href=\"https://master--638b82b31acca1e593c75c8d.chromatic.com\">Storybook</Link>",
+      "frontend_ui": "UI based on Material-UI",
+      "frontend_host": "Frontend hosted on Netlify",
+      "backend_code": "Backend written in Python with Django and SQLite as database",
+      "backend_server": "Django server set up with Gunicorn and Nginx",
+      "backend_container": "Backend server environment contained with Docker",
+      "backend_host": "Backend hosted on DigitalOcean running Ubuntu 20.04",
+      "music_info": "Playlists and artists from Spotify using OAuth 2.0 authorization",
+      "festival_info": "Lineup and festival information from Music Festival Wizard",
+      "version_control": "Code version control on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>",
+      "domain": "Domain bought on NameCheap"
+    },
+    "support": {
+      "title": "Ways to support",
+      "share": "Spread the word! Share your matching results and tell everyone about Oskarito SpotiFest",
+      "tickets": "Buy your festival tickets through the ticket links on the site",
+      "code": "Give the code a <StarIcon/> on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>"
+    },
+    "disclaimer": {
+      "title": "Disclaimer",
+      "text": "The creator of Oskarito SpotiFest takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages collect cookies."
+    },
+    "creator": {
+      "title": "Created by",
+      "text": "Oskar Asplin"
     }
   }
 }
