@@ -1,4 +1,7 @@
 {
+  "common": {
+    "app_title": "Oskarito SpotiFest"
+  },
   "about_page": {
     "features": {
       "matching": "Festival matching with more than 1000 festivals worldwide",

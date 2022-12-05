@@ -33,7 +33,7 @@ const AboutPage = () => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const biggerScreen = useMediaQuery('(min-width:720px)');
   const bigPcScreen = useMediaQuery('(min-width:1300px)');
-  const { t } = useTranslation('translation', { keyPrefix: 'about_page' });
+  const { t } = useTranslation();
 
   const [techExpanded, setTechExpanded] = useState(false);
   const [supportExpanded, setSupportExpanded] = useState(false);
@@ -60,15 +60,15 @@ const AboutPage = () => {
           <div className={styles.verticalSpace} />
           <List className={styles.noPadding}>
             <CustomListItem
-              text={t('features.matching')}
+              text={t('about_page.features.matching')}
               Icon={<LibraryMusicTwoToneIcon fontSize="large" color="info" />}
             />
             <CustomListItem
-              text={t('features.festivals')}
+              text={t('about_page.features.festivals')}
               Icon={<FestivalTwoToneIcon fontSize="large" color="error" />}
             />
             <CustomListItem
-              text={t('features.artists')}
+              text={t('about_page.features.artists')}
               Icon={<Groups2TwoToneIcon fontSize="large" color="secondary" />}
             />
             <CustomListItem
