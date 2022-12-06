@@ -1,5 +1,4 @@
-import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import { Box, IconButton } from '@mui/material';
+import { Box } from '@mui/material';
 import { Fragment } from 'react';
 import {
   TelegramIcon,
@@ -9,10 +8,16 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
-import CopyToClipboard from '../../atoms/CopyToClipboard/CopyToClipboard';
 import { StyledTooltip } from '../../atoms/HtmlTooltip/HtmlTooltip';
+import CopyToClipboardButton from '../../molecules/CopyToClipboardButton/CopyToClipboardButton';
 
 const BUTTON_SIZE = 32;
+
+const disabledStyle: React.CSSProperties = {
+  cursor: 'default',
+  opacity: 0.6,
+  pointerEvents: 'none',
+};
 
 interface SocialMediaButtonsProps {
   message: string;
@@ -27,64 +32,36 @@ const SocialMediaButtons = ({
   tooltipText,
   isDisabled,
 }: SocialMediaButtonsProps) => {
+  const sharedButtonProps = {
+    url: shareUrl,
+    title: message,
+    disabled: isDisabled,
+    disabledStyle,
+  };
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', ml: 2 }}>
       <ButtonWrapper tooltipText={tooltipText}>
-        <TwitterShareButton
-          url={shareUrl}
-          title={message}
-          hashtags={['spotifest']}
-          disabled={isDisabled}
-        >
+        <TwitterShareButton {...sharedButtonProps} hashtags={['spotifest']}>
           <TwitterIcon size={BUTTON_SIZE} round />
         </TwitterShareButton>
       </ButtonWrapper>
       <ButtonWrapper tooltipText={tooltipText}>
-        <TelegramShareButton
-          url={shareUrl}
-          title={message}
-          disabled={isDisabled}
-        >
+        <TelegramShareButton {...sharedButtonProps}>
           <TelegramIcon size={BUTTON_SIZE} round />
         </TelegramShareButton>
       </ButtonWrapper>
       <ButtonWrapper tooltipText={tooltipText}>
-        <WhatsappShareButton
-          url={shareUrl}
-          title={message}
-          disabled={isDisabled}
-        >
+        <WhatsappShareButton {...sharedButtonProps}>
           <WhatsappIcon size={BUTTON_SIZE} round />
         </WhatsappShareButton>
       </ButtonWrapper>
       <ButtonWrapper
         tooltipText={isDisabled ? tooltipText : 'Copy link and message'}
       >
-        <CopyToClipboard>
-          {({ copy }) => (
-            <IconButton
-              onClick={() => copy(`${message} ${shareUrl}`)}
-              sx={{ p: 0 }}
-              disabled={isDisabled}
-            >
-              <Box
-                sx={{
-                  backgroundColor: `rgba(255, 255, 255, ${
-                    isDisabled ? '0.3' : '0.5'
-                  })`,
-                  borderRadius: '50%',
-                  width: ({ spacing }) => spacing(4),
-                  height: ({ spacing }) => spacing(4),
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <ContentCopyOutlinedIcon fontSize="small" />
-              </Box>
-            </IconButton>
-          )}
-        </CopyToClipboard>
+        <CopyToClipboardButton
+          textToCopy={`${message} ${shareUrl}`}
+          isDisabled={isDisabled}
+        />
       </ButtonWrapper>
     </Box>
   );

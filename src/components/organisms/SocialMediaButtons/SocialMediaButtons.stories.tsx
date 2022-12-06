@@ -34,4 +34,7 @@ export { Template as SocialMediaButtons };
 export const SocialMediaButtonsDisabled = Template.bind({});
 
 SocialMediaButtonsDisabled.args = { isDisabled: true };
-setStoryDescription(SocialMediaButtonsDisabled, 'With `isDisabled: true`');
+setStoryDescription(
+  SocialMediaButtonsDisabled,
+  'With `isDisabled: true`. This does not affect the tooltipText'
+);
