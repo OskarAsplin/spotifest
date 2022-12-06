@@ -1,6 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import AreaSelect from './AreaSelect';
 import { FormControl, InputLabel } from '@mui/material';
+import AreaSelect from './AreaSelect';
+import { continentsMock, countriesMock } from './AreaSelect.fixtures';
 
 type Meta = ComponentMeta<typeof AreaSelect>;
 type Story = ComponentStory<typeof AreaSelect>;
@@ -18,15 +19,8 @@ const meta: Meta = {
     },
   },
   args: {
-    continents: [
-      { name: 'Europe', isoCode: 'EU' },
-      { name: 'North America', isoCode: 'NA' },
-      { name: 'Oceania', isoCode: 'OC' },
-      { name: 'Asia', isoCode: 'AS' },
-      { name: 'South America', isoCode: 'SA' },
-      { name: 'Africa', isoCode: 'AF' },
-    ],
-    countries: [{ name: 'Norway', isoCode: 'NO' }],
+    continents: continentsMock,
+    countries: countriesMock,
     label: 'Area',
   },
 };

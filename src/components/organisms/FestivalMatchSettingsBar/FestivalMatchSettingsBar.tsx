@@ -131,14 +131,7 @@ const FestivalMatchSettingsBar = ({
         </Grid>
       </StyledBox>
       {pcScreen && (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            pb: 0.5,
-          }}
-        >
+        <Box sx={{ pt: 0.5 }}>
           <HtmlTooltip
             placement="right-start"
             title={

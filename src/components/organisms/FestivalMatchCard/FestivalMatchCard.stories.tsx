@@ -50,8 +50,10 @@ const meta: Meta = {
 export default meta;
 
 const Template: Story = (args) => (
-  <Box sx={{ px: 10 }}>
-    <FestivalMatchCard {...args} />
+  <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+    <Box sx={{ width: '764px' }}>
+      <FestivalMatchCard {...args} />
+    </Box>
   </Box>
 );
 
