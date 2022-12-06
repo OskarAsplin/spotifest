@@ -48,7 +48,7 @@ const SearchResults = ({
           {searchResults.festivals.slice(0, 5).map((festival) => (
             <StandardLink
               key={'searchResult festival: ' + festival.name}
-              href={getFestivalPath(festival.name)}
+              to={getFestivalPath(festival.name)}
               {...standardLinkProps}
             >
               <MatchHighlighter
@@ -74,7 +74,7 @@ const SearchResults = ({
           {searchResults.artists.slice(0, 5).map((artist) => (
             <StandardLink
               key={'searchResult artist: ' + artist.name}
-              href={getArtistPath(artist.name, artist.spotifyId)}
+              to={getArtistPath(artist.name, artist.spotifyId)}
               {...standardLinkProps}
             >
               <MatchHighlighter
