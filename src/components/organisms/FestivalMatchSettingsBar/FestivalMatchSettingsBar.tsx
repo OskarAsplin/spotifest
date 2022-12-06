@@ -16,7 +16,7 @@ import { Area, Artist, MatchSettings, Playlist } from '../../../api/types';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import AreaSelect from '../../molecules/AreaSelect/AreaSelect';
 import MatchCriteriaSelect from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import SettingsBarDatePicker from '../../molecules/SettingsBarDatePicker';
+import SettingsBarDatePicker from '../../molecules/SettingsBarDatePicker/SettingsBarDatePicker';
 
 interface FestivalMatchSettingsBarProps {
   playlists: Playlist[];

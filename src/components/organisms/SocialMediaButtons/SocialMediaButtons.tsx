@@ -1,4 +1,4 @@
-import LinkIcon from '@mui/icons-material/Link';
+import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
 import { Box, IconButton } from '@mui/material';
 import { Fragment } from 'react';
 import {
@@ -80,7 +80,7 @@ const SocialMediaButtons = ({
                   alignItems: 'center',
                 }}
               >
-                <LinkIcon />
+                <ContentCopyOutlinedIcon fontSize="small" />
               </Box>
             </IconButton>
           )}
