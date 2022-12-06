@@ -1,4 +1,5 @@
 import { withTheme } from './decorators';
+import i18n from '../src/translations/i18n';
 
 export const parameters = {
   controls: {
@@ -18,6 +19,11 @@ export const parameters = {
   viewMode: 'docs',
   previewTabs: {
     'storybook/docs/panel': { index: -1 },
+  },
+  i18n,
+  locale: 'en',
+  locales: {
+    en: 'English',
   },
 };
 
