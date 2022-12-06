@@ -1,9 +1,10 @@
-import { Box } from '@mui/material';
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { setStoryDescription } from '../../../utils/storyUtils';
 import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
 import FestivalMatchCard from './FestivalMatchCard';
+import { StyledRootDiv } from '../../../layouts/StyledLayoutComponents';
+import { StyledMatchesRootBox } from '../../../containers/FestivalMatchesContainer';
 
 type Meta = ComponentMeta<typeof FestivalMatchCard>;
 type Story = ComponentStory<typeof FestivalMatchCard>;
@@ -18,7 +19,7 @@ const meta: Meta = {
           'FestivalMatchCard to display festival information and possibly matching artists',
       },
     },
-    viewMode: 'docs',
+    layout: 'fullscreen',
   },
   args: {
     festival: {
@@ -50,11 +51,11 @@ const meta: Meta = {
 export default meta;
 
 const Template: Story = (args) => (
-  <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-    <Box sx={{ width: '764px' }}>
+  <StyledRootDiv>
+    <StyledMatchesRootBox>
       <FestivalMatchCard {...args} />
-    </Box>
-  </Box>
+    </StyledMatchesRootBox>
+  </StyledRootDiv>
 );
 
 export { Template as FestivalMatchCard };

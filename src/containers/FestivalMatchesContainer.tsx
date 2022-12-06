@@ -162,7 +162,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
     matchBasis === TOP_ARTISTS_CHOICE ? topArtists : playlistArtists;
 
   return (
-    <StyledRootBox>
+    <StyledMatchesRootBox>
       {showMatches.length > 0 && (
         <Box
           sx={{
@@ -218,11 +218,11 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
           No registered festivals in the selected area in this time frame.
         </Typography>
       )}
-    </StyledRootBox>
+    </StyledMatchesRootBox>
   );
 });
 
-const StyledRootBox = styled(Box)(({ theme: { spacing } }) => ({
+export const StyledMatchesRootBox = styled(Box)(({ theme: { spacing } }) => ({
   width: '100%',
   maxWidth: '764px',
   '@media (max-width: 609px)': { marginTop: spacing(1) },
