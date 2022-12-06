@@ -44,11 +44,15 @@ const SearchFieldContainer = ({
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <SearchField onChange={debouncedOnChange} />
           {searchResults && inputText && (
-            <SearchResults
-              searchResults={searchResults}
-              inputText={inputText}
-              resetSearchFieldState={resetSearchFieldState}
-            />
+            <div>
+              <Box sx={{ position: 'absolute' }}>
+                <SearchResults
+                  searchResults={searchResults}
+                  inputText={inputText}
+                  resetSearchFieldState={resetSearchFieldState}
+                />
+              </Box>
+            </div>
           )}
         </Box>
       </ClickAwayListener>

@@ -32,12 +32,12 @@ const EndAdornment = () => (
   </InputAdornment>
 );
 
-export const SHARED_SEARCH_FIELD_WIDTH_BIG_SCREEN = {
+export const SEARCH_FIELD_WIDTH_BIG_SCREEN = {
   '@media (min-width: 610px)': { width: '250px' },
 };
 
 const StyledTextField = styled(TextField)(({ theme: { palette } }) => ({
-  ...SHARED_SEARCH_FIELD_WIDTH_BIG_SCREEN,
+  ...SEARCH_FIELD_WIDTH_BIG_SCREEN,
   '@media (max-width: 609px)': {
     backgroundColor: palette.mode === 'dark' ? blueGrey[900] : blueGrey[500],
   },
