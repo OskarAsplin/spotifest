@@ -53,45 +53,41 @@ const SelectPlaylistModal = ({
     >
       <Fade in={open}>
         <Paper sx={{ p: 2, outline: 'none', backgroundColor: '#303030' }}>
-          <StyledBox sx={{ flexDirection: 'column' }}>
-            <Typography
-              variant={
-                smallScreen ? (topArtists.length === 0 ? 'h6' : 'h5') : 'h4'
-              }
-              sx={{ textAlign: 'center', mb: 1 }}
-            >
-              {topArtists.length === 0
-                ? 'Choose a playlist to start your matching'
-                : 'Match festivals with'}
-            </Typography>
-            <FormControl
-              sx={{
-                m: 1,
-                '@media (min-width: 800px)': {
-                  minWidth: 200,
-                  maxWidth: 300,
-                },
-                '@media (max-width: 799px)': {
-                  minWidth: 150,
-                  maxWidth: 220,
-                },
-              }}
-              size="small"
-            >
-              {topArtists.length === 0 && (
-                <InputLabel id="choose-initial-playlist-inputlabel">
-                  Playlist
-                </InputLabel>
-              )}
-              <MatchCriteriaSelect
-                value={topArtists.length !== 0 ? TOP_ARTISTS_CHOICE : ''}
-                label={topArtists.length === 0 ? 'Playlist' : undefined}
-                onChange={onMatchBasisChange}
-                topArtists={topArtists}
-                playlists={playlists}
-              />
-            </FormControl>
-          </StyledBox>
+          {(playlists.length !== 0 || topArtists.length !== 0) && (
+            <StyledBox sx={{ flexDirection: 'column' }}>
+              <Typography
+                variant={
+                  smallScreen ? (topArtists.length === 0 ? 'h6' : 'h5') : 'h4'
+                }
+                sx={{ textAlign: 'center', mb: 1 }}
+              >
+                {topArtists.length === 0
+                  ? 'Choose a playlist to begin!'
+                  : 'Match festivals with'}
+              </Typography>
+              <FormControl
+                sx={{
+                  m: 1,
+                  '@media (min-width: 800px)': { minWidth: 200, maxWidth: 300 },
+                  '@media (max-width: 799px)': { minWidth: 150, maxWidth: 220 },
+                }}
+                size="small"
+              >
+                {topArtists.length === 0 && (
+                  <InputLabel id="choose-initial-playlist-inputlabel">
+                    Playlist
+                  </InputLabel>
+                )}
+                <MatchCriteriaSelect
+                  value={topArtists.length !== 0 ? TOP_ARTISTS_CHOICE : ''}
+                  label={topArtists.length === 0 ? 'Playlist' : undefined}
+                  onChange={onMatchBasisChange}
+                  topArtists={topArtists}
+                  playlists={playlists}
+                />
+              </FormControl>
+            </StyledBox>
+          )}
           {topArtists.length !== 0 && (
             <StyledBox sx={{ flexDirection: 'column' }}>
               <Button
