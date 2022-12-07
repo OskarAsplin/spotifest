@@ -1,5 +1,6 @@
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { withRouter } from 'storybook-addon-react-router-v6';
 import SearchResults from './SearchResults';
 import { setStoryDescription } from '../../../utils/storyUtils';
 import { searchResultsMock } from './SearchResults.fixtures';
@@ -10,6 +11,7 @@ type Story = ComponentStory<typeof SearchResults>;
 const meta: Meta = {
   title: 'Organisms/SearchResults',
   component: SearchResults,
+  decorators: [withRouter],
   parameters: {
     docs: {
       description: {
