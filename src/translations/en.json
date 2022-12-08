@@ -5,7 +5,7 @@
       "title": "Created by"
     },
     "disclaimer": {
-      "text": "The creator of Oskarito SpotiFest takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages collect cookies.",
+      "text": "The creator of $t(common.app_title) takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages collect cookies.",
       "title": "Disclaimer"
     },
     "features": {
@@ -18,7 +18,7 @@
     },
     "support": {
       "code": "Give the code a <StarIcon/> on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>",
-      "share": "Spread the word! Share your matching results and tell everyone about Oskarito SpotiFest",
+      "share": "Spread the word! Share your matching results and tell everyone about $t(common.app_title)",
       "tickets": "Buy your festival tickets through the ticket links on the site",
       "title": "Ways to support"
     },
@@ -54,8 +54,8 @@
   "common": {
     "about": "About",
     "alphabetically": "Alphabetically",
-    "app_title": "Oskarito SpotiFest",
-    "app_title_short": "SpotiFest",
+    "app_title": "Oskarito Spotifest",
+    "app_title_short": "Spotifest",
     "artists": "Artists",
     "brightness": "Brightness",
     "cancelled": "CANCELLED",
