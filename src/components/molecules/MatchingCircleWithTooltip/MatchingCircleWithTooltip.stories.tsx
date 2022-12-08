@@ -16,9 +16,9 @@ const meta: Meta = {
     },
   },
   args: {
-    total: 99,
-    artists: 88,
-    genres: 77,
+    total: 77,
+    artists: 65,
+    genres: 80,
   },
 };
 

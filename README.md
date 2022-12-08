@@ -30,7 +30,7 @@ Check it out at [spotifest.app](https://spotifest.app)
 - Festival pages with current and previous lineups
 - Artist pages to see which festivals each artist is attending
 - Adjustable matching parameters: playlist selector, area, time frame
-- Search bar to search for artists and festivals
+- Search field to search for artists and festivals
 
 ## How it works
 
