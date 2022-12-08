@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGet, withFallback } from '../api/api';
@@ -27,22 +28,21 @@ import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer
 import { ArtistBox, StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
+import { getCancelledDateString } from '../utils/dateUtils';
 import { getMaxArtistsInWidth } from '../utils/displayUtils';
 import { getFestivalPath } from '../utils/routeUtils';
-import FallbackPage from './FallbackPage';
+import FallbackPage, { DefaultErrorFallback } from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
-const ErrorFallback = () => (
-  <FallbackPage fallbackText="There seems to be some issue with connecting to our database. Try refreshing the page." />
-);
 
 const ArtistPage = withFallback(
   SuspenseFallback,
-  ErrorFallback
+  DefaultErrorFallback
 )(() => {
   const themeMode = useTheme().palette.mode;
   const { artistId } = useParams();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
   const spotifyId = hasSpotifyId && artistId?.substring('spotifyId='.length);
@@ -84,9 +84,10 @@ const ArtistPage = withFallback(
   const fillRelatedArtistsWidth =
     maxArtistsInWidth - (relatedArtists.length % maxArtistsInWidth);
 
-  if (!artistId) return <FallbackPage fallbackText="Invalid URL." />;
+  if (!artistId)
+    return <FallbackPage fallbackText={t('common.error.invalid_url')} />;
   if (!artistInfo)
-    return <FallbackPage fallbackText="Could not find artist." />;
+    return <FallbackPage fallbackText={t('common.error.artist_not_found')} />;
 
   return (
     <>
@@ -106,7 +107,6 @@ const ArtistPage = withFallback(
             flexDirection: 'column',
             alignItems: 'center',
           }}
-          key={'artistInfo:' + artistInfo.artist.name}
         >
           <Typography
             variant={bigScreen ? 'h3' : 'h4'}
@@ -158,8 +158,8 @@ const ArtistPage = withFallback(
             }}
           >
             {artistInfo.artist.genres.length > 0
-              ? 'Genres: ' + artistInfo.artist.genres.join(', ')
-              : 'No registered genres'}
+              ? `${t('common.genres')}: ${artistInfo.artist.genres.join(', ')}`
+              : t('common.no_genres')}
           </Typography>
           {artistInfo.artist.spotifyId && (
             <IconButton
@@ -187,18 +187,14 @@ const ArtistPage = withFallback(
                   color="primary"
                   sx={{ fontWeight: 'bold' }}
                 >
-                  Related artists
+                  {t('artist_page.related_artists')}
                 </Typography>
               </Divider>
               <ArtistBox>
                 {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
                   <ArtistBubbleContainer
+                    key={`avatar_rel_artist_${artistInfo.artist.name}${artist.name}`}
                     artist={artist}
-                    key={
-                      'avatar_rel_artist_' +
-                      artistInfo.artist.name +
-                      artist.name
-                    }
                   />
                 ))}
                 {relatedArtists.length > 0 &&
@@ -213,15 +209,15 @@ const ArtistPage = withFallback(
           <StyledCenteredDiv>
             <VerticalSpaceDiv />
             <StyledFestivalsTypography variant={bigScreen ? 'h4' : 'h5'}>
-              Attending festivals
+              {t('artist_page.future_festivals')}
             </StyledFestivalsTypography>
             <StyledStack spacing={3}>
               {artistInfo.festivalsFuture.map((festival) => (
                 <FestivalMatchCardContainer
+                  key={'FestivalMatchCard: ' + festival.name + festival.year}
                   festival={festival}
                   popularArtists={festival.popular_artists}
                   matchingArtists={[]}
-                  key={'FestivalMatchCard: ' + festival.name + festival.year}
                   showMatching={false}
                 />
               ))}
@@ -232,14 +228,12 @@ const ArtistPage = withFallback(
           <StyledCenteredDiv>
             <VerticalSpaceDiv />
             <StyledFestivalsTypography variant={bigScreen ? 'h4' : 'h5'}>
-              Previously attended festivals
+              {t('artist_page.past_festivals')}
             </StyledFestivalsTypography>
             <StyledStack spacing={2}>
               {artistInfo.festivalsPast.map((festival) => (
                 <StyledPastFestivalButton
-                  key={
-                    'festivals artist attends: ' + festival.name + festival.year
-                  }
+                  key={'past festival: ' + festival.name + festival.year}
                   variant="outlined"
                   onClick={() => navigate(getFestivalPath(festival.name))}
                 >
@@ -256,10 +250,7 @@ const ArtistPage = withFallback(
                     </Typography>
                     {festival.cancelled ? (
                       <Typography variant="subtitle1" color="secondary">
-                        {'CANCELLED' +
-                          (festival.date
-                            ? ' (' + festival.date + ', ' + festival.year + ')'
-                            : '')}
+                        {getCancelledDateString(festival.date, festival.year)}
                       </Typography>
                     ) : (
                       <Typography variant="subtitle1">
@@ -279,7 +270,7 @@ const ArtistPage = withFallback(
           <StyledCenteredDiv>
             <VerticalSpaceDiv />
             <Typography variant="subtitle1">
-              This artist has no registered festivals in our database.
+              {t('artist_page.no_festivals')}
             </Typography>
             <VerticalSpaceDiv />
           </StyledCenteredDiv>

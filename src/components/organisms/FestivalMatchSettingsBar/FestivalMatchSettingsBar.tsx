@@ -12,6 +12,7 @@ import { indigo } from '@mui/material/colors';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Area, Artist, MatchSettings, Playlist } from '../../../api/types';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import AreaSelect from '../../molecules/AreaSelect/AreaSelect';
@@ -47,6 +48,7 @@ const FestivalMatchSettingsBar = ({
   },
   isMatchBasisFieldDisabled,
 }: FestivalMatchSettingsBarProps) => {
+  const { t } = useTranslation();
   const themeMode = useTheme().palette.mode;
   const pcScreen = useMediaQuery('(min-width:1200px)');
 
@@ -58,9 +60,7 @@ const FestivalMatchSettingsBar = ({
           maxWidth: '1000px',
           justifyContent: 'space-between',
         },
-        '@media (max-width: 799px)': {
-          maxWidth: '460px',
-        },
+        '@media (max-width: 799px)': { maxWidth: '460px' },
         mb: 2,
         display: 'flex',
         flexWrap: 'wrap',
@@ -79,11 +79,13 @@ const FestivalMatchSettingsBar = ({
           }}
           size="small"
         >
-          <InputLabel id="choose-playlist-label">Match with</InputLabel>
+          <InputLabel id="choose-playlist-label">
+            {t('matching.criteria_select.label')}
+          </InputLabel>
           <MatchCriteriaSelect
+            label={t('matching.criteria_select.label')}
             value={matchSettings.matchBasis}
             onChange={onMatchBasisChange}
-            label="Match with"
             topArtists={topArtists}
             playlists={playlists}
             disabled={isMatchBasisFieldDisabled}
@@ -99,13 +101,15 @@ const FestivalMatchSettingsBar = ({
           }}
           size="small"
         >
-          <InputLabel id="choose-countries-label">Area</InputLabel>
+          <InputLabel id="choose-countries-label">
+            {t('matching.area_select.label')}
+          </InputLabel>
           <AreaSelect
-            continents={continents}
-            countries={countries}
+            label={t('matching.area_select.label')}
             value={matchSettings.area.isoCode}
             onChange={onAreaChange}
-            label="Area"
+            continents={continents}
+            countries={countries}
           />
         </FormControl>
       </StyledBox>
@@ -117,14 +121,14 @@ const FestivalMatchSettingsBar = ({
       >
         <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
           <SettingsBarDatePicker
-            label="From"
+            label={t('matching.from_date_select.label')}
             value={matchSettings.fromDate}
             onChange={onFromDateChange}
           />
         </Grid>
         <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
           <SettingsBarDatePicker
-            label="To"
+            label={t('matching.to_date_select.label')}
             value={matchSettings.toDate}
             onChange={onToDateChange}
           />
@@ -137,11 +141,9 @@ const FestivalMatchSettingsBar = ({
             title={
               <Fragment>
                 <Typography color="inherit" variant="h6">
-                  Matching algorithm
+                  {t('matching.algorithm.title')}
                 </Typography>
-                {
-                  'The matching algorithm is a combination of artist and genre matching. The number of artists in your selected playlist attending a festival combined with how well the genres of the playlist fit the festival, determines the match score shown on each festival.'
-                }
+                {t('matching.algorithm.description')}
               </Fragment>
             }
           >

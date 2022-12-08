@@ -10,7 +10,7 @@ import {
   setLoggedIn,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');
@@ -61,26 +61,19 @@ const LoginPage = () => {
       </Box>
       <StyledFooterDiv>
         <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
-          Find music festivals with your playlists
+          {t('login_page.footer.line_1')}
         </StyledFooterTypography>
         <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
-          {'A festival finder created by '}
-          <StandardLink href={'https://github.com/OskarAsplin'}>
-            Oskar Asplin
-          </StandardLink>
+          <Trans
+            i18nKey="login_page.footer.line_2"
+            components={{ Link: <StandardLink /> }}
+          />
         </StyledFooterTypography>
         <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
-          <StandardLink href="https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/">
-            Photo
-          </StandardLink>
-          {' by '}
-          <StandardLink href="https://www.flickr.com/photos/149801000@N05/">
-            veldmusicfestival
-          </StandardLink>
-          {' / '}
-          <StandardLink href="https://creativecommons.org/licenses/by-sa/2.0/">
-            CC BY-SA 2.0
-          </StandardLink>
+          <Trans
+            i18nKey="login_page.footer.line_3"
+            components={{ Link: <StandardLink /> }}
+          />
         </StyledFooterTypography>
       </StyledFooterDiv>
     </StyledBackgroundDiv>

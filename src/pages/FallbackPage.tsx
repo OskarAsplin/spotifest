@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { useTranslation } from 'react-i18next';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 
 interface FallbackPageProps {
@@ -36,5 +37,10 @@ const StyledCenteredDiv = styled('div')(() => ({
   alignItems: 'center',
   width: '100%',
 }));
+
+export const DefaultErrorFallback = () => {
+  const { t } = useTranslation();
+  return <FallbackPage fallbackText={t('common.error.database_connection')} />;
+};
 
 export default FallbackPage;

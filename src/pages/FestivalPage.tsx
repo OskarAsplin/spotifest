@@ -13,6 +13,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
+import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player/lazy';
 import { useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
@@ -27,20 +28,18 @@ import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
 import '../styles/base.scss';
+import { getCancelledDateString } from '../utils/dateUtils';
 import {
   displayedLocationName,
   getMaxArtistsInFullLineupWidth,
 } from '../utils/displayUtils';
-import FallbackPage from './FallbackPage';
+import FallbackPage, { DefaultErrorFallback } from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
-const ErrorFallback = () => (
-  <FallbackPage fallbackText="There seems to be some issue with connecting to our database. Try refreshing the page." />
-);
 
 const FestivalPage = withFallback(
   SuspenseFallback,
-  ErrorFallback
+  DefaultErrorFallback
 )(() => {
   const boxForLineups = useMediaQuery('(min-width:1182px)');
   const mediumScreen = useMediaQuery('(min-width:610px)');
@@ -50,6 +49,7 @@ const FestivalPage = withFallback(
   const videoSizeMax = useMediaQuery('(min-width:770px)');
   const videoSizeSmall = useMediaQuery('(max-width:470px)');
 
+  const { t } = useTranslation();
   const themeDirection = useTheme().direction;
   const { festivalId } = useParams();
 
@@ -69,9 +69,10 @@ const FestivalPage = withFallback(
   const [selectedLineup, setSelectedLineup] = useState(0);
   const [sortAlphabetically, setSortAlphabetically] = useState(false);
 
-  if (!festivalId) return <FallbackPage fallbackText="Invalid URL." />;
+  if (!festivalId)
+    return <FallbackPage fallbackText={t('common.error.invalid_url')} />;
   if (!festivalInfo)
-    return <FallbackPage fallbackText="Could not find festival." />;
+    return <FallbackPage fallbackText={t('common.error.festival_not_found')} />;
 
   return (
     <>
@@ -94,7 +95,6 @@ const FestivalPage = withFallback(
                 },
                 '@media (max-width: 439px)': { px: 2 },
               }}
-              key={'festivalInfo:' + festivalInfo.name}
             >
               <Typography
                 variant={bigScreen ? 'h3' : 'h4'}
@@ -119,7 +119,7 @@ const FestivalPage = withFallback(
                 variant="subtitle1"
                 sx={{ m: 1, textAlign: 'center' }}
               >
-                {'Genres: ' + festivalInfo.genres.slice(0, 5).join(', ')}
+                {`${t('common.genres')}: ${festivalInfo.genres.join(', ')}`}
               </Typography>
               <div>
                 {festivalInfo.webpage && (
@@ -149,10 +149,7 @@ const FestivalPage = withFallback(
           </Box>
           {festivalInfo.video && (
             <Box sx={{ mb: 2 }}>
-              <StyledVideoPaper
-                elevation={3}
-                key={'festival video:' + festivalInfo.name}
-              >
+              <StyledVideoPaper elevation={3}>
                 <ReactPlayer
                   url={festivalInfo.video}
                   controls
@@ -183,11 +180,7 @@ const FestivalPage = withFallback(
         </StyledRootDiv>
         {festivalInfo.lineups.length !== 0 && (
           <Box sx={{ width: '100%', maxWidth: '1150px', my: 0, mx: 2 }}>
-            <StyledLineupPaper
-              square={!boxForLineups}
-              elevation={3}
-              key={'festival lineups:' + festivalInfo.name}
-            >
+            <StyledLineupPaper square={!boxForLineups} elevation={3}>
               <Tabs
                 centered
                 value={selectedLineup}
@@ -221,24 +214,21 @@ const FestivalPage = withFallback(
                   .slice(0, limitLineups)
                   .map((lineup, idx) => (
                     <TabPanel
+                      key={'tabPanel: ' + festivalInfo.name + lineup.year}
                       value={selectedLineup}
                       index={idx}
-                      key={'tabPanel: ' + festivalInfo.name + lineup.year}
                     >
                       {lineup.artists.length === 0 ? (
                         <StyledCenteredColumnDiv>
                           <Typography variant="h6">
-                            No lineup registered
+                            {t('common.no_lineup')}
                           </Typography>
                         </StyledCenteredColumnDiv>
                       ) : (
                         <StyledCenteredColumnDiv>
                           {lineup.cancelled ? (
                             <Typography variant="h6" color="secondary">
-                              {'CANCELLED' +
-                                (lineup.date_str
-                                  ? ' (' + lineup.date_str + ')'
-                                  : '')}
+                              {getCancelledDateString(lineup.date_str)}
                             </Typography>
                           ) : (
                             <Typography variant="h5">
@@ -248,8 +238,8 @@ const FestivalPage = withFallback(
                           <CustomSwitch
                             checked={sortAlphabetically}
                             setChecked={setSortAlphabetically}
-                            leftOptionText="Popularity"
-                            rightOptionText="Alphabetically"
+                            leftOptionText={t('common.popularity')}
+                            rightOptionText={t('common.alphabetically')}
                           />
                           <Box
                             sx={{
@@ -273,13 +263,8 @@ const FestivalPage = withFallback(
                                 )
                                 .map((artist) => (
                                   <ArtistBubbleContainer
+                                    key={`avatar_festival_lineup_artist_${festivalInfo.name}${lineup.year}${artist.name}`}
                                     artist={artist}
-                                    key={
-                                      'avatar_festival_lineup_artist_' +
-                                      festivalInfo.name +
-                                      lineup.year +
-                                      artist.name
-                                    }
                                   />
                                 ))}
                             {lineup.artists.length > 0 &&
@@ -323,9 +308,7 @@ const FestivalPage = withFallback(
         )}
       </StyledCenteredColumnDiv>
       {festivalInfo.video && (
-        <StyledCookieConsent>
-          The youtube videos on this site use cookies.
-        </StyledCookieConsent>
+        <StyledCookieConsent>{t('common.youtube_cookies')}</StyledCookieConsent>
       )}
     </>
   );

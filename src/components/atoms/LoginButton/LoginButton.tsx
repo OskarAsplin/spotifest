@@ -1,6 +1,7 @@
 import { Box, Button, buttonClasses, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { useTranslation } from 'react-i18next';
 
 interface LoginButtonProps {
   onClick: () => void;
@@ -10,6 +11,7 @@ const LoginButton = ({ onClick }: LoginButtonProps) => {
   const bigWidth = useMediaQuery('(min-width:610px)');
   const bigHeight = useMediaQuery('(min-height:610px)');
   const bigScreen = bigWidth && bigHeight;
+  const { t } = useTranslation();
 
   return (
     <StyledLoginButton
@@ -27,7 +29,7 @@ const LoginButton = ({ onClick }: LoginButtonProps) => {
         }}
       />
       <Typography variant={bigScreen ? 'h4' : 'h6'} color="textPrimary">
-        Log in with Spotify
+        {t('login_page.button')}
       </Typography>
     </StyledLoginButton>
   );

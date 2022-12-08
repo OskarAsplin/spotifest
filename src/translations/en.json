@@ -1,7 +1,23 @@
 {
   "common": {
     "app_title": "Oskarito SpotiFest",
-    "app_title_short": "SpotiFest"
+    "app_title_short": "SpotiFest",
+    "cancelled": "CANCELLED",
+    "genres": "Genres",
+    "artists": "Artists",
+    "total": "Total",
+    "no_genres": "No registered genres",
+    "no_lineup": "No lineup registered",
+    "popularity": "Popularity",
+    "alphabetically": "Alphabetically",
+    "playlist": "Playlist",
+    "youtube_cookies": "The youtube videos on this site use cookies.",
+    "error": {
+      "database_connection": "There seems to be some issue with connecting to our database. Try refreshing the page.",
+      "invalid_url": "Invalid URL.",
+      "festival_not_found": "Could not find festival.",
+      "artist_not_found": "Could not find artist."
+    }
   },
   "about_page": {
     "features": {
@@ -47,6 +63,59 @@
       "view_profile": "View profile in Spotify",
       "log_out": "Log out",
       "log_in": "<Link>Log in</Link> to match your Spotify profile with music festivals!"
+    }
+  },
+  "login_page": {
+    "button": "Log in with Spotify",
+    "footer": {
+      "line_1": "Find music festivals with your playlists",
+      "line_2": "A festival finder created by <Link href=\"https://github.com/OskarAsplin\">Oskar Asplin</Link>",
+      "line_3": "<Link href=\"https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/\">Photo</Link> by <Link href=\"https://www.flickr.com/photos/149801000@N05/\">veldmusicfestival</Link> / <Link href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC BY-SA 2.0</Link>"
+    }
+  },
+  "artist_page": {
+    "related_artists": "Related artists",
+    "future_festivals": "Attending festivals",
+    "past_festivals": "Previously attended festivals",
+    "no_festivals": "This artist has no registered festivals in our database."
+  },
+  "shared_results_page": {
+    "description": "Festival matches for <PlaylistLink>{{playlist_name}}</PlaylistLink> by <UserLink>{{user_name}}</UserLink>",
+    "test_yourself": "Test with your own playlists <Link to=\"/\">here!</Link>"
+  },
+  "matching": {
+    "modal": {
+      "default_text": "Match festivals with",
+      "go_button": "Go",
+      "no_top_artists": "Choose a playlist to begin!",
+      "no_top_artists_or_playlists": "We can't find any listening habits or playlists to use for our festival matching. Go to your <Link>Spotify profile</Link> and create or subscribe to a playlist to start your festival matching"
+    },
+    "criteria_select": {
+      "label": "Match with",
+      "top_artists_option": "Your most played artists",
+      "playlists_sub_header": "or choose a playlist below"
+    },
+    "area_select": {
+      "label": "Area",
+      "continents_sub_header": "Continents",
+      "europe_sub_header": "European regions",
+      "us_sub_header": "US regions",
+      "countries_sub_header": "Countries"
+    },
+    "from_date_select": {
+      "label": "From"
+    },
+    "to_date_select": {
+      "label": "To"
+    },
+    "algorithm": {
+      "title": "Matching algorithm",
+      "description": "The matching algorithm is a combination of artist and genre matching. The number of artists in your selected playlist attending a festival combined with how well the genres of the playlist fit the festival, determines the match score shown on each festival."
+    },
+    "card": {
+      "matching_artists": "Matching artists",
+      "no_matching_artists": "No matching artists",
+      "popular_artists": "Popular artists at this festival"
     }
   }
 }

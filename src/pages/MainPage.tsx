@@ -9,16 +9,13 @@ import SocialMediaButtonsContainer from '../containers/SocialMediaButtonsContain
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
-import FallbackPage from './FallbackPage';
+import { DefaultErrorFallback } from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
-const ErrorFallback = () => (
-  <FallbackPage fallbackText="There seems to be some issue with connecting to our database. Try refreshing the page." />
-);
 
 const MainPage = withFallback(
   SuspenseFallback,
-  ErrorFallback
+  DefaultErrorFallback
 )(() => {
   const loggedIn = useSelector(selectLoggedIn);
 

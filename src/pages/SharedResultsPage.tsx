@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
+import { Trans } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGet, withFallback } from '../api/api';
@@ -82,18 +83,23 @@ const SharedResultsPage = withFallback(
         }}
       />
       <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
-        {`Festival matches for `}
-        <StandardLink href={sharedPlaylist?.spotifyUrl}>
-          {sharedPlaylist?.name}
-        </StandardLink>
-        {' by '}
-        <StandardLink href={user?.spotifyUrl}>
-          {user?.displayName ?? user?.id}
-        </StandardLink>
+        <Trans
+          i18nKey="shared_results_page.description"
+          components={{
+            PlaylistLink: <StandardLink href={sharedPlaylist?.spotifyUrl} />,
+            UserLink: <StandardLink href={user?.spotifyUrl} />,
+          }}
+          values={{
+            playlist_name: sharedPlaylist?.name,
+            user_name: user?.displayName ?? user?.id,
+          }}
+        />
       </Typography>
       <Typography variant="subtitle1">
-        {'Test with your own playlists '}
-        <StandardLink to="/">{'here!'}</StandardLink>
+        <Trans
+          i18nKey="shared_results_page.test_yourself"
+          components={{ Link: <StandardLink /> }}
+        />
       </Typography>
       <Box
         sx={{

@@ -1,5 +1,6 @@
 import { ListSubheader, MenuItem, Select, SelectProps } from '@mui/material';
 import ReactCountryFlag from 'react-country-flag';
+import { useTranslation } from 'react-i18next';
 import { Area } from '../../../api/types';
 import { displayedLocationName } from '../../../utils/displayUtils';
 import { europeanRegions, usRegions } from '../../../utils/regionUtils';
@@ -16,6 +17,7 @@ const AreaSelect = ({
   countries,
   ...selectProps
 }: AreaSelectProps) => {
+  const { t } = useTranslation();
   return (
     <Select {...selectProps}>
       <MenuItem
@@ -26,7 +28,7 @@ const AreaSelect = ({
         {WORLDWIDE_AREA.name}
       </MenuItem>
       <ListSubheader disableSticky disableGutters>
-        Continents
+        {t('matching.area_select.continents_sub_header')}
       </ListSubheader>
       {[...continents]
         .sort((a, b) => (a.name > b.name ? 1 : -1))
@@ -40,7 +42,7 @@ const AreaSelect = ({
           </MenuItem>
         ))}
       <ListSubheader disableSticky disableGutters>
-        European regions
+        {t('matching.area_select.europe_sub_header')}
       </ListSubheader>
       {europeanRegions.map((region) => (
         <MenuItem key={region} value={region}>
@@ -48,7 +50,7 @@ const AreaSelect = ({
         </MenuItem>
       ))}
       <ListSubheader disableSticky disableGutters>
-        US regions
+        {t('matching.area_select.us_sub_header')}
       </ListSubheader>
       {usRegions.map((region) => (
         <MenuItem key={region} value={region}>
@@ -56,7 +58,7 @@ const AreaSelect = ({
         </MenuItem>
       ))}
       <ListSubheader disableSticky disableGutters>
-        Countries
+        {t('matching.area_select.countries_sub_header')}
       </ListSubheader>
       {[...countries]
         .sort((a, b) => (a.name > b.name ? 1 : -1))

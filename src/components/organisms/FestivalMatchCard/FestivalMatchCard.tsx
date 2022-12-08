@@ -11,8 +11,10 @@ import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { Fragment, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
+import { useTranslation } from 'react-i18next';
 import { Artist, FestivalMatch } from '../../../api/types';
 import { ArtistBox } from '../../../layouts/StyledLayoutComponents';
+import { getCancelledDateString } from '../../../utils/dateUtils';
 import {
   displayedLocationName,
   getMaxArtistsInWidth,
@@ -41,7 +43,20 @@ const FestivalMatchCard = ({
   onClickTitle,
   onClickArtistBubble,
 }: FestivalMatchCardProps) => {
+  const {
+    name,
+    locationText,
+    country,
+    date,
+    year,
+    cancelled,
+    matching_percent_artists,
+    matching_percent_genres,
+    matching_percent_combined,
+    top_genres,
+  } = festival;
   const themeMode = useTheme().palette.mode;
+  const { t } = useTranslation();
 
   const bigScreen = useMediaQuery('(min-width:690px)');
   const smallScreen = useMediaQuery('(max-width:439px)');
@@ -53,14 +68,14 @@ const FestivalMatchCard = ({
 
   const [expanded, setExpanded] = useState(false);
 
-  const matchingPercentTotal = Math.ceil(festival.matching_percent_combined);
-  const matchingPercentArtists = Math.ceil(festival.matching_percent_artists);
-  const matchingPercentGenres = Math.ceil(festival.matching_percent_genres);
+  const matchingPercentTotal = Math.ceil(matching_percent_combined);
+  const matchingPercentArtists = Math.ceil(matching_percent_artists);
+  const matchingPercentGenres = Math.ceil(matching_percent_genres);
 
   const noLineupRegistered = popularArtists.length === 0;
 
   return (
-    <Paper elevation={3} sx={{ pt: 1 }} key={festival.name}>
+    <Paper elevation={3} sx={{ pt: 1 }} key={name}>
       {showMatching && <Box sx={{ pb: 1 }} />}
       <StyledPaddedDiv>
         <Box
@@ -96,24 +111,20 @@ const FestivalMatchCard = ({
                   fontWeight: 700,
                 }}
               >
-                {festival.name}
+                {name}
               </Typography>
             </StyledTitleButton>
-            {festival.cancelled ? (
+            {cancelled ? (
               <Typography variant="subtitle2" color="secondary">
-                {`CANCELLED${
-                  festival.date ? ` (${festival.date}, ${festival.year})` : ''
-                }`}
+                {getCancelledDateString(date, year)}
               </Typography>
             ) : (
-              <Typography variant="subtitle2">
-                {festival.date + ', ' + festival.year}
-              </Typography>
+              <Typography variant="subtitle2">{date + ', ' + year}</Typography>
             )}
             <Typography variant="subtitle2">
-              {displayedLocationName(festival.locationText)}
+              {displayedLocationName(locationText)}
               <ReactCountryFlag
-                countryCode={festival.country}
+                countryCode={country}
                 svg
                 style={{ marginLeft: '8px' }}
               />
@@ -129,19 +140,19 @@ const FestivalMatchCard = ({
                     color="inherit"
                     variant={bigScreen ? 'subtitle2' : 'body2'}
                   >
-                    {`Genres: ${matchingPercentGenres}%`}
+                    {`${t('common.genres')}: ${matchingPercentGenres}%`}
                   </Typography>
                   <Typography
                     color="inherit"
                     variant={bigScreen ? 'subtitle2' : 'body2'}
                   >
-                    {`Artists: ${matchingPercentArtists}%`}
+                    {`${t('common.artists')}: ${matchingPercentArtists}%`}
                   </Typography>
                   <Typography
                     color="inherit"
                     variant={bigScreen ? 'subtitle2' : 'body2'}
                   >
-                    {`Total: ${matchingPercentTotal}%`}
+                    {`${t('common.total')}: ${matchingPercentTotal}%`}
                   </Typography>
                 </Fragment>
               }
@@ -159,7 +170,7 @@ const FestivalMatchCard = ({
             textAlign: showMatching ? undefined : 'center',
           }}
         >
-          {'Genres: ' + festival.top_genres.slice(0, 3).join(', ')}
+          {`${t('common.genres')}: ${top_genres.slice(0, 3).join(', ')}`}
         </Typography>
         {showMatching && !noLineupRegistered && (
           <Typography
@@ -172,8 +183,8 @@ const FestivalMatchCard = ({
             sx={{ my: 1.5, fontWeight: 700 }}
           >
             {matchingArtists.length > 0
-              ? 'Matching artists'
-              : 'No matching artists'}
+              ? t('matching.card.matching_artists')
+              : t('matching.card.no_matching_artists')}
           </Typography>
         )}
       </StyledPaddedDiv>
@@ -181,7 +192,7 @@ const FestivalMatchCard = ({
         <ArtistBox>
           {matchingArtists.map((artist) => (
             <ArtistBubble
-              key={`avatar_match_artist_${festival.name}_${festival.year}_${artist.name}`}
+              key={`avatar_match_artist_${name}_${year}_${artist.name}`}
               artist={artist}
               onClick={() => onClickArtistBubble(artist.name, artist.spotifyId)}
             />
@@ -199,7 +210,7 @@ const FestivalMatchCard = ({
             color={({ palette }) => palette.text.disabled}
             sx={{ py: 2, fontWeight: 700 }}
           >
-            No lineup registered yet
+            {t('common.no_lineup')}
           </Typography>
         </StyledPaddedDiv>
       ) : (
@@ -211,7 +222,7 @@ const FestivalMatchCard = ({
               sx={{ my: 1.5, fontWeight: 700 }}
               onClick={() => setExpanded(!expanded)}
             >
-              Popular artists at this festival
+              {t('matching.card.popular_artists')}
             </Typography>
           </Divider>
           <ArtistBox>
@@ -220,7 +231,7 @@ const FestivalMatchCard = ({
                 .slice(0, maxArtistsInWidth)
                 .map((artist) => (
                   <ArtistBubble
-                    key={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
+                    key={`avatar_pop_artist_${name}_${year}_${artist.name}`}
                     artist={artist}
                     onClick={() =>
                       onClickArtistBubble(artist.name, artist.spotifyId)
@@ -244,7 +255,7 @@ const FestivalMatchCard = ({
                   )
                   .map((artist) => (
                     <ArtistBubble
-                      key={`avatar_pop_artist_${festival.name}_${festival.year}_${artist.name}`}
+                      key={`avatar_pop_artist_${name}_${year}_${artist.name}`}
                       artist={artist}
                       onClick={() =>
                         onClickArtistBubble(artist.name, artist.spotifyId)

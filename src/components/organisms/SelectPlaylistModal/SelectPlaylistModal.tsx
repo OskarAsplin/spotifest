@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { Trans, useTranslation } from 'react-i18next';
 import { Artist, Playlist } from '../../../api/types';
 import StandardLink from '../../atoms/StandardLink/StandardLink';
 import MatchCriteriaSelect, {
@@ -35,6 +36,7 @@ const SelectPlaylistModal = ({
   userSpotifyUrl,
 }: SelectPlaylistModalProps) => {
   const smallScreen = useMediaQuery('(max-width:610px)');
+  const { t } = useTranslation();
 
   return (
     <Modal
@@ -62,8 +64,8 @@ const SelectPlaylistModal = ({
                 sx={{ textAlign: 'center', mb: 1 }}
               >
                 {topArtists.length === 0
-                  ? 'Choose a playlist to begin!'
-                  : 'Match festivals with'}
+                  ? t('matching.modal.no_top_artists')
+                  : t('matching.modal.default_text')}
               </Typography>
               <FormControl
                 sx={{
@@ -75,12 +77,14 @@ const SelectPlaylistModal = ({
               >
                 {topArtists.length === 0 && (
                   <InputLabel id="choose-initial-playlist-inputlabel">
-                    Playlist
+                    {t('common.playlist')}
                   </InputLabel>
                 )}
                 <MatchCriteriaSelect
                   value={topArtists.length !== 0 ? TOP_ARTISTS_CHOICE : ''}
-                  label={topArtists.length === 0 ? 'Playlist' : undefined}
+                  label={
+                    topArtists.length === 0 ? t('common.playlist') : undefined
+                  }
                   onChange={onMatchBasisChange}
                   topArtists={topArtists}
                   playlists={playlists}
@@ -101,26 +105,17 @@ const SelectPlaylistModal = ({
                   variant={smallScreen ? 'h6' : 'h4'}
                   sx={{ fontWeight: 'bold' }}
                 >
-                  Go
+                  {t('matching.modal.go_button')}
                 </Typography>
               </Button>
             </StyledBox>
           )}
           {topArtists.length === 0 && playlists.length === 0 && (
             <Typography>
-              {
-                "We can't find any listening habits or playlists to use for our festival matching. Go to your "
-              }
-              {userSpotifyUrl ? (
-                <StandardLink href={userSpotifyUrl}>
-                  Spotify profile
-                </StandardLink>
-              ) : (
-                'Spotify profile'
-              )}
-              {
-                ' and create or subscribe to a playlist to start your festival matching'
-              }
+              <Trans
+                i18nKey="matching.modal.no_top_artists_or_playlists"
+                components={{ Link: <StandardLink href={userSpotifyUrl} /> }}
+              />
             </Typography>
           )}
         </Paper>
