@@ -121,14 +121,14 @@ const FestivalMatchSettingsBar = ({
       >
         <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
           <SettingsBarDatePicker
-            label={t('matching.from_date_select.label')}
+            label={t('matching.date_select_from.label')}
             value={matchSettings.fromDate}
             onChange={onFromDateChange}
           />
         </Grid>
         <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
           <SettingsBarDatePicker
-            label={t('matching.to_date_select.label')}
+            label={t('matching.date_select_to.label')}
             value={matchSettings.toDate}
             onChange={onToDateChange}
           />

@@ -1,75 +1,81 @@
 {
+  "about_page": {
+    "creator": {
+      "text": "Oskar Asplin",
+      "title": "Created by"
+    },
+    "disclaimer": {
+      "text": "The creator of Oskarito SpotiFest takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages collect cookies.",
+      "title": "Disclaimer"
+    },
+    "features": {
+      "artists": "Artist pages to see which festivals each artist is attending",
+      "code": "Open source frontend code on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>",
+      "festivals": "Festival pages with current and previous lineups",
+      "matching": "Festival matching with more than 1000 festivals worldwide",
+      "storybook": "Documentation of React components on <Link href=\"https://master--638b82b31acca1e593c75c8d.chromatic.com\">Storybook</Link>",
+      "title": "$t(common.app_title) features"
+    },
+    "support": {
+      "code": "Give the code a <StarIcon/> on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>",
+      "share": "Spread the word! Share your matching results and tell everyone about Oskarito SpotiFest",
+      "tickets": "Buy your festival tickets through the ticket links on the site",
+      "title": "Ways to support"
+    },
+    "tech_stack": {
+      "backend_code": "Backend written in Python with Django and SQLite as database",
+      "backend_container": "Backend server environment contained with Docker",
+      "backend_host": "Backend hosted on DigitalOcean running Ubuntu 20.04",
+      "backend_server": "Django server set up with Gunicorn and Nginx",
+      "domain": "Domain bought on NameCheap",
+      "festival_info": "Lineup and festival information from Music Festival Wizard",
+      "frontend_code": "Frontend made with React, Typescript, Redux and React Query",
+      "frontend_host": "Frontend hosted on Netlify",
+      "frontend_storybook": "Components developed and documented with <Link href=\"https://master--638b82b31acca1e593c75c8d.chromatic.com\">Storybook</Link>",
+      "frontend_ui": "UI based on Material-UI",
+      "music_info": "Playlists and artists from Spotify using OAuth 2.0 authorization",
+      "title": "Technology stack",
+      "version_control": "Code version control on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>"
+    }
+  },
+  "app_bar": {
+    "profile_popover": {
+      "log_in": "<Link>Log in</Link> to match your Spotify profile with music festivals!",
+      "log_out": "Log out",
+      "view_profile": "View profile in Spotify"
+    }
+  },
+  "artist_page": {
+    "future_festivals": "Attending festivals",
+    "no_festivals": "This artist has no registered festivals in our database.",
+    "past_festivals": "Previously attended festivals",
+    "related_artists": "Related artists"
+  },
   "common": {
+    "about": "About",
+    "alphabetically": "Alphabetically",
     "app_title": "Oskarito SpotiFest",
     "app_title_short": "SpotiFest",
-    "cancelled": "CANCELLED",
-    "genres": "Genres",
     "artists": "Artists",
-    "festivals": "Festivals",
-    "total": "Total",
-    "about": "About",
     "brightness": "Brightness",
+    "cancelled": "CANCELLED",
+    "festivals": "Festivals",
+    "genres": "Genres",
     "no_genres": "No registered genres",
     "no_lineup": "No lineup registered",
     "no_results": "No results",
+    "playlist": "Playlist",
     "popularity": "Popularity",
-    "alphabetically": "Alphabetically",
-    "playlist": "Playlist"
+    "total": "Total"
   },
   "cookies": {
     "youtube": "The youtube videos on this site use cookies."
   },
   "error": {
+    "artist_not_found": "Could not find artist.",
     "database_connection": "There seems to be some issue with connecting to our database. Try refreshing the page.",
-    "invalid_url": "Invalid URL.",
     "festival_not_found": "Could not find festival.",
-    "artist_not_found": "Could not find artist."
-  },
-  "about_page": {
-    "features": {
-      "title": "$t(common.app_title) features",
-      "matching": "Festival matching with more than 1000 festivals worldwide",
-      "festivals": "Festival pages with current and previous lineups",
-      "artists": "Artist pages to see which festivals each artist is attending",
-      "code": "Open source frontend code on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>",
-      "storybook": "Documentation of React components on <Link href=\"https://master--638b82b31acca1e593c75c8d.chromatic.com\">Storybook</Link>"
-    },
-    "tech_stack": {
-      "title": "Technology stack",
-      "frontend_code": "Frontend made with React, Typescript, Redux and React Query",
-      "frontend_storybook": "Components developed and documented with <Link href=\"https://master--638b82b31acca1e593c75c8d.chromatic.com\">Storybook</Link>",
-      "frontend_ui": "UI based on Material-UI",
-      "frontend_host": "Frontend hosted on Netlify",
-      "backend_code": "Backend written in Python with Django and SQLite as database",
-      "backend_server": "Django server set up with Gunicorn and Nginx",
-      "backend_container": "Backend server environment contained with Docker",
-      "backend_host": "Backend hosted on DigitalOcean running Ubuntu 20.04",
-      "music_info": "Playlists and artists from Spotify using OAuth 2.0 authorization",
-      "festival_info": "Lineup and festival information from Music Festival Wizard",
-      "version_control": "Code version control on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>",
-      "domain": "Domain bought on NameCheap"
-    },
-    "support": {
-      "title": "Ways to support",
-      "share": "Spread the word! Share your matching results and tell everyone about Oskarito SpotiFest",
-      "tickets": "Buy your festival tickets through the ticket links on the site",
-      "code": "Give the code a <StarIcon/> on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>"
-    },
-    "disclaimer": {
-      "title": "Disclaimer",
-      "text": "The creator of Oskarito SpotiFest takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages collect cookies."
-    },
-    "creator": {
-      "title": "Created by",
-      "text": "Oskar Asplin"
-    }
-  },
-  "app_bar": {
-    "profile_popover": {
-      "view_profile": "View profile in Spotify",
-      "log_out": "Log out",
-      "log_in": "<Link>Log in</Link> to match your Spotify profile with music festivals!"
-    }
+    "invalid_url": "Invalid URL."
   },
   "login_page": {
     "button": "Log in with Spotify",
@@ -79,49 +85,43 @@
       "line_3": "<Link href=\"https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/\">Photo</Link> by <Link href=\"https://www.flickr.com/photos/149801000@N05/\">veldmusicfestival</Link> / <Link href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC BY-SA 2.0</Link>"
     }
   },
-  "artist_page": {
-    "related_artists": "Related artists",
-    "future_festivals": "Attending festivals",
-    "past_festivals": "Previously attended festivals",
-    "no_festivals": "This artist has no registered festivals in our database."
-  },
-  "shared_results_page": {
-    "description": "Festival matches for <PlaylistLink>{{playlist_name}}</PlaylistLink> by <UserLink>{{user_name}}</UserLink>",
-    "test_yourself": "Test with your own playlists <Link to=\"/\">here!</Link>"
-  },
   "matching": {
-    "modal": {
-      "default_text": "Match festivals with",
-      "go_button": "Go",
-      "no_top_artists": "Choose a playlist to begin!",
-      "no_top_artists_or_playlists": "We can't find any listening habits or playlists to use for our festival matching. Go to your <Link>Spotify profile</Link> and create or subscribe to a playlist to start your festival matching"
-    },
-    "criteria_select": {
-      "label": "Match with",
-      "top_artists_option": "Your most played artists",
-      "playlists_sub_header": "or choose a playlist below"
+    "algorithm": {
+      "description": "The matching algorithm is a combination of artist and genre matching. The number of artists in your selected playlist attending a festival combined with how well the genres of the playlist fit the festival, determines the match score shown on each festival.",
+      "title": "Matching algorithm"
     },
     "area_select": {
-      "label": "Area",
       "continents_sub_header": "Continents",
+      "countries_sub_header": "Countries",
       "europe_sub_header": "European regions",
-      "us_sub_header": "US regions",
-      "countries_sub_header": "Countries"
-    },
-    "from_date_select": {
-      "label": "From"
-    },
-    "to_date_select": {
-      "label": "To"
-    },
-    "algorithm": {
-      "title": "Matching algorithm",
-      "description": "The matching algorithm is a combination of artist and genre matching. The number of artists in your selected playlist attending a festival combined with how well the genres of the playlist fit the festival, determines the match score shown on each festival."
+      "label": "Area",
+      "us_sub_header": "US regions"
     },
     "card": {
       "matching_artists": "Matching artists",
       "no_matching_artists": "No matching artists",
       "popular_artists": "Popular artists at this festival"
+    },
+    "criteria_select": {
+      "label": "Match with",
+      "playlists_sub_header": "or choose a playlist below",
+      "top_artists_option": "Your most played artists"
+    },
+    "date_select_from": {
+      "label": "From"
+    },
+    "date_select_to": {
+      "label": "To"
+    },
+    "modal": {
+      "default_text": "Match festivals with",
+      "go_button": "Go",
+      "no_top_artists": "Choose a playlist to begin!",
+      "no_top_artists_or_playlists": "We can't find any listening habits or playlists to use for our festival matching. Go to your <Link>Spotify profile</Link> and create or subscribe to a playlist to start your festival matching"
     }
+  },
+  "shared_results_page": {
+    "description": "Festival matches for <PlaylistLink>{{playlist_name}}</PlaylistLink> by <UserLink>{{user_name}}</UserLink>",
+    "test_yourself": "Test with your own playlists <Link to=\"/\">here!</Link>"
   }
 }
