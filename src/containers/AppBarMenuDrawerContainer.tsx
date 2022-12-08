@@ -2,6 +2,7 @@ import { Brightness2, Brightness4 } from '@mui/icons-material';
 import InfoIcon from '@mui/icons-material/Info';
 import { PaletteMode } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import CustomDrawer from '../components/organisms/CustomDrawer/CustomDrawer';
 
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const AppBarMenuDrawerContainer = ({ open, onClose, setThemeMode }: Props) => {
+  const { t } = useTranslation();
   const themeMode = useTheme().palette.mode;
   const navigate = useNavigate();
 
@@ -22,10 +24,10 @@ const AppBarMenuDrawerContainer = ({ open, onClose, setThemeMode }: Props) => {
     setThemeMode(themeMode === 'light' ? 'dark' : 'light');
 
   const items = [
-    { Icon: <InfoIcon />, label: 'About', onClick: onClickAbout },
+    { Icon: <InfoIcon />, label: t('common.about'), onClick: onClickAbout },
     {
       Icon: themeMode === 'light' ? <Brightness2 /> : <Brightness4 />,
-      label: 'Brightness',
+      label: t('common.brightness'),
       onClick: onClickBrightness,
     },
   ];

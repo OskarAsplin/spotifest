@@ -1,5 +1,6 @@
 import { Box, Paper, ThemeProvider, Typography } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
 import { escapeRegExp } from 'lodash-es';
 import { SearchResponse } from '../../../api/types';
 import { getMainTheme } from '../../../theme/theme.styles';
@@ -21,6 +22,7 @@ const SearchResults = ({
   inputText,
   resetSearchFieldState,
 }: SearchResultsProps) => {
+  const { t } = useTranslation();
   const lightTheme = createTheme(getMainTheme('light'));
 
   const standardLinkProps: StandardLinkProps = {
@@ -37,12 +39,12 @@ const SearchResults = ({
           {searchResults.festivals.length === 0 &&
             searchResults.artists.length === 0 && (
               <Typography color={({ palette }) => palette.text.disabled}>
-                No results
+                {t('common.no_results')}
               </Typography>
             )}
           {searchResults.festivals.length > 0 && (
             <Typography sx={{ mb: 1, fontWeight: 'bold' }}>
-              Festivals:
+              {t('common.festivals')}:
             </Typography>
           )}
           {searchResults.festivals.slice(0, 5).map((festival) => (
@@ -69,7 +71,9 @@ const SearchResults = ({
           {searchResults.festivals.length > 0 &&
             searchResults.artists.length > 0 && <Box sx={{ mt: 2 }} />}
           {searchResults.artists.length > 0 && (
-            <Typography sx={{ mb: 1, fontWeight: 'bold' }}>Artists:</Typography>
+            <Typography sx={{ mb: 1, fontWeight: 'bold' }}>
+              {t('common.artists')}:
+            </Typography>
           )}
           {searchResults.artists.slice(0, 5).map((artist) => (
             <StandardLink
