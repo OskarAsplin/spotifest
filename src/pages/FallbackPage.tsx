@@ -40,7 +40,7 @@ const StyledCenteredDiv = styled('div')(() => ({
 
 export const DefaultErrorFallback = () => {
   const { t } = useTranslation();
-  return <FallbackPage fallbackText={t('common.error.database_connection')} />;
+  return <FallbackPage fallbackText={t('error.database_connection')} />;
 };
 
 export default FallbackPage;

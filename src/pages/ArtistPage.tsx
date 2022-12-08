@@ -84,10 +84,9 @@ const ArtistPage = withFallback(
   const fillRelatedArtistsWidth =
     maxArtistsInWidth - (relatedArtists.length % maxArtistsInWidth);
 
-  if (!artistId)
-    return <FallbackPage fallbackText={t('common.error.invalid_url')} />;
+  if (!artistId) return <FallbackPage fallbackText={t('error.invalid_url')} />;
   if (!artistInfo)
-    return <FallbackPage fallbackText={t('common.error.artist_not_found')} />;
+    return <FallbackPage fallbackText={t('error.artist_not_found')} />;
 
   return (
     <>

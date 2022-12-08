@@ -14,14 +14,16 @@
     "no_results": "No results",
     "popularity": "Popularity",
     "alphabetically": "Alphabetically",
-    "playlist": "Playlist",
-    "youtube_cookies": "The youtube videos on this site use cookies.",
-    "error": {
-      "database_connection": "There seems to be some issue with connecting to our database. Try refreshing the page.",
-      "invalid_url": "Invalid URL.",
-      "festival_not_found": "Could not find festival.",
-      "artist_not_found": "Could not find artist."
-    }
+    "playlist": "Playlist"
+  },
+  "cookies": {
+    "youtube": "The youtube videos on this site use cookies."
+  },
+  "error": {
+    "database_connection": "There seems to be some issue with connecting to our database. Try refreshing the page.",
+    "invalid_url": "Invalid URL.",
+    "festival_not_found": "Could not find festival.",
+    "artist_not_found": "Could not find artist."
   },
   "about_page": {
     "features": {

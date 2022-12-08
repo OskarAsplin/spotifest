@@ -70,9 +70,9 @@ const FestivalPage = withFallback(
   const [sortAlphabetically, setSortAlphabetically] = useState(false);
 
   if (!festivalId)
-    return <FallbackPage fallbackText={t('common.error.invalid_url')} />;
+    return <FallbackPage fallbackText={t('error.invalid_url')} />;
   if (!festivalInfo)
-    return <FallbackPage fallbackText={t('common.error.festival_not_found')} />;
+    return <FallbackPage fallbackText={t('error.festival_not_found')} />;
 
   return (
     <>
@@ -308,7 +308,7 @@ const FestivalPage = withFallback(
         )}
       </StyledCenteredColumnDiv>
       {festivalInfo.video && (
-        <StyledCookieConsent>{t('common.youtube_cookies')}</StyledCookieConsent>
+        <StyledCookieConsent>{t('cookies.youtube')}</StyledCookieConsent>
       )}
     </>
   );
