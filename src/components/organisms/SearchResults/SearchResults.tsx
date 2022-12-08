@@ -11,7 +11,7 @@ import StandardLink, {
 } from '../../atoms/StandardLink/StandardLink';
 import { SEARCH_FIELD_WIDTH_BIG_SCREEN } from '../../molecules/SearchField/SearchField';
 
-export interface SearchResultsProps {
+interface SearchResultsProps {
   searchResults: SearchResponse;
   inputText: string;
   resetSearchFieldState: () => void;

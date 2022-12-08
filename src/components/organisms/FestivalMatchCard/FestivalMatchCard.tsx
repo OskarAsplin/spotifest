@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 import { Artist, FestivalMatch } from '../../../api/types';
@@ -20,11 +20,10 @@ import {
   getMaxArtistsInWidth,
 } from '../../../utils/displayUtils';
 import ExpandButton from '../../atoms/ExpandButton/ExpandButton';
-import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
-import MatchingCircle from '../../atoms/MatchingCircle/MatchingCircle';
 import ArtistBubble, {
   StyledAvatarContainerdiv,
 } from '../../molecules/ArtistBubble/ArtistBubble';
+import MatchingCircleWithTooltip from '../../molecules/MatchingCircleWithTooltip/MatchingCircleWithTooltip';
 
 export interface FestivalMatchCardProps {
   festival: FestivalMatch;
@@ -57,20 +56,16 @@ const FestivalMatchCard = ({
   } = festival;
   const themeMode = useTheme().palette.mode;
   const { t } = useTranslation();
+  const [expanded, setExpanded] = useState(false);
 
   const bigScreen = useMediaQuery('(min-width:690px)');
   const smallScreen = useMediaQuery('(max-width:439px)');
+
   const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, smallScreen, 7);
   const fillMatchingArtistWidth =
     maxArtistsInWidth - (matchingArtists.length % maxArtistsInWidth);
   const fillPopularArtistWidth =
     maxArtistsInWidth - (popularArtists.length % maxArtistsInWidth);
-
-  const [expanded, setExpanded] = useState(false);
-
-  const matchingPercentTotal = Math.ceil(matching_percent_combined);
-  const matchingPercentArtists = Math.ceil(matching_percent_artists);
-  const matchingPercentGenres = Math.ceil(matching_percent_genres);
 
   const noLineupRegistered = popularArtists.length === 0;
 
@@ -131,34 +126,11 @@ const FestivalMatchCard = ({
             </Typography>
           </Box>
           {showMatching && (
-            <HtmlTooltip
-              placement="left-start"
-              leaveTouchDelay={3000}
-              title={
-                <Fragment>
-                  <Typography
-                    color="inherit"
-                    variant={bigScreen ? 'subtitle2' : 'body2'}
-                  >
-                    {`${t('common.genres')}: ${matchingPercentGenres}%`}
-                  </Typography>
-                  <Typography
-                    color="inherit"
-                    variant={bigScreen ? 'subtitle2' : 'body2'}
-                  >
-                    {`${t('common.artists')}: ${matchingPercentArtists}%`}
-                  </Typography>
-                  <Typography
-                    color="inherit"
-                    variant={bigScreen ? 'subtitle2' : 'body2'}
-                  >
-                    {`${t('common.total')}: ${matchingPercentTotal}%`}
-                  </Typography>
-                </Fragment>
-              }
-            >
-              <MatchingCircle matchingPercent={matchingPercentTotal} />
-            </HtmlTooltip>
+            <MatchingCircleWithTooltip
+              total={Math.ceil(matching_percent_combined)}
+              artists={Math.ceil(matching_percent_artists)}
+              genres={Math.ceil(matching_percent_genres)}
+            />
           )}
         </Box>
         <Typography
