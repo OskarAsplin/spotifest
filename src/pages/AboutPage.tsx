@@ -43,8 +43,6 @@ const AboutPage = () => {
 
   const { PUBLIC_URL } = process.env;
 
-  const app_title = t('common.app_title');
-
   return (
     <>
       {bigPcScreen && <TopLeftBackButtonContainer />}
@@ -57,7 +55,7 @@ const AboutPage = () => {
             variant={bigScreen ? 'h4' : 'h5'}
             sx={{ textAlign: 'center', my: 2 }}
           >
-            {t('about_page.features.title', { app_title })}
+            {t('about_page.features.title')}
           </Typography>
           <div className={styles.verticalSpace} />
           <List className={styles.noPadding}>

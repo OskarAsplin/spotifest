@@ -21,7 +21,7 @@
   },
   "about_page": {
     "features": {
-      "title": "{{app_title}} features",
+      "title": "$t(common.app_title) features",
       "matching": "Festival matching with more than 1000 festivals worldwide",
       "festivals": "Festival pages with current and previous lineups",
       "artists": "Artist pages to see which festivals each artist is attending",
