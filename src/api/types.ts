@@ -84,7 +84,6 @@ interface Lineup {
   date_str: string;
   cancelled: boolean;
   artists: Artist[];
-  poster: string;
 }
 
 export interface FestivalInfo {

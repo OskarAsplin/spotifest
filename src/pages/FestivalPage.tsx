@@ -278,22 +278,6 @@ const FestivalPage = withFallback(
                                 (_, i) => <StyledAvatarContainerdiv key={i} />
                               )}
                           </Box>
-                          {lineup.poster && (
-                            <Box
-                              sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                mt: 2,
-                              }}
-                            >
-                              <Button href={lineup.poster} target="_blank">
-                                <StyledLineupPosterImg
-                                  src={lineup.poster}
-                                  alt=""
-                                />
-                              </Button>
-                            </Box>
-                          )}
                         </StyledCenteredColumnDiv>
                       )}
                     </TabPanel>
@@ -328,12 +312,6 @@ const StyledLineupPaper = styled(Paper)(({ theme: { spacing } }) => ({
   '@media (min-width: 1182px)': { marginBottom: spacing(2) },
   '@media (min-width: 440px)': { padding: spacing(0, 2) },
   '@media (max-width: 439px)': { padding: spacing(0, 1) },
-}));
-
-const StyledLineupPosterImg = styled('img')(() => ({
-  maxHeight: 450,
-  '@media (min-width: 610px)': { maxWidth: 450 },
-  '@media (max-width: 609px)': { maxWidth: 300 },
 }));
 
 const StyledVideoPaper = styled(Paper)(({ theme: { spacing } }) => ({
