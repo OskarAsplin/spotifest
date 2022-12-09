@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import MatchingCircle from '../../atoms/MatchingCircle/MatchingCircle';
 
-export interface MatchingTooltipProps {
+interface MatchingTooltipProps {
   total: number;
   artists: number;
   genres: number;
