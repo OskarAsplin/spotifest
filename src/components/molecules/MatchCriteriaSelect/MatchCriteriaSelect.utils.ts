@@ -1,6 +1,6 @@
 import { Playlist } from '../../../api/types';
 
-export const PLAYLIST_ID_SEPARATOR = '__PID__';
+const PLAYLIST_ID_SEPARATOR = '__PID__';
 
 export const getPlaylistKey = (playlist: Playlist) =>
   `${playlist.ownerId}${PLAYLIST_ID_SEPARATOR}${playlist.id}`;

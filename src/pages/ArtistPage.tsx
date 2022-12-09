@@ -31,13 +31,13 @@ import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
 import { getMaxArtistsInWidth } from '../utils/displayUtils';
 import { getFestivalPath } from '../utils/routeUtils';
-import FallbackPage, { DefaultErrorFallback } from './FallbackPage';
+import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const ArtistPage = withFallback(
   SuspenseFallback,
-  DefaultErrorFallback
+  FallbackPage
 )(() => {
   const themeMode = useTheme().palette.mode;
   const { artistId } = useParams();

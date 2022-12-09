@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
-import { Trans } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGet, withFallback } from '../api/api';
@@ -27,9 +27,10 @@ import {
 import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
-const ErrorFallback = () => (
-  <FallbackPage fallbackText="The url is incorrect or something else funky happened here. Double check the url and try again." />
-);
+const ErrorFallback = () => {
+  const { t } = useTranslation();
+  return <FallbackPage fallbackText={t('error.invalid_share_url')} />;
+};
 
 const SharedResultsPage = withFallback(
   SuspenseFallback,

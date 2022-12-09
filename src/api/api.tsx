@@ -34,16 +34,29 @@ export const useGet = <Op extends OpBaseType>(
   );
 };
 
-export function withFallback<Props extends object>(
-  Fallback?: ComponentType<Props>,
-  Error: ComponentType<FallbackProps> = () => null
-) {
+export const withFallback = <Props extends object>(
+  SuspenseFallback?: ComponentType<Props>,
+  ErrorFallback: ComponentType<FallbackProps> = () => null
+) => {
   return (Component: ComponentType<Props>) =>
     forwardRef((props: Props, ref) => (
-      <ErrorBoundary FallbackComponent={Error}>
-        <Suspense fallback={Fallback ? <Fallback {...props} /> : false}>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <Suspense
+          fallback={SuspenseFallback ? <SuspenseFallback {...props} /> : false}
+        >
           <Component ref={ref} {...props} />
         </Suspense>
       </ErrorBoundary>
     ));
-}
+};
+
+export const withSuspense = <Props extends object>(
+  Fallback: ComponentType<Props>
+) => {
+  return (Component: ComponentType<Props>) =>
+    forwardRef((props: Props, ref) => (
+      <Suspense fallback={<Fallback {...props} />}>
+        <Component ref={ref} {...props} />
+      </Suspense>
+    ));
+};

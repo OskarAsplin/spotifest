@@ -9,13 +9,13 @@ import SocialMediaButtonsContainer from '../containers/SocialMediaButtonsContain
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
-import { DefaultErrorFallback } from './FallbackPage';
+import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const MainPage = withFallback(
   SuspenseFallback,
-  DefaultErrorFallback
+  FallbackPage
 )(() => {
   const loggedIn = useSelector(selectLoggedIn);
 

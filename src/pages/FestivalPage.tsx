@@ -33,13 +33,13 @@ import {
   displayedLocationName,
   getMaxArtistsInFullLineupWidth,
 } from '../utils/displayUtils';
-import FallbackPage, { DefaultErrorFallback } from './FallbackPage';
+import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const FestivalPage = withFallback(
   SuspenseFallback,
-  DefaultErrorFallback
+  FallbackPage
 )(() => {
   const boxForLineups = useMediaQuery('(min-width:1182px)');
   const mediumScreen = useMediaQuery('(min-width:610px)');

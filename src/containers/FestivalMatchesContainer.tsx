@@ -8,8 +8,9 @@ import {
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useGet, withFallback } from '../api/api';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { useGet, withSuspense } from '../api/api';
 import {
   getDjangoAvailableContinents,
   postDjangoFestivalMatches,
@@ -21,17 +22,13 @@ import {
 } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import {
-  getIdsFromMatchBasis,
-  PLAYLIST_ID_SEPARATOR,
-} from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import {
   selectFromDate,
   selectMatchArea,
   selectMatchBasis,
   selectToDate,
-  setMatchBasis,
 } from '../redux/reducers/matchingSlice';
 import { getAreaFilters } from '../utils/areaUtils';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
@@ -44,9 +41,10 @@ interface FestivalMatchesContainerProps {
   sharedMatchBasis?: string;
 }
 
-const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
+const FestivalMatchesContainer = withSuspense<FestivalMatchesContainerProps>(
   SuspenseFallback
 )(({ sharedMatchBasis }) => {
+  const { t } = useTranslation();
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
 
   const [page, setPage] = useState(1);
@@ -54,19 +52,6 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
   const matchArea = useSelector(selectMatchArea);
   const fromDate = useSelector(selectFromDate);
   const toDate = useSelector(selectToDate);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    // Temporary matchBasis migration. Set Top artists as matchBasis if user has old matchBasis on page refresh
-    if (
-      matchBasis &&
-      matchBasis !== TOP_ARTISTS_CHOICE &&
-      matchBasis.indexOf(PLAYLIST_ID_SEPARATOR) === -1
-    ) {
-      dispatch(setMatchBasis(TOP_ARTISTS_CHOICE));
-    }
-  }, []);
 
   const { data: continents } = useGet(getDjangoAvailableContinents);
 
@@ -215,7 +200,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
           variant="subtitle1"
           sx={{ width: '100%', textAlign: 'center', py: 2 }}
         >
-          No registered festivals in the selected area in this time frame.
+          {t('matching.no_results')}
         </Typography>
       )}
     </StyledMatchesRootBox>

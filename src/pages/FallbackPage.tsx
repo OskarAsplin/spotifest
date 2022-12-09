@@ -1,15 +1,24 @@
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { FallbackProps } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 
-interface FallbackPageProps {
-  fallbackText: string;
+const noConnectionMessage = 'NetworkError when attempting to fetch resource.';
+
+interface FallbackPageProps extends Partial<FallbackProps> {
+  fallbackText?: string;
 }
 
-const FallbackPage = ({ fallbackText }: FallbackPageProps) => {
+const FallbackPage = ({ fallbackText, error }: FallbackPageProps) => {
   const pcScreen = useMediaQuery('(min-width:1300px)');
+  const { t } = useTranslation();
+  const errorMessage =
+    error?.message && error.message !== noConnectionMessage
+      ? error.message
+      : t('error.generic_error');
+  const displayText = fallbackText ?? errorMessage;
   return (
     <>
       {pcScreen && <TopLeftBackButtonContainer />}
@@ -17,7 +26,7 @@ const FallbackPage = ({ fallbackText }: FallbackPageProps) => {
         <VerticalSpaceDiv />
         <VerticalSpaceDiv />
         <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
-          {fallbackText}
+          {displayText}
         </Typography>
       </StyledCenteredDiv>
     </>
@@ -37,10 +46,5 @@ const StyledCenteredDiv = styled('div')(() => ({
   alignItems: 'center',
   width: '100%',
 }));
-
-export const DefaultErrorFallback = () => {
-  const { t } = useTranslation();
-  return <FallbackPage fallbackText={t('error.database_connection')} />;
-};
 
 export default FallbackPage;

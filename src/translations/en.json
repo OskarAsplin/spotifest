@@ -73,8 +73,9 @@
   },
   "error": {
     "artist_not_found": "Could not find artist.",
-    "database_connection": "There seems to be some issue with connecting to our database. Try refreshing the page.",
     "festival_not_found": "Could not find festival.",
+    "generic_error": "Oops, something went wrong. Please refresh the page to try again",
+    "invalid_share_url": "The url is incorrect or something else funky happened here. Double check the url and try again.",
     "invalid_url": "Invalid URL."
   },
   "login_page": {
@@ -118,7 +119,8 @@
       "go_button": "Go",
       "no_top_artists": "Choose a playlist to begin!",
       "no_top_artists_or_playlists": "We can't find any listening habits or playlists to use for our festival matching. Go to your <Link>Spotify profile</Link> and create or subscribe to a playlist to start your festival matching"
-    }
+    },
+    "no_results": "No registered festivals in the selected area in this time frame."
   },
   "shared_results_page": {
     "description": "Festival matches for <PlaylistLink>{{playlist_name}}</PlaylistLink> by <UserLink>{{user_name}}</UserLink>",
