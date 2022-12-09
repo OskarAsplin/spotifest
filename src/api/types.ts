@@ -73,7 +73,7 @@ export interface FestivalMatch {
   matching_artists: string[];
   matching_percent_genres: number;
   matching_percent_combined: number;
-  top_genres: string[];
+  top_genres: string;
 }
 
 interface Lineup {

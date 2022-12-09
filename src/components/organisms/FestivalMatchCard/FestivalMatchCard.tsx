@@ -142,7 +142,7 @@ const FestivalMatchCard = ({
             textAlign: showMatching ? undefined : 'center',
           }}
         >
-          {`${t('common.genres')}: ${top_genres.slice(0, 3).join(', ')}`}
+          {`${t('common.genres')}: ${top_genres}`}
         </Typography>
         {showMatching && !noLineupRegistered && (
           <Typography
