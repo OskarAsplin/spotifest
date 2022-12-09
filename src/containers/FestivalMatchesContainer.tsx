@@ -10,7 +10,7 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useGet, withSuspense } from '../api/api';
+import { useGet, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
   postDjangoFestivalMatches,
@@ -24,6 +24,7 @@ import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/Loadi
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
+import ErrorFallback from '../layouts/ErrorFallback';
 import {
   selectFromDate,
   selectMatchArea,
@@ -41,8 +42,9 @@ interface FestivalMatchesContainerProps {
   sharedMatchBasis?: string;
 }
 
-const FestivalMatchesContainer = withSuspense<FestivalMatchesContainerProps>(
-  SuspenseFallback
+const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
+  SuspenseFallback,
+  ErrorFallback
 )(({ sharedMatchBasis }) => {
   const { t } = useTranslation();
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');

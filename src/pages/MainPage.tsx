@@ -6,16 +6,16 @@ import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/Loadi
 import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
 import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
 import SocialMediaButtonsContainer from '../containers/SocialMediaButtonsContainer';
+import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
-import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const MainPage = withFallback(
   SuspenseFallback,
-  FallbackPage
+  ErrorFallback
 )(() => {
   const loggedIn = useSelector(selectLoggedIn);
 

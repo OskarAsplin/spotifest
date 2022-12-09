@@ -13,6 +13,7 @@ import {
 } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
 import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
+import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { getAuthorizeHref } from '../oauthConfig';
 import {
@@ -24,17 +25,16 @@ import {
   getSharedMatchBasis,
   setSharedMatchBasis,
 } from '../utils/localStorageUtils';
-import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
-const ErrorFallback = () => {
+const CustomErrorFallback = () => {
   const { t } = useTranslation();
-  return <FallbackPage fallbackText={t('error.invalid_share_url')} />;
+  return <ErrorFallback fallbackText={t('error.invalid_share_url')} />;
 };
 
 const SharedResultsPage = withFallback(
   SuspenseFallback,
-  ErrorFallback
+  CustomErrorFallback
 )(() => {
   const { matchBasis: matchBasisFromParams } = useParams();
   const dispatch = useDispatch();

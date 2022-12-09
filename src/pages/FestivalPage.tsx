@@ -26,6 +26,7 @@ import StyledCookieConsent from '../components/molecules/CookieConsent';
 import TabPanel from '../components/molecules/TabPanel';
 import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
+import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
@@ -33,13 +34,12 @@ import {
   displayedLocationName,
   getMaxArtistsInFullLineupWidth,
 } from '../utils/displayUtils';
-import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const FestivalPage = withFallback(
   SuspenseFallback,
-  FallbackPage
+  ErrorFallback
 )(() => {
   const boxForLineups = useMediaQuery('(min-width:1182px)');
   const mediumScreen = useMediaQuery('(min-width:610px)');
@@ -70,9 +70,9 @@ const FestivalPage = withFallback(
   const [sortAlphabetically, setSortAlphabetically] = useState(false);
 
   if (!festivalId)
-    return <FallbackPage fallbackText={t('error.invalid_url')} />;
+    return <ErrorFallback fallbackText={t('error.invalid_url')} />;
   if (!festivalInfo)
-    return <FallbackPage fallbackText={t('error.festival_not_found')} />;
+    return <ErrorFallback fallbackText={t('error.festival_not_found')} />;
 
   return (
     <>

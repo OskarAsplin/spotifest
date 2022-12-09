@@ -25,19 +25,19 @@ import { StyledAvatarContainerdiv } from '../components/molecules/ArtistBubble/A
 import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
+import ErrorFallback from '../layouts/ErrorFallback';
 import { ArtistBox, StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
 import { getMaxArtistsInWidth } from '../utils/displayUtils';
 import { getFestivalPath } from '../utils/routeUtils';
-import FallbackPage from './FallbackPage';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const ArtistPage = withFallback(
   SuspenseFallback,
-  FallbackPage
+  ErrorFallback
 )(() => {
   const themeMode = useTheme().palette.mode;
   const { artistId } = useParams();
@@ -84,9 +84,9 @@ const ArtistPage = withFallback(
   const fillRelatedArtistsWidth =
     maxArtistsInWidth - (relatedArtists.length % maxArtistsInWidth);
 
-  if (!artistId) return <FallbackPage fallbackText={t('error.invalid_url')} />;
+  if (!artistId) return <ErrorFallback fallbackText={t('error.invalid_url')} />;
   if (!artistInfo)
-    return <FallbackPage fallbackText={t('error.artist_not_found')} />;
+    return <ErrorFallback fallbackText={t('error.artist_not_found')} />;
 
   return (
     <>

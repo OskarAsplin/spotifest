@@ -49,14 +49,3 @@ export const withFallback = <Props extends object>(
       </ErrorBoundary>
     ));
 };
-
-export const withSuspense = <Props extends object>(
-  Fallback: ComponentType<Props>
-) => {
-  return (Component: ComponentType<Props>) =>
-    forwardRef((props: Props, ref) => (
-      <Suspense fallback={<Fallback {...props} />}>
-        <Component ref={ref} {...props} />
-      </Suspense>
-    ));
-};

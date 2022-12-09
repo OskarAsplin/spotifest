@@ -1,18 +1,15 @@
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { FallbackProps } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
-import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 
 const noConnectionMessage = 'NetworkError when attempting to fetch resource.';
 
-interface FallbackPageProps extends Partial<FallbackProps> {
+interface ErrorFallbackProps extends Partial<FallbackProps> {
   fallbackText?: string;
 }
 
-const FallbackPage = ({ fallbackText, error }: FallbackPageProps) => {
-  const pcScreen = useMediaQuery('(min-width:1300px)');
+const ErrorFallback = ({ fallbackText, error }: ErrorFallbackProps) => {
   const { t } = useTranslation();
   const errorMessage =
     error?.message && error.message !== noConnectionMessage
@@ -20,16 +17,13 @@ const FallbackPage = ({ fallbackText, error }: FallbackPageProps) => {
       : t('error.generic_error');
   const displayText = fallbackText ?? errorMessage;
   return (
-    <>
-      {pcScreen && <TopLeftBackButtonContainer />}
-      <StyledCenteredDiv>
-        <VerticalSpaceDiv />
-        <VerticalSpaceDiv />
-        <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
-          {displayText}
-        </Typography>
-      </StyledCenteredDiv>
-    </>
+    <StyledCenteredDiv>
+      <VerticalSpaceDiv />
+      <VerticalSpaceDiv />
+      <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
+        {displayText}
+      </Typography>
+    </StyledCenteredDiv>
   );
 };
 
@@ -47,4 +41,4 @@ const StyledCenteredDiv = styled('div')(() => ({
   width: '100%',
 }));
 
-export default FallbackPage;
+export default ErrorFallback;
