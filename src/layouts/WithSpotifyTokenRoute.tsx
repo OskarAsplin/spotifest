@@ -16,18 +16,18 @@ import {
 } from '../utils/localStorageUtils';
 
 const TEN_MINUTES = 600000; // In Milliseconds
-const ONE_DAY = 86400000; // In Milliseconds
+const unixTimeNow = new Date().getTime(); // Unix time in milliseconds
 
 const hashParams = getHashParams();
 const freshToken = hashParams.access_token;
-const expiresIn = hashParams.expires_in;
-const actualExpiryTime = expiresIn ? expiresIn + ONE_DAY : expiresIn; // Spotify is returning the current time...
+const expiresIn = hashParams.expires_in; // Seconds
+const expiryTime = unixTimeNow + Number(expiresIn) * 1000;
 const storedToken = getStoredAccessToken();
 const storedExpiryTime = getStoredExpiryTime();
 
 if (freshToken) {
   setStoredAccessToken(freshToken);
-  setStoredExpiryTime(actualExpiryTime);
+  setStoredExpiryTime(String(expiryTime));
   setSpotifyToken(freshToken);
   removeHashParamsFromUrl();
 } else if (storedToken) {
@@ -39,8 +39,7 @@ const WithSpotifyTokenRoute = withFallback()(() => {
   useEffect(() => {
     if (storedToken) {
       if (storedExpiryTime) {
-        const unixTimeNow = new Date().getTime();
-        const unixTimeExpiry = Date.parse(storedExpiryTime);
+        const unixTimeExpiry = Number(storedExpiryTime);
         if (unixTimeNow > unixTimeExpiry) {
           dispatch(setLoggedOff());
         } else if (unixTimeNow > unixTimeExpiry - TEN_MINUTES) {
