@@ -17,11 +17,15 @@ import {
 
 const spotifyApi = new SpotifyWebApi();
 
+const throwError = (error: any) => {
+  throw error;
+};
+
 export const setSpotifyToken = (token: string) =>
   spotifyApi.setAccessToken(token);
 
 export async function getLoggedInUserInfo(): Promise<UserInfo> {
-  return mapToUserInfo(await spotifyApi.getMe());
+  return await spotifyApi.getMe().then(mapToUserInfo, throwError);
 }
 
 export async function getUserInfo({
@@ -29,7 +33,9 @@ export async function getUserInfo({
 }: {
   userId: string;
 }): Promise<MinimalUserInfo> {
-  return mapToMinimalUserInfo(await spotifyApi.getUser(userId));
+  return await spotifyApi
+    .getUser(userId)
+    .then(mapToMinimalUserInfo, throwError);
 }
 
 export async function getArtistInfo({
@@ -37,7 +43,9 @@ export async function getArtistInfo({
 }: {
   spotifyId: string;
 }): Promise<ArtistInfo> {
-  return mapToArtistInfo(await spotifyApi.getArtist(spotifyId));
+  return await spotifyApi
+    .getArtist(spotifyId)
+    .then(mapToArtistInfo, throwError);
 }
 
 export async function getArtistRelatedArtists({
@@ -45,9 +53,9 @@ export async function getArtistRelatedArtists({
 }: {
   spotifyId: string;
 }): Promise<Artist[]> {
-  return (await spotifyApi.getArtistRelatedArtists(spotifyId)).artists.map(
-    mapToArtist
-  );
+  return await spotifyApi
+    .getArtistRelatedArtists(spotifyId)
+    .then((response) => response.artists.map(mapToArtist), throwError);
 }
 
 export async function getPlaylist({
@@ -58,8 +66,9 @@ export async function getPlaylist({
   id?: string;
 }): Promise<Playlist | undefined> {
   if (!id || !ownerId) return undefined;
-  const playlist = await spotifyApi.getPlaylist(ownerId, id);
-  return mapToPlaylist(playlist);
+  return await spotifyApi
+    .getPlaylist(ownerId, id)
+    .then(mapToPlaylist, throwError);
 }
 
 export async function getAllPlaylists({
@@ -71,23 +80,23 @@ export async function getAllPlaylists({
   offset?: number;
   allPlaylists?: Playlist[];
 }): Promise<Playlist[]> {
-  const userPlaylists = await spotifyApi.getUserPlaylists(userId, {
-    limit: 50,
-    offset: offset,
-  });
-  const playlistsWithTracks: Playlist[] = userPlaylists.items
-    .filter((playlist) => playlist.tracks.total > 0)
-    .map(mapToPlaylist);
+  return await spotifyApi
+    .getUserPlaylists(userId, { limit: 50, offset: offset })
+    .then((userPlaylists) => {
+      const playlistsWithTracks: Playlist[] = userPlaylists.items
+        .filter((playlist) => playlist.tracks.total > 0)
+        .map(mapToPlaylist);
 
-  const updatedAllPlaylists = allPlaylists.concat(playlistsWithTracks);
-  if (userPlaylists.total > offset + 50) {
-    return getAllPlaylists({
-      userId,
-      offset: offset + 50,
-      allPlaylists: updatedAllPlaylists,
-    });
-  } else
-    return updatedAllPlaylists.sort((a, b) => a.name.localeCompare(b.name));
+      const updatedAllPlaylists = allPlaylists.concat(playlistsWithTracks);
+      if (userPlaylists.total > offset + 50) {
+        return getAllPlaylists({
+          userId,
+          offset: offset + 50,
+          allPlaylists: updatedAllPlaylists,
+        });
+      } else
+        return updatedAllPlaylists.sort((a, b) => a.name.localeCompare(b.name));
+    }, throwError);
 }
 
 async function getTopArtistsWithPopularity({
@@ -95,14 +104,16 @@ async function getTopArtistsWithPopularity({
 }: {
   timeRange: 'long_term' | 'medium_term' | 'short_term';
 }): Promise<Artist[]> {
-  const response = await spotifyApi.getMyTopArtists({
-    limit: 50,
-    time_range: timeRange,
-  });
-
-  return response.items.map((artist, idx) =>
-    mapToArtistWithPopularity(artist, response.items.length * 2 - idx)
-  );
+  return await spotifyApi
+    .getMyTopArtists({
+      limit: 50,
+      time_range: timeRange,
+    })
+    .then((response) => {
+      return response.items.map((artist, idx) =>
+        mapToArtistWithPopularity(artist, response.items.length * 2 - idx)
+      );
+    }, throwError);
 }
 
 const topArtistsCount = (numArtists: number) =>
@@ -146,23 +157,24 @@ async function getAllArtists({
   offset?: number;
   allArtists?: Artist[];
 }): Promise<Artist[]> {
-  const response = await spotifyApi.getArtists(
-    artistIds.slice(offset, offset + 50)
-  );
-  const newArtists = response.artists.map((artist) =>
-    mapToArtistWithPopularity(artist, count[artist.id])
-  );
+  return await spotifyApi
+    .getArtists(artistIds.slice(offset, offset + 50))
+    .then((response) => {
+      const newArtists = response.artists.map((artist) =>
+        mapToArtistWithPopularity(artist, count[artist.id])
+      );
 
-  const updatedAllArtists = allArtists.concat(newArtists);
+      const updatedAllArtists = allArtists.concat(newArtists);
 
-  if (offset + 50 < artistIds.length) {
-    return getAllArtists({
-      artistIds,
-      count,
-      offset: offset + 50,
-      allArtists: updatedAllArtists,
-    });
-  } else return updatedAllArtists;
+      if (offset + 50 < artistIds.length) {
+        return getAllArtists({
+          artistIds,
+          count,
+          offset: offset + 50,
+          allArtists: updatedAllArtists,
+        });
+      } else return updatedAllArtists;
+    }, throwError);
 }
 
 async function getAllArtistIdsFromPlaylist({
@@ -176,21 +188,24 @@ async function getAllArtistIdsFromPlaylist({
   offset?: number;
   allArtistIds?: string[];
 }): Promise<string[]> {
-  const tracks = await spotifyApi.getPlaylistTracks(ownerId, id, { offset });
-  const newArtistIds: string[] = tracks.items.flatMap((trackItem) =>
-    trackItem.track.artists.map((trackArtist) => trackArtist.id)
-  );
+  return await spotifyApi
+    .getPlaylistTracks(ownerId, id, { offset })
+    .then((tracks) => {
+      const newArtistIds: string[] = tracks.items.flatMap((trackItem) =>
+        trackItem.track.artists.map((trackArtist) => trackArtist.id)
+      );
 
-  const updatedAllArtistIds = allArtistIds.concat(newArtistIds);
+      const updatedAllArtistIds = allArtistIds.concat(newArtistIds);
 
-  if (offset + 100 < tracks.total) {
-    return getAllArtistIdsFromPlaylist({
-      ownerId,
-      id,
-      offset: offset + 100,
-      allArtistIds: updatedAllArtistIds,
-    });
-  } else return updatedAllArtistIds;
+      if (offset + 100 < tracks.total) {
+        return getAllArtistIdsFromPlaylist({
+          ownerId,
+          id,
+          offset: offset + 100,
+          allArtistIds: updatedAllArtistIds,
+        });
+      } else return updatedAllArtistIds;
+    }, throwError);
 }
 
 export async function getAllPlaylistArtists({
@@ -204,16 +219,19 @@ export async function getAllPlaylistArtists({
   numTracks: number;
 }> {
   if (!id || !ownerId) return { playlistArtists: [], numTracks: 0 };
-  const allArtistIdsRaw = await getAllArtistIdsFromPlaylist({ ownerId, id });
+  return await getAllArtistIdsFromPlaylist({ ownerId, id }).then(
+    async (allArtistIdsRaw) => {
+      const count: { [id: string]: number } = {};
+      allArtistIdsRaw.forEach(
+        (val: string) => (count[val] = (count[val] || 0) + 1)
+      );
+      const artistIds = [...new Set(allArtistIdsRaw)].filter(Boolean);
+      const newArtists = await getAllArtists({ artistIds, count });
 
-  const count: { [id: string]: number } = {};
-  allArtistIdsRaw.forEach(
-    (val: string) => (count[val] = (count[val] || 0) + 1)
+      const numTracks = allArtistIdsRaw.length;
+
+      return { playlistArtists: newArtists, numTracks };
+    },
+    throwError
   );
-  const artistIds = [...new Set(allArtistIdsRaw)].filter(Boolean);
-  const newArtists = await getAllArtists({ artistIds, count });
-
-  const numTracks = allArtistIdsRaw.length;
-
-  return { playlistArtists: newArtists, numTracks };
 }
