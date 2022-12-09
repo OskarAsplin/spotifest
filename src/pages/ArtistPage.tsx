@@ -164,12 +164,8 @@ const ArtistPage = withFallback(
             <IconButton
               sx={{ p: 1.5 }}
               color="inherit"
-              onClick={() =>
-                window.open(
-                  `https://open.spotify.com/artist/${artistInfo.artist.spotifyId}`,
-                  '_blank'
-                )
-              }
+              href={`https://open.spotify.com/artist/${artistInfo.artist.spotifyId}`}
+              target="_blank"
             >
               <Avatar
                 src={process.env.PUBLIC_URL + '/techIcons/Spotify-Mark.png'}

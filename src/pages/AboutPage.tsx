@@ -220,12 +220,8 @@ const AboutPage = () => {
               </Typography>
               <div className={styles.rowFlexCenter}>
                 <IconButton
-                  onClick={() =>
-                    window.open(
-                      'https://www.linkedin.com/in/oskar-buset-asplin-22796314a',
-                      '_blank'
-                    )
-                  }
+                  href="https://www.linkedin.com/in/oskar-asplin-22796314a"
+                  target="_blank"
                 >
                   <div className={styles.linkedInSocialButton}>
                     <img
@@ -236,9 +232,8 @@ const AboutPage = () => {
                   </div>
                 </IconButton>
                 <IconButton
-                  onClick={() =>
-                    window.open('https://github.com/OskarAsplin', '_blank')
-                  }
+                  href="https://github.com/OskarAsplin"
+                  target="_blank"
                 >
                   <div className={styles.socialButton}>
                     <img

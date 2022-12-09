@@ -127,7 +127,8 @@ const FestivalPage = withFallback(
                     variant="outlined"
                     color="primary"
                     sx={{ p: 1, minWidth: 0, mx: 2, my: 1, borderRadius: 2 }}
-                    onClick={() => window.open(festivalInfo.webpage, '_blank')}
+                    href={festivalInfo.webpage}
+                    target="_blank"
                   >
                     <PublicIcon />
                   </Button>
@@ -137,9 +138,8 @@ const FestivalPage = withFallback(
                     variant="outlined"
                     color="primary"
                     sx={{ p: 1, minWidth: 0, mx: 2, my: 1, borderRadius: 2 }}
-                    onClick={() =>
-                      window.open(festivalInfo.ticketWebpage, '_blank')
-                    }
+                    href={festivalInfo.ticketWebpage}
+                    target="_blank"
                   >
                     <LocalActivityIcon />
                   </Button>
@@ -286,11 +286,7 @@ const FestivalPage = withFallback(
                                 mt: 2,
                               }}
                             >
-                              <Button
-                                onClick={() =>
-                                  window.open(lineup.poster, '_blank')
-                                }
-                              >
+                              <Button href={lineup.poster} target="_blank">
                                 <StyledLineupPosterImg
                                   src={lineup.poster}
                                   alt=""
