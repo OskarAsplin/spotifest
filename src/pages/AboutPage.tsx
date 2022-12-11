@@ -58,7 +58,7 @@ const AboutPage = () => {
             {t('about_page.features.title')}
           </Typography>
           <div className={styles.verticalSpace} />
-          <List className={styles.noPadding}>
+          <List sx={{ p: 0 }}>
             <CustomListItem
               text={t('about_page.features.matching')}
               Icon={<LibraryMusicTwoToneIcon fontSize="large" color="info" />}
@@ -223,27 +223,13 @@ const AboutPage = () => {
                   href="https://www.linkedin.com/in/oskar-asplin-22796314a"
                   target="_blank"
                 >
-                  <div className={styles.linkedInSocialButton}>
-                    <img
-                      src={PUBLIC_URL + '/techIcons/LinkedIn-Bug.png'}
-                      className={styles.linkeidInSocialBug}
-                      alt="LinkedIn"
-                    />
-                  </div>
+                  <LinkedInIcon />
                 </IconButton>
                 <IconButton
                   href="https://github.com/OskarAsplin"
                   target="_blank"
                 >
-                  <div className={styles.socialButton}>
-                    <img
-                      src={`${PUBLIC_URL}/techIcons/GitHub-Mark${
-                        isLightMode ? '' : '-white'
-                      }.png`}
-                      className={styles.githubSocialBug}
-                      alt="GitHub"
-                    />
-                  </div>
+                  <GithubIcon />
                 </IconButton>
               </div>
             </div>
@@ -264,6 +250,45 @@ const CustomListItem = ({ text, Icon }: CustomListItemProps) => (
     <ListItemIcon>{Icon}</ListItemIcon>
     <ListItemText primary={text} />
   </ListItem>
+);
+
+const GithubIcon = () => {
+  const isLightMode = useTheme().palette.mode === 'light';
+
+  return (
+    <Box
+      component="img"
+      src={`${process.env.PUBLIC_URL}/techIcons/GitHub-Mark${
+        isLightMode ? '-white' : ''
+      }.png`}
+      alt="GitHub"
+      sx={{
+        width: ({ spacing }) => spacing(5),
+        height: ({ spacing }) => spacing(5),
+      }}
+    />
+  );
+};
+
+const LinkedInIcon = () => (
+  <Box
+    sx={{
+      width: ({ spacing }) => spacing(5),
+      height: ({ spacing }) => spacing(5),
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#2867b2',
+    }}
+  >
+    <Box
+      component="img"
+      src={`${process.env.PUBLIC_URL}/techIcons/LinkedIn-Bug.png`}
+      alt="LinkedIn"
+      sx={{ mb: 0.25, ml: 0.25, width: '18px', height: '18px' }}
+    />
+  </Box>
 );
 
 export default AboutPage;

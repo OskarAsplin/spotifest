@@ -3,9 +3,7 @@
 $dis: base.$spacing;
 $mediumScreen: base.$mediumScreen;
 $bigScreen: base.$bigScreen;
-$biggerScreen: 720px;
 $fullTechView: 1040px;
-$socialButtonSize: 46px;
 
 @mixin centeredFlex($direction) {
   display: flex;
@@ -139,35 +137,4 @@ $socialButtonSize: 46px;
 
 .roundedCorners {
   border-radius: 5%;
-}
-
-.noPadding {
-  padding: 0 !important;
-}
-
-@mixin socialButtonDimensions {
-  @include centeredFlex(column);
-  height: $socialButtonSize;
-  width: $socialButtonSize;
-  border-radius: 50%;
-}
-
-.socialButton {
-  @include socialButtonDimensions;
-}
-
-.linkedInSocialButton {
-  @include socialButtonDimensions;
-  background-color: #2867b2; //#0069bb
-}
-
-.githubSocialBug {
-  width: $socialButtonSize;
-  height: $socialButtonSize;
-}
-
-.linkeidInSocialBug {
-  margin: 0.75 * $dis 0.75 * $dis 1 * $dis 1 * $dis;
-  width: 24px;
-  height: 24px;
 }
