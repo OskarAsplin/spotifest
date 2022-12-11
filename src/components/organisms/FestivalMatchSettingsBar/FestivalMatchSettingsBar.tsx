@@ -1,6 +1,7 @@
 import InfoIcon from '@mui/icons-material/Info';
 import {
   Box,
+  Button,
   FormControl,
   Grid,
   InputLabel,
@@ -30,6 +31,7 @@ interface FestivalMatchSettingsBarProps {
     onAreaChange: (event: SelectChangeEvent) => Promise<void>;
     onFromDateChange: (date: Date | null) => void;
     onToDateChange: (date: Date | null) => void;
+    onDateRangePreSelect: (range: 2021 | 2022 | 2023 | 'future') => void;
   };
   isMatchBasisFieldDisabled?: boolean;
 }
@@ -45,12 +47,14 @@ const FestivalMatchSettingsBar = ({
     onAreaChange,
     onFromDateChange,
     onToDateChange,
+    onDateRangePreSelect,
   },
   isMatchBasisFieldDisabled,
 }: FestivalMatchSettingsBarProps) => {
   const { t } = useTranslation();
   const themeMode = useTheme().palette.mode;
   const pcScreen = useMediaQuery('(min-width:1200px)');
+  const showYearPreSelect = useMediaQuery('(max-width:799px)');
 
   return (
     <Paper
@@ -155,6 +159,14 @@ const FestivalMatchSettingsBar = ({
             />
           </HtmlTooltip>
         </Box>
+      )}
+      {showYearPreSelect && (
+        <StyledBox sx={{ justifyContent: 'center', pb: 0.5, width: '100%' }}>
+          <Button onClick={() => onDateRangePreSelect(2021)}>2021</Button>
+          <Button onClick={() => onDateRangePreSelect(2022)}>2022</Button>
+          <Button onClick={() => onDateRangePreSelect(2023)}>2023</Button>
+          <Button onClick={() => onDateRangePreSelect('future')}>Future</Button>
+        </StyledBox>
       )}
     </Paper>
   );

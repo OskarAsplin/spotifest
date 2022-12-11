@@ -19,7 +19,6 @@
     "support": {
       "code": "Give the code a <StarIcon/> on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>",
       "share": "Spread the word! Share your matching results and tell everyone about $t(common.app_title)",
-      "tickets": "Buy your festival tickets through the ticket links on the site",
       "title": "Ways to support"
     },
     "tech_stack": {

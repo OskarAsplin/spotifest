@@ -56,6 +56,7 @@ const meta: Meta = {
       onAreaChange: promiseAction('onAreaChange'),
       onFromDateChange: action('onFromDateChange'),
       onToDateChange: action('onToDateChange'),
+      onDateRangePreSelect: action('onDateRangePreSelect'),
     },
   },
   argTypes: {

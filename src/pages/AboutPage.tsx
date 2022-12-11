@@ -1,4 +1,3 @@
-import CurrencyBitcoinIcon from '@mui/icons-material/CurrencyBitcoin';
 import CampaignTwoToneIcon from '@mui/icons-material/CampaignTwoTone';
 import CodeIcon from '@mui/icons-material/Code';
 import EngineeringTwoToneIcon from '@mui/icons-material/EngineeringTwoTone';
@@ -141,14 +140,6 @@ const AboutPage = () => {
                     }
                     Icon={
                       <CampaignTwoToneIcon fontSize="large" color="primary" />
-                    }
-                  />
-                  <CustomListItem
-                    text={
-                      <ListItemText primary="Buy your festival tickets through the ticket links on the site" />
-                    }
-                    Icon={
-                      <CurrencyBitcoinIcon fontSize="large" color="warning" />
                     }
                   />
                   <CustomListItem

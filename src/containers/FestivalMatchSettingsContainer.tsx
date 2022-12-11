@@ -29,6 +29,7 @@ import {
   setToDate,
 } from '../redux/reducers/matchingSlice';
 import { getInitialContinent } from '../utils/areaUtils';
+import { MATCHING_MAX_DATE } from '../config';
 
 interface FestivalMatchSettingsContainerProps {
   sharedMatchBasis?: string;
@@ -113,6 +114,23 @@ const FestivalMatchSettingsContainer = ({
     }
   };
 
+  const onDateRangePreSelect = (range: 2021 | 2022 | 2023 | 'future') => {
+    if (typeof range === 'number') {
+      const from = new Date(range, 0, 1);
+      const to = new Date(range, 11, 31);
+      dispatch(
+        setDates({ fromDate: from.toISOString(), toDate: to.toISOString() })
+      );
+    } else {
+      dispatch(
+        setDates({
+          fromDate: new Date().toISOString(),
+          toDate: MATCHING_MAX_DATE.toISOString(),
+        })
+      );
+    }
+  };
+
   const onClickModalGoButton = () =>
     dispatch(setMatchBasis(TOP_ARTISTS_CHOICE));
 
@@ -137,6 +155,7 @@ const FestivalMatchSettingsContainer = ({
           onAreaChange,
           onFromDateChange,
           onToDateChange,
+          onDateRangePreSelect,
         }}
         isMatchBasisFieldDisabled={isSharedResults}
       />
