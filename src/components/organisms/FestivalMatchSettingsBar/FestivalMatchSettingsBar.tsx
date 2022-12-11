@@ -165,7 +165,9 @@ const FestivalMatchSettingsBar = ({
           <Button onClick={() => onDateRangePreSelect(2021)}>2021</Button>
           <Button onClick={() => onDateRangePreSelect(2022)}>2022</Button>
           <Button onClick={() => onDateRangePreSelect(2023)}>2023</Button>
-          <Button onClick={() => onDateRangePreSelect('future')}>Future</Button>
+          <Button onClick={() => onDateRangePreSelect('future')}>
+            {t('common.future')}
+          </Button>
         </StyledBox>
       )}
     </Paper>
