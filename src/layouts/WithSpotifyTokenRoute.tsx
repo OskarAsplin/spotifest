@@ -23,7 +23,6 @@ const freshToken = hashParams.access_token;
 const expiresIn = hashParams.expires_in; // Seconds
 const expiryTime = unixTimeNow + Number(expiresIn) * 1000;
 const storedToken = getStoredAccessToken();
-const storedExpiryTime = getStoredExpiryTime();
 
 if (freshToken) {
   setStoredAccessToken(freshToken);
@@ -37,7 +36,8 @@ if (freshToken) {
 const WithSpotifyTokenRoute = withFallback()(() => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (storedToken) {
+    if (getStoredAccessToken()) {
+      const storedExpiryTime = getStoredExpiryTime();
       if (storedExpiryTime) {
         const unixTimeExpiry = Number(storedExpiryTime);
         if (unixTimeNow > unixTimeExpiry) {
