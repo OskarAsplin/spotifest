@@ -14,7 +14,6 @@ import {
 } from '../../molecules/AreaSelect/AreaSelect.fixtures';
 import { getPlaylistKey } from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import { WORLDWIDE_AREA } from '../../molecules/AreaSelect/AreaSelect';
-import { INITIAL_FROM_DATE, INITIAL_TO_DATE } from '../../../config';
 import { StyledRootDiv } from '../../../layouts/StyledLayoutComponents';
 
 type Meta = ComponentMeta<typeof FestivalMatchSettingsBar>;
@@ -47,8 +46,8 @@ const meta: Meta = {
     matchSettings: {
       matchBasis: getPlaylistKey(playlistMock),
       area: WORLDWIDE_AREA,
-      fromDate: INITIAL_FROM_DATE.toISOString(),
-      toDate: INITIAL_TO_DATE.toISOString(),
+      fromDate: new Date(2023, 0, 1).toISOString(),
+      toDate: new Date(2023, 11, 31).toISOString(),
       numTracks: 1337,
     },
     onChangeHandlers: {

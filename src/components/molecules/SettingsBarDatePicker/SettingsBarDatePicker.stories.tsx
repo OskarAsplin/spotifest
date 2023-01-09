@@ -1,7 +1,6 @@
 import { Grid } from '@mui/material';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import SettingsBarDatePicker from './SettingsBarDatePicker';
-import { INITIAL_FROM_DATE } from '../../../config';
 import { useState } from 'react';
 
 type Meta = ComponentMeta<typeof SettingsBarDatePicker>;
@@ -26,7 +25,7 @@ const meta: Meta = {
 export default meta;
 
 const Template: Story = (args) => {
-  const [date, setDate] = useState(INITIAL_FROM_DATE);
+  const [date, setDate] = useState(new Date(2023, 0, 1));
   const onChange = (date: Date | null) => {
     if (date) setDate(date);
   };
