@@ -103,12 +103,7 @@ const StyledTitleTypography = styled(Typography)(() => ({
     borderRadius: '15%',
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     textShadow: '1px 1px 2px black',
-    boxShadow: '0 10px 20px 20px rgba(0, 0, 0, 0.6)',
-    '@media (min-width: 610px)': {
-      '@media (min-height: 610px)': {
-        boxShadow: '0 10px 30px 30px rgba(0, 0, 0, 0.6)',
-      },
-    },
+    boxShadow: '0 10px 20px 35px rgba(0, 0, 0, 0.6)',
   },
 }));
 
