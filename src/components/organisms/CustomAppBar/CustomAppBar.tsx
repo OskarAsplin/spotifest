@@ -33,7 +33,6 @@ const CustomAppBar = ({
   profilePictureUrl,
 }: CustomAppBarProps) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
-  const smallMobileScreen = useMediaQuery('(max-width:355px)');
   const [showSearchFieldSmallScreen, setShowSearchFieldSmallScreen] =
     useState(false);
   const { t } = useTranslation();
@@ -45,7 +44,6 @@ const CustomAppBar = ({
 
   return (
     <AppBar
-      id="oskarito-appbar"
       sx={{
         color: '#fff',
         backgroundColor: ({ palette: { mode } }) =>
@@ -58,11 +56,7 @@ const CustomAppBar = ({
           color="inherit"
           onClick={onClickLogo}
         >
-          <Typography variant="h6">
-            {smallMobileScreen
-              ? t('common.app_title_short')
-              : t('common.app_title')}
-          </Typography>
+          <Typography variant="h6">{t('common.app_title')}</Typography>
         </Button>
         <Box sx={{ flexGrow: 1 }} />
         {bigScreen && <SearchFieldComponent />}

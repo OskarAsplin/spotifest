@@ -38,14 +38,21 @@ const LoginPage = () => {
           top: '15%',
           width: '100%',
           display: 'flex',
-          justifyContent: 'center',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
         <StyledTitleTypography
-          variant={bigScreen ? 'h2' : verySmallScreen ? 'h5' : 'h4'}
+          variant={bigScreen ? 'h1' : verySmallScreen ? 'h4' : 'h3'}
         >
           {t('common.app_title')}
         </StyledTitleTypography>
+        <Typography
+          variant={bigScreen ? 'h6' : 'body1'}
+          sx={{ textAlign: 'center', mt: bigScreen ? -1.5 : -0.5 }}
+        >
+          {t('login_page.subtitle')}
+        </Typography>
       </Box>
       <Box
         sx={{
@@ -94,12 +101,12 @@ const StyledTitleTypography = styled(Typography)(() => ({
   [`&.${typographyClasses.root}`]: {
     textAlign: 'center',
     borderRadius: '15%',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     textShadow: '1px 1px 2px black',
-    boxShadow: '0 -1px 10px 10px rgba(0, 0, 0, 0.4)',
+    boxShadow: '0 10px 20px 20px rgba(0, 0, 0, 0.6)',
     '@media (min-width: 610px)': {
       '@media (min-height: 610px)': {
-        boxShadow: '0 -2px 20px 20px rgba(0, 0, 0, 0.4)',
+        boxShadow: '0 10px 30px 30px rgba(0, 0, 0, 0.6)',
       },
     },
   },

@@ -53,8 +53,7 @@
   "common": {
     "about": "About",
     "alphabetically": "Alphabetically",
-    "app_title": "Oskarito Spotifest",
-    "app_title_short": "Spotifest",
+    "app_title": "Spotifest",
     "artists": "Artists",
     "brightness": "Brightness",
     "cancelled": "CANCELLED",
@@ -84,7 +83,8 @@
       "line_1": "Find music festivals with your playlists",
       "line_2": "A festival finder created by <Link href=\"https://github.com/OskarAsplin\">Oskar Asplin</Link>",
       "line_3": "<Link href=\"https://www.flickr.com/photos/149801000@N05/34735177654/in/photostream/\">Photo</Link> by <Link href=\"https://www.flickr.com/photos/149801000@N05/\">veldmusicfestival</Link> / <Link href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC BY-SA 2.0</Link>"
-    }
+    },
+    "subtitle": "by Oskarito"
   },
   "matching": {
     "algorithm": {

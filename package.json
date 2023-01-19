@@ -1,5 +1,5 @@
 {
-  "name": "oskarito-spotifest",
+  "name": "spotifest",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
