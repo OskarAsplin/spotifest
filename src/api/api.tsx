@@ -24,10 +24,13 @@ export const useGet = <Op extends OpBaseType>(
     () => operation(query),
     {
       useErrorBoundary: (error: any) =>
-        error instanceof TypeError || error.response?.status >= 500,
+        error instanceof TypeError ||
+        error.response?.status >= 500 ||
+        (typeof error.status === 'number' && error.status >= 500),
       onError: (error: any) => {
         if (error.status === 401) dispatch(setLoggedOff());
         onError?.(error);
+        console.log(error);
       },
       ...queryConfig,
     }
