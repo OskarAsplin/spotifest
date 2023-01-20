@@ -16,9 +16,9 @@ Check it out at [spotifest.app](https://spotifest.app)
   </thead>
   <tbody>
     <tr>
-      <td width="33.3%"><img src="https://github.com/OskarAsplin/spotifest/raw/master/screenshots/matches.png"/></td>
-      <td width="33.3%"><img src="https://github.com/OskarAsplin/spotifest/raw/master/screenshots/festival-page.png"/></td>
-      <td width="33.3%"><img src="https://github.com/OskarAsplin/spotifest/raw/master/screenshots/artist-page.png"/></td>
+      <td width="33.3%"><img src="https://github.com/OskarAsplin/spotifest/raw/master/public/screenshots/matches.png"/></td>
+      <td width="33.3%"><img src="https://github.com/OskarAsplin/spotifest/raw/master/public/screenshots/festival_page.png"/></td>
+      <td width="33.3%"><img src="https://github.com/OskarAsplin/spotifest/raw/master/public/screenshots/artist_page.png"/></td>
     </tr>
   </tbody>
 </table>

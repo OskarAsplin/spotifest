@@ -3,14 +3,15 @@ import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { Trans, useTranslation } from 'react-i18next';
 import LoginButton from '../components/atoms/LoginButton/LoginButton';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
+import UsageThumbnailsWithGallery from '../components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
 import { getAuthorizeHref } from '../oauthConfig';
 import {
   setLoggedIn,
   setLoggedOff,
 } from '../redux/reducers/authorizationSlice';
-import { Trans, useTranslation } from 'react-i18next';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');
@@ -67,21 +68,24 @@ const LoginPage = () => {
         <LoginButton onClick={onClickLoginButton} />
       </Box>
       <StyledFooterDiv>
-        <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
-          {t('login_page.footer.line_1')}
-        </StyledFooterTypography>
-        <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
-          <Trans
-            i18nKey="login_page.footer.line_2"
-            components={{ Link: <StandardLink /> }}
-          />
-        </StyledFooterTypography>
-        <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
-          <Trans
-            i18nKey="login_page.footer.line_3"
-            components={{ Link: <StandardLink /> }}
-          />
-        </StyledFooterTypography>
+        <UsageThumbnailsWithGallery />
+        <StyledFooterText>
+          <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
+            {t('login_page.footer.line_1')}
+          </StyledFooterTypography>
+          <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
+            <Trans
+              i18nKey="login_page.footer.line_2"
+              components={{ Link: <StandardLink /> }}
+            />
+          </StyledFooterTypography>
+          <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
+            <Trans
+              i18nKey="login_page.footer.line_3"
+              components={{ Link: <StandardLink /> }}
+            />
+          </StyledFooterTypography>
+        </StyledFooterText>
       </StyledFooterDiv>
     </StyledBackgroundDiv>
   );
@@ -124,10 +128,20 @@ const StyledFooterDiv = styled('div')(({ theme: { spacing } }) => ({
   flexDirection: 'column',
   alignItems: 'center',
   textAlign: 'center',
-  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  backgroundColor: 'rgba(0, 0, 0, 0.1)',
   marginBottom: spacing(1),
   padding: spacing(1, 2, 1, 2),
-  boxShadow: '0 -1px 50px 50px rgba(0, 0, 0, 0.6)',
+  boxShadow: '0 0 20px 20px rgba(0, 0, 0, 0.1)',
+}));
+
+const StyledFooterText = styled('div')(() => ({
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  textAlign: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.6)',
+  boxShadow: '0 0 50px 50px rgba(0, 0, 0, 0.6)',
 }));
 
 export default LoginPage;
