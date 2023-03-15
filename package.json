@@ -122,6 +122,6 @@
     "storybook-addon-react-router-v6": "^0.2.1",
     "storybook-react-i18next": "^1.1.2",
     "ts-prune": "^0.10.3",
-    "webpack": "^5.75.0"
+    "webpack": "^5.76.0"
   }
 }
