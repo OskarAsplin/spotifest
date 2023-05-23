@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Area } from '../../api/types';
 import { INITIAL_FROM_DATE, INITIAL_TO_DATE } from '../../config';
-import { RootState } from '../store';
+import type { RootState } from '../store';
 
 interface matchingState {
   matchBasis?: string;
