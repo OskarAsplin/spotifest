@@ -2,7 +2,7 @@ import { Box, PaletteMode, Slide, useScrollTrigger } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useGet } from '../api/api';
+import { useApiQuery } from '../api/api';
 import { getLoggedInUserInfo } from '../api/spotifyApi';
 import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
 import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopover';
@@ -25,7 +25,7 @@ const AppBarContainer = ({ setThemeMode }: AppBarContainerProps) => {
   const navigate = useNavigate();
   const loggedIn = useSelector(selectLoggedIn);
 
-  const { data: userInfo } = useGet(getLoggedInUserInfo, {
+  const { data: userInfo } = useApiQuery(getLoggedInUserInfo, {
     enabled: loggedIn,
   });
 

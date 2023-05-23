@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player/lazy';
 import { useParams } from 'react-router-dom';
 import SwipeableViews from 'react-swipeable-views';
-import { useGet, withFallback } from '../api/api';
+import { useApiQuery, withFallback } from '../api/api';
 import { getDjangoFestival } from '../api/djangoApi';
 import CustomSwitch from '../components/atoms/CustomSwitch/CustomSwitch';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
@@ -53,7 +53,7 @@ const FestivalPage = withFallback(
   const themeDirection = useTheme().direction;
   const { festivalId } = useParams();
 
-  const { data: festivalInfo } = useGet(getDjangoFestival, {
+  const { data: festivalInfo } = useApiQuery(getDjangoFestival, {
     query: { name: festivalId ?? '' },
     enabled: !!festivalId,
   });

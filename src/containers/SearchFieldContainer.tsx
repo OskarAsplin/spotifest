@@ -2,7 +2,7 @@ import { Box, ClickAwayListener, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { debounce } from 'lodash-es';
 import { ChangeEvent, useState } from 'react';
-import { useGet } from '../api/api';
+import { useApiQuery } from '../api/api';
 import { getDjangoSearchResults } from '../api/djangoApi';
 import SearchField from '../components/molecules/SearchField/SearchField';
 import SearchResults from '../components/organisms/SearchResults/SearchResults';
@@ -21,7 +21,7 @@ const SearchFieldContainer = ({
 
   const [inputText, setInputText] = useState('');
 
-  const { data: searchResults } = useGet(getDjangoSearchResults, {
+  const { data: searchResults } = useApiQuery(getDjangoSearchResults, {
     query: { search: inputText },
     enabled: !!inputText.length,
     suspense: false,

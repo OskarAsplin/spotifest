@@ -10,7 +10,7 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useGet, withFallback } from '../api/api';
+import { useApiQuery, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
   postDjangoFestivalMatches,
@@ -55,17 +55,20 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
   const fromDate = useSelector(selectFromDate);
   const toDate = useSelector(selectToDate);
 
-  const { data: continents } = useGet(getDjangoAvailableContinents);
+  const { data: continents } = useApiQuery(getDjangoAvailableContinents);
 
-  const { data: allTopArtistsData } = useGet(getAllTopArtistsWithPopularity, {
-    enabled: !sharedMatchBasis,
-  });
+  const { data: allTopArtistsData } = useApiQuery(
+    getAllTopArtistsWithPopularity,
+    {
+      enabled: !sharedMatchBasis,
+    }
+  );
   const topArtists = allTopArtistsData?.topArtists ?? [];
   const topArtistsCount = allTopArtistsData?.countTopArtists ?? 0;
 
   const { ownerId, playlistId } = getIdsFromMatchBasis(matchBasis);
 
-  const { data: playlistArtistsData } = useGet(getAllPlaylistArtists, {
+  const { data: playlistArtistsData } = useApiQuery(getAllPlaylistArtists, {
     query: { ownerId, id: playlistId },
     enabled: !!ownerId && !!playlistId,
   });
@@ -93,10 +96,13 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
     states: stateFilter,
   });
 
-  const { data: festivalMatches = [] } = useGet(postDjangoFestivalMatches, {
-    query: matchRequest,
-    enabled: !!artists.length && !!numTracks,
-  });
+  const { data: festivalMatches = [] } = useApiQuery(
+    postDjangoFestivalMatches,
+    {
+      query: matchRequest,
+      enabled: !!artists.length && !!numTracks,
+    }
+  );
 
   useEffect(() => {
     setPage(1);
@@ -106,7 +112,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
     .slice((page - 1) * 15, page * 15)
     .map((match) => match.lineup_id);
 
-  const { data: popularArtistsDict = {} } = useGet(
+  const { data: popularArtistsDict = {} } = useApiQuery(
     postDjangoPopularArtistsInLineups,
     {
       query: { lineups: pageLineups },

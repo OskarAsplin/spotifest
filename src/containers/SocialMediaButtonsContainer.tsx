@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { useGet } from '../api/api';
+import { useApiQuery } from '../api/api';
 import { getAllPlaylists, getLoggedInUserInfo } from '../api/spotifyApi';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
@@ -14,8 +14,8 @@ import {
 const SocialMediaButtonsContainer = () => {
   const matchBasis = useSelector(selectMatchBasis);
 
-  const { data: userInfo } = useGet(getLoggedInUserInfo);
-  const { data: playlists = [] } = useGet(getAllPlaylists, {
+  const { data: userInfo } = useApiQuery(getLoggedInUserInfo);
+  const { data: playlists = [] } = useApiQuery(getAllPlaylists, {
     query: { userId: userInfo?.id ?? '' },
     enabled: !!userInfo?.id,
   });

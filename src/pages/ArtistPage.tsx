@@ -14,7 +14,7 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGet, withFallback } from '../api/api';
+import { useApiQuery, withFallback } from '../api/api';
 import {
   getDjangoArtistByName,
   getDjangoArtistBySpotifyId,
@@ -49,27 +49,25 @@ const ArtistPage = withFallback(
 
   const loggedIn = useSelector(selectLoggedIn);
 
-  const { data: artistBySpotifyId, isError: isArtistBySpotifyIdError } = useGet(
-    getDjangoArtistBySpotifyId,
-    {
+  const { data: artistBySpotifyId, isError: isArtistBySpotifyIdError } =
+    useApiQuery(getDjangoArtistBySpotifyId, {
       query: { spotifyId: spotifyId || '' },
       enabled: hasSpotifyId,
-    }
-  );
+    });
 
-  const { data: artistByName } = useGet(getDjangoArtistByName, {
+  const { data: artistByName } = useApiQuery(getDjangoArtistByName, {
     query: { name: artistId ?? '' },
     enabled: !hasSpotifyId && !!artistId,
   });
 
-  const { data: spotifyArtist } = useGet(getArtistInfo, {
+  const { data: spotifyArtist } = useApiQuery(getArtistInfo, {
     query: { spotifyId: spotifyId || '' },
     enabled: loggedIn && !!isArtistBySpotifyIdError,
   });
 
   const spotifyIdFromDjango = artistByName?.artist.spotifyId;
 
-  const { data: relatedArtists = [] } = useGet(getArtistRelatedArtists, {
+  const { data: relatedArtists = [] } = useApiQuery(getArtistRelatedArtists, {
     query: { spotifyId: spotifyId || spotifyIdFromDjango || '' },
     enabled: loggedIn && (hasSpotifyId || !!spotifyIdFromDjango),
   });

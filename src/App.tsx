@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { PersistGate } from 'redux-persist/integration/react';
-import ApiProvider from './api/ApiProvider';
+import ApiProvider, { injectStore } from './api/ApiProvider';
 import './App.scss';
 import { StandardLayout } from './layouts/StandardLayout';
 import WithSpotifyTokenRoute from './layouts/WithSpotifyTokenRoute';
@@ -21,6 +21,8 @@ import PageNotFound from './pages/PageNotFound';
 import SharedResultsPage from './pages/SharedResultsPage';
 import { persistor, store } from './redux/store';
 import { getMainTheme } from './theme/theme.styles';
+
+injectStore(store);
 
 const App = () => {
   const [mode, setMode] = useState<PaletteMode>('dark');

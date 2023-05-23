@@ -1,7 +1,7 @@
 import { SelectChangeEvent } from '@mui/material';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGet } from '../api/api';
+import { useApiQuery } from '../api/api';
 import {
   getDjangoAvailableContinents,
   getDjangoAvailableCountries,
@@ -44,29 +44,32 @@ const FestivalMatchSettingsContainer = ({
   const toDate = useSelector(selectToDate);
   const dispatch = useDispatch();
 
-  const { data: countries = [] } = useGet(getDjangoAvailableCountries);
-  const { data: continents = [] } = useGet(getDjangoAvailableContinents);
+  const { data: countries = [] } = useApiQuery(getDjangoAvailableCountries);
+  const { data: continents = [] } = useApiQuery(getDjangoAvailableContinents);
 
   const isSharedResults = !!sharedMatchBasis;
 
   // Shared results - only get the shared playlist
   const { ownerId, playlistId } = getIdsFromMatchBasis(sharedMatchBasis);
-  const { data: sharedPlaylist } = useGet(getPlaylist, {
+  const { data: sharedPlaylist } = useApiQuery(getPlaylist, {
     enabled: isSharedResults,
     query: { ownerId, id: playlistId },
   });
 
   // Not shared results - get all playlists and top artists
-  const { data: userInfo } = useGet(getLoggedInUserInfo, {
+  const { data: userInfo } = useApiQuery(getLoggedInUserInfo, {
     enabled: !isSharedResults,
   });
-  const { data: playlists = [] } = useGet(getAllPlaylists, {
+  const { data: playlists = [] } = useApiQuery(getAllPlaylists, {
     query: { userId: userInfo?.id ?? '' },
     enabled: !!userInfo?.id && !isSharedResults,
   });
-  const { data: allTopArtistsData } = useGet(getAllTopArtistsWithPopularity, {
-    enabled: !isSharedResults,
-  });
+  const { data: allTopArtistsData } = useApiQuery(
+    getAllTopArtistsWithPopularity,
+    {
+      enabled: !isSharedResults,
+    }
+  );
   const topArtists = allTopArtistsData?.topArtists ?? [];
 
   useEffect(() => {

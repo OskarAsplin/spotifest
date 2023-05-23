@@ -1,10 +1,18 @@
 import {
+  QueryCache,
   QueryClient,
   QueryClientProvider,
   QueryObserverOptions,
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactNode } from 'react';
+import { setLoggedOff } from '../redux/reducers/authorizationSlice';
+
+let store: any;
+
+export const injectStore = (_store: any) => {
+  store = _store;
+};
 
 const DEFAULT_QUERY_OPTIONS: QueryObserverOptions = {
   cacheTime: Infinity,
@@ -14,7 +22,13 @@ const DEFAULT_QUERY_OPTIONS: QueryObserverOptions = {
   retry: false,
 };
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (error: any) => {
+      if (error.status === 401) store.dispatch(setLoggedOff());
+    },
+  }),
+});
 queryClient.setDefaultOptions({
   queries: DEFAULT_QUERY_OPTIONS,
   mutations: { retry: DEFAULT_QUERY_OPTIONS.retry },

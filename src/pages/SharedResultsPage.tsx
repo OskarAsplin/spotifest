@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useGet, withFallback } from '../api/api';
+import { useApiQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import { StandardLink } from '../components/atoms/StandardLink/StandardLink.stories';
@@ -44,12 +44,12 @@ const SharedResultsPage = withFallback(
   const matchBasis = matchBasisFromParams ?? getSharedMatchBasis() ?? undefined;
 
   const { ownerId, playlistId } = getIdsFromMatchBasis(matchBasis);
-  const { data: sharedPlaylist } = useGet(getPlaylist, {
+  const { data: sharedPlaylist } = useApiQuery(getPlaylist, {
     enabled: !!matchBasis && loggedIn,
     query: { ownerId, id: playlistId },
   });
 
-  const { data: user } = useGet(getUserInfo, {
+  const { data: user } = useApiQuery(getUserInfo, {
     enabled: !!ownerId && loggedIn,
     query: { userId: ownerId ?? '' },
   });
