@@ -1,11 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import SocialMediaButtons from './SocialMediaButtons';
-import { setStoryDescription } from '../../../utils/storyUtils';
 
-type Meta = ComponentMeta<typeof SocialMediaButtons>;
-type Story = ComponentStory<typeof SocialMediaButtons>;
+type Story = StoryObj<typeof SocialMediaButtons>;
 
-const meta: Meta = {
+const meta: Meta<typeof SocialMediaButtons> = {
   title: 'Organisms/SocialMediaButtons',
   component: SocialMediaButtons,
   parameters: {
@@ -28,13 +26,16 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => <SocialMediaButtons {...args} />;
+export const Primary: Story = {};
 
-export { Template as SocialMediaButtons };
-export const SocialMediaButtonsDisabled = Template.bind({});
-
-SocialMediaButtonsDisabled.args = { isDisabled: true };
-setStoryDescription(
-  SocialMediaButtonsDisabled,
-  'With `isDisabled: true`. This does not affect the tooltipText'
-);
+export const SocialMediaButtonsDisabled: Story = {
+  args: { isDisabled: true },
+  parameters: {
+    docs: {
+      description: {
+        component:
+          'With `isDisabled: true`. This does not affect the tooltipText',
+      },
+    },
+  },
+};

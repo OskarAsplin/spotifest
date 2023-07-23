@@ -6,10 +6,17 @@ const config: StorybookConfig = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     'storybook-react-i18next',
+    {
+      name: '@storybook/addon-styling',
+      options: {},
+    },
   ],
   framework: {
     name: '@storybook/react-vite',
     options: {},
+  },
+  docs: {
+    autodocs: true,
   },
 };
 

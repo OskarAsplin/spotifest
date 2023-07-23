@@ -1,6 +1,9 @@
 import { Parameters } from '@storybook/react';
-import { withTheme } from './decorators';
 import i18n from '../src/translations/i18n';
+
+import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
+import { withThemeFromJSXProvider } from '@storybook/addon-styling';
+import { getMainTheme } from '../src/theme/theme.styles';
 
 export const parameters: Parameters = {
   controls: {
@@ -10,13 +13,6 @@ export const parameters: Parameters = {
     },
   },
   actions: { argTypesRegex: '^on[A-Z].*' },
-  backgrounds: {
-    default: 'dark',
-    values: [
-      { name: 'light', value: '#FFF' },
-      { name: 'dark', value: '#202020' },
-    ],
-  },
   i18n,
   locale: 'en',
   locales: {
@@ -24,4 +20,17 @@ export const parameters: Parameters = {
   },
 };
 
-export const decorators = [withTheme];
+const lightTheme = createTheme(getMainTheme('light'));
+const darkTheme = createTheme(getMainTheme('dark'));
+
+export const decorators = [
+  withThemeFromJSXProvider({
+    GlobalStyles: CssBaseline,
+    Provider: ThemeProvider,
+    themes: {
+      light: lightTheme,
+      dark: darkTheme,
+    },
+    defaultTheme: 'light',
+  }),
+];
