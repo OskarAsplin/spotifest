@@ -40,8 +40,6 @@ const AboutPage = () => {
 
   const isLightMode = useTheme().palette.mode === 'light';
 
-  const { PUBLIC_URL } = process.env;
-
   return (
     <>
       {bigPcScreen && <TopLeftBackButtonContainer />}
@@ -197,11 +195,11 @@ const AboutPage = () => {
               <Box
                 className={clsx(
                   styles.creatorImgBox,
-                  isLightMode ? styles.roundedCorners : styles.darkerBackground
+                  isLightMode ? styles.roundedCorners : styles.darkerBackground,
                 )}
               >
                 <img
-                  src={PUBLIC_URL + '/creator_image_cropped.jpg'}
+                  src="/creator_image_cropped.jpg"
                   className={styles.creatorImage}
                   alt="Creator"
                 />
@@ -249,9 +247,7 @@ const GithubIcon = () => {
   return (
     <Box
       component="img"
-      src={`${process.env.PUBLIC_URL}/techIcons/GitHub-Mark${
-        isLightMode ? '-white' : ''
-      }.png`}
+      src={`/techIcons/GitHub-Mark${isLightMode ? '-white' : ''}.png`}
       alt="GitHub"
       sx={{
         width: ({ spacing }) => spacing(5),
@@ -275,7 +271,7 @@ const LinkedInIcon = () => (
   >
     <Box
       component="img"
-      src={`${process.env.PUBLIC_URL}/techIcons/LinkedIn-Bug.png`}
+      src="/techIcons/LinkedIn-Bug.png"
       alt="LinkedIn"
       sx={{ mb: 0.25, ml: 0.25, width: '18px', height: '18px' }}
     />

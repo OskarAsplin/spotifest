@@ -1,7 +1,7 @@
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 
 export const getShareUrl = (matchBasis?: string) =>
-  `${process.env.REACT_APP_REDIRECT_URI}/share/${matchBasis}`;
+  `${import.meta.env.VITE_REDIRECT_URI}/share/${matchBasis}`;
 
 export const getTooltipText = (matchBasis?: string) => {
   if (!matchBasis) return 'Select a playlist to share your results';
@@ -12,7 +12,7 @@ export const getTooltipText = (matchBasis?: string) => {
 
 export const getShareMessage = (
   isOwnPlaylist: boolean,
-  playlistName?: string
+  playlistName?: string,
 ) =>
   `I matched ${
     isOwnPlaylist ? 'my' : 'the'

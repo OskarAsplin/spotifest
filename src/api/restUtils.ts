@@ -1,4 +1,4 @@
-export const getApiBaseUrl = () => process.env.REACT_APP_BACKEND_URL!;
+export const getApiBaseUrl = () => import.meta.env.VITE_BACKEND_URL!;
 
 enum RequestMethod {
   GET = 'GET',
@@ -16,7 +16,7 @@ const getHeaders = (): Headers =>
 const fetchRequest = async <T>(
   method: string,
   path: string,
-  body?: string
+  body?: string,
 ): Promise<T> => {
   const OPTIONS: RequestInit = {
     headers: getHeaders(),

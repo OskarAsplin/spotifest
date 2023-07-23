@@ -14,7 +14,7 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
-import ReactPlayer from 'react-player/lazy';
+import ReactPlayer from 'react-player';
 import { useParams } from '@tanstack/router';
 import SwipeableViews from 'react-swipeable-views';
 import { useApiQuery, withFallback } from '../api/api';
@@ -39,7 +39,7 @@ const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const FestivalPage = withFallback(
   SuspenseFallback,
-  ErrorFallback
+  ErrorFallback,
 )(() => {
   const boxForLineups = useMediaQuery('(min-width:1182px)');
   const mediumScreen = useMediaQuery('(min-width:610px)');
@@ -63,7 +63,7 @@ const FestivalPage = withFallback(
   const maxArtistsInLineupsWidth = getMaxArtistsInFullLineupWidth(
     bigScreen,
     smallScreen,
-    11
+    11,
   );
 
   const [selectedLineup, setSelectedLineup] = useState(0);
@@ -259,7 +259,7 @@ const FestivalPage = withFallback(
                                       : a.popularity < b.popularity
                                   )
                                     ? 1
-                                    : -1
+                                    : -1,
                                 )
                                 .map((artist) => (
                                   <ArtistBubbleContainer
@@ -275,7 +275,7 @@ const FestivalPage = withFallback(
                                     (lineup.artists.length %
                                       maxArtistsInLineupsWidth),
                                 },
-                                (_, i) => <StyledAvatarContainerdiv key={i} />
+                                (_, i) => <StyledAvatarContainerdiv key={i} />,
                               )}
                           </Box>
                         </StyledCenteredColumnDiv>

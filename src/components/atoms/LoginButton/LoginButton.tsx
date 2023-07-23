@@ -21,7 +21,7 @@ const LoginButton = ({ onClick }: LoginButtonProps) => {
     >
       <Box
         component="img"
-        src={process.env.PUBLIC_URL + '/techIcons/Spotify-Mark-white.png'}
+        src="/techIcons/Spotify-Mark-white.png"
         alt="Spotify-icon"
         sx={{
           height: bigScreen ? '50px' : '35px',

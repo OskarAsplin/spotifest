@@ -249,7 +249,7 @@ const TechInfoRow = ({ text, icons }: TechInfoRowProps) => {
         <div className={styles.iconsContainer}>
           {icons.map((icon) => (
             <img
-              src={process.env.PUBLIC_URL + '/techIcons/' + icon.path}
+              src={'/techIcons/' + icon.path}
               key={icon.path}
               className={icon.class}
               alt={icon.path}

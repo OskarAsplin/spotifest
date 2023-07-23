@@ -165,7 +165,7 @@ const ArtistPage = withFallback(
               target="_blank"
             >
               <Avatar
-                src={process.env.PUBLIC_URL + '/techIcons/Spotify-Mark.png'}
+                src="/techIcons/Spotify-Mark.png"
                 alt=""
                 sx={{ height: 28, width: 28 }}
               />
