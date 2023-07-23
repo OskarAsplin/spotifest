@@ -15,7 +15,7 @@ import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player/lazy';
-import { useParams } from 'react-router-dom';
+import { useParams } from '@tanstack/router';
 import SwipeableViews from 'react-swipeable-views';
 import { useApiQuery, withFallback } from '../api/api';
 import { getDjangoFestival } from '../api/djangoApi';

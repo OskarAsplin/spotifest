@@ -13,7 +13,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from '@tanstack/router';
 import { useApiQuery, withFallback } from '../api/api';
 import {
   getDjangoArtistByName,
@@ -31,13 +31,12 @@ import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
 import { getMaxArtistsInWidth } from '../utils/displayUtils';
-import { getFestivalPath } from '../utils/routeUtils';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const ArtistPage = withFallback(
   SuspenseFallback,
-  ErrorFallback
+  ErrorFallback,
 )(() => {
   const themeMode = useTheme().palette.mode;
   const { artistId } = useParams();
@@ -228,7 +227,12 @@ const ArtistPage = withFallback(
                 <StyledPastFestivalButton
                   key={'past festival: ' + festival.name + festival.year}
                   variant="outlined"
-                  onClick={() => navigate(getFestivalPath(festival.name))}
+                  onClick={() =>
+                    navigate({
+                      to: '/festival/$festivalId',
+                      params: { festivalId: encodeURIComponent(festival.name) },
+                    })
+                  }
                 >
                   <>
                     <Typography
@@ -296,7 +300,7 @@ const StyledFestivalsTypography = styled(Typography)(
   ({ theme: { spacing } }) => ({
     marginBottom: spacing(1),
     '@media (max-width: 689px)': { textAlign: 'center' },
-  })
+  }),
 );
 
 const StyledStack = styled(Stack)(({ theme: { spacing } }) => ({

@@ -1,7 +1,8 @@
+import { Parameters } from '@storybook/react';
 import { withTheme } from './decorators';
 import i18n from '../src/translations/i18n';
 
-export const parameters = {
+export const parameters: Parameters = {
   controls: {
     matchers: {
       color: /(background|color)$/i,
@@ -15,10 +16,6 @@ export const parameters = {
       { name: 'light', value: '#FFF' },
       { name: 'dark', value: '#202020' },
     ],
-  },
-  viewMode: 'docs',
-  previewTabs: {
-    'storybook/docs/panel': { index: -1 },
   },
   i18n,
   locale: 'en',

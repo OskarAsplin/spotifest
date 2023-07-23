@@ -1,7 +1,7 @@
-import { Box, PaletteMode, Slide, useScrollTrigger } from '@mui/material';
+import { Box, Slide, useScrollTrigger } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/router';
 import { useApiQuery } from '../api/api';
 import { getLoggedInUserInfo } from '../api/spotifyApi';
 import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
@@ -13,12 +13,9 @@ import {
 } from '../redux/reducers/authorizationSlice';
 import { isMainPage } from '../utils/routeUtils';
 import SearchFieldContainer from './SearchFieldContainer';
+import { indexRoute } from '../Routes';
 
-interface AppBarContainerProps {
-  setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
-}
-
-const AppBarContainer = ({ setThemeMode }: AppBarContainerProps) => {
+const AppBarContainer = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -53,7 +50,7 @@ const AppBarContainer = ({ setThemeMode }: AppBarContainerProps) => {
   const onClickLogo = () => {
     const url = window.location.href;
     if (isMainPage(url)) window.scrollTo({ top: 0, behavior: 'smooth' });
-    else navigate('/');
+    else navigate({ to: indexRoute.to });
   };
 
   return (
@@ -81,7 +78,6 @@ const AppBarContainer = ({ setThemeMode }: AppBarContainerProps) => {
       <AppBarMenuDrawerContainer
         open={drawerOpen}
         onClose={toggleDrawer(false)}
-        setThemeMode={setThemeMode}
       />
     </Box>
   );

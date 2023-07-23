@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/router';
 import { TopLeftBackButton } from '../components/atoms/BackButton/BackButton';
 
 const TopLeftBackButtonContainer = () => {
@@ -6,7 +6,7 @@ const TopLeftBackButtonContainer = () => {
 
   const onClick = () => {
     window.history.back();
-    setTimeout(() => navigate('/'), 10);
+    setTimeout(() => navigate({ to: '/' }), 10);
   };
 
   return <TopLeftBackButton onClick={onClick} />;

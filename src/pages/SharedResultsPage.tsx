@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from '@tanstack/router';
 import { useApiQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
@@ -34,7 +34,7 @@ const CustomErrorFallback = () => {
 
 const SharedResultsPage = withFallback(
   SuspenseFallback,
-  CustomErrorFallback
+  CustomErrorFallback,
 )(() => {
   const { matchBasis: matchBasisFromParams } = useParams();
   const dispatch = useDispatch();
@@ -58,6 +58,7 @@ const SharedResultsPage = withFallback(
     throw 'Invalid match basis';
 
   useEffect(() => {
+    const sharedMatchBasis = getSharedMatchBasis();
     if (matchBasis && !loggedIn) {
       // Log in user and set /share as redirect URI.
       // Store the sharedMatchBasis in localStorage,
@@ -66,9 +67,12 @@ const SharedResultsPage = withFallback(
       dispatch(setLoggedIn());
       setSharedMatchBasis(matchBasis);
       window.open(getAuthorizeHref('/share'), '_self');
-    } else if (!matchBasisFromParams && getSharedMatchBasis()) {
+    } else if (!matchBasisFromParams && sharedMatchBasis) {
       // This happens on return from the Spotify login in the if statement above.
-      navigate(`/share/${getSharedMatchBasis()}`);
+      navigate({
+        to: '/share/$matchBasis',
+        params: { matchBasis: sharedMatchBasis },
+      });
     }
   }, []);
 

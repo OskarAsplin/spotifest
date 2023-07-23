@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from '@tanstack/router';
 import { withFallback } from '../api/api';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';

@@ -1,10 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import SearchField from './SearchField';
 
-type Meta = ComponentMeta<typeof SearchField>;
-type Story = ComponentStory<typeof SearchField>;
+type Story = StoryObj<typeof SearchField>;
 
-const meta: Meta = {
+const meta: Meta<typeof SearchField> = {
   title: 'Molecules/SearchField',
   component: SearchField,
   parameters: {
@@ -20,6 +19,4 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => <SearchField {...args} />;
-
-export { Template as SearchField };
+export const Primary: Story = {};

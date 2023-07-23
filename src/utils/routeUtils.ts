@@ -6,5 +6,10 @@ export const getArtistPath = (artistName: string, spotifyId?: string) => {
   return '/artist/' + encodeURIComponent(artistName);
 };
 
+export const getArtistParam = (artistName: string, spotifyId?: string) => {
+  if (spotifyId) return `spotifyId=${spotifyId}`;
+  return encodeURIComponent(artistName);
+};
+
 export const getFestivalPath = (festivalName: string) =>
   '/festival/' + encodeURIComponent(festivalName);

@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/router';
 import { Artist } from '../api/types';
 import ArtistBubble from '../components/molecules/ArtistBubble/ArtistBubble';
-import { getArtistPath } from '../utils/routeUtils';
+import { getArtistParam } from '../utils/routeUtils';
 
 interface ArtistBubbleContainerProps {
   artist: Artist;
@@ -10,7 +10,11 @@ interface ArtistBubbleContainerProps {
 const ArtistBubbleContainer = ({ artist }: ArtistBubbleContainerProps) => {
   const navigate = useNavigate();
 
-  const onClick = () => navigate(getArtistPath(artist.name, artist.spotifyId));
+  const onClick = () =>
+    navigate({
+      to: '/artist/$artistId',
+      params: { artistId: getArtistParam(artist.name, artist.spotifyId) },
+    });
 
   return <ArtistBubble artist={artist} onClick={onClick} />;
 };

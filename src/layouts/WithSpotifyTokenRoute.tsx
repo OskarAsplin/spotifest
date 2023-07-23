@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Outlet } from 'react-router-dom';
 import { withFallback } from '../api/api';
 import { setSpotifyToken } from '../api/spotifyApi';
 import { getAuthorizeHref } from '../oauthConfig';
@@ -33,7 +32,11 @@ if (freshToken) {
   setSpotifyToken(storedToken);
 }
 
-const WithSpotifyTokenRoute = withFallback()(() => {
+interface Props {
+  children: React.ReactNode;
+}
+
+const WithSpotifyTokenRoute = withFallback<Props>()(({ children }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (getStoredAccessToken()) {
@@ -52,7 +55,7 @@ const WithSpotifyTokenRoute = withFallback()(() => {
     } else if (!freshToken) dispatch(setLoggedOff());
   }, []);
 
-  return <Outlet />;
+  return <>{children}</>;
 });
 
 export default WithSpotifyTokenRoute;

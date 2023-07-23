@@ -1,27 +1,26 @@
 import { Brightness2, Brightness4 } from '@mui/icons-material';
 import InfoIcon from '@mui/icons-material/Info';
-import { PaletteMode } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/router';
 import CustomDrawer from '../components/organisms/CustomDrawer/CustomDrawer';
 
 interface Props {
   open: boolean;
   onClose: (event: React.KeyboardEvent | React.MouseEvent) => void;
-  setThemeMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
 }
 
-const AppBarMenuDrawerContainer = ({ open, onClose, setThemeMode }: Props) => {
+const AppBarMenuDrawerContainer = ({ open, onClose }: Props) => {
   const { t } = useTranslation();
   const themeMode = useTheme().palette.mode;
   const navigate = useNavigate();
 
   const onClickAbout = () => {
-    if (!window.location.href.endsWith('/about')) navigate('/about');
+    if (!window.location.href.endsWith('/about')) navigate({ to: '/about' });
   };
   const onClickBrightness = () =>
-    setThemeMode(themeMode === 'light' ? 'dark' : 'light');
+    console.log('TODO - add zustand for theme mode');
+  // setThemeMode(themeMode === 'light' ? 'dark' : 'light');
 
   const items = [
     { Icon: <InfoIcon />, label: t('common.about'), onClick: onClickAbout },

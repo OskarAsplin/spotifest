@@ -1,8 +1,15 @@
-import { createRoot } from 'react-dom/client';
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.scss';
 import './translations/i18n';
 
-const container = document.getElementById('app');
-const root = createRoot(container!);
-root.render(<App />);
+const rootElement = document.getElementById('app')!;
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+}

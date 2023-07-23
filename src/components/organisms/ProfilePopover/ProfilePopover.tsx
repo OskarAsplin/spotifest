@@ -2,6 +2,7 @@ import { Box, Popover, PopoverProps, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import StandardLink from '../../atoms/StandardLink/StandardLink';
 import { Trans, useTranslation } from 'react-i18next';
+import { loginRoute } from '../../../Routes';
 
 interface ProfilePopoverProps extends PopoverProps {
   userName?: string;
@@ -47,7 +48,7 @@ const ProfilePopover = ({
           <Box sx={{ maxWidth: '200px' }}>
             <Trans
               i18nKey="app_bar.profile_popover.log_in"
-              components={{ Link: <StandardLink to="/login" /> }}
+              components={{ Link: <StandardLink to={loginRoute.to} /> }}
             />
           </Box>
         )}

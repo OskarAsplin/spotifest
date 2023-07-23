@@ -2,21 +2,26 @@ import { Link, LinkProps } from '@mui/material';
 import { forwardRef } from 'react';
 import {
   Link as RouterLink,
-  LinkProps as RouterLinkProps,
-  To,
-} from 'react-router-dom';
+  LinkPropsOptions as RouterLinkProps,
+  ToOptions,
+} from '@tanstack/router';
 
 const LinkBehavior = forwardRef<any, RouterLinkProps>((props, ref) => (
   <RouterLink ref={ref} {...props} />
 ));
 
 export interface StandardLinkProps extends LinkProps {
-  to?: To;
+  to?: ToOptions;
 }
 
 const StandardLink = ({ to, ...restProps }: StandardLinkProps) =>
   to ? (
-    <Link {...restProps} underline="hover" to={to} component={LinkBehavior} />
+    <Link
+      {...restProps}
+      underline="hover"
+      to={to}
+      component={(props) => <LinkBehavior {...props} />}
+    />
   ) : (
     <Link
       {...restProps}

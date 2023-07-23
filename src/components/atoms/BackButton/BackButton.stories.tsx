@@ -1,11 +1,10 @@
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import BackButton from './BackButton';
 
-type Meta = ComponentMeta<typeof BackButton>;
-type Story = ComponentStory<typeof BackButton>;
+type Story = StoryObj<typeof BackButton>;
 
-const meta: Meta = {
+const meta: Meta<typeof BackButton> = {
   title: 'Atoms/Buttons/BackButton',
   component: BackButton,
   parameters: {
@@ -22,6 +21,4 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => <BackButton {...args} />;
-
-export { Template as BackButton };
+export const Primary: Story = {};

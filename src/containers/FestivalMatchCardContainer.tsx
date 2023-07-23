@@ -1,8 +1,8 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/router';
 import FestivalMatchCard, {
   FestivalMatchCardProps,
 } from '../components/organisms/FestivalMatchCard/FestivalMatchCard';
-import { getArtistPath } from '../utils/routeUtils';
+import { getArtistParam } from '../utils/routeUtils';
 
 type Props = Omit<
   FestivalMatchCardProps,
@@ -13,10 +13,16 @@ const FestivalMatchCardContainer = ({ festival, ...restProps }: Props) => {
   const navigate = useNavigate();
 
   const navigateToFestival = () =>
-    navigate(`/festival/${encodeURIComponent(festival.name)}`);
+    navigate({
+      to: '/festival/$festivalId',
+      params: { festivalId: encodeURIComponent(festival.name) },
+    });
 
   const navigateToArtist = (artistName: string, spotifyId?: string) =>
-    navigate(getArtistPath(artistName, spotifyId));
+    navigate({
+      to: '/artist/$artistId',
+      params: { artistId: getArtistParam(artistName, spotifyId) },
+    });
 
   return (
     <FestivalMatchCard
