@@ -26,7 +26,7 @@ yarn-error.log*
 /src/*.json
 .env
 *sublime*
-build-storybook.log
+/storybook-static
 
 # yarn
 .pnp.*
