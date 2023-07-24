@@ -27,6 +27,7 @@ yarn-error.log*
 .env
 *sublime*
 /storybook-static
+/dist
 
 # yarn
 .pnp.*
