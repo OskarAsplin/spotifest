@@ -1,13 +1,10 @@
-import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import ArtistBubble from './ArtistBubble';
 import { artistMock } from './ArtistBubble.fixtures';
-import { setStoryDescription } from '../../../utils/storyUtils';
 
-type Meta = ComponentMeta<typeof ArtistBubble>;
-type Story = ComponentStory<typeof ArtistBubble>;
+type Story = StoryObj<typeof ArtistBubble>;
 
-const meta: Meta = {
+const meta: Meta<typeof ArtistBubble> = {
   title: 'Molecules/ArtistBubble',
   component: ArtistBubble,
   parameters: {
@@ -20,30 +17,33 @@ const meta: Meta = {
   },
   args: {
     artist: artistMock,
-    onClick: action('onClick'),
   },
 };
 
 export default meta;
 
-const Template: Story = (args) => <ArtistBubble {...args} />;
-
-export { Template as ArtistBubble };
-export const ArtistBubbleWithoutSpotifyId = Template.bind({});
-export const ArtistBubbleWithoutIconPicture = Template.bind({});
-
-ArtistBubbleWithoutSpotifyId.args = {
-  artist: { ...artistMock, spotifyId: undefined },
+export const Primary: Story = {};
+export const WithoutSpotifyId: Story = {
+  args: {
+    artist: { ...artistMock, spotifyId: undefined },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Without spotifyId it will be disabled for clicks',
+      },
+    },
+  },
 };
-setStoryDescription(
-  ArtistBubbleWithoutSpotifyId,
-  'Whithout spotifyId it will be disabled for clicks'
-);
-
-ArtistBubbleWithoutIconPicture.args = {
-  artist: { ...artistMock, iconPicture: undefined },
+export const WithoutIconPicture: Story = {
+  args: {
+    artist: { ...artistMock, iconPicture: undefined },
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Without icon picture it will display the MUI note icon',
+      },
+    },
+  },
 };
-setStoryDescription(
-  ArtistBubbleWithoutIconPicture,
-  'Whithout icon picture it will display the MUI note icon'
-);

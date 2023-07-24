@@ -6,7 +6,6 @@ import { useNavigate, useParams } from '@tanstack/router';
 import { useApiQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import { StandardLink } from '../components/atoms/StandardLink/StandardLink.stories';
 import {
   getIdsFromMatchBasis,
   isValidPlaylistMatchBasis,
@@ -25,6 +24,7 @@ import {
   getSharedMatchBasis,
   setSharedMatchBasis,
 } from '../utils/localStorageUtils';
+import StandardLink from '../components/atoms/StandardLink/StandardLink';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const CustomErrorFallback = () => {

@@ -33,8 +33,7 @@ export const SocialMediaButtonsDisabled: Story = {
   parameters: {
     docs: {
       description: {
-        component:
-          'With `isDisabled: true`. This does not affect the tooltipText',
+        story: 'With `isDisabled: true`. This does not affect the tooltipText',
       },
     },
   },

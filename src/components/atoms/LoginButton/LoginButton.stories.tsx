@@ -1,11 +1,9 @@
-import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import LoginButton from './LoginButton';
 
-type Meta = ComponentMeta<typeof LoginButton>;
-type Story = ComponentStory<typeof LoginButton>;
+type Story = StoryObj<typeof LoginButton>;
 
-const meta: Meta = {
+const meta: Meta<typeof LoginButton> = {
   title: 'Atoms/Buttons/LoginButton',
   component: LoginButton,
   parameters: {
@@ -19,13 +17,8 @@ const meta: Meta = {
       default: 'light',
     },
   },
-  args: {
-    onClick: action('onClick'),
-  },
 };
 
 export default meta;
 
-const Template: Story = (args) => <LoginButton {...args} />;
-
-export { Template as LoginButton };
+export const Primary: Story = {};

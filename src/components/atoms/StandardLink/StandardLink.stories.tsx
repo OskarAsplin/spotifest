@@ -1,10 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import StandardLink from './StandardLink';
 
-type Meta = ComponentMeta<typeof StandardLink>;
-type Story = ComponentStory<typeof StandardLink>;
+type Story = StoryObj<typeof StandardLink>;
 
-const meta: Meta = {
+const meta: Meta<typeof StandardLink> = {
   title: 'Atoms/StandardLink',
   component: StandardLink,
   parameters: {
@@ -22,6 +21,4 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => <StandardLink {...args} />;
-
-export { Template as StandardLink };
+export const Primary: Story = {};

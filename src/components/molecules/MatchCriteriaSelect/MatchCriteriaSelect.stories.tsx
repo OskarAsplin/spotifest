@@ -1,16 +1,14 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import MatchCriteriaSelect from './MatchCriteriaSelect';
 import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
-import { setStoryDescription } from '../../../utils/storyUtils';
 import {
   playlistMock,
   playlistMock2,
 } from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect.fixtures';
 
-type Meta = ComponentMeta<typeof MatchCriteriaSelect>;
-type Story = ComponentStory<typeof MatchCriteriaSelect>;
+type Story = StoryObj<typeof MatchCriteriaSelect>;
 
-const meta: Meta = {
+const meta: Meta<typeof MatchCriteriaSelect> = {
   title: 'Molecules/MatchCriteriaSelect',
   component: MatchCriteriaSelect,
   parameters: {
@@ -29,14 +27,10 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => <MatchCriteriaSelect {...args} />;
-
-export { Template as MatchCriteriaSelect };
-export const MatchCriteriaSelectNoTopArtists = Template.bind({});
-export const MatchCriteriaSelectNoPlaylists = Template.bind({});
-
-MatchCriteriaSelectNoTopArtists.args = { topArtists: [] };
-setStoryDescription(MatchCriteriaSelectNoTopArtists, 'Without topArtists');
-
-MatchCriteriaSelectNoPlaylists.args = { playlists: [] };
-setStoryDescription(MatchCriteriaSelectNoPlaylists, 'Without playlists');
+export const Primary: Story = {};
+export const MatchCriteriaSelectNoTopArtists: Story = {
+  args: { topArtists: [] },
+};
+export const MatchCriteriaSelectNoPlaylists: Story = {
+  args: { playlists: [] },
+};

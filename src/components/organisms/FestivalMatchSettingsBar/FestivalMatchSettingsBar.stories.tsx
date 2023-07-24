@@ -1,9 +1,8 @@
 import { Box } from '@mui/material';
 import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import FestivalMatchSettingsBar from './FestivalMatchSettingsBar';
 import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
-import { setStoryDescription } from '../../../utils/storyUtils';
 import {
   playlistMock,
   playlistMock2,
@@ -16,8 +15,7 @@ import { getPlaylistKey } from '../../molecules/MatchCriteriaSelect/MatchCriteri
 import { WORLDWIDE_AREA } from '../../molecules/AreaSelect/AreaSelect';
 import { StyledRootDiv } from '../../../layouts/StyledLayoutComponents';
 
-type Meta = ComponentMeta<typeof FestivalMatchSettingsBar>;
-type Story = ComponentStory<typeof FestivalMatchSettingsBar>;
+type Story = StoryObj<typeof FestivalMatchSettingsBar>;
 
 const promiseAction =
   (msg: string) =>
@@ -26,7 +24,7 @@ const promiseAction =
     return Promise.resolve();
   };
 
-const meta: Meta = {
+const meta: Meta<typeof FestivalMatchSettingsBar> = {
   title: 'Organisms/FestivalMatchSettingsBar',
   component: FestivalMatchSettingsBar,
   parameters: {
@@ -65,7 +63,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => (
+const Template: Story['render'] = (args) => (
   <StyledRootDiv>
     <Box
       sx={{ my: 2, width: '100%', display: 'flex', justifyContent: 'center' }}
@@ -75,13 +73,18 @@ const Template: Story = (args) => (
   </StyledRootDiv>
 );
 
-export { Template as FestivalMatchSettingsBar };
-export const FestivalMatchSettingsBarDisabledMatchBasis = Template.bind({});
-
-FestivalMatchSettingsBarDisabledMatchBasis.args = {
-  isMatchBasisFieldDisabled: true,
+export const Primary: Story = { render: Template };
+export const FestivalMatchSettingsBarDisabledMatchBasis: Story = {
+  render: Template,
+  args: {
+    isMatchBasisFieldDisabled: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'With `isMatchBasisFieldDisabled: true`. This is used on the share results page',
+      },
+    },
+  },
 };
-setStoryDescription(
-  FestivalMatchSettingsBarDisabledMatchBasis,
-  'With `isMatchBasisFieldDisabled: true`. This is used on the share results page'
-);

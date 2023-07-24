@@ -1,13 +1,12 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { escapeRegExp } from 'lodash-es';
 import MatchHighlighter from './MatchHighlighter';
 
-type Meta = ComponentMeta<typeof MatchHighlighter>;
-type Story = ComponentStory<typeof MatchHighlighter>;
+type Story = StoryObj<typeof MatchHighlighter>;
 
 const regex = new RegExp(`(${escapeRegExp('me')})`, 'ig');
 
-const meta: Meta = {
+const meta: Meta<typeof MatchHighlighter> = {
   title: 'Atoms/MatchHighlighter',
   component: MatchHighlighter,
   parameters: {
@@ -28,6 +27,4 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => <MatchHighlighter {...args} />;
-
-export { Template as MatchHighlighter };
+export const Primary: Story = {};

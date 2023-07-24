@@ -1,12 +1,11 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { FormControl, InputLabel } from '@mui/material';
 import AreaSelect from './AreaSelect';
 import { continentsMock, countriesMock } from './AreaSelect.fixtures';
 
-type Meta = ComponentMeta<typeof AreaSelect>;
-type Story = ComponentStory<typeof AreaSelect>;
+type Story = StoryObj<typeof AreaSelect>;
 
-const meta: Meta = {
+const meta: Meta<typeof AreaSelect> = {
   title: 'Molecules/AreaSelect',
   component: AreaSelect,
   parameters: {
@@ -27,7 +26,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => (
+const Template: Story['render'] = (args) => (
   <FormControl
     sx={{
       m: 1,
@@ -41,4 +40,4 @@ const Template: Story = (args) => (
   </FormControl>
 );
 
-export { Template as AreaSelect };
+export const Primary: Story = { render: Template };

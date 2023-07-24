@@ -1,11 +1,10 @@
 import { Button } from '@mui/material';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import HtmlTooltip from './HtmlTooltip';
 
-type Meta = ComponentMeta<typeof HtmlTooltip>;
-type Story = ComponentStory<typeof HtmlTooltip>;
+type Story = StoryObj<typeof HtmlTooltip>;
 
-const meta: Meta = {
+const meta: Meta<typeof HtmlTooltip> = {
   title: 'Atoms/HtmlTooltip',
   component: HtmlTooltip,
   parameters: {
@@ -46,6 +45,4 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => <HtmlTooltip {...args} />;
-
-export { Template as HtmlTooltip };
+export const Primary: Story = {};

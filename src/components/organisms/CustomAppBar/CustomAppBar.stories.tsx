@@ -1,14 +1,11 @@
-import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import CustomAppBar from './CustomAppBar';
 import SearchField from '../../molecules/SearchField/SearchField';
 import Stromae_Spotify_Img from '../../../storyAssets/stromae_spotify.jpeg';
-import { setStoryDescription } from '../../../utils/storyUtils';
 
-type Meta = ComponentMeta<typeof CustomAppBar>;
-type Story = ComponentStory<typeof CustomAppBar>;
+type Story = StoryObj<typeof CustomAppBar>;
 
-const meta: Meta = {
+const meta: Meta<typeof CustomAppBar> = {
   title: 'Organisms/CustomAppBar',
   component: CustomAppBar,
   parameters: {
@@ -21,19 +18,13 @@ const meta: Meta = {
   },
   args: {
     SearchFieldComponent: () => <SearchField />,
-    onClickLogo: action('onClickLogo'),
-    onClickProfilePicture: action('onClickProfilePicture'),
-    onClickMenu: action('onClickMenu'),
     profilePictureUrl: Stromae_Spotify_Img,
   },
 };
 
 export default meta;
 
-const Template: Story = (args) => <CustomAppBar {...args} />;
-
-export { Template as CustomAppBar };
-export const CustomAppBarNoProfilePicture = Template.bind({});
-
-CustomAppBarNoProfilePicture.args = { profilePictureUrl: undefined };
-setStoryDescription(CustomAppBarNoProfilePicture, 'Without profilePictureUrl');
+export const Primary: Story = {};
+export const CustomAppBarNoProfilePicture: Story = {
+  args: { profilePictureUrl: undefined },
+};

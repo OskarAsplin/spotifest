@@ -1,10 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { LoadingSpinner } from './LoadingSpinner';
 
-type Meta = ComponentMeta<typeof LoadingSpinner>;
-type Story = ComponentStory<typeof LoadingSpinner>;
+type Story = StoryObj<typeof LoadingSpinner>;
 
-const meta: Meta = {
+const meta: Meta<typeof LoadingSpinner> = {
   title: 'Atoms/LoadingSpinner',
   component: LoadingSpinner,
   parameters: {
@@ -18,6 +17,4 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => <LoadingSpinner {...args} />;
-
-export { Template as LoadingSpinner };
+export const Primary: Story = {};

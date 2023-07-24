@@ -1,10 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import CopyToClipboard from './CopyToClipboard';
 
-type Meta = ComponentMeta<typeof CopyToClipboard>;
-type Story = ComponentStory<typeof CopyToClipboard>;
+type Story = StoryObj<typeof CopyToClipboard>;
 
-const meta: Meta = {
+const meta: Meta<typeof CopyToClipboard> = {
   title: 'Atoms/CopyToClipboard',
   component: CopyToClipboard,
   parameters: {
@@ -24,7 +23,7 @@ export default meta;
 
 const copiedText = 'This text will be copied';
 
-const Template: Story = () => (
+const Template: Story['render'] = () => (
   <CopyToClipboard>
     {({ copy }) => (
       <button onClick={() => copy(copiedText)}>{copiedText}</button>
@@ -32,4 +31,4 @@ const Template: Story = () => (
   </CopyToClipboard>
 );
 
-export { Template as CopyToClipboard };
+export const Primary: Story = { render: Template };

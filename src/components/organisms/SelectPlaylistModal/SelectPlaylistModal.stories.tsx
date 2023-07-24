@@ -1,6 +1,5 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import SelectPlaylistModal from './SelectPlaylistModal';
-import { setStoryDescription } from '../../../utils/storyUtils';
 import {
   playlistMock,
   playlistMock2,
@@ -8,10 +7,9 @@ import {
 import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
 import { useState } from 'react';
 
-type Meta = ComponentMeta<typeof SelectPlaylistModal>;
-type Story = ComponentStory<typeof SelectPlaylistModal>;
+type Story = StoryObj<typeof SelectPlaylistModal>;
 
-const meta: Meta = {
+const meta: Meta<typeof SelectPlaylistModal> = {
   title: 'Organisms/SelectPlaylistModal',
   component: SelectPlaylistModal,
   parameters: {
@@ -36,7 +34,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => {
+const Template: Story['render'] = (args) => {
   const [open, setOpen] = useState(false);
 
   const onClick = () => setOpen(!open);
@@ -55,22 +53,29 @@ const Template: Story = (args) => {
   );
 };
 
-export { Template as SelectPlaylistModal };
-export const SelectPlaylistModalNoPlaylists = Template.bind({});
-export const SelectPlaylistModalNoTopArtists = Template.bind({});
-export const SelectPlaylistModalNoTopAritstsAndNoPlaylists = Template.bind({});
-
-SelectPlaylistModalNoPlaylists.args = { playlists: [] };
-setStoryDescription(SelectPlaylistModalNoPlaylists, 'Without playlists');
-
-SelectPlaylistModalNoTopArtists.args = { topArtists: [] };
-setStoryDescription(SelectPlaylistModalNoTopArtists, 'Without topArtists');
-
-SelectPlaylistModalNoTopAritstsAndNoPlaylists.args = {
-  playlists: [],
-  topArtists: [],
+export const Primary: Story = {
+  render: Template,
 };
-setStoryDescription(
-  SelectPlaylistModalNoTopAritstsAndNoPlaylists,
-  'Without playlists and topArtists. No way to get the modal away in this story other than refreshing the page'
-);
+
+export const NoPlaylists: Story = {
+  render: Template,
+  args: { playlists: [] },
+};
+
+export const NoTopArtists: Story = {
+  render: Template,
+  args: { topArtists: [] },
+};
+
+export const NoTopArtistsAndNoPlaylists: Story = {
+  render: Template,
+  args: { topArtists: [], playlists: [] },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'No way to get the modal away in this story other than refreshing the page',
+      },
+    },
+  },
+};

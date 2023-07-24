@@ -1,13 +1,10 @@
-import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import ProfilePopover from './ProfilePopover';
-import { setStoryDescription } from '../../../utils/storyUtils';
 
-type Meta = ComponentMeta<typeof ProfilePopover>;
-type Story = ComponentStory<typeof ProfilePopover>;
+type Story = StoryObj<typeof ProfilePopover>;
 
-const meta: Meta = {
+const meta: Meta<typeof ProfilePopover> = {
   title: 'Organisms/ProfilePopover',
   component: ProfilePopover,
   parameters: {
@@ -21,7 +18,6 @@ const meta: Meta = {
   args: {
     userName: 'Mr Boombastic',
     spotifyUrl: 'https://spotify.com',
-    onClickLogout: action('onClickLogout'),
   },
   argTypes: {
     onClickLogout: { control: false },
@@ -30,7 +26,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => {
+const Template: Story['render'] = (args) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,15 +50,19 @@ const Template: Story = (args) => {
   );
 };
 
-export { Template as ProfilePopover };
-export const ProfilePopoverNoUserName = Template.bind({});
-export const ProfilePopoverNoSpotifyUrl = Template.bind({});
-
-ProfilePopoverNoUserName.args = { userName: undefined };
-setStoryDescription(ProfilePopoverNoUserName, 'Without userName');
-
-ProfilePopoverNoSpotifyUrl.args = { spotifyUrl: undefined };
-setStoryDescription(
-  ProfilePopoverNoSpotifyUrl,
-  'Without spotifyUrl. Displays a link to login page'
-);
+export const Primary: Story = { render: Template };
+export const NoUserName: Story = {
+  render: Template,
+  args: { userName: undefined },
+};
+export const NoSpotifyUrl: Story = {
+  render: Template,
+  args: { spotifyUrl: undefined },
+  parameters: {
+    docs: {
+      description: {
+        story: 'Without spotifyUrl. Displays a link to login page',
+      },
+    },
+  },
+};

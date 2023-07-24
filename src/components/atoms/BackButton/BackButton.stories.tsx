@@ -1,4 +1,3 @@
-import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
 import BackButton from './BackButton';
 
@@ -13,9 +12,6 @@ const meta: Meta<typeof BackButton> = {
         component: 'BackButton used for returning to previous page',
       },
     },
-  },
-  args: {
-    onClick: action('onClick'),
   },
 };
 

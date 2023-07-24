@@ -1,11 +1,10 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
 import CustomSwitch from './CustomSwitch';
 
-type Meta = ComponentMeta<typeof CustomSwitch>;
-type Story = ComponentStory<typeof CustomSwitch>;
+type Story = StoryObj<typeof CustomSwitch>;
 
-const meta: Meta = {
+const meta: Meta<typeof CustomSwitch> = {
   title: 'Atoms/CustomSwitch',
   component: CustomSwitch,
   args: {
@@ -20,9 +19,9 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => {
+const Template: Story['render'] = (args) => {
   const [checked, setChecked] = useState(false);
   return <CustomSwitch {...args} checked={checked} setChecked={setChecked} />;
 };
 
-export { Template as CustomSwitch };
+export const Primary: Story = { render: Template };

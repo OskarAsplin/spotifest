@@ -1,12 +1,11 @@
 import { Grid } from '@mui/material';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import SettingsBarDatePicker from './SettingsBarDatePicker';
 import { useState } from 'react';
 
-type Meta = ComponentMeta<typeof SettingsBarDatePicker>;
-type Story = ComponentStory<typeof SettingsBarDatePicker>;
+type Story = StoryObj<typeof SettingsBarDatePicker>;
 
-const meta: Meta = {
+const meta: Meta<typeof SettingsBarDatePicker> = {
   title: 'Molecules/SettingsBarDatePicker',
   component: SettingsBarDatePicker,
   parameters: {
@@ -24,7 +23,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => {
+const Template: Story['render'] = (args) => {
   const [date, setDate] = useState(new Date(2023, 0, 1));
   const onChange = (date: Date | null) => {
     if (date) setDate(date);
@@ -36,4 +35,4 @@ const Template: Story = (args) => {
   );
 };
 
-export { Template as SettingsBarDatePicker };
+export const Primary: Story = { render: Template };

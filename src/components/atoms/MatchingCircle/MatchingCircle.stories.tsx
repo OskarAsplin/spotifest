@@ -1,10 +1,9 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import MatchingCircle from './MatchingCircle';
 
-type Meta = ComponentMeta<typeof MatchingCircle>;
-type Story = ComponentStory<typeof MatchingCircle>;
+type Story = StoryObj<typeof MatchingCircle>;
 
-const meta: Meta = {
+const meta: Meta<typeof MatchingCircle> = {
   title: 'Atoms/MatchingCircle',
   component: MatchingCircle,
   parameters: {
@@ -21,6 +20,4 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => <MatchingCircle {...args} />;
-
-export { Template as MatchingCircle };
+export const Primary: Story = {};

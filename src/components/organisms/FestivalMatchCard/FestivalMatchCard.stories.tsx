@@ -1,15 +1,12 @@
-import { action } from '@storybook/addon-actions';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { setStoryDescription } from '../../../utils/storyUtils';
+import type { Meta, StoryObj } from '@storybook/react';
 import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
 import FestivalMatchCard from './FestivalMatchCard';
 import { StyledRootDiv } from '../../../layouts/StyledLayoutComponents';
 import { StyledMatchesRootBox } from '../../../containers/FestivalMatchesContainer';
 
-type Meta = ComponentMeta<typeof FestivalMatchCard>;
-type Story = ComponentStory<typeof FestivalMatchCard>;
+type Story = StoryObj<typeof FestivalMatchCard>;
 
-const meta: Meta = {
+const meta: Meta<typeof FestivalMatchCard> = {
   title: 'Organisms/FestivalMatchCard',
   component: FestivalMatchCard,
   parameters: {
@@ -39,8 +36,6 @@ const meta: Meta = {
     popularArtists: Array(14).fill(artistMock),
     matchingArtists: Array(2).fill(artistMock),
     showMatching: true,
-    onClickTitle: action('onClickTitle'),
-    onClickArtistBubble: action('onClickArtistBubble'),
   },
   argTypes: {
     onClickTitle: { control: false },
@@ -50,7 +45,7 @@ const meta: Meta = {
 
 export default meta;
 
-const Template: Story = (args) => (
+const Template: Story['render'] = (args) => (
   <StyledRootDiv>
     <StyledMatchesRootBox>
       <FestivalMatchCard {...args} />
@@ -58,29 +53,20 @@ const Template: Story = (args) => (
   </StyledRootDiv>
 );
 
-export { Template as FestivalMatchCard };
-export const FestivalMatchCardMatching = Template.bind({});
-export const FestivalMatchCardNoMatching = Template.bind({});
-export const FestivalMatchCardNoArtists = Template.bind({});
-export const FestivalMatchCardNoMatchingArtists = Template.bind({});
-
-FestivalMatchCardMatching.args = { showMatching: true };
-setStoryDescription(
-  FestivalMatchCardMatching,
-  'With matching. `showMatching: true`'
-);
-
-FestivalMatchCardNoMatching.args = { showMatching: false };
-setStoryDescription(
-  FestivalMatchCardNoMatching,
-  'Without matching. `showMatching: false`'
-);
-
-FestivalMatchCardNoArtists.args = { popularArtists: [] };
-setStoryDescription(FestivalMatchCardNoArtists, 'Without popular artists');
-
-FestivalMatchCardNoMatchingArtists.args = { matchingArtists: [] };
-setStoryDescription(
-  FestivalMatchCardNoMatchingArtists,
-  'Without matching artists'
-);
+export const Primary: Story = { render: Template };
+export const Matching: Story = {
+  render: Template,
+  args: { showMatching: true },
+};
+export const NoMatching: Story = {
+  render: Template,
+  args: { showMatching: false },
+};
+export const NoArtists: Story = {
+  render: Template,
+  args: { popularArtists: [] },
+};
+export const NoMatchingArtists: Story = {
+  render: Template,
+  args: { matchingArtists: [] },
+};
