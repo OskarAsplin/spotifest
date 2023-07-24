@@ -54,7 +54,8 @@
     "redux-thunk": "^2.3.0",
     "sass": "^1.32.6",
     "spotify-web-api-js": "^0.22.1",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "zustand": "^4.3.9"
   },
   "scripts": {
     "start": "vite",

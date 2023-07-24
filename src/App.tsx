@@ -12,12 +12,16 @@ import './App.scss';
 import { persistor, store } from './redux/store';
 import { getMainTheme } from './theme/theme.styles';
 import { Routes } from './Routes';
+import { useThemeModeStore } from './zustand/themeStore';
 
 injectStore(store);
 
 const App = () => {
-  // const [mode, setMode] = useState<PaletteMode>('dark');
-  const theme = useMemo(() => createTheme(getMainTheme('dark')), ['dark']);
+  const themeMode = useThemeModeStore((state) => state.mode);
+  const theme = useMemo(
+    () => createTheme(getMainTheme(themeMode)),
+    [themeMode],
+  );
 
   return (
     <StyledEngineProvider injectFirst>
