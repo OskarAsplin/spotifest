@@ -9,7 +9,6 @@ import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { useApiQuery, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
@@ -25,14 +24,9 @@ import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/
 import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
-import {
-  selectFromDate,
-  selectMatchArea,
-  selectMatchBasis,
-  selectToDate,
-} from '../redux/reducers/matchingSlice';
 import { getAreaFilters } from '../utils/areaUtils';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
+import { useMatchingStore } from '../zustand/matchingStore';
 
 const ITEMS_PER_PAGE = 15;
 
@@ -44,24 +38,23 @@ interface FestivalMatchesContainerProps {
 
 const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
   SuspenseFallback,
-  ErrorFallback
+  ErrorFallback,
 )(({ sharedMatchBasis }) => {
   const { t } = useTranslation();
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
 
   const [page, setPage] = useState(1);
-  const matchBasis = sharedMatchBasis ?? useSelector(selectMatchBasis);
-  const matchArea = useSelector(selectMatchArea);
-  const fromDate = useSelector(selectFromDate);
-  const toDate = useSelector(selectToDate);
+  const matchBasis =
+    sharedMatchBasis ?? useMatchingStore((state) => state.matchBasis);
+  const matchArea = useMatchingStore((state) => state.matchArea);
+  const fromDate = useMatchingStore((state) => state.fromDate);
+  const toDate = useMatchingStore((state) => state.toDate);
 
   const { data: continents } = useApiQuery(getDjangoAvailableContinents);
 
   const { data: allTopArtistsData } = useApiQuery(
     getAllTopArtistsWithPopularity,
-    {
-      enabled: !sharedMatchBasis,
-    }
+    { enabled: !sharedMatchBasis },
   );
   const topArtists = allTopArtistsData?.topArtists ?? [];
   const topArtistsCount = allTopArtistsData?.countTopArtists ?? 0;
@@ -82,7 +75,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
 
   const { continentFilter, countryFilter, stateFilter } = getAreaFilters(
     matchArea,
-    continents
+    continents,
   );
 
   const matchRequest = createMatchRequest({
@@ -101,7 +94,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
     {
       query: matchRequest,
       enabled: !!artists.length && !!numTracks,
-    }
+    },
   );
 
   useEffect(() => {
@@ -118,7 +111,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
       query: { lineups: pageLineups },
       enabled: pageLineups.length > 0,
       keepPreviousData: true,
-    }
+    },
   );
 
   const numPages = Math.ceil(festivalMatches.length / ITEMS_PER_PAGE);
@@ -126,7 +119,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
   const onPageChange = (
     event: React.ChangeEvent<unknown>,
     value: number,
-    isBottomPagination: boolean
+    isBottomPagination: boolean,
   ) => {
     if (page !== value) {
       setPage(value);
@@ -138,7 +131,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
 
   const showMatches = festivalMatches.slice(
     (page - 1) * ITEMS_PER_PAGE,
-    Math.min(page * ITEMS_PER_PAGE, festivalMatches.length)
+    Math.min(page * ITEMS_PER_PAGE, festivalMatches.length),
   );
 
   const isAnyMatch = showMatches.length > 0;
@@ -184,7 +177,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
             .filter(
               (artist) =>
                 artist.spotifyId &&
-                festival.matching_artists.includes(artist.spotifyId)
+                festival.matching_artists.includes(artist.spotifyId),
             )
             .sort((a, b) => (a.userPopularity! < b.userPopularity! ? 1 : -1));
           return (
@@ -232,7 +225,7 @@ const StyledNumMatchesTypography = styled(Typography)(
   ({ theme: { spacing } }) => ({
     '@media (min-width: 610px)': { position: 'absolute', textAlign: 'center' },
     '@media (max-width: 609px)': { marginBottom: spacing(1) },
-  })
+  }),
 );
 
 export default FestivalMatchesContainer;

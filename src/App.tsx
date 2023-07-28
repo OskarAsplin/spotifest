@@ -5,11 +5,8 @@ import {
   ThemeProvider,
 } from '@mui/material/styles';
 import { useMemo } from 'react';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
 import ApiProvider from './api/ApiProvider';
 import './App.scss';
-import { persistor, store } from './redux/store';
 import { getMainTheme } from './theme/theme.styles';
 import { Routes } from './Routes';
 import { useThemeModeStore } from './zustand/themeStore';
@@ -25,13 +22,9 @@ const App = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <ApiProvider>
-              <Routes />
-            </ApiProvider>
-          </PersistGate>
-        </Provider>
+        <ApiProvider>
+          <Routes />
+        </ApiProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   );

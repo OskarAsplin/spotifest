@@ -1,6 +1,5 @@
 import { SelectChangeEvent } from '@mui/material';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useApiQuery } from '../api/api';
 import {
   getDjangoAvailableContinents,
@@ -17,19 +16,9 @@ import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/
 import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
 import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
-import {
-  selectFromDate,
-  selectMatchArea,
-  selectMatchBasis,
-  selectToDate,
-  setDates,
-  setFromDate,
-  setMatchArea,
-  setMatchBasis,
-  setToDate,
-} from '../redux/reducers/matchingSlice';
 import { getInitialContinent } from '../utils/areaUtils';
 import { MATCHING_MAX_DATE } from '../config';
+import { useMatchingStore } from '../zustand/matchingStore';
 
 interface FestivalMatchSettingsContainerProps {
   sharedMatchBasis?: string;
@@ -38,11 +27,16 @@ interface FestivalMatchSettingsContainerProps {
 const FestivalMatchSettingsContainer = ({
   sharedMatchBasis,
 }: FestivalMatchSettingsContainerProps) => {
-  const matchBasis = sharedMatchBasis ?? useSelector(selectMatchBasis);
-  const matchArea = useSelector(selectMatchArea);
-  const fromDate = useSelector(selectFromDate);
-  const toDate = useSelector(selectToDate);
-  const dispatch = useDispatch();
+  const matchBasis =
+    sharedMatchBasis ?? useMatchingStore((state) => state.matchBasis);
+  const matchArea = useMatchingStore((state) => state.matchArea);
+  const fromDate = useMatchingStore((state) => state.fromDate);
+  const toDate = useMatchingStore((state) => state.toDate);
+  const setMatchBasis = useMatchingStore((state) => state.setMatchBasis);
+  const setMatchArea = useMatchingStore((state) => state.setMatchArea);
+  const setFromDate = useMatchingStore((state) => state.setFromDate);
+  const setToDate = useMatchingStore((state) => state.setToDate);
+  const setDates = useMatchingStore((state) => state.setDates);
 
   const { data: countries = [] } = useApiQuery(getDjangoAvailableCountries);
   const { data: continents = [] } = useApiQuery(getDjangoAvailableContinents);
@@ -68,14 +62,14 @@ const FestivalMatchSettingsContainer = ({
     getAllTopArtistsWithPopularity,
     {
       enabled: !isSharedResults,
-    }
+    },
   );
   const topArtists = allTopArtistsData?.topArtists ?? [];
 
   useEffect(() => {
     if (userInfo && continents && !matchArea) {
       const initialArea = getInitialContinent(userInfo.country, continents);
-      dispatch(setMatchArea(initialArea));
+      setMatchArea(initialArea);
     }
   }, [userInfo, continents]);
 
@@ -85,23 +79,23 @@ const FestivalMatchSettingsContainer = ({
     if (!event.target.value) return;
     const matchBasisId = event.target.value;
     if (matchBasisId === matchBasis) return;
-    dispatch(setMatchBasis(matchBasisId));
+    setMatchBasis(matchBasisId);
   };
 
   const onAreaChange = async (event: SelectChangeEvent) => {
     if (!event.target.value) return;
     const { name, value } = event.target;
     const area: Area = { name, isoCode: value };
-    dispatch(setMatchArea(area));
+    setMatchArea(area);
   };
 
   const onFromDateChange = (date: Date | null) => {
     if (date) {
       const isoDate = date.toISOString();
       if (date > new Date(toDate)) {
-        dispatch(setDates({ fromDate: isoDate, toDate: isoDate }));
+        setDates({ fromDate: isoDate, toDate: isoDate });
       } else {
-        dispatch(setFromDate(isoDate));
+        setFromDate(isoDate);
       }
     }
   };
@@ -110,9 +104,9 @@ const FestivalMatchSettingsContainer = ({
     if (date) {
       const isoDate = date.toISOString();
       if (date < new Date(fromDate)) {
-        dispatch(setDates({ fromDate: isoDate, toDate: isoDate }));
+        setDates({ fromDate: isoDate, toDate: isoDate });
       } else {
-        dispatch(setToDate(isoDate));
+        setToDate(isoDate);
       }
     }
   };
@@ -121,21 +115,16 @@ const FestivalMatchSettingsContainer = ({
     if (typeof range === 'number') {
       const from = new Date(range, 0, 1);
       const to = new Date(range, 11, 31);
-      dispatch(
-        setDates({ fromDate: from.toISOString(), toDate: to.toISOString() })
-      );
+      setDates({ fromDate: from.toISOString(), toDate: to.toISOString() });
     } else {
-      dispatch(
-        setDates({
-          fromDate: new Date().toISOString(),
-          toDate: MATCHING_MAX_DATE.toISOString(),
-        })
-      );
+      setDates({
+        fromDate: new Date().toISOString(),
+        toDate: MATCHING_MAX_DATE.toISOString(),
+      });
     }
   };
 
-  const onClickModalGoButton = () =>
-    dispatch(setMatchBasis(TOP_ARTISTS_CHOICE));
+  const onClickModalGoButton = () => setMatchBasis(TOP_ARTISTS_CHOICE);
 
   const matchSettings = {
     matchBasis: matchBasis ?? '',

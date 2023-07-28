@@ -1,18 +1,17 @@
-import { useSelector } from 'react-redux';
 import { useApiQuery } from '../api/api';
 import { getAllPlaylists, getLoggedInUserInfo } from '../api/spotifyApi';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import SocialMediaButtons from '../components/organisms/SocialMediaButtons/SocialMediaButtons';
-import { selectMatchBasis } from '../redux/reducers/matchingSlice';
 import {
   getShareMessage,
   getShareUrl,
   getTooltipText,
 } from './SocialMediaButtonsContainer.utils';
+import { useMatchingStore } from '../zustand/matchingStore';
 
 const SocialMediaButtonsContainer = () => {
-  const matchBasis = useSelector(selectMatchBasis);
+  const matchBasis = useMatchingStore((state) => state.matchBasis);
 
   const { data: userInfo } = useApiQuery(getLoggedInUserInfo);
   const { data: playlists = [] } = useApiQuery(getAllPlaylists, {
