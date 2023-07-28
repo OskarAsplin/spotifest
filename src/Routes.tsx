@@ -28,37 +28,32 @@ export const loginRoute = new Route({
   path: 'login',
   component: () => <LoginPage />,
 });
-const protectedStandardLayoutRoute = new Route({
+const withTokenAndLayoutRoute = new Route({
   getParentRoute: () => rootRoute,
-  id: 'protectedStandardLayoutRoute',
+  id: 'withTokenAndLayoutRoute',
   component: () => (
     <WithSpotifyTokenRoute>
       <StandardLayout />
     </WithSpotifyTokenRoute>
   ),
 });
-const unprotectedStandardLayoutRoute = new Route({
-  getParentRoute: () => rootRoute,
-  id: 'unprotectedStandardLayoutRoute',
-  component: () => <StandardLayout />,
-});
 export const indexRoute = new Route({
-  getParentRoute: () => protectedStandardLayoutRoute,
+  getParentRoute: () => withTokenAndLayoutRoute,
   path: '/',
   component: () => <MainPage />,
 });
 const artistRoute = new Route({
-  getParentRoute: () => unprotectedStandardLayoutRoute,
+  getParentRoute: () => withTokenAndLayoutRoute,
   path: 'artist/$artistId',
   component: () => <ArtistPage />,
 });
 const festivalRoute = new Route({
-  getParentRoute: () => unprotectedStandardLayoutRoute,
+  getParentRoute: () => withTokenAndLayoutRoute,
   path: 'festival/$festivalId',
   component: () => <FestivalPage />,
 });
 const shareRoute = new Route({
-  getParentRoute: () => unprotectedStandardLayoutRoute,
+  getParentRoute: () => withTokenAndLayoutRoute,
   path: 'share',
   component: () => <SharedResultsPage />,
 });
@@ -67,7 +62,7 @@ const shareMatchRoute = new Route({
   path: '$matchBasis',
 });
 const aboutRoute = new Route({
-  getParentRoute: () => unprotectedStandardLayoutRoute,
+  getParentRoute: () => withTokenAndLayoutRoute,
   path: 'about',
   component: () => <AboutPage />,
 });
@@ -79,8 +74,8 @@ const notFoundRoute = new Route({
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
-  protectedStandardLayoutRoute.addChildren([indexRoute]),
-  unprotectedStandardLayoutRoute.addChildren([
+  withTokenAndLayoutRoute.addChildren([
+    indexRoute,
     artistRoute,
     festivalRoute,
     shareRoute.addChildren([shareMatchRoute]),
