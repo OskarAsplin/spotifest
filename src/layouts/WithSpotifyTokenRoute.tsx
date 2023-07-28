@@ -1,9 +1,7 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { withFallback } from '../api/api';
 import { setSpotifyToken } from '../api/spotifyApi';
 import { getAuthorizeHref } from '../oauthConfig';
-import { setLoggedOff } from '../redux/reducers/authorizationSlice';
 import { getHashParams, removeHashParamsFromUrl } from '../utils/hashUtils';
 import {
   getStoredAccessToken,
@@ -13,6 +11,7 @@ import {
   setStoredAccessToken,
   setStoredExpiryTime,
 } from '../utils/localStorageUtils';
+import { useAuthStore } from '../zustand/authStore';
 
 const TEN_MINUTES = 600000; // In Milliseconds
 const unixTimeNow = new Date().getTime(); // Unix time in milliseconds
@@ -37,14 +36,15 @@ interface Props {
 }
 
 const WithSpotifyTokenRoute = withFallback<Props>()(({ children }) => {
-  const dispatch = useDispatch();
+  const setLoggedOut = useAuthStore((state) => state.setLoggedOut);
+
   useEffect(() => {
     if (getStoredAccessToken()) {
       const storedExpiryTime = getStoredExpiryTime();
       if (storedExpiryTime) {
         const unixTimeExpiry = Number(storedExpiryTime);
         if (unixTimeNow > unixTimeExpiry) {
-          dispatch(setLoggedOff());
+          setLoggedOut();
         } else if (unixTimeNow > unixTimeExpiry - TEN_MINUTES) {
           // If less than 10 minutes until expiry time, get new access token
           removeStoredAccessToken();
@@ -52,7 +52,7 @@ const WithSpotifyTokenRoute = withFallback<Props>()(({ children }) => {
           window.open(getAuthorizeHref(), '_self');
         }
       }
-    } else if (!freshToken) dispatch(setLoggedOff());
+    } else if (!freshToken) setLoggedOut();
   }, []);
 
   return <>{children}</>;

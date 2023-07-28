@@ -11,22 +11,14 @@ import {
   REHYDRATE,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
-import authorizationReducer, {
-  setLoggedOff,
-} from './reducers/authorizationSlice';
 import matchingReducer from './reducers/matchingSlice';
 
 const appReducer = combineReducers({
-  authorization: authorizationReducer,
   matching: matchingReducer,
 });
 
-const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
-  if (action.type === setLoggedOff.type) {
-    state = {} as RootState;
-  }
-  return appReducer(state, action);
-};
+const rootReducer: Reducer = (state: RootState, action: AnyAction) =>
+  appReducer(state, action);
 
 const persistConfig = {
   key: 'root',

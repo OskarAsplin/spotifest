@@ -7,14 +7,12 @@ import {
 import { useMemo } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import ApiProvider, { injectStore } from './api/ApiProvider';
+import ApiProvider from './api/ApiProvider';
 import './App.scss';
 import { persistor, store } from './redux/store';
 import { getMainTheme } from './theme/theme.styles';
 import { Routes } from './Routes';
 import { useThemeModeStore } from './zustand/themeStore';
-
-injectStore(store);
 
 const App = () => {
   const themeMode = useThemeModeStore((state) => state.mode);

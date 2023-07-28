@@ -2,32 +2,29 @@ import { Box, Typography, typographyClasses } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Trans, useTranslation } from 'react-i18next';
 import LoginButton from '../components/atoms/LoginButton/LoginButton';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import UsageThumbnailsWithGallery from '../components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
 import { getAuthorizeHref } from '../oauthConfig';
-import {
-  setLoggedIn,
-  setLoggedOff,
-} from '../redux/reducers/authorizationSlice';
+import { useAuthStore } from '../zustand/authStore';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');
   const bigHeight = useMediaQuery('(min-height:610px)');
   const bigScreen = bigWidth && bigHeight;
   const verySmallScreen = useMediaQuery('(max-width:330px)');
+  const setLoggedIn = useAuthStore((state) => state.setLoggedIn);
+  const setLoggedOut = useAuthStore((state) => state.setLoggedOut);
 
-  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   useEffect(() => {
-    dispatch(setLoggedOff());
+    setLoggedOut();
   }, []);
 
   const onClickLoginButton = () => {
-    dispatch(setLoggedIn());
+    setLoggedIn();
     window.open(getAuthorizeHref(), '_self');
   };
 

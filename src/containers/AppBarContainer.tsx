@@ -1,26 +1,22 @@
 import { Box, Slide, useScrollTrigger } from '@mui/material';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from '@tanstack/router';
 import { useApiQuery } from '../api/api';
 import { getLoggedInUserInfo } from '../api/spotifyApi';
 import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
 import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
-import {
-  selectLoggedIn,
-  setLoggedOff,
-} from '../redux/reducers/authorizationSlice';
 import { isMainPage } from '../utils/routeUtils';
 import SearchFieldContainer from './SearchFieldContainer';
 import { indexRoute } from '../Routes';
+import { useAuthStore } from '../zustand/authStore';
 
 const AppBarContainer = () => {
-  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
-  const loggedIn = useSelector(selectLoggedIn);
+  const loggedIn = useAuthStore((state) => state.loggedIn);
+  const setLoggedOut = useAuthStore((state) => state.setLoggedOut);
 
   const { data: userInfo } = useApiQuery(getLoggedInUserInfo, {
     enabled: loggedIn,
@@ -73,7 +69,7 @@ const AppBarContainer = () => {
         userName={userInfo?.displayName}
         spotifyUrl={userInfo?.spotifyUrl}
         onClose={() => setAnchorEl(null)}
-        onClickLogout={() => dispatch(setLoggedOff())}
+        onClickLogout={() => setLoggedOut()}
       />
       <AppBarMenuDrawerContainer
         open={drawerOpen}

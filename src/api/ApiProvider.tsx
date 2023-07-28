@@ -6,13 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactNode } from 'react';
-import { setLoggedOff } from '../redux/reducers/authorizationSlice';
-
-let store: any;
-
-export const injectStore = (_store: any) => {
-  store = _store;
-};
+import { useAuthStore } from '../zustand/authStore';
 
 const DEFAULT_QUERY_OPTIONS: QueryObserverOptions = {
   cacheTime: Infinity,
@@ -25,7 +19,7 @@ const DEFAULT_QUERY_OPTIONS: QueryObserverOptions = {
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error: any) => {
-      if (error.status === 401) store.dispatch(setLoggedOff());
+      if (error.status === 401) useAuthStore.setState({ loggedIn: false });
     },
   }),
 });

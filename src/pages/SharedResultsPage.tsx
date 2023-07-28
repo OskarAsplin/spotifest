@@ -1,7 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from '@tanstack/router';
 import { useApiQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
@@ -15,16 +14,13 @@ import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsC
 import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { getAuthorizeHref } from '../oauthConfig';
-import {
-  selectLoggedIn,
-  setLoggedIn,
-} from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
 import {
   getSharedMatchBasis,
   setSharedMatchBasis,
 } from '../utils/localStorageUtils';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
+import { useAuthStore } from '../zustand/authStore';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const CustomErrorFallback = () => {
@@ -37,8 +33,8 @@ const SharedResultsPage = withFallback(
   CustomErrorFallback,
 )(() => {
   const { matchBasis: matchBasisFromParams } = useParams();
-  const dispatch = useDispatch();
-  const loggedIn = useSelector(selectLoggedIn);
+  const loggedIn = useAuthStore((state) => state.loggedIn);
+  const setLoggedIn = useAuthStore((state) => state.setLoggedIn);
   const navigate = useNavigate();
 
   const matchBasis = matchBasisFromParams ?? getSharedMatchBasis() ?? undefined;
@@ -64,7 +60,7 @@ const SharedResultsPage = withFallback(
       // Store the sharedMatchBasis in localStorage,
       // so it can be used to navigate the specific share url on return from the Spotify login.
       // This is all done because Spotify needs predefined redirect URIs, so it needs to be /share instead of dynamic.
-      dispatch(setLoggedIn());
+      setLoggedIn();
       setSharedMatchBasis(matchBasis);
       window.open(getAuthorizeHref('/share'), '_self');
     } else if (!matchBasisFromParams && sharedMatchBasis) {

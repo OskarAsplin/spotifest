@@ -12,7 +12,6 @@ import {
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from '@tanstack/router';
 import { useApiQuery, withFallback } from '../api/api';
 import {
@@ -27,10 +26,10 @@ import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { ArtistBox, StyledRootDiv } from '../layouts/StyledLayoutComponents';
-import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
 import { getMaxArtistsInWidth } from '../utils/displayUtils';
+import { useAuthStore } from '../zustand/authStore';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
@@ -46,7 +45,7 @@ const ArtistPage = withFallback(
   const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
   const spotifyId = hasSpotifyId && artistId?.substring('spotifyId='.length);
 
-  const loggedIn = useSelector(selectLoggedIn);
+  const loggedIn = useAuthStore((state) => state.loggedIn);
 
   const { data: artistBySpotifyId, isError: isArtistBySpotifyIdError } =
     useApiQuery(getDjangoArtistBySpotifyId, {

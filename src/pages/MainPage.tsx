@@ -1,5 +1,4 @@
 import { Box } from '@mui/material';
-import { useSelector } from 'react-redux';
 import { Navigate } from '@tanstack/router';
 import { withFallback } from '../api/api';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
@@ -8,16 +7,16 @@ import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsC
 import SocialMediaButtonsContainer from '../containers/SocialMediaButtonsContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
-import { selectLoggedIn } from '../redux/reducers/authorizationSlice';
 import '../styles/base.scss';
+import { useAuthStore } from '../zustand/authStore';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
 const MainPage = withFallback(
   SuspenseFallback,
-  ErrorFallback
+  ErrorFallback,
 )(() => {
-  const loggedIn = useSelector(selectLoggedIn);
+  const loggedIn = useAuthStore((state) => state.loggedIn);
 
   if (!loggedIn) return <Navigate to="/login" />;
 
