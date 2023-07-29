@@ -13,6 +13,7 @@ interface MatchingStore {
   setFromDate: (fromDate: string) => void;
   setToDate: (toDate: string) => void;
   setDates: (dates: { fromDate: string; toDate: string }) => void;
+  clearStore: () => void;
 }
 
 export const useMatchingStore = create<MatchingStore, any>(
@@ -25,6 +26,7 @@ export const useMatchingStore = create<MatchingStore, any>(
       setFromDate: (fromDate) => set({ fromDate }),
       setToDate: (toDate) => set({ toDate }),
       setDates: ({ fromDate, toDate }) => set({ fromDate, toDate }),
+      clearStore: () => set({}, true),
     }),
     { name: 'matching-storage' },
   ),
