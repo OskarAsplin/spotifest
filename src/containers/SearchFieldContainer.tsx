@@ -1,5 +1,6 @@
 import { Box, ClickAwayListener, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
+import { keepPreviousData } from '@tanstack/react-query';
 import { debounce } from 'lodash-es';
 import { ChangeEvent, useState } from 'react';
 import { useApiQuery } from '../api/api';
@@ -21,12 +22,15 @@ const SearchFieldContainer = ({
 
   const [inputText, setInputText] = useState('');
 
-  const { data: searchResults } = useApiQuery(getDjangoSearchResults, {
-    params: { search: inputText },
-    enabled: !!inputText.length,
-    suspense: false,
-    keepPreviousData: true,
-  });
+  const { data: searchResults } = useApiQuery<typeof getDjangoSearchResults>(
+    getDjangoSearchResults,
+    {
+      params: { search: inputText },
+      enabled: !!inputText.length,
+      suspense: false,
+      placeholderData: keepPreviousData,
+    },
+  );
 
   const debouncedOnChange = debounce(
     (e: ChangeEvent<HTMLInputElement>) => setInputText(e.target.value),

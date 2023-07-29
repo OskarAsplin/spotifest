@@ -10,6 +10,6 @@ export interface UseApiQueryProps<
   TQueryFnData = OpReturn<Op>,
   TError = unknown,
   TData = TQueryFnData,
-> extends UseQueryOptions<TQueryFnData, TError, TData> {
+> extends Omit<UseQueryOptions<TQueryFnData, TError, TData>, 'queryKey'> {
   params?: Params<Op>;
 }

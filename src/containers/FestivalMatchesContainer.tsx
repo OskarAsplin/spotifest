@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { keepPreviousData } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApiQuery, withFallback } from '../api/api';
@@ -25,8 +26,9 @@ import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelec
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { getAreaFilters } from '../utils/areaUtils';
-import { createMatchRequest } from './FestivalMatchesContainer.utils';
 import { useMatchingStore } from '../zustand/matchingStore';
+import { createMatchRequest } from './FestivalMatchesContainer.utils';
+import { OpReturn } from '../api/api.types';
 
 const ITEMS_PER_PAGE = 15;
 
@@ -105,14 +107,13 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
     .slice((page - 1) * 15, page * 15)
     .map((match) => match.lineup_id);
 
-  const { data: popularArtistsDict = {} } = useApiQuery(
-    postDjangoPopularArtistsInLineups,
-    {
-      params: { lineups: pageLineups },
-      enabled: pageLineups.length > 0,
-      keepPreviousData: true,
-    },
-  );
+  const { data: popularArtistsDict = {} } = useApiQuery<
+    typeof postDjangoPopularArtistsInLineups
+  >(postDjangoPopularArtistsInLineups, {
+    params: { lineups: pageLineups },
+    enabled: pageLineups.length > 0,
+    placeholderData: keepPreviousData,
+  });
 
   const numPages = Math.ceil(festivalMatches.length / ITEMS_PER_PAGE);
 

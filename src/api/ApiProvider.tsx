@@ -9,7 +9,7 @@ import { ReactNode } from 'react';
 import { useAuthStore } from '../zustand/authStore';
 
 const DEFAULT_QUERY_OPTIONS: QueryObserverOptions = {
-  cacheTime: Infinity,
+  gcTime: Infinity,
   staleTime: Infinity,
   suspense: true,
   refetchOnWindowFocus: false,

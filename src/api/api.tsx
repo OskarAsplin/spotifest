@@ -4,7 +4,7 @@ import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { uniqueFunctionId } from './uniqueFunctionId';
 import { OpBaseType, OpReturn, Params, UseApiQueryProps } from './api.types';
 
-const errorBoundary = (error: any) =>
+const throwOnError = (error: any) =>
   error instanceof TypeError ||
   error.response?.status >= 500 ||
   (typeof error.status === 'number' && error.status >= 500);
@@ -32,7 +32,7 @@ export const useApiQuery = <
   useQuery({
     queryKey: getKey(operation, params),
     queryFn: () => operation(params),
-    useErrorBoundary: errorBoundary,
+    throwOnError,
     ...options,
   });
 
