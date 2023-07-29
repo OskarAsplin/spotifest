@@ -28,7 +28,7 @@
       "backend_server": "Django server set up with Gunicorn and Nginx",
       "domain": "Domain bought on NameCheap",
       "festival_info": "Lineup and festival information from Music Festival Wizard",
-      "frontend_code": "Frontend made with React, Typescript, Redux and React Query",
+      "frontend_code": "Frontend made with React, Typescript, React Query and Zustand",
       "frontend_host": "Frontend hosted on Netlify",
       "frontend_storybook": "Components developed and documented with <Link href=\"https://master--638b82b31acca1e593c75c8d.chromatic.com\">Storybook</Link>",
       "frontend_ui": "UI based on Material-UI",

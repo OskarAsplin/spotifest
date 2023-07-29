@@ -26,11 +26,11 @@ const TechStackContent = () => {
           class: clsx(styles.iconDefaultHeight, styles.iconMarginLeft),
         },
         {
-          path: 'Redux.svg',
+          path: 'ReactQuery.svg',
           class: clsx(styles.iconDefaultHeight, styles.iconMarginLeft),
         },
         {
-          path: 'ReactQuery.svg',
+          path: 'Zustand.png',
           class: clsx(styles.iconDefaultHeight, styles.iconMarginLeft),
         },
       ],
@@ -181,15 +181,6 @@ const TechStackContent = () => {
               <div>
                 <StandardLink href="https://iconscout.com/icons/typescript">
                   Typescript Icon
-                </StandardLink>
-                {' by '}
-                <StandardLink href="https://iconscout.com/contributors/icon-mafia">
-                  Icon Mafia
-                </StandardLink>
-              </div>
-              <div>
-                <StandardLink href="https://iconscout.com/icons/redux">
-                  Redux Logo Icon
                 </StandardLink>
                 {' by '}
                 <StandardLink href="https://iconscout.com/contributors/icon-mafia">

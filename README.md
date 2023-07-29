@@ -42,7 +42,7 @@ By clicking on an artist icon you are taken to the corresponding artist page. Th
 
 ## Built with
 
-- [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [Redux](https://redux.js.org) and [React Query](https://tanstack.com/query/v4/docs/adapters/react-query)
+- [React](https://reactjs.org/), [Typescript](https://www.typescriptlang.org/), [React Query](https://tanstack.com/query/latest/docs/react/overview) and [Zustand](https://github.com/pmndrs/zustand)
 - [Storybook](https://developer.spotify.com/documentation/web-api). See deploy [here](https://master--638b82b31acca1e593c75c8d.chromatic.com)
 - [Spotify Web API](https://developer.spotify.com/documentation/web-api)
 
