@@ -15,7 +15,7 @@ const SocialMediaButtonsContainer = () => {
 
   const { data: userInfo } = useApiQuery(getLoggedInUserInfo);
   const { data: playlists = [] } = useApiQuery(getAllPlaylists, {
-    query: { userId: userInfo?.id ?? '' },
+    params: { userId: userInfo?.id ?? '' },
     enabled: !!userInfo?.id,
   });
 

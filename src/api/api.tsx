@@ -1,35 +1,44 @@
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { QueryKey, useQuery } from '@tanstack/react-query';
 import { ComponentType, forwardRef, Suspense } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { uniqueFunctionId } from './uniqueFunctionId';
+import { OpBaseType, OpReturn, Params, UseApiQueryProps } from './api.types';
 
-type OpBaseType<R = any> = (...args: any) => Promise<R>;
-type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
+const errorBoundary = (error: any) =>
+  error instanceof TypeError ||
+  error.response?.status >= 500 ||
+  (typeof error.status === 'number' && error.status >= 500);
 
-interface UseApiQueryProps<Op extends OpBaseType>
-  extends Omit<UseQueryOptions<ThenArg<ReturnType<Op>>>, 'useErrorBoundary'> {
-  query?: Parameters<Op>[0];
-}
-
-export const useApiQuery = <Op extends OpBaseType>(
+const getKey = <Op extends OpBaseType>(
   operation: Op,
-  { query = {}, ...queryConfig }: UseApiQueryProps<Op> = {}
+  params?: Params<Op>,
+): QueryKey =>
+  params
+    ? [uniqueFunctionId(operation), params]
+    : [uniqueFunctionId(operation)];
+
+export const useApiQuery = <
+  Op extends OpBaseType,
+  TQueryFnData = OpReturn<Op>,
+  TError = unknown,
+  TData = TQueryFnData,
+>(
+  operation: Op,
+  {
+    params = {},
+    ...options
+  }: UseApiQueryProps<Op, TQueryFnData, TError, TData> = {},
 ) =>
-  useQuery<ThenArg<ReturnType<Op>>>(
-    [uniqueFunctionId(operation), query],
-    () => operation(query),
-    {
-      useErrorBoundary: (error: any) =>
-        error instanceof TypeError ||
-        error.response?.status >= 500 ||
-        (typeof error.status === 'number' && error.status >= 500),
-      ...queryConfig,
-    }
-  );
+  useQuery({
+    queryKey: getKey(operation, params),
+    queryFn: () => operation(params),
+    useErrorBoundary: errorBoundary,
+    ...options,
+  });
 
 export const withFallback = <Props extends object>(
   SuspenseFallback?: ComponentType<Props>,
-  ErrorFallback: ComponentType<FallbackProps> = () => null
+  ErrorFallback: ComponentType<FallbackProps> = () => null,
 ) => {
   return (Component: ComponentType<Props>) =>
     forwardRef((props: Props, ref) => (

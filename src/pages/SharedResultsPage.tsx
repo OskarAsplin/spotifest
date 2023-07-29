@@ -42,12 +42,12 @@ const SharedResultsPage = withFallback(
   const { ownerId, playlistId } = getIdsFromMatchBasis(matchBasis);
   const { data: sharedPlaylist } = useApiQuery(getPlaylist, {
     enabled: !!matchBasis && loggedIn,
-    query: { ownerId, id: playlistId },
+    params: { ownerId, id: playlistId },
   });
 
   const { data: user } = useApiQuery(getUserInfo, {
     enabled: !!ownerId && loggedIn,
-    query: { userId: ownerId ?? '' },
+    params: { userId: ownerId ?? '' },
   });
 
   if (!getSharedMatchBasis() && !isValidPlaylistMatchBasis(matchBasis))

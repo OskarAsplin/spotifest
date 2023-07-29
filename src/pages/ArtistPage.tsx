@@ -49,24 +49,24 @@ const ArtistPage = withFallback(
 
   const { data: artistBySpotifyId, isError: isArtistBySpotifyIdError } =
     useApiQuery(getDjangoArtistBySpotifyId, {
-      query: { spotifyId: spotifyId || '' },
+      params: { spotifyId: spotifyId || '' },
       enabled: hasSpotifyId,
     });
 
   const { data: artistByName } = useApiQuery(getDjangoArtistByName, {
-    query: { name: artistId ?? '' },
+    params: { name: artistId ?? '' },
     enabled: !hasSpotifyId && !!artistId,
   });
 
   const { data: spotifyArtist } = useApiQuery(getArtistInfo, {
-    query: { spotifyId: spotifyId || '' },
+    params: { spotifyId: spotifyId || '' },
     enabled: loggedIn && !!isArtistBySpotifyIdError,
   });
 
   const spotifyIdFromDjango = artistByName?.artist.spotifyId;
 
   const { data: relatedArtists = [] } = useApiQuery(getArtistRelatedArtists, {
-    query: { spotifyId: spotifyId || spotifyIdFromDjango || '' },
+    params: { spotifyId: spotifyId || spotifyIdFromDjango || '' },
     enabled: loggedIn && (hasSpotifyId || !!spotifyIdFromDjango),
   });
 

@@ -22,7 +22,7 @@ const SearchFieldContainer = ({
   const [inputText, setInputText] = useState('');
 
   const { data: searchResults } = useApiQuery(getDjangoSearchResults, {
-    query: { search: inputText },
+    params: { search: inputText },
     enabled: !!inputText.length,
     suspense: false,
     keepPreviousData: true,
@@ -30,7 +30,7 @@ const SearchFieldContainer = ({
 
   const debouncedOnChange = debounce(
     (e: ChangeEvent<HTMLInputElement>) => setInputText(e.target.value),
-    DEBOUNCE_WAIT
+    DEBOUNCE_WAIT,
   );
 
   const resetSearchFieldState = () => {

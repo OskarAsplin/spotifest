@@ -47,7 +47,7 @@ const FestivalMatchSettingsContainer = ({
   const { ownerId, playlistId } = getIdsFromMatchBasis(sharedMatchBasis);
   const { data: sharedPlaylist } = useApiQuery(getPlaylist, {
     enabled: isSharedResults,
-    query: { ownerId, id: playlistId },
+    params: { ownerId, id: playlistId },
   });
 
   // Not shared results - get all playlists and top artists
@@ -55,7 +55,7 @@ const FestivalMatchSettingsContainer = ({
     enabled: !isSharedResults,
   });
   const { data: playlists = [] } = useApiQuery(getAllPlaylists, {
-    query: { userId: userInfo?.id ?? '' },
+    params: { userId: userInfo?.id ?? '' },
     enabled: !!userInfo?.id && !isSharedResults,
   });
   const { data: allTopArtistsData } = useApiQuery(

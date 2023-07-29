@@ -54,7 +54,7 @@ const FestivalPage = withFallback(
   const { festivalId } = useParams();
 
   const { data: festivalInfo } = useApiQuery(getDjangoFestival, {
-    query: { name: festivalId ?? '' },
+    params: { name: festivalId ?? '' },
     enabled: !!festivalId,
   });
 

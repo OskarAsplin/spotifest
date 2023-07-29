@@ -62,7 +62,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
   const { ownerId, playlistId } = getIdsFromMatchBasis(matchBasis);
 
   const { data: playlistArtistsData } = useApiQuery(getAllPlaylistArtists, {
-    query: { ownerId, id: playlistId },
+    params: { ownerId, id: playlistId },
     enabled: !!ownerId && !!playlistId,
   });
 
@@ -92,7 +92,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
   const { data: festivalMatches = [] } = useApiQuery(
     postDjangoFestivalMatches,
     {
-      query: matchRequest,
+      params: matchRequest,
       enabled: !!artists.length && !!numTracks,
     },
   );
@@ -108,7 +108,7 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
   const { data: popularArtistsDict = {} } = useApiQuery(
     postDjangoPopularArtistsInLineups,
     {
-      query: { lineups: pageLineups },
+      params: { lineups: pageLineups },
       enabled: pageLineups.length > 0,
       keepPreviousData: true,
     },
