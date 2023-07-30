@@ -1,24 +1,35 @@
 import {
   Outlet,
-  RouterProvider,
-  Router,
   RootRoute,
   Route,
+  Router,
+  RouterProvider,
 } from '@tanstack/router';
-import MainPage from './pages/MainPage';
-import SharedResultsPage from './pages/SharedResultsPage';
-import LoginPage from './pages/LoginPage';
+import React from 'react';
+import { StandardLayout } from './layouts/StandardLayout';
+import WithSpotifyTokenRoute from './layouts/WithSpotifyTokenRoute';
+import AboutPage from './pages/AboutPage';
 import ArtistPage from './pages/ArtistPage';
 import FestivalPage from './pages/FestivalPage';
-import AboutPage from './pages/AboutPage';
-import WithSpotifyTokenRoute from './layouts/WithSpotifyTokenRoute';
+import LoginPage from './pages/LoginPage';
+import MainPage from './pages/MainPage';
 import PageNotFound from './pages/PageNotFound';
-import { StandardLayout } from './layouts/StandardLayout';
+import SharedResultsPage from './pages/SharedResultsPage';
+
+const TanStackRouterDevtools =
+  import.meta.env.VITE_ROUTER_DEVTOOLS === 'true'
+    ? React.lazy(() =>
+        import('@tanstack/router-devtools').then((res) => ({
+          default: res.TanStackRouterDevtools,
+        })),
+      )
+    : () => null;
 
 const rootRoute = new RootRoute({
   component: () => (
     <>
       <Outlet />
+      <TanStackRouterDevtools />
     </>
   ),
 });

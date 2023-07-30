@@ -35,7 +35,7 @@ interface ApiProviderProps {
 const ApiProvider = ({ children }: ApiProviderProps) => (
   <QueryClientProvider client={queryClient}>
     {children}
-    {import.meta.env.VITE_REACT_QUERY_DEVTOOLS && (
+    {import.meta.env.VITE_REACT_QUERY_DEVTOOLS === 'true' && (
       <ReactQueryDevtools initialIsOpen={false} />
     )}
   </QueryClientProvider>
