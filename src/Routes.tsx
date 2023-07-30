@@ -4,17 +4,11 @@ import {
   Route,
   Router,
   RouterProvider,
+  lazy,
 } from '@tanstack/router';
 import React from 'react';
 import { StandardLayout } from './layouts/StandardLayout';
 import WithSpotifyTokenRoute from './layouts/WithSpotifyTokenRoute';
-import AboutPage from './pages/AboutPage';
-import ArtistPage from './pages/ArtistPage';
-import FestivalPage from './pages/FestivalPage';
-import LoginPage from './pages/LoginPage';
-import MainPage from './pages/MainPage';
-import PageNotFound from './pages/PageNotFound';
-import SharedResultsPage from './pages/SharedResultsPage';
 
 const TanStackRouterDevtools =
   import.meta.env.VITE_ROUTER_DEVTOOLS === 'true'
@@ -37,7 +31,7 @@ const rootRoute = new RootRoute({
 export const loginRoute = new Route({
   getParentRoute: () => rootRoute,
   path: 'login',
-  component: () => <LoginPage />,
+  component: lazy(() => import('./pages/LoginPage')),
 });
 const withTokenAndLayoutRoute = new Route({
   getParentRoute: () => rootRoute,
@@ -51,22 +45,22 @@ const withTokenAndLayoutRoute = new Route({
 export const indexRoute = new Route({
   getParentRoute: () => withTokenAndLayoutRoute,
   path: '/',
-  component: () => <MainPage />,
+  component: lazy(() => import('./pages/MainPage')),
 });
 const artistRoute = new Route({
   getParentRoute: () => withTokenAndLayoutRoute,
   path: 'artist/$artistId',
-  component: () => <ArtistPage />,
+  component: lazy(() => import('./pages/ArtistPage')),
 });
 const festivalRoute = new Route({
   getParentRoute: () => withTokenAndLayoutRoute,
   path: 'festival/$festivalId',
-  component: () => <FestivalPage />,
+  component: lazy(() => import('./pages/FestivalPage')),
 });
 const shareRoute = new Route({
   getParentRoute: () => withTokenAndLayoutRoute,
   path: 'share',
-  component: () => <SharedResultsPage />,
+  component: lazy(() => import('./pages/SharedResultsPage')),
 });
 const shareMatchRoute = new Route({
   getParentRoute: () => shareRoute,
@@ -75,12 +69,12 @@ const shareMatchRoute = new Route({
 const aboutRoute = new Route({
   getParentRoute: () => withTokenAndLayoutRoute,
   path: 'about',
-  component: () => <AboutPage />,
+  component: lazy(() => import('./pages/AboutPage')),
 });
 const notFoundRoute = new Route({
   getParentRoute: () => rootRoute,
   path: '*',
-  component: () => <PageNotFound />,
+  component: lazy(() => import('./pages/PageNotFound')),
 });
 
 const routeTree = rootRoute.addChildren([
