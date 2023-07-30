@@ -9,6 +9,7 @@ import {
 import React from 'react';
 import { StandardLayout } from './layouts/StandardLayout';
 import WithSpotifyTokenRoute from './layouts/WithSpotifyTokenRoute';
+import ProtectedRoute from './layouts/ProtectedRoute';
 
 const TanStackRouterDevtools =
   import.meta.env.VITE_ROUTER_DEVTOOLS === 'true'
@@ -42,8 +43,19 @@ const withTokenAndLayoutRoute = new Route({
     </WithSpotifyTokenRoute>
   ),
 });
+const withProtectedTokenAndLayoutRoute = new Route({
+  getParentRoute: () => rootRoute,
+  id: 'withProtectedTokenAndLayoutRoute',
+  component: () => (
+    <WithSpotifyTokenRoute>
+      <ProtectedRoute>
+        <StandardLayout />
+      </ProtectedRoute>
+    </WithSpotifyTokenRoute>
+  ),
+});
 export const indexRoute = new Route({
-  getParentRoute: () => withTokenAndLayoutRoute,
+  getParentRoute: () => withProtectedTokenAndLayoutRoute,
   path: '/',
   component: lazy(() => import('./pages/MainPage')),
 });
@@ -79,8 +91,8 @@ const notFoundRoute = new Route({
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
+  withProtectedTokenAndLayoutRoute.addChildren([indexRoute]),
   withTokenAndLayoutRoute.addChildren([
-    indexRoute,
     artistRoute,
     festivalRoute,
     shareRoute.addChildren([shareMatchRoute]),
