@@ -28,7 +28,6 @@ import ErrorFallback from '../layouts/ErrorFallback';
 import { getAreaFilters } from '../utils/areaUtils';
 import { useMatchingStore } from '../zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
-import { OpReturn } from '../api/api.types';
 
 const ITEMS_PER_PAGE = 15;
 

@@ -3,11 +3,12 @@ import { createTheme } from '@mui/material/styles';
 import { keepPreviousData } from '@tanstack/react-query';
 import { debounce } from 'lodash-es';
 import { ChangeEvent, useState } from 'react';
-import { useApiQuery } from '../api/api';
+import { useApiQuery, withFallback } from '../api/api';
 import { getDjangoSearchResults } from '../api/djangoApi';
 import SearchField from '../components/molecules/SearchField/SearchField';
 import SearchResults from '../components/organisms/SearchResults/SearchResults';
 import { getMainTheme } from '../theme/theme.styles';
+import ErrorFallback from '../layouts/ErrorFallback';
 
 export interface SearchFieldContainerProps {
   hideSearchFieldSmallScreen?: () => void;
@@ -21,16 +22,6 @@ const SearchFieldContainer = ({
   const darkTheme = createTheme(getMainTheme('dark'));
 
   const [inputText, setInputText] = useState('');
-
-  const { data: searchResults } = useApiQuery<typeof getDjangoSearchResults>(
-    getDjangoSearchResults,
-    {
-      params: { search: inputText },
-      enabled: !!inputText.length,
-      suspense: false,
-      placeholderData: keepPreviousData,
-    },
-  );
 
   const debouncedOnChange = debounce(
     (e: ChangeEvent<HTMLInputElement>) => setInputText(e.target.value),
@@ -47,21 +38,48 @@ const SearchFieldContainer = ({
       <ClickAwayListener onClickAway={resetSearchFieldState}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <SearchField onChange={debouncedOnChange} />
-          {searchResults && inputText && (
-            <div>
-              <Box sx={{ position: 'absolute' }}>
-                <SearchResults
-                  searchResults={searchResults}
-                  inputText={inputText}
-                  resetSearchFieldState={resetSearchFieldState}
-                />
-              </Box>
-            </div>
+          {inputText && (
+            <SearchResultsContainer
+              inputText={inputText}
+              resetSearchFieldState={resetSearchFieldState}
+            />
           )}
         </Box>
       </ClickAwayListener>
     </ThemeProvider>
   );
 };
+
+interface SearchResultsContainerProps {
+  inputText: string;
+  resetSearchFieldState: () => void;
+}
+
+const SearchResultsContainer = withFallback<SearchResultsContainerProps>(
+  () => null,
+  ErrorFallback,
+)(({ inputText, resetSearchFieldState }) => {
+  const { data: searchResults } = useApiQuery<typeof getDjangoSearchResults>(
+    getDjangoSearchResults,
+    {
+      params: { search: inputText },
+      placeholderData: keepPreviousData,
+    },
+  );
+
+  if (!searchResults) return null;
+
+  return (
+    <div>
+      <Box sx={{ position: 'absolute' }}>
+        <SearchResults
+          searchResults={searchResults}
+          inputText={inputText}
+          resetSearchFieldState={resetSearchFieldState}
+        />
+      </Box>
+    </div>
+  );
+});
 
 export default SearchFieldContainer;
