@@ -1,9 +1,8 @@
 import { Box, ClickAwayListener, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import { keepPreviousData } from '@tanstack/react-query';
 import { debounce } from 'lodash-es';
-import { ChangeEvent, useState } from 'react';
-import { useApiQuery, withFallback } from '../api/api';
+import { ChangeEvent, startTransition, useState } from 'react';
+import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getDjangoSearchResults } from '../api/djangoApi';
 import SearchField from '../components/molecules/SearchField/SearchField';
 import SearchResults from '../components/organisms/SearchResults/SearchResults';
@@ -24,7 +23,8 @@ const SearchFieldContainer = ({
   const [inputText, setInputText] = useState('');
 
   const debouncedOnChange = debounce(
-    (e: ChangeEvent<HTMLInputElement>) => setInputText(e.target.value),
+    (e: ChangeEvent<HTMLInputElement>) =>
+      startTransition(() => setInputText(e.target.value)),
     DEBOUNCE_WAIT,
   );
 
@@ -59,15 +59,9 @@ const SearchResultsContainer = withFallback<SearchResultsContainerProps>(
   () => null,
   ErrorFallback,
 )(({ inputText, resetSearchFieldState }) => {
-  const { data: searchResults } = useApiQuery<typeof getDjangoSearchResults>(
-    getDjangoSearchResults,
-    {
-      params: { search: inputText },
-      placeholderData: keepPreviousData,
-    },
-  );
-
-  if (!searchResults) return null;
+  const { data: searchResults } = useApiSuspenseQuery(getDjangoSearchResults, {
+    params: { search: inputText },
+  });
 
   return (
     <div>

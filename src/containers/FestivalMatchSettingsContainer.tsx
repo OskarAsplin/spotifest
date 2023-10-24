@@ -1,6 +1,6 @@
 import { SelectChangeEvent } from '@mui/material';
 import { useEffect } from 'react';
-import { useApiQuery } from '../api/api';
+import { useApiQuery, useApiSuspenseQuery } from '../api/api';
 import {
   getDjangoAvailableContinents,
   getDjangoAvailableCountries,
@@ -38,8 +38,10 @@ const FestivalMatchSettingsContainer = ({
   const setToDate = useMatchingStore((state) => state.setToDate);
   const setDates = useMatchingStore((state) => state.setDates);
 
-  const { data: countries = [] } = useApiQuery(getDjangoAvailableCountries);
-  const { data: continents = [] } = useApiQuery(getDjangoAvailableContinents);
+  const { data: countries } = useApiSuspenseQuery(getDjangoAvailableCountries);
+  const { data: continents } = useApiSuspenseQuery(
+    getDjangoAvailableContinents,
+  );
 
   const isSharedResults = !!sharedMatchBasis;
 
@@ -60,9 +62,7 @@ const FestivalMatchSettingsContainer = ({
   });
   const { data: allTopArtistsData } = useApiQuery(
     getAllTopArtistsWithPopularity,
-    {
-      enabled: !isSharedResults,
-    },
+    { enabled: !isSharedResults },
   );
   const topArtists = allTopArtistsData?.topArtists ?? [];
 

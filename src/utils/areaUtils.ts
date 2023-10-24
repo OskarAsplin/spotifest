@@ -5,7 +5,7 @@ import { europeanRegions, regionMap, usRegions } from './regionUtils';
 
 export const getInitialContinent = (
   userCountryCode: string,
-  availableContinents: Area[]
+  availableContinents: Area[],
 ) => {
   const userContinent: string =
     userCountryCode in countries_list.countries
@@ -14,7 +14,7 @@ export const getInitialContinent = (
         ].continent
       : '';
   const isRegisteredContinent = availableContinents.find(
-    (continent) => continent.isoCode === userContinent
+    (continent) => continent.isoCode === userContinent,
   );
   const isEuropeOrNorthAmerica = ['EU', 'NA'].includes(userContinent);
   return isRegisteredContinent && isEuropeOrNorthAmerica
@@ -22,8 +22,8 @@ export const getInitialContinent = (
     : WORLDWIDE_AREA;
 };
 
-export const getAreaFilters = (area?: Area, continents?: Area[]) => {
-  if (!area || !continents) return {};
+export const getAreaFilters = (continents: Area[], area?: Area) => {
+  if (!area) return {};
   let continentFilter: string[] = [];
   let countryFilter: string[] = [];
   let stateFilter: string[] = [];

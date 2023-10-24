@@ -1,8 +1,14 @@
-import { QueryKey, useQuery } from '@tanstack/react-query';
+import { QueryKey, useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { ComponentType, forwardRef, Suspense } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { uniqueFunctionId } from './uniqueFunctionId';
-import { OpBaseType, OpReturn, Params, UseApiQueryProps } from './api.types';
+import {
+  OpBaseType,
+  OpReturn,
+  Params,
+  UseApiQueryProps,
+  UseApiSuspenseQueryProps,
+} from './api.types';
 
 const throwOnError = (error: any) =>
   error instanceof TypeError ||
@@ -33,6 +39,24 @@ export const useApiQuery = <
     queryKey: getKey(operation, params),
     queryFn: () => operation(params),
     throwOnError,
+    ...options,
+  });
+
+export const useApiSuspenseQuery = <
+  Op extends OpBaseType,
+  TQueryFnData = OpReturn<Op>,
+  TError = unknown,
+  TData = TQueryFnData,
+>(
+  operation: Op,
+  {
+    params = {},
+    ...options
+  }: UseApiSuspenseQueryProps<Op, TQueryFnData, TError, TData> = {},
+) =>
+  useSuspenseQuery({
+    queryKey: getKey(operation, params),
+    queryFn: () => operation(params),
     ...options,
   });
 

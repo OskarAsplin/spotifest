@@ -1,4 +1,4 @@
-import { useApiQuery } from '../api/api';
+import { useApiQuery, useApiSuspenseQuery } from '../api/api';
 import { getAllPlaylists, getLoggedInUserInfo } from '../api/spotifyApi';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
@@ -13,10 +13,9 @@ import { useMatchingStore } from '../zustand/matchingStore';
 const SocialMediaButtonsContainer = () => {
   const matchBasis = useMatchingStore((state) => state.matchBasis);
 
-  const { data: userInfo } = useApiQuery(getLoggedInUserInfo);
+  const { data: userInfo } = useApiSuspenseQuery(getLoggedInUserInfo);
   const { data: playlists = [] } = useApiQuery(getAllPlaylists, {
-    params: { userId: userInfo?.id ?? '' },
-    enabled: !!userInfo?.id,
+    params: { userId: userInfo.id },
   });
 
   const { playlistId } = getIdsFromMatchBasis(matchBasis);

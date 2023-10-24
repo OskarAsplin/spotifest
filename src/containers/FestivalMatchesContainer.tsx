@@ -10,7 +10,7 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useApiQuery, withFallback } from '../api/api';
+import { useApiQuery, useApiSuspenseQuery, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
   postDjangoFestivalMatches,
@@ -51,7 +51,9 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
   const fromDate = useMatchingStore((state) => state.fromDate);
   const toDate = useMatchingStore((state) => state.toDate);
 
-  const { data: continents } = useApiQuery(getDjangoAvailableContinents);
+  const { data: continents } = useApiSuspenseQuery(
+    getDjangoAvailableContinents,
+  );
 
   const { data: allTopArtistsData } = useApiQuery(
     getAllTopArtistsWithPopularity,
@@ -75,8 +77,8 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
   const numTracks = isTopArtists ? topArtistsCount : playlistNumTracks;
 
   const { continentFilter, countryFilter, stateFilter } = getAreaFilters(
-    matchArea,
     continents,
+    matchArea,
   );
 
   const matchRequest = createMatchRequest({
