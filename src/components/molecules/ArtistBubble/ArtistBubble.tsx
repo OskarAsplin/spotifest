@@ -4,6 +4,7 @@ import {
   avatarClasses,
   IconButton,
   iconButtonClasses,
+  Skeleton,
   Typography,
 } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
@@ -38,6 +39,19 @@ const ArtistBubble = ({ artist, onClick }: ArtistBubbleProps) => (
   </StyledAvatarContainerdiv>
 );
 
+export const ArtistBubbleSkeleton = () => (
+  <StyledAvatarContainerdiv>
+    <StyledIconButton disabled>
+      <Skeleton variant="circular">
+        <StyledAvatar isClickable={false} />
+      </Skeleton>
+    </StyledIconButton>
+    <Typography variant="caption">
+      <Skeleton width={60} />
+    </Typography>
+  </StyledAvatarContainerdiv>
+);
+
 export const StyledAvatarContainerdiv = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
@@ -50,8 +64,16 @@ export const StyledAvatarContainerdiv = styled('div')(() => ({
 const StyledIconButton = styled(IconButton)(() => ({
   [`&.${iconButtonClasses.root}`]: {
     textAlign: 'center',
-    '@media (min-width: 690px)': { width: '104px', padding: '12px' },
-    '@media (max-width: 689px)': { width: '75px', padding: '6px' },
+    '@media (min-width: 690px)': {
+      width: '104px',
+      height: '104px',
+      padding: '12px',
+    },
+    '@media (max-width: 689px)': {
+      width: '75px',
+      height: '75px',
+      padding: '6px',
+    },
   },
 }));
 
@@ -77,7 +99,7 @@ const StyledAvatarDiv = styled('div', {
     alignItems: 'center',
     justifyContent: 'center',
     background: blueGrey[palette.mode === 'light' ? 300 : 700],
-  })
+  }),
 );
 
 export default ArtistBubble;

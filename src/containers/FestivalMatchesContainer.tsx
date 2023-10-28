@@ -2,6 +2,7 @@ import {
   Box,
   Pagination,
   PaginationProps,
+  Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
@@ -20,7 +21,6 @@ import {
   getAllPlaylistArtists,
   getAllTopArtistsWithPopularity,
 } from '../api/spotifyApi';
-import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
@@ -28,10 +28,50 @@ import ErrorFallback from '../layouts/ErrorFallback';
 import { getAreaFilters } from '../utils/areaUtils';
 import { useMatchingStore } from '../zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
+import FestivalMatchCardSkeleton from '../components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
 
 const ITEMS_PER_PAGE = 15;
 
-const SuspenseFallback = () => <CenteredLoadingSpinner />;
+const SuspenseFallback = () => {
+  const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
+  const paginationProps: PaginationProps = {
+    count: 3,
+    page: 1,
+    size: mediumOrBigScreen ? 'medium' : 'small',
+  };
+
+  return (
+    <StyledMatchesRootBox>
+      <Box
+        sx={{
+          display: 'flex',
+          width: '100%',
+          alignItems: 'center',
+          '@media (min-width: 610px)': { my: 1.5 },
+          '@media (max-width: 609px)': { flexDirection: 'column', mb: 1 },
+        }}
+      >
+        <StyledNumMatchesTypography variant="subtitle2">
+          <Skeleton width={70} />
+        </StyledNumMatchesTypography>
+        <StyledPaginationBox>
+          <Skeleton variant="rounded">
+            <Pagination {...paginationProps} />
+          </Skeleton>
+        </StyledPaginationBox>
+      </Box>
+      <Stack spacing={3}>
+        <FestivalMatchCardSkeleton />
+        <FestivalMatchCardSkeleton />
+      </Stack>
+      <StyledPaginationBox sx={{ mt: 3, mb: 2 }}>
+        <Skeleton variant="rounded">
+          <Pagination {...paginationProps} />
+        </Skeleton>
+      </StyledPaginationBox>
+    </StyledMatchesRootBox>
+  );
+};
 
 interface FestivalMatchesContainerProps {
   sharedMatchBasis?: string;

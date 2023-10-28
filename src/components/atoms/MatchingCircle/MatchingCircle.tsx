@@ -33,14 +33,18 @@ const MatchingCircle = ({ matchingPercent }: Props) => {
   );
 };
 
+export const MatchingCircleSizeCss = {
+  '@media (min-width: 690px)': { width: '80px', height: '80px' },
+  '@media (max-width: 689px)': {
+    '@media (min-width: 440px)': { width: '60px', height: '60px' },
+  },
+  '@media (max-width: 439px)': { width: '50px', height: '50px' },
+};
+
 const StyledMatchCircleDiv = styled('div')(({ theme: { spacing } }) => ({
   marginLeft: spacing(2),
   userSelect: 'none',
-  '@media (min-width: 690px)': { width: '80px' },
-  '@media (max-width: 689px)': {
-    '@media (min-width: 440px)': { width: '60px' },
-  },
-  '@media (max-width: 439px)': { width: '50px' },
+  ...MatchingCircleSizeCss,
 }));
 
 export default MatchingCircle;
