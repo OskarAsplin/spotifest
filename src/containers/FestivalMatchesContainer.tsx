@@ -8,14 +8,12 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { keepPreviousData } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useApiQuery, useApiSuspenseQuery, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
   postDjangoFestivalMatches,
-  postDjangoPopularArtistsInLineups,
 } from '../api/djangoApi';
 import {
   getAllPlaylistArtists,
@@ -23,7 +21,7 @@ import {
 } from '../api/spotifyApi';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
+import { FestivalMatchCardWithPopularArtists } from '../containers/FestivalMatchCardContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { getAreaFilters } from '../utils/areaUtils';
 import { useMatchingStore } from '../zustand/matchingStore';
@@ -144,18 +142,6 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
     setPage(1);
   }, [festivalMatches]);
 
-  const pageLineups = festivalMatches
-    .slice((page - 1) * 15, page * 15)
-    .map((match) => match.lineup_id);
-
-  const { data: popularArtistsDict = {} } = useApiQuery<
-    typeof postDjangoPopularArtistsInLineups
-  >(postDjangoPopularArtistsInLineups, {
-    params: { lineups: pageLineups },
-    enabled: pageLineups.length > 0,
-    placeholderData: keepPreviousData,
-  });
-
   const numPages = Math.ceil(festivalMatches.length / ITEMS_PER_PAGE);
 
   const onPageChange = (
@@ -175,6 +161,8 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
     (page - 1) * ITEMS_PER_PAGE,
     Math.min(page * ITEMS_PER_PAGE, festivalMatches.length),
   );
+
+  const pageLineups = showMatches.map((match) => match.lineup_id);
 
   const isAnyMatch = showMatches.length > 0;
 
@@ -211,10 +199,6 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
       )}
       <Stack spacing={3}>
         {showMatches.map((festival) => {
-          const popularArtists =
-            festival.lineup_id in popularArtistsDict
-              ? popularArtistsDict[festival.lineup_id]
-              : [];
           const matchingArtists = matchBasisArtists
             .filter(
               (artist) =>
@@ -223,9 +207,9 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
             )
             .sort((a, b) => (a.userPopularity! < b.userPopularity! ? 1 : -1));
           return (
-            <FestivalMatchCardContainer
+            <FestivalMatchCardWithPopularArtists
               festival={festival}
-              popularArtists={popularArtists}
+              pageLineups={pageLineups}
               matchingArtists={matchingArtists}
               key={'FestivalMatchCard: ' + festival.name + festival.year}
               showMatching={true}

@@ -65,7 +65,7 @@ const SearchResultsContainer = withFallback<SearchResultsContainerProps>(
 
   return (
     <div>
-      <Box sx={{ position: 'absolute' }}>
+      <Box sx={{ position: 'absolute', width: '100%' }}>
         <SearchResults
           searchResults={searchResults}
           inputText={inputText}
