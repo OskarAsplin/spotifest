@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
 import FestivalMatchCard from './FestivalMatchCard';
 import { StyledRootDiv } from '../../../layouts/StyledLayoutComponents';
-import { StyledMatchesRootBox } from '../../../containers/FestivalMatchesContainer';
+import { StyledMatchesRootBox } from '../../templates/FestivalMatches/FestivalMatches';
 
 type Story = StoryObj<typeof FestivalMatchCard>;
 

@@ -42,7 +42,7 @@ export interface MatchRequest {
   artists: ArtistMinimal[];
   genres: string[];
   numTracks: number;
-  isTopArtists: Boolean;
+  isTopArtists: boolean;
   dateFrom: string;
   dateTo: string;
   continents: string[];
@@ -53,7 +53,7 @@ export interface MatchRequest {
 export interface MatchCriteria {
   artists: Artist[];
   numTracks: number;
-  isTopArtists: Boolean;
+  isTopArtists?: boolean;
   dateFrom: Date;
   dateTo: Date;
   continents?: string[];

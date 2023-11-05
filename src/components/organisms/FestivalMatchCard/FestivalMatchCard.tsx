@@ -21,8 +21,8 @@ import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
 export interface FestivalMatchCardProps {
   festival: FestivalMatch;
   popularArtists: Artist[];
-  matchingArtists: Artist[];
-  showMatching: boolean;
+  matchingArtists?: Artist[];
+  showMatching?: boolean;
   onClickTitle: () => void;
   onClickArtistBubble: (artistName: string, spotifyId?: string) => void;
 }
@@ -31,7 +31,7 @@ const FestivalMatchCard = ({
   festival,
   showMatching,
   popularArtists,
-  matchingArtists,
+  matchingArtists = [],
   onClickTitle,
   onClickArtistBubble,
 }: FestivalMatchCardProps) => {

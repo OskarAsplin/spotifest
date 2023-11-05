@@ -208,8 +208,6 @@ const ArtistPage = withFallback(
                   key={'FestivalMatchCard: ' + festival.name + festival.year}
                   festival={festival}
                   popularArtists={festival.popular_artists}
-                  matchingArtists={[]}
-                  showMatching={false}
                 />
               ))}
             </StyledStack>

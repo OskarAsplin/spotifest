@@ -43,7 +43,7 @@ export const ArtistBubbleSkeleton = () => (
   <StyledAvatarContainerdiv>
     <StyledIconButton disabled>
       <Skeleton variant="circular">
-        <StyledAvatar isClickable={false} />
+        <StyledAvatar />
       </Skeleton>
     </StyledIconButton>
     <Typography variant="caption">
@@ -85,9 +85,11 @@ const sharedAvatarStyle = (isClickable: boolean, shadows: Shadows) => ({
 
 const StyledAvatar = styled(Avatar, {
   shouldForwardProp: (prop) => prop !== 'isClickable',
-})<{ isClickable: boolean }>(({ theme: { shadows }, isClickable }) => ({
-  [`&.${avatarClasses.root}`]: sharedAvatarStyle(isClickable, shadows),
-}));
+})<{ isClickable?: boolean }>(
+  ({ theme: { shadows }, isClickable = false }) => ({
+    [`&.${avatarClasses.root}`]: sharedAvatarStyle(isClickable, shadows),
+  }),
+);
 
 const StyledAvatarDiv = styled('div', {
   shouldForwardProp: (prop) => prop !== 'isClickable',
