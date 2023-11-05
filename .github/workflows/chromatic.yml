@@ -13,3 +13,5 @@ jobs:
         uses: chromaui/action@v1
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+        env:
+          VITE_BACKEND_URL: http://localhost:8000
