@@ -1,4 +1,4 @@
-import { Navigate } from '@tanstack/router';
+import { Navigate } from '@tanstack/react-router';
 import { withFallback } from '../api/api';
 import { useAuthStore } from '../zustand/authStore';
 

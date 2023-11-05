@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from '@tanstack/router';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import { useApiQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
@@ -21,6 +21,7 @@ import {
 } from '../utils/localStorageUtils';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import { useAuthStore } from '../zustand/authStore';
+import { shareRoute } from '../Routes';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const CustomErrorFallback = () => {
@@ -32,12 +33,14 @@ const SharedResultsPage = withFallback(
   SuspenseFallback,
   CustomErrorFallback,
 )(() => {
-  const { matchBasis: matchBasisFromParams } = useParams();
+  const { matchBasis: matchBasisFromParams } = useParams({
+    from: shareRoute.id,
+  });
   const loggedIn = useAuthStore((state) => state.loggedIn);
   const setLoggedIn = useAuthStore((state) => state.setLoggedIn);
   const navigate = useNavigate();
 
-  const matchBasis = matchBasisFromParams ?? getSharedMatchBasis() ?? undefined;
+  const matchBasis = matchBasisFromParams || getSharedMatchBasis() || undefined;
 
   const { ownerId, playlistId } = getIdsFromMatchBasis(matchBasis);
   const { data: sharedPlaylist } = useApiQuery(getPlaylist, {

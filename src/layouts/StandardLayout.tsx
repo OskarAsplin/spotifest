@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Outlet } from '@tanstack/router';
+import { Outlet } from '@tanstack/react-router';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import AppBarContainer from '../containers/AppBarContainer';
 

@@ -1,4 +1,4 @@
-import { useNavigate } from '@tanstack/router';
+import { useNavigate } from '@tanstack/react-router';
 import FestivalMatchCard, {
   FestivalMatchCardProps,
 } from '../components/organisms/FestivalMatchCard/FestivalMatchCard';

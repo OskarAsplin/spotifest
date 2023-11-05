@@ -15,7 +15,7 @@ import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
-import { useParams } from '@tanstack/router';
+import { useParams } from '@tanstack/react-router';
 import SwipeableViews from 'react-swipeable-views';
 import { useApiQuery, withFallback } from '../api/api';
 import { getDjangoFestival } from '../api/djangoApi';
@@ -34,6 +34,7 @@ import {
   displayedLocationName,
   getMaxArtistsInFullLineupWidth,
 } from '../utils/displayUtils';
+import { festivalRoute } from '../Routes';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
@@ -51,7 +52,7 @@ const FestivalPage = withFallback(
 
   const { t } = useTranslation();
   const themeDirection = useTheme().direction;
-  const { festivalId } = useParams();
+  const { festivalId } = useParams({ from: festivalRoute.id });
 
   const { data: festivalInfo } = useApiQuery(getDjangoFestival, {
     params: { name: festivalId ?? '' },

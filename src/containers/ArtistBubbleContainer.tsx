@@ -1,4 +1,4 @@
-import { useNavigate } from '@tanstack/router';
+import { useNavigate } from '@tanstack/react-router';
 import { Artist } from '../api/types';
 import ArtistBubble from '../components/molecules/ArtistBubble/ArtistBubble';
 import { getArtistParam } from '../utils/routeUtils';

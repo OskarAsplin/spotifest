@@ -1,4 +1,4 @@
-import { useNavigate } from '@tanstack/router';
+import { useNavigate } from '@tanstack/react-router';
 import { TopLeftBackButton } from '../components/atoms/BackButton/BackButton';
 
 const TopLeftBackButtonContainer = () => {

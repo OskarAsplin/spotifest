@@ -4,7 +4,7 @@ import {
   Link as RouterLink,
   LinkPropsOptions as RouterLinkProps,
   ToOptions,
-} from '@tanstack/router';
+} from '@tanstack/react-router';
 
 const LinkBehavior = forwardRef<any, RouterLinkProps>((props, ref) => (
   <RouterLink ref={ref} {...props} />

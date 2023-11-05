@@ -1,6 +1,6 @@
 import { Box, Slide, useScrollTrigger } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate } from '@tanstack/router';
+import { useNavigate } from '@tanstack/react-router';
 import { useApiQuery } from '../api/api';
 import { getLoggedInUserInfo } from '../api/spotifyApi';
 import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';

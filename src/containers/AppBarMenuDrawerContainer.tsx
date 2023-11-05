@@ -2,7 +2,7 @@ import { Brightness2, Brightness4 } from '@mui/icons-material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from '@tanstack/router';
+import { useNavigate } from '@tanstack/react-router';
 import CustomDrawer from '../components/organisms/CustomDrawer/CustomDrawer';
 import { useThemeModeStore } from '../zustand/themeStore';
 

@@ -12,7 +12,7 @@ import {
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from '@tanstack/router';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import { useApiQuery, withFallback } from '../api/api';
 import {
   getDjangoArtistByName,
@@ -30,6 +30,7 @@ import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
 import { getMaxArtistsInWidth } from '../utils/displayUtils';
 import { useAuthStore } from '../zustand/authStore';
+import { artistRoute } from '../Routes';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
@@ -38,7 +39,7 @@ const ArtistPage = withFallback(
   ErrorFallback,
 )(() => {
   const themeMode = useTheme().palette.mode;
-  const { artistId } = useParams();
+  const { artistId } = useParams({ from: artistRoute.id });
   const navigate = useNavigate();
   const { t } = useTranslation();
 
