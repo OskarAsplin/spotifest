@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import SearchResults from './SearchResults';
 import { searchResultsMock } from './SearchResults.fixtures';
+import { withRouter } from '../../../utils/storyUtils';
 
 type Story = StoryObj<typeof SearchResults>;
 
@@ -19,6 +20,7 @@ const meta: Meta<typeof SearchResults> = {
     searchResults: searchResultsMock,
     inputText: 'Oskar',
   },
+  decorators: [withRouter],
 };
 
 export default meta;
