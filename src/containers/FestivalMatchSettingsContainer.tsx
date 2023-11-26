@@ -20,10 +20,8 @@ import { getInitialContinent } from '../utils/areaUtils';
 import { MATCHING_MAX_DATE } from '../config';
 import {
   setDates,
-  setFromDate,
   setMatchArea,
   setMatchBasis,
-  setToDate,
   useMatchingStore,
 } from '../zustand/matchingStore';
 
@@ -97,7 +95,7 @@ const FestivalMatchSettingsContainer = ({
       if (date > new Date(toDate)) {
         setDates({ fromDate: isoDate, toDate: isoDate });
       } else {
-        setFromDate(isoDate);
+        setDates({ fromDate: isoDate, toDate });
       }
     }
   };
@@ -108,7 +106,7 @@ const FestivalMatchSettingsContainer = ({
       if (date < new Date(fromDate)) {
         setDates({ fromDate: isoDate, toDate: isoDate });
       } else {
-        setToDate(isoDate);
+        setDates({ fromDate, toDate: isoDate });
       }
     }
   };

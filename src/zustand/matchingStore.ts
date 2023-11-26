@@ -15,18 +15,14 @@ const INITIAL_STORE: Store = {
   toDate: INITIAL_TO_DATE.toISOString(),
 };
 
-export const useMatchingStore = create<Store, any>(
-  persist((_set) => INITIAL_STORE, { name: 'matching-storage' }),
+export const useMatchingStore = create<Store>()(
+  persist(() => INITIAL_STORE, { name: 'matching-storage' }),
 );
 
 export const setMatchBasis = (matchBasis: string) =>
   useMatchingStore.setState({ matchBasis });
 export const setMatchArea = (matchArea: Area) =>
   useMatchingStore.setState({ matchArea });
-export const setFromDate = (fromDate: string) =>
-  useMatchingStore.setState({ fromDate });
-export const setToDate = (toDate: string) =>
-  useMatchingStore.setState({ toDate });
 
 export const setDates = ({
   fromDate,

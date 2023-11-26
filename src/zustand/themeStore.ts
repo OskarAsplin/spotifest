@@ -6,8 +6,8 @@ type Store = { mode: PaletteMode };
 
 const INITIAL_STORE: Store = { mode: 'dark' };
 
-export const useThemeModeStore = create<Store, any>(
-  persist((_set) => INITIAL_STORE, { name: 'themeMode-storage' }),
+export const useThemeModeStore = create<Store>()(
+  persist(() => INITIAL_STORE, { name: 'themeMode-storage' }),
 );
 
 export const setThemeMode = (newMode: PaletteMode) =>
