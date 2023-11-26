@@ -7,14 +7,7 @@ import {
   mapToPlaylist,
   mapToUserInfo,
 } from './mappers';
-import {
-  Artist,
-  ArtistInfo,
-  MatchOption,
-  MinimalUserInfo,
-  Playlist,
-  UserInfo,
-} from './types';
+import { Artist, MatchOption, Playlist } from './types';
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -25,50 +18,26 @@ const throwError = (error: any) => {
 export const setSpotifyToken = (token: string) =>
   spotifyApi.setAccessToken(token);
 
-export async function getLoggedInUserInfo(): Promise<UserInfo> {
-  return await spotifyApi.getMe().then(mapToUserInfo, throwError);
-}
+export const getLoggedInUserInfo = () =>
+  spotifyApi.getMe().then(mapToUserInfo, throwError);
 
-export async function getUserInfo({
-  userId,
-}: {
-  userId: string;
-}): Promise<MinimalUserInfo> {
-  return await spotifyApi
-    .getUser(userId)
-    .then(mapToMinimalUserInfo, throwError);
-}
+export const getUserInfo = ({ userId }: { userId: string }) =>
+  spotifyApi.getUser(userId).then(mapToMinimalUserInfo, throwError);
 
-export async function getArtistInfo({
-  spotifyId,
-}: {
-  spotifyId: string;
-}): Promise<ArtistInfo> {
-  return await spotifyApi
-    .getArtist(spotifyId)
-    .then(mapToArtistInfo, throwError);
-}
+export const getArtistInfo = ({ spotifyId }: { spotifyId: string }) =>
+  spotifyApi.getArtist(spotifyId).then(mapToArtistInfo, throwError);
 
-export async function getArtistRelatedArtists({
-  spotifyId,
-}: {
-  spotifyId: string;
-}): Promise<Artist[]> {
-  return await spotifyApi
+export const getArtistRelatedArtists = ({ spotifyId }: { spotifyId: string }) =>
+  spotifyApi
     .getArtistRelatedArtists(spotifyId)
     .then((response) => response.artists.map(mapToArtist), throwError);
-}
 
-export async function getPlaylist({
-  id,
-}: {
-  id?: string;
-}): Promise<Playlist | undefined> {
-  if (!id) return undefined;
-  return await spotifyApi.getPlaylist(id).then(mapToPlaylist, throwError);
-}
+export const getPlaylist = ({ id }: { id: string }) =>
+  spotifyApi.getPlaylist(id).then(mapToPlaylist, throwError);
 
-export async function getAllPlaylists({
+const LIMIT_PLAYLISTS = 50;
+
+export const getAllPlaylists = ({
   userId,
   offset = 0,
   allPlaylists = [],
@@ -76,47 +45,45 @@ export async function getAllPlaylists({
   userId: string;
   offset?: number;
   allPlaylists?: Playlist[];
-}): Promise<Playlist[]> {
-  return await spotifyApi
-    .getUserPlaylists(userId, { limit: 50, offset: offset })
+}): Promise<Playlist[]> =>
+  spotifyApi
+    .getUserPlaylists(userId, { limit: LIMIT_PLAYLISTS, offset: offset })
     .then((userPlaylists) => {
       const playlistsWithTracks: Playlist[] = userPlaylists.items
         .filter((playlist) => playlist.tracks.total > 0)
         .map(mapToPlaylist);
 
       const updatedAllPlaylists = allPlaylists.concat(playlistsWithTracks);
-      if (userPlaylists.total > offset + 50) {
+      if (userPlaylists.total > offset + LIMIT_PLAYLISTS) {
         return getAllPlaylists({
           userId,
-          offset: offset + 50,
+          offset: offset + LIMIT_PLAYLISTS,
           allPlaylists: updatedAllPlaylists,
         });
       } else
         return updatedAllPlaylists.sort((a, b) => a.name.localeCompare(b.name));
     }, throwError);
-}
 
 const LIMIT_ARTISTS = 50;
 
-async function getTopArtistsWithPopularity({
+export const getTopArtistsWithPopularity = ({
   timeRange,
 }: {
   timeRange: 'long_term' | 'medium_term' | 'short_term';
-}): Promise<Artist[]> {
-  return await spotifyApi
+}) =>
+  spotifyApi
     .getMyTopArtists({ limit: LIMIT_ARTISTS, time_range: timeRange })
     .then((response) => {
       return response.items.map((artist, idx) =>
         mapToArtistWithPopularity(artist, response.items.length * 2 - idx),
       );
     }, throwError);
-}
 
 const topArtistsCount = (numArtists: number) =>
   (numArtists * (3 * numArtists + 1)) / 2; // n(3n+1)/2
 
-export async function getAllTopArtistsWithPopularity(): Promise<MatchOption> {
-  return Promise.all([
+export const getAllTopArtistsWithPopularity = (): Promise<MatchOption> =>
+  Promise.all([
     getTopArtistsWithPopularity({ timeRange: 'long_term' }),
     getTopArtistsWithPopularity({ timeRange: 'medium_term' }),
     getTopArtistsWithPopularity({ timeRange: 'short_term' }),
@@ -137,9 +104,8 @@ export async function getAllTopArtistsWithPopularity(): Promise<MatchOption> {
 
     return { artists: Object.values(tempDict), weight: countTopArtists };
   });
-}
 
-async function getAllArtists({
+export const getAllArtists = ({
   artistIds,
   count,
   offset = 0,
@@ -149,8 +115,8 @@ async function getAllArtists({
   count: { [id: string]: number };
   offset?: number;
   allArtists?: Artist[];
-}): Promise<Artist[]> {
-  return await spotifyApi
+}): Promise<Artist[]> =>
+  spotifyApi
     .getArtists(artistIds.slice(offset, offset + LIMIT_ARTISTS))
     .then((response) => {
       const newArtists = response.artists
@@ -168,11 +134,10 @@ async function getAllArtists({
         });
       } else return updatedAllArtists;
     }, throwError);
-}
 
 const LIMIT_PLAYLIST_TRACKS = 100;
 
-async function getAllArtistIdsFromPlaylist({
+export const getAllArtistIdsFromPlaylist = ({
   id,
   offset = 0,
   allArtistIds = [],
@@ -180,8 +145,8 @@ async function getAllArtistIdsFromPlaylist({
   id: string;
   offset?: number;
   allArtistIds?: string[];
-}): Promise<string[]> {
-  return await spotifyApi.getPlaylistTracks(id, { offset }).then((tracks) => {
+}): Promise<string[]> =>
+  spotifyApi.getPlaylistTracks(id, { offset }).then((tracks) => {
     const newArtistIds: string[] = tracks.items
       // Can also contain podcast episodes, so these need to be filtered out
       .filter((trackItem) => Object.hasOwn(trackItem.track, 'artists'))
@@ -201,18 +166,17 @@ async function getAllArtistIdsFromPlaylist({
       });
     } else return updatedAllArtistIds;
   }, throwError);
-}
 
 const LIMIT_SAVED_TRACKS = 50;
 
-async function getAllArtistIdsFromSavedTracks({
+export const getAllArtistIdsFromSavedTracks = ({
   offset = 0,
   allArtistIds = [],
 }: {
   offset?: number;
   allArtistIds?: string[];
-} = {}): Promise<string[]> {
-  return await spotifyApi
+} = {}): Promise<string[]> =>
+  spotifyApi
     .getMySavedTracks({ offset, limit: LIMIT_SAVED_TRACKS })
     .then((tracks) => {
       const newArtistIds: string[] = tracks.items.flatMap((trackItem) =>
@@ -228,9 +192,8 @@ async function getAllArtistIdsFromSavedTracks({
         });
       } else return updatedAllArtistIds;
     }, throwError);
-}
 
-async function getArtistsFromArtistIds(allArtistIdsRaw: string[]) {
+export const getArtistsFromArtistIds = async (allArtistIdsRaw: string[]) => {
   const count: { [id: string]: number } = {};
   allArtistIdsRaw.forEach(
     (val: string) => (count[val] = (count[val] || 0) + 1),
@@ -239,24 +202,14 @@ async function getArtistsFromArtistIds(allArtistIdsRaw: string[]) {
   const newArtists = await getAllArtists({ artistIds, count });
 
   return { artists: newArtists, weight: allArtistIdsRaw.length };
-}
+};
 
-export async function getAllPlaylistArtists({
+export const getAllPlaylistArtists = ({
   id,
 }: {
-  id?: string;
-}): Promise<MatchOption> {
-  if (!id) return { artists: [], weight: 0 };
+  id: string;
+}): Promise<MatchOption> =>
+  getAllArtistIdsFromPlaylist({ id }).then(getArtistsFromArtistIds, throwError);
 
-  return await getAllArtistIdsFromPlaylist({ id }).then(
-    getArtistsFromArtistIds,
-    throwError,
-  );
-}
-
-export async function getAllArtistsFromSavedTracks(): Promise<MatchOption> {
-  return await getAllArtistIdsFromSavedTracks().then(
-    getArtistsFromArtistIds,
-    throwError,
-  );
-}
+export const getAllArtistsFromSavedTracks = (): Promise<MatchOption> =>
+  getAllArtistIdsFromSavedTracks().then(getArtistsFromArtistIds, throwError);

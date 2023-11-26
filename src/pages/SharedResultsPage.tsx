@@ -40,8 +40,8 @@ const SharedResultsPage = withFallback(
 
   const { playlistId } = getIdFromMatchBasis(matchBasis);
   const { data: sharedPlaylist } = useApiQuery(getPlaylist, {
-    enabled: !!matchBasis && loggedIn,
-    params: { id: playlistId },
+    enabled: !!matchBasis && loggedIn && !!playlistId,
+    params: { id: playlistId ?? '' },
   });
 
   const { data: user } = useApiQuery(getUserInfo, {
