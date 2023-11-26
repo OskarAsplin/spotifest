@@ -7,7 +7,7 @@ import LoginButton from '../components/atoms/LoginButton/LoginButton';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import UsageThumbnailsWithGallery from '../components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
 import { getAuthorizeHref } from '../oauthConfig';
-import { setLoggedIn, setLoggedOut } from '../zustand/authStore';
+import { logOut } from '../zustand/authStore';
 import { resetMathingStore } from '../zustand/matchingStore';
 
 const LoginPage = () => {
@@ -19,14 +19,11 @@ const LoginPage = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    setLoggedOut();
+    logOut();
     resetMathingStore();
   }, []);
 
-  const onClickLoginButton = () => {
-    setLoggedIn();
-    window.open(getAuthorizeHref(), '_self');
-  };
+  const onClickLoginButton = () => window.open(getAuthorizeHref(), '_self');
 
   return (
     <StyledBackgroundDiv>

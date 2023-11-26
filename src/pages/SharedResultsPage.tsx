@@ -17,7 +17,7 @@ import {
   setSharedMatchBasis,
 } from '../utils/localStorageUtils';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
-import { setLoggedIn, useAuthStore } from '../zustand/authStore';
+import { useIsloggedIn } from '../zustand/authStore';
 import { shareRoute } from '../Routes';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
@@ -33,7 +33,7 @@ const SharedResultsPage = withFallback(
   const { matchBasis: matchBasisFromParams } = useParams({
     from: shareRoute.id,
   });
-  const loggedIn = useAuthStore((state) => state.loggedIn);
+  const loggedIn = useIsloggedIn();
   const navigate = useNavigate();
 
   const matchBasis = matchBasisFromParams || getSharedMatchBasis() || undefined;
@@ -52,21 +52,16 @@ const SharedResultsPage = withFallback(
   if (!matchBasis) throw 'Invalid match basis';
 
   useEffect(() => {
-    const sharedMatchBasis = getSharedMatchBasis();
     if (matchBasis && !loggedIn) {
-      // Log in user and set /share as redirect URI.
+      // Set /share as redirect URI.
       // Store the sharedMatchBasis in localStorage,
       // so it can be used to navigate the specific share url on return from the Spotify login.
       // This is all done because Spotify needs predefined redirect URIs, so it needs to be /share instead of dynamic.
-      setLoggedIn();
       setSharedMatchBasis(matchBasis);
       window.open(getAuthorizeHref('/share'), '_self');
-    } else if (!matchBasisFromParams && sharedMatchBasis) {
+    } else if (!matchBasisFromParams && matchBasis) {
       // This happens on return from the Spotify login in the if statement above.
-      navigate({
-        to: '/share/$matchBasis',
-        params: { matchBasis: sharedMatchBasis },
-      });
+      navigate({ to: '/share/$matchBasis', params: { matchBasis } });
     }
   }, []);
 

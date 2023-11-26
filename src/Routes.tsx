@@ -8,7 +8,6 @@ import {
 } from '@tanstack/react-router';
 import React from 'react';
 import { StandardLayout } from './layouts/StandardLayout';
-import WithSpotifyTokenRoute from './layouts/WithSpotifyTokenRoute';
 import ProtectedRoute from './layouts/ProtectedRoute';
 
 const TanStackRouterDevtools =
@@ -34,43 +33,37 @@ export const loginRoute = new Route({
   path: 'login',
   component: lazyRouteComponent(() => import('./pages/LoginPage')),
 });
-const withTokenAndLayoutRoute = new Route({
+const withLayoutRoute = new Route({
   getParentRoute: () => rootRoute,
-  id: 'withTokenAndLayoutRoute',
-  component: () => (
-    <WithSpotifyTokenRoute>
-      <StandardLayout />
-    </WithSpotifyTokenRoute>
-  ),
+  id: 'withLayoutRoute',
+  component: () => <StandardLayout />,
 });
-const withProtectedTokenAndLayoutRoute = new Route({
+const withProtectedAndLayoutRoute = new Route({
   getParentRoute: () => rootRoute,
-  id: 'withProtectedTokenAndLayoutRoute',
+  id: 'withProtectedAndLayoutRoute',
   component: () => (
-    <WithSpotifyTokenRoute>
-      <ProtectedRoute>
-        <StandardLayout />
-      </ProtectedRoute>
-    </WithSpotifyTokenRoute>
+    <ProtectedRoute>
+      <StandardLayout />
+    </ProtectedRoute>
   ),
 });
 export const indexRoute = new Route({
-  getParentRoute: () => withProtectedTokenAndLayoutRoute,
+  getParentRoute: () => withProtectedAndLayoutRoute,
   path: '/',
   component: lazyRouteComponent(() => import('./pages/MainPage')),
 });
 export const artistRoute = new Route({
-  getParentRoute: () => withTokenAndLayoutRoute,
+  getParentRoute: () => withLayoutRoute,
   path: 'artist/$artistId',
   component: lazyRouteComponent(() => import('./pages/ArtistPage')),
 });
 export const festivalRoute = new Route({
-  getParentRoute: () => withTokenAndLayoutRoute,
+  getParentRoute: () => withLayoutRoute,
   path: 'festival/$festivalId',
   component: lazyRouteComponent(() => import('./pages/FestivalPage')),
 });
 export const shareRoute = new Route({
-  getParentRoute: () => withTokenAndLayoutRoute,
+  getParentRoute: () => withLayoutRoute,
   path: 'share',
   component: lazyRouteComponent(() => import('./pages/SharedResultsPage')),
 });
@@ -79,7 +72,7 @@ export const shareMatchRoute = new Route({
   path: '$matchBasis',
 });
 export const aboutRoute = new Route({
-  getParentRoute: () => withTokenAndLayoutRoute,
+  getParentRoute: () => withLayoutRoute,
   path: 'about',
   component: lazyRouteComponent(() => import('./pages/AboutPage')),
 });
@@ -91,8 +84,8 @@ const notFoundRoute = new Route({
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
-  withProtectedTokenAndLayoutRoute.addChildren([indexRoute]),
-  withTokenAndLayoutRoute.addChildren([
+  withProtectedAndLayoutRoute.addChildren([indexRoute]),
+  withLayoutRoute.addChildren([
     artistRoute,
     festivalRoute,
     shareRoute.addChildren([shareMatchRoute]),

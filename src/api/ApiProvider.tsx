@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactNode } from 'react';
-import { useAuthStore } from '../zustand/authStore';
+import { logOut } from '../zustand/authStore';
 
 const DEFAULT_QUERY_OPTIONS: QueryObserverOptions = {
   gcTime: Infinity,
@@ -19,7 +19,7 @@ const DEFAULT_QUERY_OPTIONS: QueryObserverOptions = {
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error: any) => {
-      if (error.status === 401) useAuthStore.setState({ loggedIn: false });
+      if (error.status === 401) logOut();
     },
   }),
 });

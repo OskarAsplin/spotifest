@@ -10,6 +10,9 @@ import './App.scss';
 import { getMainTheme } from './theme/theme.styles';
 import { Routes } from './Routes';
 import { useThemeModeStore } from './zustand/themeStore';
+import { setupToken } from './appSetup';
+
+setupToken();
 
 const App = () => {
   const themeMode = useThemeModeStore((state) => state.mode);
