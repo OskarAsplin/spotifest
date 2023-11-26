@@ -1,7 +1,6 @@
 import { ListSubheader, MenuItem, Select, SelectProps } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { Artist, Playlist } from '../../../api/types';
-import { getPlaylistKey } from './MatchCriteriaSelect.utils';
 
 export const TOP_ARTISTS_CHOICE = '__your__top__artists__';
 
@@ -31,8 +30,8 @@ const MatchCriteriaSelect = ({
       )}
       {playlists.map((playlist) => (
         <MenuItem
-          key={getPlaylistKey(playlist)}
-          value={getPlaylistKey(playlist)}
+          key={playlist.id}
+          value={playlist.id}
           style={{ minWidth: 200, maxWidth: 400 }}
         >
           {playlist.name}

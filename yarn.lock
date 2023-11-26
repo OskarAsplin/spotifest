@@ -13287,7 +13287,7 @@ __metadata:
     react-share: ^4.4.1
     react-swipeable-views: ^0.13.9
     sass: ^1.32.6
-    spotify-web-api-js: ^0.22.1
+    spotify-web-api-js: 1.5.2
     storybook: 7.5.2
     storybook-react-i18next: 2.0.9
     ts-prune: ^0.10.3
@@ -13300,10 +13300,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"spotify-web-api-js@npm:^0.22.1":
-  version: 0.22.1
-  resolution: "spotify-web-api-js@npm:0.22.1"
-  checksum: 7197984f7d3cb299b5f8602bd171c6337567df462f6d386e00a905765befed4b2db4e8d7c5b79a011ed5ef1f727ea01242a71f113c0980b3555880b18c047c6b
+"spotify-web-api-js@npm:1.5.2":
+  version: 1.5.2
+  resolution: "spotify-web-api-js@npm:1.5.2"
+  checksum: 7ffaba350c54cbe68b33faa64574d06df9a8d7eb7b9f01aaeaf507690206c6b5bd94764e69651f35d3254a0ce1b5f6526811f09d83a901b5d2b35dcf2141e15c
   languageName: node
   linkType: hard
 

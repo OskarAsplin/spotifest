@@ -46,7 +46,7 @@
     "react-share": "^4.4.1",
     "react-swipeable-views": "^0.13.9",
     "sass": "^1.32.6",
-    "spotify-web-api-js": "^0.22.1",
+    "spotify-web-api-js": "1.5.2",
     "typescript": "5.1.6",
     "zustand": "^4.3.9"
   },

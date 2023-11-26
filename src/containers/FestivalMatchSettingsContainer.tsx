@@ -13,7 +13,7 @@ import {
 } from '../api/spotifyApi';
 import { Area } from '../api/types';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
 import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
 import { getInitialContinent } from '../utils/areaUtils';
@@ -46,10 +46,10 @@ const FestivalMatchSettingsContainer = ({
   const isSharedResults = !!sharedMatchBasis;
 
   // Shared results - only get the shared playlist
-  const { ownerId, playlistId } = getIdsFromMatchBasis(sharedMatchBasis);
+  const { playlistId } = getIdFromMatchBasis(sharedMatchBasis);
   const { data: sharedPlaylist } = useApiQuery(getPlaylist, {
     enabled: isSharedResults,
-    params: { ownerId, id: playlistId },
+    params: { id: playlistId },
   });
 
   // Not shared results - get all playlists and top artists

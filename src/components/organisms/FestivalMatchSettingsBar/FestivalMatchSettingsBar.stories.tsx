@@ -11,7 +11,6 @@ import {
   continentsMock,
   countriesMock,
 } from '../../molecules/AreaSelect/AreaSelect.fixtures';
-import { getPlaylistKey } from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import { WORLDWIDE_AREA } from '../../molecules/AreaSelect/AreaSelect';
 import { StyledRootDiv } from '../../../layouts/StyledLayoutComponents';
 
@@ -42,7 +41,7 @@ const meta: Meta<typeof FestivalMatchSettingsBar> = {
     countries: countriesMock,
     continents: continentsMock,
     matchSettings: {
-      matchBasis: getPlaylistKey(playlistMock),
+      matchBasis: playlistMock.id,
       area: WORLDWIDE_AREA,
       fromDate: new Date(2023, 0, 1).toISOString(),
       toDate: new Date(2023, 11, 31).toISOString(),

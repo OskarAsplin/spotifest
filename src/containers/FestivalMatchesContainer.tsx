@@ -12,7 +12,7 @@ import {
 } from '../api/spotifyApi';
 import { Artist } from '../api/types';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatches, {
   FestivalMatchesSkeleton,
   NoMatchResults,
@@ -42,16 +42,11 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
 
   if (isTopArtists) return <FestivalMatchesWithTopArtists />;
 
-  const { ownerId, playlistId } = getIdsFromMatchBasis(matchBasis);
+  const { playlistId } = getIdFromMatchBasis(matchBasis);
 
-  if (!ownerId || !playlistId) return null;
+  if (!playlistId) return null;
 
-  return (
-    <FestivalMatchesWithPlaylistArtists
-      ownerId={ownerId}
-      playlistId={playlistId}
-    />
-  );
+  return <FestivalMatchesWithPlaylistArtists playlistId={playlistId} />;
 });
 
 const FestivalMatchesWithTopArtists = () => {
@@ -70,18 +65,16 @@ const FestivalMatchesWithTopArtists = () => {
 };
 
 interface FestivalMatchesWithPlaylistArtistsProps {
-  ownerId: string;
   playlistId: string;
 }
 
 const FestivalMatchesWithPlaylistArtists = ({
-  ownerId,
   playlistId,
 }: FestivalMatchesWithPlaylistArtistsProps) => {
   const {
     data: { playlistArtists, numTracks },
   } = useApiSuspenseQuery(getAllPlaylistArtists, {
-    params: { ownerId, id: playlistId },
+    params: { id: playlistId },
   });
 
   if (!playlistArtists.length || !numTracks) return <NoMatchResults />;

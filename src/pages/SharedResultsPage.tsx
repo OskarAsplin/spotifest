@@ -5,10 +5,7 @@ import { useNavigate, useParams } from '@tanstack/react-router';
 import { useApiQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import {
-  getIdsFromMatchBasis,
-  isValidPlaylistMatchBasis,
-} from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
 import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
@@ -42,19 +39,18 @@ const SharedResultsPage = withFallback(
 
   const matchBasis = matchBasisFromParams || getSharedMatchBasis() || undefined;
 
-  const { ownerId, playlistId } = getIdsFromMatchBasis(matchBasis);
+  const { playlistId } = getIdFromMatchBasis(matchBasis);
   const { data: sharedPlaylist } = useApiQuery(getPlaylist, {
     enabled: !!matchBasis && loggedIn,
-    params: { ownerId, id: playlistId },
+    params: { id: playlistId },
   });
 
   const { data: user } = useApiQuery(getUserInfo, {
-    enabled: !!ownerId && loggedIn,
-    params: { userId: ownerId ?? '' },
+    enabled: !!sharedPlaylist?.ownerId && loggedIn,
+    params: { userId: sharedPlaylist?.ownerId ?? '' },
   });
 
-  if (!getSharedMatchBasis() && !isValidPlaylistMatchBasis(matchBasis))
-    throw 'Invalid match basis';
+  if (!matchBasis) throw 'Invalid match basis';
 
   useEffect(() => {
     const sharedMatchBasis = getSharedMatchBasis();

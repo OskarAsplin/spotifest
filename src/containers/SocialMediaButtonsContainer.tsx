@@ -1,7 +1,7 @@
 import { useApiSuspenseQuery } from '../api/api';
 import { getAllPlaylists, getLoggedInUserInfo } from '../api/spotifyApi';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import { getIdsFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import SocialMediaButtons from '../components/organisms/SocialMediaButtons/SocialMediaButtons';
 import {
   getShareMessage,
@@ -18,7 +18,7 @@ const SocialMediaButtonsContainer = () => {
     params: { userId: userInfo.id },
   });
 
-  const { playlistId } = getIdsFromMatchBasis(matchBasis);
+  const { playlistId } = getIdFromMatchBasis(matchBasis);
   const playlist = playlists.find((p) => p.id === playlistId);
 
   const isOwnPlaylist = !!(playlist?.ownerId === userInfo?.id);

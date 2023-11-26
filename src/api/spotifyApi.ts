@@ -59,16 +59,12 @@ export async function getArtistRelatedArtists({
 }
 
 export async function getPlaylist({
-  ownerId,
   id,
 }: {
-  ownerId?: string;
   id?: string;
 }): Promise<Playlist | undefined> {
-  if (!id || !ownerId) return undefined;
-  return await spotifyApi
-    .getPlaylist(ownerId, id)
-    .then(mapToPlaylist, throwError);
+  if (!id) return undefined;
+  return await spotifyApi.getPlaylist(id).then(mapToPlaylist, throwError);
 }
 
 export async function getAllPlaylists({
@@ -111,7 +107,7 @@ async function getTopArtistsWithPopularity({
     })
     .then((response) => {
       return response.items.map((artist, idx) =>
-        mapToArtistWithPopularity(artist, response.items.length * 2 - idx)
+        mapToArtistWithPopularity(artist, response.items.length * 2 - idx),
       );
     }, throwError);
 }
@@ -160,9 +156,9 @@ async function getAllArtists({
   return await spotifyApi
     .getArtists(artistIds.slice(offset, offset + 50))
     .then((response) => {
-      const newArtists = response.artists.map((artist) =>
-        mapToArtistWithPopularity(artist, count[artist.id])
-      );
+      const newArtists = response.artists
+        .filter(Boolean) // Spotify returns null for podcast "artists"
+        .map((artist) => mapToArtistWithPopularity(artist, count[artist.id]));
 
       const updatedAllArtists = allArtists.concat(newArtists);
 
@@ -178,52 +174,46 @@ async function getAllArtists({
 }
 
 async function getAllArtistIdsFromPlaylist({
-  ownerId,
   id,
   offset = 0,
   allArtistIds = [],
 }: {
-  ownerId: string;
   id: string;
   offset?: number;
   allArtistIds?: string[];
 }): Promise<string[]> {
-  return await spotifyApi
-    .getPlaylistTracks(ownerId, id, { offset })
-    .then((tracks) => {
-      const newArtistIds: string[] = tracks.items.flatMap((trackItem) =>
-        trackItem.track.artists.map((trackArtist) => trackArtist.id)
+  return await spotifyApi.getPlaylistTracks(id, { offset }).then((tracks) => {
+    const newArtistIds: string[] = tracks.items
+      // Can also contain podcast episodes, so these need to be filtered out
+      .filter((trackItem) => Object.hasOwn(trackItem.track, 'artists'))
+      .flatMap((trackItem) =>
+        (trackItem.track as SpotifyApi.TrackObjectFull).artists.map(
+          (trackArtist) => trackArtist.id,
+        ),
       );
 
-      const updatedAllArtistIds = allArtistIds.concat(newArtistIds);
+    const updatedAllArtistIds = allArtistIds.concat(newArtistIds);
 
-      if (offset + 100 < tracks.total) {
-        return getAllArtistIdsFromPlaylist({
-          ownerId,
-          id,
-          offset: offset + 100,
-          allArtistIds: updatedAllArtistIds,
-        });
-      } else return updatedAllArtistIds;
-    }, throwError);
+    if (offset + 100 < tracks.total) {
+      return getAllArtistIdsFromPlaylist({
+        id,
+        offset: offset + 100,
+        allArtistIds: updatedAllArtistIds,
+      });
+    } else return updatedAllArtistIds;
+  }, throwError);
 }
 
-export async function getAllPlaylistArtists({
-  ownerId,
-  id,
-}: {
-  ownerId?: string;
-  id?: string;
-}): Promise<{
+export async function getAllPlaylistArtists({ id }: { id?: string }): Promise<{
   playlistArtists: Artist[];
   numTracks: number;
 }> {
-  if (!id || !ownerId) return { playlistArtists: [], numTracks: 0 };
-  return await getAllArtistIdsFromPlaylist({ ownerId, id }).then(
+  if (!id) return { playlistArtists: [], numTracks: 0 };
+  return await getAllArtistIdsFromPlaylist({ id }).then(
     async (allArtistIdsRaw) => {
       const count: { [id: string]: number } = {};
       allArtistIdsRaw.forEach(
-        (val: string) => (count[val] = (count[val] || 0) + 1)
+        (val: string) => (count[val] = (count[val] || 0) + 1),
       );
       const artistIds = [...new Set(allArtistIdsRaw)].filter(Boolean);
       const newArtists = await getAllArtists({ artistIds, count });
@@ -232,6 +222,6 @@ export async function getAllPlaylistArtists({
 
       return { playlistArtists: newArtists, numTracks };
     },
-    throwError
+    throwError,
   );
 }
