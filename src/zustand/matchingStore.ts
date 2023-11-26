@@ -3,24 +3,20 @@ import { persist } from 'zustand/middleware';
 import { Area } from '../api/types';
 import { INITIAL_FROM_DATE, INITIAL_TO_DATE } from '../config';
 
-interface MatchingStore {
+type Store = {
   matchBasis?: string;
   matchArea?: Area;
   fromDate: string;
   toDate: string;
-}
+};
 
-const INITIAL_STORE: MatchingStore = {
+const INITIAL_STORE: Store = {
   fromDate: INITIAL_FROM_DATE.toISOString(),
   toDate: INITIAL_TO_DATE.toISOString(),
 };
 
-export const useMatchingStore = create<MatchingStore, any>(
-  persist(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (_set) => INITIAL_STORE,
-    { name: 'matching-storage' },
-  ),
+export const useMatchingStore = create<Store, any>(
+  persist((_set) => INITIAL_STORE, { name: 'matching-storage' }),
 );
 
 export const setMatchBasis = (matchBasis: string) =>

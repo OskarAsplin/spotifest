@@ -1,18 +1,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface AuthStore {
-  loggedIn: boolean;
-}
+type Store = { loggedIn: boolean };
 
-export const useAuthStore = create<AuthStore, any>(
-  persist(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (_set) => ({
-      loggedIn: true,
-    }),
-    { name: 'auth-storage' },
-  ),
+const INITIAL_STORE: Store = { loggedIn: true };
+
+export const useAuthStore = create<Store, any>(
+  persist((_set) => INITIAL_STORE, { name: 'auth-storage' }),
 );
 
 export const setLoggedIn = () => useAuthStore.setState({ loggedIn: true });

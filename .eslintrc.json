@@ -25,7 +25,14 @@
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unused-vars": [
+      "warn", // or "error"
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "react/display-name": "off"
