@@ -4,7 +4,7 @@ import { getLocalISODate } from '../utils/dateUtils';
 
 export const createMatchRequest = ({
   artists,
-  numTracks,
+  weight,
   isTopArtists = false,
   dateFrom,
   dateTo,
@@ -17,7 +17,7 @@ export const createMatchRequest = ({
   return {
     artists: artists.map(mapToArtistMinimal),
     genres: artists.flatMap((artist) => artist.genres),
-    numTracks,
+    numTracks: weight,
     isTopArtists,
     dateFrom: getLocalISODate(dateFrom),
     dateTo: getLocalISODate(dateTo),

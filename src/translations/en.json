@@ -106,7 +106,8 @@
     "criteria_select": {
       "label": "Match with",
       "playlists_sub_header": "or choose a playlist below",
-      "top_artists_option": "Your most played artists"
+      "top_artists_option": "Your most played artists",
+      "saved_tracks_option": "Your liked songs"
     },
     "date_select_from": {
       "label": "From"

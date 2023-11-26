@@ -3,6 +3,7 @@ const authEndpoint = 'https://accounts.spotify.com/authorize';
 const scopes = [
   'user-read-private',
   'user-top-read',
+  'user-library-read',
   'playlist-read-private',
   'playlist-read-collaborative',
 ];

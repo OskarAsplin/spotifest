@@ -23,6 +23,7 @@ import SettingsBarDatePicker from '../../molecules/SettingsBarDatePicker/Setting
 interface FestivalMatchSettingsBarProps {
   playlists: Playlist[];
   topArtists: Artist[];
+  savedTracksArtists: Artist[];
   countries: Area[];
   continents: Area[];
   matchSettings: MatchSettings;
@@ -39,6 +40,7 @@ interface FestivalMatchSettingsBarProps {
 const FestivalMatchSettingsBar = ({
   playlists,
   topArtists,
+  savedTracksArtists,
   countries,
   continents,
   matchSettings,
@@ -91,6 +93,7 @@ const FestivalMatchSettingsBar = ({
             value={matchSettings.matchBasis}
             onChange={onMatchBasisChange}
             topArtists={topArtists}
+            savedTracksArtists={savedTracksArtists}
             playlists={playlists}
             disabled={isMatchBasisFieldDisabled}
           />

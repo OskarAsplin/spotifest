@@ -10,6 +10,7 @@ import {
 import {
   Artist,
   ArtistInfo,
+  MatchOption,
   MinimalUserInfo,
   Playlist,
   UserInfo,
@@ -95,16 +96,15 @@ export async function getAllPlaylists({
     }, throwError);
 }
 
+const LIMIT_ARTISTS = 50;
+
 async function getTopArtistsWithPopularity({
   timeRange,
 }: {
   timeRange: 'long_term' | 'medium_term' | 'short_term';
 }): Promise<Artist[]> {
   return await spotifyApi
-    .getMyTopArtists({
-      limit: 50,
-      time_range: timeRange,
-    })
+    .getMyTopArtists({ limit: LIMIT_ARTISTS, time_range: timeRange })
     .then((response) => {
       return response.items.map((artist, idx) =>
         mapToArtistWithPopularity(artist, response.items.length * 2 - idx),
@@ -115,10 +115,7 @@ async function getTopArtistsWithPopularity({
 const topArtistsCount = (numArtists: number) =>
   (numArtists * (3 * numArtists + 1)) / 2; // n(3n+1)/2
 
-export async function getAllTopArtistsWithPopularity(): Promise<{
-  topArtists: Artist[];
-  countTopArtists: number;
-}> {
+export async function getAllTopArtistsWithPopularity(): Promise<MatchOption> {
   return Promise.all([
     getTopArtistsWithPopularity({ timeRange: 'long_term' }),
     getTopArtistsWithPopularity({ timeRange: 'medium_term' }),
@@ -138,7 +135,7 @@ export async function getAllTopArtistsWithPopularity(): Promise<{
       }
     });
 
-    return { topArtists: Object.values(tempDict), countTopArtists };
+    return { artists: Object.values(tempDict), weight: countTopArtists };
   });
 }
 
@@ -154,7 +151,7 @@ async function getAllArtists({
   allArtists?: Artist[];
 }): Promise<Artist[]> {
   return await spotifyApi
-    .getArtists(artistIds.slice(offset, offset + 50))
+    .getArtists(artistIds.slice(offset, offset + LIMIT_ARTISTS))
     .then((response) => {
       const newArtists = response.artists
         .filter(Boolean) // Spotify returns null for podcast "artists"
@@ -162,16 +159,18 @@ async function getAllArtists({
 
       const updatedAllArtists = allArtists.concat(newArtists);
 
-      if (offset + 50 < artistIds.length) {
+      if (offset + LIMIT_ARTISTS < artistIds.length) {
         return getAllArtists({
           artistIds,
           count,
-          offset: offset + 50,
+          offset: offset + LIMIT_ARTISTS,
           allArtists: updatedAllArtists,
         });
       } else return updatedAllArtists;
     }, throwError);
 }
+
+const LIMIT_PLAYLIST_TRACKS = 100;
 
 async function getAllArtistIdsFromPlaylist({
   id,
@@ -194,34 +193,70 @@ async function getAllArtistIdsFromPlaylist({
 
     const updatedAllArtistIds = allArtistIds.concat(newArtistIds);
 
-    if (offset + 100 < tracks.total) {
+    if (offset + LIMIT_PLAYLIST_TRACKS < tracks.total) {
       return getAllArtistIdsFromPlaylist({
         id,
-        offset: offset + 100,
+        offset: offset + LIMIT_PLAYLIST_TRACKS,
         allArtistIds: updatedAllArtistIds,
       });
     } else return updatedAllArtistIds;
   }, throwError);
 }
 
-export async function getAllPlaylistArtists({ id }: { id?: string }): Promise<{
-  playlistArtists: Artist[];
-  numTracks: number;
-}> {
-  if (!id) return { playlistArtists: [], numTracks: 0 };
-  return await getAllArtistIdsFromPlaylist({ id }).then(
-    async (allArtistIdsRaw) => {
-      const count: { [id: string]: number } = {};
-      allArtistIdsRaw.forEach(
-        (val: string) => (count[val] = (count[val] || 0) + 1),
+const LIMIT_SAVED_TRACKS = 50;
+
+async function getAllArtistIdsFromSavedTracks({
+  offset = 0,
+  allArtistIds = [],
+}: {
+  offset?: number;
+  allArtistIds?: string[];
+} = {}): Promise<string[]> {
+  return await spotifyApi
+    .getMySavedTracks({ offset, limit: LIMIT_SAVED_TRACKS })
+    .then((tracks) => {
+      const newArtistIds: string[] = tracks.items.flatMap((trackItem) =>
+        trackItem.track.artists.map((trackArtist) => trackArtist.id),
       );
-      const artistIds = [...new Set(allArtistIdsRaw)].filter(Boolean);
-      const newArtists = await getAllArtists({ artistIds, count });
 
-      const numTracks = allArtistIdsRaw.length;
+      const updatedAllArtistIds = allArtistIds.concat(newArtistIds);
 
-      return { playlistArtists: newArtists, numTracks };
-    },
+      if (offset + LIMIT_SAVED_TRACKS < tracks.total) {
+        return getAllArtistIdsFromSavedTracks({
+          offset: offset + LIMIT_SAVED_TRACKS,
+          allArtistIds: updatedAllArtistIds,
+        });
+      } else return updatedAllArtistIds;
+    }, throwError);
+}
+
+async function getArtistsFromArtistIds(allArtistIdsRaw: string[]) {
+  const count: { [id: string]: number } = {};
+  allArtistIdsRaw.forEach(
+    (val: string) => (count[val] = (count[val] || 0) + 1),
+  );
+  const artistIds = [...new Set(allArtistIdsRaw)].filter(Boolean);
+  const newArtists = await getAllArtists({ artistIds, count });
+
+  return { artists: newArtists, weight: allArtistIdsRaw.length };
+}
+
+export async function getAllPlaylistArtists({
+  id,
+}: {
+  id?: string;
+}): Promise<MatchOption> {
+  if (!id) return { artists: [], weight: 0 };
+
+  return await getAllArtistIdsFromPlaylist({ id }).then(
+    getArtistsFromArtistIds,
+    throwError,
+  );
+}
+
+export async function getAllArtistsFromSavedTracks(): Promise<MatchOption> {
+  return await getAllArtistIdsFromSavedTracks().then(
+    getArtistsFromArtistIds,
     throwError,
   );
 }

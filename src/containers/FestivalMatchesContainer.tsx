@@ -6,11 +6,15 @@ import {
   postDjangoFestivalMatches,
 } from '../api/djangoApi';
 import {
+  getAllArtistsFromSavedTracks,
   getAllPlaylistArtists,
   getAllTopArtistsWithPopularity,
 } from '../api/spotifyApi';
 import { Artist } from '../api/types';
-import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import {
+  SAVED_TRACKS_CHOICE,
+  TOP_ARTISTS_CHOICE,
+} from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatches, {
   FestivalMatchesSkeleton,
@@ -38,8 +42,10 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
   if (!matchBasis) return null;
 
   const isTopArtists = matchBasis === TOP_ARTISTS_CHOICE;
+  const isSavedTracks = matchBasis === SAVED_TRACKS_CHOICE;
 
   if (isTopArtists) return <FestivalMatchesWithTopArtists />;
+  if (isSavedTracks) return <FestivalMatchesWithSavedTracks />;
 
   const { playlistId } = getIdFromMatchBasis(matchBasis);
 
@@ -50,17 +56,28 @@ const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
 
 const FestivalMatchesWithTopArtists = () => {
   const {
-    data: { topArtists, countTopArtists },
+    data: { artists, weight },
   } = useApiSuspenseQuery(getAllTopArtistsWithPopularity);
 
-  if (!topArtists.length || !countTopArtists) return <NoMatchResults />;
+  if (!artists.length || !weight) return <NoMatchResults />;
 
   return (
     <FestivalMatchesInnerContainer
-      artists={topArtists}
-      numTracks={countTopArtists}
+      isTopArtists
+      artists={artists}
+      weight={weight}
     />
   );
+};
+
+const FestivalMatchesWithSavedTracks = () => {
+  const {
+    data: { artists, weight },
+  } = useApiSuspenseQuery(getAllArtistsFromSavedTracks);
+
+  if (!artists.length || !weight) return <NoMatchResults />;
+
+  return <FestivalMatchesInnerContainer artists={artists} weight={weight} />;
 };
 
 interface FestivalMatchesWithPlaylistArtistsProps {
@@ -71,30 +88,25 @@ const FestivalMatchesWithPlaylistArtists = ({
   playlistId,
 }: FestivalMatchesWithPlaylistArtistsProps) => {
   const {
-    data: { playlistArtists, numTracks },
+    data: { artists, weight },
   } = useApiSuspenseQuery(getAllPlaylistArtists, {
     params: { id: playlistId },
   });
 
-  if (!playlistArtists.length || !numTracks) return <NoMatchResults />;
+  if (!artists.length || !weight) return <NoMatchResults />;
 
-  return (
-    <FestivalMatchesInnerContainer
-      artists={playlistArtists}
-      numTracks={numTracks}
-    />
-  );
+  return <FestivalMatchesInnerContainer artists={artists} weight={weight} />;
 };
 
 interface FestivalMatchesInnerContainerProps {
   artists: Artist[];
-  numTracks: number;
+  weight: number;
   isTopArtists?: boolean;
 }
 
 const FestivalMatchesInnerContainer = ({
   artists,
-  numTracks,
+  weight,
   isTopArtists,
 }: FestivalMatchesInnerContainerProps) => {
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
@@ -115,7 +127,7 @@ const FestivalMatchesInnerContainer = ({
 
   const matchRequest = createMatchRequest({
     artists,
-    numTracks,
+    weight,
     isTopArtists,
     dateFrom: new Date(fromDate),
     dateTo: new Date(toDate),

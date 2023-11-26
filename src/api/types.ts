@@ -52,7 +52,7 @@ export interface MatchRequest {
 
 export interface MatchCriteria {
   artists: Artist[];
-  numTracks: number;
+  weight: number;
   isTopArtists?: boolean;
   dateFrom: Date;
   dateTo: Date;
@@ -124,4 +124,9 @@ export interface MatchSettings {
 export interface SearchResponse {
   festivals: { name: string; location: string; country: string }[];
   artists: { name: string; spotifyId?: string }[];
+}
+
+export interface MatchOption {
+  artists: Artist[];
+  weight: number;
 }

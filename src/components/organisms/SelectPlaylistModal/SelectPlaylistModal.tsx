@@ -24,6 +24,7 @@ interface SelectPlaylistModalProps {
   onClickGoButton: () => void;
   playlists: Playlist[];
   topArtists: Artist[];
+  savedTracksArtists: Artist[];
   userSpotifyUrl?: string;
 }
 
@@ -33,6 +34,7 @@ const SelectPlaylistModal = ({
   onClickGoButton,
   playlists,
   topArtists,
+  savedTracksArtists,
   userSpotifyUrl,
 }: SelectPlaylistModalProps) => {
   const smallScreen = useMediaQuery('(max-width:610px)');
@@ -87,6 +89,7 @@ const SelectPlaylistModal = ({
                   }
                   onChange={onMatchBasisChange}
                   topArtists={topArtists}
+                  savedTracksArtists={savedTracksArtists}
                   playlists={playlists}
                 />
               </FormControl>

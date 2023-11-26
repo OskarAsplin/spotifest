@@ -6,6 +6,7 @@ import {
   getDjangoAvailableCountries,
 } from '../api/djangoApi';
 import {
+  getAllArtistsFromSavedTracks,
   getAllPlaylists,
   getAllTopArtistsWithPopularity,
   getLoggedInUserInfo,
@@ -64,7 +65,11 @@ const FestivalMatchSettingsContainer = ({
     getAllTopArtistsWithPopularity,
     { enabled: !isSharedResults },
   );
-  const topArtists = allTopArtistsData?.topArtists ?? [];
+  const topArtists = allTopArtistsData?.artists ?? [];
+  const { data: savedTracksData } = useApiQuery(getAllArtistsFromSavedTracks, {
+    enabled: !isSharedResults,
+  });
+  const savedTracksArtists = savedTracksData?.artists ?? [];
 
   useEffect(() => {
     if (userInfo && continents && !matchArea) {
@@ -139,6 +144,7 @@ const FestivalMatchSettingsContainer = ({
       <FestivalMatchSettingsBar
         playlists={sharedPlaylist ? [sharedPlaylist] : playlists}
         topArtists={topArtists}
+        savedTracksArtists={savedTracksArtists}
         countries={countries}
         continents={continents}
         matchSettings={matchSettings}
@@ -157,6 +163,7 @@ const FestivalMatchSettingsContainer = ({
         onClickGoButton={onClickModalGoButton}
         playlists={playlists}
         topArtists={topArtists}
+        savedTracksArtists={savedTracksArtists}
         userSpotifyUrl={userInfo?.spotifyUrl}
       />
     </>
