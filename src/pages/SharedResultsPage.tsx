@@ -17,7 +17,7 @@ import {
   setSharedMatchBasis,
 } from '../utils/localStorageUtils';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
-import { useIsloggedIn } from '../zustand/authStore';
+import { useIsLoggedIn } from '../zustand/authStore';
 import { shareRoute } from '../Routes';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
@@ -33,7 +33,7 @@ const SharedResultsPage = withFallback(
   const { matchBasis: matchBasisFromParams } = useParams({
     from: shareRoute.id,
   });
-  const loggedIn = useIsloggedIn();
+  const loggedIn = useIsLoggedIn();
   const navigate = useNavigate();
 
   const matchBasis = matchBasisFromParams || getSharedMatchBasis() || undefined;

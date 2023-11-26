@@ -9,13 +9,13 @@ import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 import { isMainPage } from '../utils/routeUtils';
 import SearchFieldContainer from './SearchFieldContainer';
 import { indexRoute } from '../Routes';
-import { logOut, useIsloggedIn } from '../zustand/authStore';
+import { logOut, useIsLoggedIn } from '../zustand/authStore';
 
 const AppBarContainer = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
-  const loggedIn = useIsloggedIn();
+  const loggedIn = useIsLoggedIn();
 
   const { data: userInfo } = useApiQuery(getLoggedInUserInfo, {
     enabled: loggedIn,

@@ -1,6 +1,5 @@
 import { PaginationProps } from '@mui/material';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { useEffect, useState } from 'react';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
@@ -20,7 +19,7 @@ import FestivalMatches, {
 import { FestivalMatchCardWithPopularArtists } from '../containers/FestivalMatchCardContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { getAreaFilters } from '../utils/areaUtils';
-import { useMatchingStore } from '../zustand/matchingStore';
+import { setPage, useMatchingStore } from '../zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
 
 const ITEMS_PER_PAGE = 15;
@@ -100,7 +99,7 @@ const FestivalMatchesInnerContainer = ({
 }: FestivalMatchesInnerContainerProps) => {
   const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
 
-  const [page, setPage] = useState(1);
+  const page = useMatchingStore((state) => state.page);
   const matchArea = useMatchingStore((state) => state.matchArea);
   const fromDate = useMatchingStore((state) => state.fromDate);
   const toDate = useMatchingStore((state) => state.toDate);
@@ -129,10 +128,6 @@ const FestivalMatchesInnerContainer = ({
     postDjangoFestivalMatches,
     { params: matchRequest },
   );
-
-  useEffect(() => {
-    setPage(1);
-  }, [festivalMatches]);
 
   const numPages = Math.ceil(festivalMatches.length / ITEMS_PER_PAGE);
 

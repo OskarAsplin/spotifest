@@ -29,7 +29,7 @@ import { ArtistBox, StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
 import { getMaxArtistsInWidth } from '../utils/displayUtils';
-import { useIsloggedIn } from '../zustand/authStore';
+import { useIsLoggedIn } from '../zustand/authStore';
 import { artistRoute } from '../Routes';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
@@ -46,7 +46,7 @@ const ArtistPage = withFallback(
   const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
   const spotifyId = hasSpotifyId && artistId?.substring('spotifyId='.length);
 
-  const loggedIn = useIsloggedIn();
+  const loggedIn = useIsLoggedIn();
 
   const { data: artistBySpotifyId, isError: isArtistBySpotifyIdError } =
     useApiQuery(getDjangoArtistBySpotifyId, {

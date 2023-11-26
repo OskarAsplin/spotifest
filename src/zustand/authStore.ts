@@ -9,7 +9,7 @@ export const useAuthStore = create<Store>()(
   persist(() => INITIAL_STORE, { name: 'auth-storage' }),
 );
 
-export const useIsloggedIn = () => useAuthStore((state) => !!state.accessToken);
+export const useIsLoggedIn = () => useAuthStore((state) => !!state.accessToken);
 
 export const setToken = ({
   accessToken,
