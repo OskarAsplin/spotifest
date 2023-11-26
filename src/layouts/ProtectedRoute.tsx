@@ -14,7 +14,7 @@ const ProtectedRoute = withFallback<Props>()(({ children }) => {
 
   useEffect(() => {
     if (!loggedIn) navigate({ to: loginRoute.to });
-  }, []);
+  }, [loggedIn]);
 
   if (!loggedIn) return <div />;
 
