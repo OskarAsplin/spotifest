@@ -9,14 +9,13 @@ import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 import { isMainPage } from '../utils/routeUtils';
 import SearchFieldContainer from './SearchFieldContainer';
 import { indexRoute } from '../Routes';
-import { useAuthStore } from '../zustand/authStore';
+import { setLoggedOut, useAuthStore } from '../zustand/authStore';
 
 const AppBarContainer = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const loggedIn = useAuthStore((state) => state.loggedIn);
-  const setLoggedOut = useAuthStore((state) => state.setLoggedOut);
 
   const { data: userInfo } = useApiQuery(getLoggedInUserInfo, {
     enabled: loggedIn,
@@ -69,7 +68,7 @@ const AppBarContainer = () => {
         userName={userInfo?.displayName}
         spotifyUrl={userInfo?.spotifyUrl}
         onClose={() => setAnchorEl(null)}
-        onClickLogout={() => setLoggedOut()}
+        onClickLogout={setLoggedOut}
       />
       <AppBarMenuDrawerContainer
         open={drawerOpen}

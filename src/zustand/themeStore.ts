@@ -4,15 +4,17 @@ import { persist } from 'zustand/middleware';
 
 interface PaletteModeStore {
   mode: PaletteMode;
-  setMode: (newMode: PaletteMode) => void;
 }
 
 export const useThemeModeStore = create<PaletteModeStore, any>(
   persist(
-    (set) => ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (_set) => ({
       mode: 'dark',
-      setMode: (newMode: PaletteMode) => set({ mode: newMode }),
     }),
     { name: 'themeMode-storage' },
   ),
 );
+
+export const setThemeMode = (newMode: PaletteMode) =>
+  useThemeModeStore.setState({ mode: newMode });

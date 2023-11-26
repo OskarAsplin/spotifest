@@ -11,7 +11,7 @@ import {
   setStoredAccessToken,
   setStoredExpiryTime,
 } from '../utils/localStorageUtils';
-import { useAuthStore } from '../zustand/authStore';
+import { setLoggedOut, useAuthStore } from '../zustand/authStore';
 
 const TEN_MINUTES = 600000; // In Milliseconds
 const unixTimeNow = new Date().getTime(); // Unix time in milliseconds
@@ -36,8 +36,6 @@ interface Props {
 }
 
 const WithSpotifyTokenRoute = withFallback<Props>()(({ children }) => {
-  const setLoggedOut = useAuthStore((state) => state.setLoggedOut);
-
   useEffect(() => {
     if (getStoredAccessToken()) {
       const storedExpiryTime = getStoredExpiryTime();

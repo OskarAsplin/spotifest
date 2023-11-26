@@ -4,7 +4,7 @@ import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from '@tanstack/react-router';
 import CustomDrawer from '../components/organisms/CustomDrawer/CustomDrawer';
-import { useThemeModeStore } from '../zustand/themeStore';
+import { setThemeMode } from '../zustand/themeStore';
 
 interface Props {
   open: boolean;
@@ -15,7 +15,6 @@ const AppBarMenuDrawerContainer = ({ open, onClose }: Props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const themeMode = useTheme().palette.mode;
-  const setThemeMode = useThemeModeStore((state) => state.setMode);
 
   const onClickAbout = () => {
     if (!window.location.href.endsWith('/about')) navigate({ to: '/about' });

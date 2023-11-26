@@ -3,17 +3,17 @@ import { persist } from 'zustand/middleware';
 
 interface AuthStore {
   loggedIn: boolean;
-  setLoggedIn: () => void;
-  setLoggedOut: () => void;
 }
 
 export const useAuthStore = create<AuthStore, any>(
   persist(
-    (set) => ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (_set) => ({
       loggedIn: true,
-      setLoggedIn: () => set({ loggedIn: true }),
-      setLoggedOut: () => set({ loggedIn: false }),
     }),
     { name: 'auth-storage' },
   ),
 );
+
+export const setLoggedIn = () => useAuthStore.setState({ loggedIn: true });
+export const setLoggedOut = () => useAuthStore.setState({ loggedIn: false });

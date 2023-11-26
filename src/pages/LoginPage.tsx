@@ -7,23 +7,20 @@ import LoginButton from '../components/atoms/LoginButton/LoginButton';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import UsageThumbnailsWithGallery from '../components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
 import { getAuthorizeHref } from '../oauthConfig';
-import { useAuthStore } from '../zustand/authStore';
-import { useMatchingStore } from '../zustand/matchingStore';
+import { setLoggedIn, setLoggedOut } from '../zustand/authStore';
+import { resetMathingStore } from '../zustand/matchingStore';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');
   const bigHeight = useMediaQuery('(min-height:610px)');
   const bigScreen = bigWidth && bigHeight;
   const verySmallScreen = useMediaQuery('(max-width:330px)');
-  const setLoggedIn = useAuthStore((state) => state.setLoggedIn);
-  const setLoggedOut = useAuthStore((state) => state.setLoggedOut);
-  const clearMatchingStore = useMatchingStore((state) => state.clearStore);
 
   const { t } = useTranslation();
 
   useEffect(() => {
     setLoggedOut();
-    clearMatchingStore();
+    resetMathingStore();
   }, []);
 
   const onClickLoginButton = () => {

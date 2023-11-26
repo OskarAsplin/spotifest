@@ -8,26 +8,37 @@ interface MatchingStore {
   matchArea?: Area;
   fromDate: string;
   toDate: string;
-  setMatchBasis: (matchBasis: string) => void;
-  setMatchArea: (matchArea: Area) => void;
-  setFromDate: (fromDate: string) => void;
-  setToDate: (toDate: string) => void;
-  setDates: (dates: { fromDate: string; toDate: string }) => void;
-  clearStore: () => void;
 }
+
+const INITIAL_STORE: MatchingStore = {
+  fromDate: INITIAL_FROM_DATE.toISOString(),
+  toDate: INITIAL_TO_DATE.toISOString(),
+};
 
 export const useMatchingStore = create<MatchingStore, any>(
   persist(
-    (set) => ({
-      fromDate: INITIAL_FROM_DATE.toISOString(),
-      toDate: INITIAL_TO_DATE.toISOString(),
-      setMatchBasis: (matchBasis) => set({ matchBasis }),
-      setMatchArea: (matchArea) => set({ matchArea }),
-      setFromDate: (fromDate) => set({ fromDate }),
-      setToDate: (toDate) => set({ toDate }),
-      setDates: ({ fromDate, toDate }) => set({ fromDate, toDate }),
-      clearStore: () => set({}, true),
-    }),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (_set) => INITIAL_STORE,
     { name: 'matching-storage' },
   ),
 );
+
+export const setMatchBasis = (matchBasis: string) =>
+  useMatchingStore.setState({ matchBasis });
+export const setMatchArea = (matchArea: Area) =>
+  useMatchingStore.setState({ matchArea });
+export const setFromDate = (fromDate: string) =>
+  useMatchingStore.setState({ fromDate });
+export const setToDate = (toDate: string) =>
+  useMatchingStore.setState({ toDate });
+
+export const setDates = ({
+  fromDate,
+  toDate,
+}: {
+  fromDate: string;
+  toDate: string;
+}) => useMatchingStore.setState({ fromDate, toDate });
+
+export const resetMathingStore = () =>
+  useMatchingStore.setState(INITIAL_STORE, true);

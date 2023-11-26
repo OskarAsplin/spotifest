@@ -18,7 +18,14 @@ import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSetti
 import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
 import { getInitialContinent } from '../utils/areaUtils';
 import { MATCHING_MAX_DATE } from '../config';
-import { useMatchingStore } from '../zustand/matchingStore';
+import {
+  setDates,
+  setFromDate,
+  setMatchArea,
+  setMatchBasis,
+  setToDate,
+  useMatchingStore,
+} from '../zustand/matchingStore';
 
 interface FestivalMatchSettingsContainerProps {
   sharedMatchBasis?: string;
@@ -32,11 +39,6 @@ const FestivalMatchSettingsContainer = ({
   const matchArea = useMatchingStore((state) => state.matchArea);
   const fromDate = useMatchingStore((state) => state.fromDate);
   const toDate = useMatchingStore((state) => state.toDate);
-  const setMatchBasis = useMatchingStore((state) => state.setMatchBasis);
-  const setMatchArea = useMatchingStore((state) => state.setMatchArea);
-  const setFromDate = useMatchingStore((state) => state.setFromDate);
-  const setToDate = useMatchingStore((state) => state.setToDate);
-  const setDates = useMatchingStore((state) => state.setDates);
 
   const { data: countries } = useApiSuspenseQuery(getDjangoAvailableCountries);
   const { data: continents } = useApiSuspenseQuery(
