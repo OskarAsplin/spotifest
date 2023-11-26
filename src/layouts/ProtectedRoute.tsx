@@ -1,6 +1,7 @@
-import { Navigate } from '@tanstack/react-router';
+import { useNavigate } from '@tanstack/react-router';
 import { withFallback } from '../api/api';
 import { useAuthStore } from '../zustand/authStore';
+import { loginRoute } from '../Routes';
 
 interface Props {
   children: React.ReactNode;
@@ -8,8 +9,9 @@ interface Props {
 
 const ProtectedRoute = withFallback<Props>()(({ children }) => {
   const loggedIn = useAuthStore((state) => state.loggedIn);
+  const navigate = useNavigate();
 
-  if (!loggedIn) return <Navigate to="/login" />;
+  if (!loggedIn) return navigate({ to: loginRoute.to });
 
   return <>{children}</>;
 });
