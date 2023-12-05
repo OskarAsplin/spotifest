@@ -35,6 +35,10 @@ export const getArtistRelatedArtists = ({ spotifyId }: { spotifyId: string }) =>
 export const getPlaylist = ({ id }: { id: string }) =>
   spotifyApi.getPlaylist(id).then(mapToPlaylist, throwError);
 
+// To prevent exceeding rate limit (429 response)
+const FORCED_DELAY = 300;
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 const LIMIT_PLAYLISTS = 50;
 
 export const getAllPlaylists = ({
@@ -48,13 +52,14 @@ export const getAllPlaylists = ({
 }): Promise<Playlist[]> =>
   spotifyApi
     .getUserPlaylists(userId, { limit: LIMIT_PLAYLISTS, offset: offset })
-    .then((userPlaylists) => {
+    .then(async (userPlaylists) => {
       const playlistsWithTracks: Playlist[] = userPlaylists.items
         .filter((playlist) => playlist.tracks.total > 0)
         .map(mapToPlaylist);
 
       const updatedAllPlaylists = allPlaylists.concat(playlistsWithTracks);
       if (userPlaylists.total > offset + LIMIT_PLAYLISTS) {
+        await delay(FORCED_DELAY);
         return getAllPlaylists({
           userId,
           offset: offset + LIMIT_PLAYLISTS,
@@ -118,7 +123,7 @@ export const getAllArtists = ({
 }): Promise<Artist[]> =>
   spotifyApi
     .getArtists(artistIds.slice(offset, offset + LIMIT_ARTISTS))
-    .then((response) => {
+    .then(async (response) => {
       const newArtists = response.artists
         .filter(Boolean) // Spotify returns null for podcast "artists"
         .map((artist) => mapToArtistWithPopularity(artist, count[artist.id]));
@@ -126,6 +131,7 @@ export const getAllArtists = ({
       const updatedAllArtists = allArtists.concat(newArtists);
 
       if (offset + LIMIT_ARTISTS < artistIds.length) {
+        await delay(FORCED_DELAY);
         return getAllArtists({
           artistIds,
           count,
@@ -146,7 +152,7 @@ export const getAllArtistIdsFromPlaylist = ({
   offset?: number;
   allArtistIds?: string[];
 }): Promise<string[]> =>
-  spotifyApi.getPlaylistTracks(id, { offset }).then((tracks) => {
+  spotifyApi.getPlaylistTracks(id, { offset }).then(async (tracks) => {
     const newArtistIds: string[] = tracks.items
       // Can also contain podcast episodes, so these need to be filtered out
       .filter((trackItem) => Object.hasOwn(trackItem.track, 'artists'))
@@ -159,6 +165,7 @@ export const getAllArtistIdsFromPlaylist = ({
     const updatedAllArtistIds = allArtistIds.concat(newArtistIds);
 
     if (offset + LIMIT_PLAYLIST_TRACKS < tracks.total) {
+      await delay(FORCED_DELAY);
       return getAllArtistIdsFromPlaylist({
         id,
         offset: offset + LIMIT_PLAYLIST_TRACKS,
@@ -178,7 +185,7 @@ export const getAllArtistIdsFromSavedTracks = ({
 } = {}): Promise<string[]> =>
   spotifyApi
     .getMySavedTracks({ offset, limit: LIMIT_SAVED_TRACKS })
-    .then((tracks) => {
+    .then(async (tracks) => {
       const newArtistIds: string[] = tracks.items.flatMap((trackItem) =>
         trackItem.track.artists.map((trackArtist) => trackArtist.id),
       );
@@ -186,6 +193,7 @@ export const getAllArtistIdsFromSavedTracks = ({
       const updatedAllArtistIds = allArtistIds.concat(newArtistIds);
 
       if (offset + LIMIT_SAVED_TRACKS < tracks.total) {
+        await delay(FORCED_DELAY);
         return getAllArtistIdsFromSavedTracks({
           offset: offset + LIMIT_SAVED_TRACKS,
           allArtistIds: updatedAllArtistIds,
