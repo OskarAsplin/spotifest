@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import MatchCriteriaSelect from './MatchCriteriaSelect';
-import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
 import {
   playlistMock,
   playlistMock2,
