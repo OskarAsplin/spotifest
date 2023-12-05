@@ -213,3 +213,5 @@ export const getAllPlaylistArtists = ({
 
 export const getAllArtistsFromSavedTracks = (): Promise<MatchOption> =>
   getAllArtistIdsFromSavedTracks().then(getArtistsFromArtistIds, throwError);
+
+export const getOneSavedTrack = () => spotifyApi.getMySavedTracks({ limit: 1 });

@@ -2,7 +2,6 @@ import { Box } from '@mui/material';
 import { action } from '@storybook/addon-actions';
 import { Meta, StoryObj } from '@storybook/react';
 import FestivalMatchSettingsBar from './FestivalMatchSettingsBar';
-import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
 import {
   playlistMock,
   playlistMock2,
@@ -37,7 +36,8 @@ const meta: Meta<typeof FestivalMatchSettingsBar> = {
   },
   args: {
     playlists: [playlistMock, playlistMock2],
-    topArtists: Array(14).fill(artistMock),
+    hasTopArtists: true,
+    hasSavedTracks: true,
     countries: countriesMock,
     continents: continentsMock,
     matchSettings: {

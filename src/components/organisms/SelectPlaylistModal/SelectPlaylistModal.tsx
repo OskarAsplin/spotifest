@@ -12,7 +12,7 @@ import {
 import { styled } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { Trans, useTranslation } from 'react-i18next';
-import { Artist, Playlist } from '../../../api/types';
+import { Playlist } from '../../../api/types';
 import StandardLink from '../../atoms/StandardLink/StandardLink';
 import MatchCriteriaSelect, {
   TOP_ARTISTS_CHOICE,
@@ -23,8 +23,8 @@ interface SelectPlaylistModalProps {
   onMatchBasisChange: (event: SelectChangeEvent) => Promise<void>;
   onClickGoButton: () => void;
   playlists: Playlist[];
-  topArtists: Artist[];
-  savedTracksArtists: Artist[];
+  hasTopArtists: boolean;
+  hasSavedTracks: boolean;
   userSpotifyUrl?: string;
 }
 
@@ -33,8 +33,8 @@ const SelectPlaylistModal = ({
   onMatchBasisChange,
   onClickGoButton,
   playlists,
-  topArtists,
-  savedTracksArtists,
+  hasTopArtists,
+  hasSavedTracks,
   userSpotifyUrl,
 }: SelectPlaylistModalProps) => {
   const smallScreen = useMediaQuery('(max-width:610px)');
@@ -45,7 +45,7 @@ const SelectPlaylistModal = ({
       aria-labelledby="transition-modal-title"
       aria-describedby="transition-modal-description"
       closeAfterTransition
-      BackdropProps={{ timeout: 500 }}
+      slotProps={{ backdrop: { timeout: 500 } }}
       open={open}
       disableEscapeKeyDown
       sx={{
@@ -57,17 +57,15 @@ const SelectPlaylistModal = ({
     >
       <Fade in={open}>
         <Paper sx={{ p: 2, outline: 'none', backgroundColor: '#303030' }}>
-          {(playlists.length !== 0 || topArtists.length !== 0) && (
+          {(playlists.length !== 0 || hasTopArtists) && (
             <StyledBox sx={{ flexDirection: 'column' }}>
               <Typography
-                variant={
-                  smallScreen ? (topArtists.length === 0 ? 'h6' : 'h5') : 'h4'
-                }
+                variant={smallScreen ? (hasTopArtists ? 'h5' : 'h6') : 'h4'}
                 sx={{ textAlign: 'center', mb: 1 }}
               >
-                {topArtists.length === 0
-                  ? t('matching.modal.no_top_artists')
-                  : t('matching.modal.default_text')}
+                {hasTopArtists
+                  ? t('matching.modal.default_text')
+                  : t('matching.modal.no_top_artists')}
               </Typography>
               <FormControl
                 sx={{
@@ -77,25 +75,23 @@ const SelectPlaylistModal = ({
                 }}
                 size="small"
               >
-                {topArtists.length === 0 && (
+                {!hasTopArtists && (
                   <InputLabel id="choose-initial-playlist-inputlabel">
                     {t('common.playlist')}
                   </InputLabel>
                 )}
                 <MatchCriteriaSelect
-                  value={topArtists.length !== 0 ? TOP_ARTISTS_CHOICE : ''}
-                  label={
-                    topArtists.length === 0 ? t('common.playlist') : undefined
-                  }
+                  value={hasTopArtists ? TOP_ARTISTS_CHOICE : ''}
+                  label={!hasTopArtists ? t('common.playlist') : undefined}
                   onChange={onMatchBasisChange}
-                  topArtists={topArtists}
-                  savedTracksArtists={savedTracksArtists}
+                  hasTopArtists={hasTopArtists}
+                  hasSavedTracks={hasSavedTracks}
                   playlists={playlists}
                 />
               </FormControl>
             </StyledBox>
           )}
-          {topArtists.length !== 0 && (
+          {hasTopArtists && (
             <StyledBox sx={{ flexDirection: 'column' }}>
               <Button
                 color="primary"
@@ -113,7 +109,7 @@ const SelectPlaylistModal = ({
               </Button>
             </StyledBox>
           )}
-          {topArtists.length === 0 && playlists.length === 0 && (
+          {!hasTopArtists && playlists.length === 0 && (
             <Typography>
               <Trans
                 i18nKey="matching.modal.no_top_artists_or_playlists"

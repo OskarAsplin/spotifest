@@ -14,7 +14,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Area, Artist, MatchSettings, Playlist } from '../../../api/types';
+import { Area, MatchSettings, Playlist } from '../../../api/types';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import AreaSelect from '../../molecules/AreaSelect/AreaSelect';
 import MatchCriteriaSelect from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';
@@ -22,8 +22,8 @@ import SettingsBarDatePicker from '../../molecules/SettingsBarDatePicker/Setting
 
 interface FestivalMatchSettingsBarProps {
   playlists: Playlist[];
-  topArtists: Artist[];
-  savedTracksArtists: Artist[];
+  hasTopArtists: boolean;
+  hasSavedTracks: boolean;
   countries: Area[];
   continents: Area[];
   matchSettings: MatchSettings;
@@ -39,8 +39,8 @@ interface FestivalMatchSettingsBarProps {
 
 const FestivalMatchSettingsBar = ({
   playlists,
-  topArtists,
-  savedTracksArtists,
+  hasTopArtists,
+  hasSavedTracks,
   countries,
   continents,
   matchSettings,
@@ -92,8 +92,8 @@ const FestivalMatchSettingsBar = ({
             label={t('matching.criteria_select.label')}
             value={matchSettings.matchBasis}
             onChange={onMatchBasisChange}
-            topArtists={topArtists}
-            savedTracksArtists={savedTracksArtists}
+            hasTopArtists={hasTopArtists}
+            hasSavedTracks={hasSavedTracks}
             playlists={playlists}
             disabled={isMatchBasisFieldDisabled}
           />

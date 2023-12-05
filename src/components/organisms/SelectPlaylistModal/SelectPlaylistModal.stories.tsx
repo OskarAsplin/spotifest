@@ -4,7 +4,6 @@ import {
   playlistMock,
   playlistMock2,
 } from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect.fixtures';
-import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
 import { useState } from 'react';
 
 type Story = StoryObj<typeof SelectPlaylistModal>;
@@ -22,7 +21,8 @@ const meta: Meta<typeof SelectPlaylistModal> = {
   },
   args: {
     playlists: [playlistMock, playlistMock2],
-    topArtists: Array(14).fill(artistMock),
+    hasTopArtists: true,
+    hasSavedTracks: true,
     userSpotifyUrl: 'abc123',
   },
   argTypes: {
@@ -64,12 +64,16 @@ export const NoPlaylists: Story = {
 
 export const NoTopArtists: Story = {
   render: Template,
-  args: { topArtists: [] },
+  args: { hasTopArtists: false },
+};
+export const NoSavedTracks: Story = {
+  render: Template,
+  args: { hasSavedTracks: false },
 };
 
 export const NoTopArtistsAndNoPlaylists: Story = {
   render: Template,
-  args: { topArtists: [], playlists: [] },
+  args: { hasTopArtists: false, hasSavedTracks: false, playlists: [] },
   parameters: {
     docs: {
       description: {

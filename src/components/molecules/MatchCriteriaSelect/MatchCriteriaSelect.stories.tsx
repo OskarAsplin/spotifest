@@ -21,7 +21,8 @@ const meta: Meta<typeof MatchCriteriaSelect> = {
   },
   args: {
     playlists: [playlistMock, playlistMock2],
-    topArtists: Array(14).fill(artistMock),
+    hasTopArtists: true,
+    hasSavedTracks: true,
   },
 };
 
@@ -29,7 +30,10 @@ export default meta;
 
 export const Primary: Story = {};
 export const MatchCriteriaSelectNoTopArtists: Story = {
-  args: { topArtists: [] },
+  args: { hasTopArtists: false },
+};
+export const MatchCriteriaSelectNoSavedTracks: Story = {
+  args: { hasSavedTracks: false },
 };
 export const MatchCriteriaSelectNoPlaylists: Story = {
   args: { playlists: [] },
