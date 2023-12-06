@@ -11199,6 +11199,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.7":
+  version: 3.3.7
+  resolution: "nanoid@npm:3.3.7"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: d36c427e530713e4ac6567d488b489a36582ef89da1d6d4e3b87eded11eb10d7042a877958c6f104929809b2ab0bafa17652b076cdf84324aa75b30b722204f2
+  languageName: node
+  linkType: hard
+
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
@@ -11958,7 +11967,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.1.7, postcss@npm:^8.2.14, postcss@npm:^8.4.21, postcss@npm:^8.4.23, postcss@npm:^8.4.26":
+"postcss@npm:^8.1.7, postcss@npm:^8.2.14, postcss@npm:^8.4.21, postcss@npm:^8.4.23":
   version: 8.4.31
   resolution: "postcss@npm:8.4.31"
   dependencies:
@@ -11966,6 +11975,17 @@ __metadata:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: 1d8611341b073143ad90486fcdfeab49edd243377b1f51834dc4f6d028e82ce5190e4f11bb2633276864503654fb7cab28e67abdc0fbf9d1f88cad4a0ff0beea
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.4.27":
+  version: 8.4.32
+  resolution: "postcss@npm:8.4.32"
+  dependencies:
+    nanoid: ^3.3.7
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: 220d9d0bf5d65be7ed31006c523bfb11619461d296245c1231831f90150aeb4a31eab9983ac9c5c89759a3ca8b60b3e0d098574964e1691673c3ce5c494305ae
   languageName: node
   linkType: hard
 
@@ -13089,7 +13109,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:^2.25.0 || ^3.3.0":
+"rollup@npm:^2.25.0 || ^3.3.0, rollup@npm:^3.27.1":
   version: 3.29.4
   resolution: "rollup@npm:3.29.4"
   dependencies:
@@ -13100,20 +13120,6 @@ __metadata:
   bin:
     rollup: dist/bin/rollup
   checksum: 8bb20a39c8d91130825159c3823eccf4dc2295c9a0a5c4ed851a5bf2167dbf24d9a29f23461a54c955e5506395e6cc188eafc8ab0e20399d7489fb33793b184e
-  languageName: node
-  linkType: hard
-
-"rollup@npm:^3.25.2":
-  version: 3.26.3
-  resolution: "rollup@npm:3.26.3"
-  dependencies:
-    fsevents: ~2.3.2
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    rollup: dist/bin/rollup
-  checksum: e6a765b2b7af709170344cc804392936613e06b6bdab46a04d264368d154bdadaaaf77de39e6e656bf728a060d7b4867d81e2464d791c0f37dd5b21aa9c7a6df
   languageName: node
   linkType: hard
 
@@ -13619,7 +13625,7 @@ __metadata:
     storybook-react-i18next: 2.0.9
     ts-prune: ^0.10.3
     typescript: 5.1.6
-    vite: 4.4.6
+    vite: 4.4.12
     vite-plugin-checker: 0.6.1
     vite-plugin-svgr: 3.2.0
     vite-tsconfig-paths: 4.2.0
@@ -14897,14 +14903,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:4.4.6":
-  version: 4.4.6
-  resolution: "vite@npm:4.4.6"
+"vite@npm:4.4.12":
+  version: 4.4.12
+  resolution: "vite@npm:4.4.12"
   dependencies:
     esbuild: ^0.18.10
     fsevents: ~2.3.2
-    postcss: ^8.4.26
-    rollup: ^3.25.2
+    postcss: ^8.4.27
+    rollup: ^3.27.1
   peerDependencies:
     "@types/node": ">= 14"
     less: "*"
@@ -14933,7 +14939,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 5a821897f1e03f9786f827acb89e3117a79b8901d184bbc3a2e48d6404b37975a5cdeb6b6969ec24ed1e81d96f1959ed6f9426cbb64501d1e4770bdb20f9c02f
+  checksum: 84049f6d8fb6955b48a2a77a6979b2876a06f1f4eda5f26da786cf8f97584a3d9bb00563f0746df97d62379c4739cd51127c086782df5c626d7fa1bb9aa9b7a8
   languageName: node
   linkType: hard
 

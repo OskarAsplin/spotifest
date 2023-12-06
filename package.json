@@ -123,7 +123,7 @@
     "storybook": "7.5.2",
     "storybook-react-i18next": "2.0.9",
     "ts-prune": "^0.10.3",
-    "vite": "4.4.6",
+    "vite": "4.4.12",
     "vite-plugin-checker": "0.6.1",
     "vite-plugin-svgr": "3.2.0",
     "vite-tsconfig-paths": "4.2.0"
