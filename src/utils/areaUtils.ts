@@ -1,4 +1,4 @@
-import countries_list from 'countries-list/dist/data.json';
+import { countries } from 'countries-list';
 import { Area } from '../api/types';
 import { WORLDWIDE_AREA } from '../components/molecules/AreaSelect/AreaSelect';
 import { europeanRegions, regionMap, usRegions } from './regionUtils';
@@ -8,10 +8,8 @@ export const getInitialContinent = (
   availableContinents: Area[],
 ) => {
   const userContinent: string =
-    userCountryCode in countries_list.countries
-      ? countries_list.countries[
-          userCountryCode as keyof typeof countries_list.countries
-        ].continent
+    userCountryCode in countries
+      ? countries[userCountryCode as keyof typeof countries].continent
       : '';
   const isRegisteredContinent = availableContinents.find(
     (continent) => continent.isoCode === userContinent,

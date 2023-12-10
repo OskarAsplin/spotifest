@@ -60,6 +60,7 @@ const UsageThumbnailsWithGallery = () => {
       <Modal open={galleryIsOpen}>
         <Fade in={galleryIsOpen}>
           <Box>
+            {/* @ts-ignore */}
             <ImageGallery
               items={images}
               startIndex={startIndex}

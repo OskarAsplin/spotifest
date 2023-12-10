@@ -160,19 +160,19 @@ const FestivalPage = withFallback(
                     videoSizeMax
                       ? undefined
                       : mediumScreen
-                      ? 496
-                      : videoSizeSmall
-                      ? '100%'
-                      : 400
+                        ? 496
+                        : videoSizeSmall
+                          ? '100%'
+                          : 400
                   }
                   height={
                     videoSizeMax
                       ? undefined
                       : mediumScreen
-                      ? 279
-                      : videoSizeSmall
-                      ? '100%'
-                      : 225
+                        ? 279
+                        : videoSizeSmall
+                          ? '100%'
+                          : 225
                   }
                 />
               </StyledVideoPaper>
@@ -204,6 +204,7 @@ const FestivalPage = withFallback(
                     />
                   ))}
               </Tabs>
+              {/* @ts-ignore */}
               <SwipeableViews
                 axis={themeDirection === 'rtl' ? 'x-reverse' : 'x'}
                 index={selectedLineup}

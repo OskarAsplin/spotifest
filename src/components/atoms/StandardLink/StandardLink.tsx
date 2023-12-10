@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import {
   Link as RouterLink,
   LinkPropsOptions as RouterLinkProps,
-  ToOptions,
+  ToPathOption,
 } from '@tanstack/react-router';
 
 const LinkBehavior = forwardRef<any, RouterLinkProps>((props, ref) => (
@@ -11,17 +11,12 @@ const LinkBehavior = forwardRef<any, RouterLinkProps>((props, ref) => (
 ));
 
 export interface StandardLinkProps extends LinkProps {
-  to?: ToOptions;
+  to?: ToPathOption;
 }
 
 const StandardLink = ({ to, ...restProps }: StandardLinkProps) =>
   to ? (
-    <Link
-      {...restProps}
-      underline="hover"
-      to={to}
-      component={(props) => <LinkBehavior {...props} />}
-    />
+    <Link {...restProps} underline="hover" to={to} component={LinkBehavior} />
   ) : (
     <Link
       {...restProps}
