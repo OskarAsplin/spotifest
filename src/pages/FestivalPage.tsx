@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import { useParams } from '@tanstack/react-router';
 import SwipeableViews from 'react-swipeable-views';
-import { useApiQuery, withFallback } from '../api/api';
+import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getDjangoFestival } from '../api/djangoApi';
 import CustomSwitch from '../components/atoms/CustomSwitch/CustomSwitch';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
@@ -54,9 +54,8 @@ const FestivalPage = withFallback(
   const themeDirection = useTheme().direction;
   const { festivalId } = useParams({ from: festivalRoute.id });
 
-  const { data: festivalInfo } = useApiQuery(getDjangoFestival, {
-    params: { name: festivalId ?? '' },
-    enabled: !!festivalId,
+  const { data: festivalInfo } = useApiSuspenseQuery(getDjangoFestival, {
+    params: { name: festivalId },
   });
 
   const limitLineups = !mediumScreen ? 4 : undefined;
