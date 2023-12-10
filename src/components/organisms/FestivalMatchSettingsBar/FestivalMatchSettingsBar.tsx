@@ -19,44 +19,97 @@ import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
 import AreaSelect from '../../molecules/AreaSelect/AreaSelect';
 import MatchCriteriaSelect from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import SettingsBarDatePicker from '../../molecules/SettingsBarDatePicker/SettingsBarDatePicker';
+import {
+  setDates,
+  setMatchArea,
+  setMatchBasis,
+  useMatchingStore,
+} from '../../../zustand/matchingStore';
+import { MATCHING_MAX_DATE } from '../../../config';
 
 interface FestivalMatchSettingsBarProps {
   playlists: Playlist[];
-  hasTopArtists: boolean;
-  hasSavedTracks: boolean;
+  hasTopArtists?: boolean;
+  hasSavedTracks?: boolean;
   countries: Area[];
   continents: Area[];
-  matchSettings: MatchSettings;
-  onChangeHandlers: {
-    onMatchBasisChange: (event: SelectChangeEvent) => Promise<void>;
-    onAreaChange: (event: SelectChangeEvent) => Promise<void>;
-    onFromDateChange: (date: Date | null) => void;
-    onToDateChange: (date: Date | null) => void;
-    onDateRangePreSelect: (range: 2021 | 2022 | 2023 | 'future') => void;
-  };
   isMatchBasisFieldDisabled?: boolean;
 }
 
 const FestivalMatchSettingsBar = ({
   playlists,
-  hasTopArtists,
-  hasSavedTracks,
+  hasTopArtists = false,
+  hasSavedTracks = false,
   countries,
   continents,
-  matchSettings,
-  onChangeHandlers: {
-    onMatchBasisChange,
-    onAreaChange,
-    onFromDateChange,
-    onToDateChange,
-    onDateRangePreSelect,
-  },
   isMatchBasisFieldDisabled,
 }: FestivalMatchSettingsBarProps) => {
   const { t } = useTranslation();
   const themeMode = useTheme().palette.mode;
   const pcScreen = useMediaQuery('(min-width:1200px)');
   const showYearPreSelect = useMediaQuery('(max-width:799px)');
+
+  const matchBasis = useMatchingStore((state) => state.matchBasis);
+  const matchArea = useMatchingStore((state) => state.matchArea);
+  const fromDate = useMatchingStore((state) => state.fromDate);
+  const toDate = useMatchingStore((state) => state.toDate);
+
+  const onMatchBasisChange = (event: SelectChangeEvent) => {
+    if (!event.target.value) return;
+    setMatchBasis(event.target.value);
+  };
+
+  const onAreaChange = (event: SelectChangeEvent) => {
+    if (!event.target.value) return;
+    const { name, value } = event.target;
+    const area: Area = { name, isoCode: value };
+    setMatchArea(area);
+  };
+
+  const onFromDateChange = (date: Date | null) => {
+    if (date) {
+      const isoDate = date.toISOString();
+      if (date > new Date(toDate)) {
+        setDates({ fromDate: isoDate, toDate: isoDate });
+      } else {
+        setDates({ fromDate: isoDate, toDate });
+      }
+    }
+  };
+
+  const onToDateChange = (date: Date | null) => {
+    if (date) {
+      const isoDate = date.toISOString();
+      if (date < new Date(fromDate)) {
+        setDates({ fromDate: isoDate, toDate: isoDate });
+      } else {
+        setDates({ fromDate, toDate: isoDate });
+      }
+    }
+  };
+
+  const onDateRangePreSelect = (range: 2021 | 2022 | 2023 | 'future') => {
+    if (typeof range === 'number') {
+      const from = new Date(range, 0, 1);
+      const to = new Date(range, 11, 31);
+      setDates({ fromDate: from.toISOString(), toDate: to.toISOString() });
+    } else {
+      setDates({
+        fromDate: new Date().toISOString(),
+        toDate: MATCHING_MAX_DATE.toISOString(),
+      });
+    }
+  };
+
+  if (!matchArea) return <div />;
+
+  const matchSettings: MatchSettings = {
+    matchBasis: matchBasis ?? '',
+    area: matchArea,
+    fromDate,
+    toDate,
+    numTracks: 0,
+  };
 
   return (
     <Paper

@@ -17,10 +17,10 @@ import StandardLink from '../../atoms/StandardLink/StandardLink';
 import MatchCriteriaSelect, {
   TOP_ARTISTS_CHOICE,
 } from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import { setMatchBasis } from '../../../zustand/matchingStore';
 
 interface SelectPlaylistModalProps {
   open: boolean;
-  onMatchBasisChange: (event: SelectChangeEvent) => Promise<void>;
   onClickGoButton: () => void;
   playlists: Playlist[];
   hasTopArtists: boolean;
@@ -30,7 +30,6 @@ interface SelectPlaylistModalProps {
 
 const SelectPlaylistModal = ({
   open,
-  onMatchBasisChange,
   onClickGoButton,
   playlists,
   hasTopArtists,
@@ -39,6 +38,11 @@ const SelectPlaylistModal = ({
 }: SelectPlaylistModalProps) => {
   const smallScreen = useMediaQuery('(max-width:610px)');
   const { t } = useTranslation();
+
+  const onMatchBasisChange = (event: SelectChangeEvent) => {
+    if (!event.target.value) return;
+    setMatchBasis(event.target.value);
+  };
 
   return (
     <Modal

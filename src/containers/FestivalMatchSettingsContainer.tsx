@@ -1,6 +1,6 @@
 import { SelectChangeEvent } from '@mui/material';
 import { useEffect } from 'react';
-import { useApiQuery, useApiSuspenseQuery } from '../api/api';
+import { useApiSuspenseQuery } from '../api/api';
 import {
   getDjangoAvailableContinents,
   getDjangoAvailableCountries,
@@ -10,15 +10,13 @@ import {
   getAllTopArtistsWithPopularity,
   getLoggedInUserInfo,
   getOneSavedTrack,
-  getPlaylist,
 } from '../api/spotifyApi';
 import { Area } from '../api/types';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
 import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
-import { getInitialContinent } from '../utils/areaUtils';
 import { MATCHING_MAX_DATE } from '../config';
+import { getInitialContinent } from '../utils/areaUtils';
 import {
   setDates,
   setMatchArea,
@@ -26,15 +24,8 @@ import {
   useMatchingStore,
 } from '../zustand/matchingStore';
 
-interface FestivalMatchSettingsContainerProps {
-  sharedMatchBasis?: string;
-}
-
-const FestivalMatchSettingsContainer = ({
-  sharedMatchBasis,
-}: FestivalMatchSettingsContainerProps) => {
-  const matchBasis =
-    sharedMatchBasis ?? useMatchingStore((state) => state.matchBasis);
+const FestivalMatchSettingsContainer = () => {
+  const matchBasis = useMatchingStore((state) => state.matchBasis);
   const matchArea = useMatchingStore((state) => state.matchArea);
   const fromDate = useMatchingStore((state) => state.fromDate);
   const toDate = useMatchingStore((state) => state.toDate);
@@ -44,33 +35,18 @@ const FestivalMatchSettingsContainer = ({
     getDjangoAvailableContinents,
   );
 
-  const isSharedResults = !!sharedMatchBasis;
-
-  // Shared results - only get the shared playlist
-  const { playlistId } = getIdFromMatchBasis(sharedMatchBasis);
-  const { data: sharedPlaylist } = useApiQuery(getPlaylist, {
-    enabled: isSharedResults && !!playlistId,
-    params: { id: playlistId ?? '' },
-  });
-
   // Not shared results - get all playlists and top artists
-  const { data: userInfo } = useApiQuery(getLoggedInUserInfo, {
-    enabled: !isSharedResults,
+  const { data: userInfo } = useApiSuspenseQuery(getLoggedInUserInfo);
+  const { data: playlists } = useApiSuspenseQuery(getAllPlaylists, {
+    params: { userId: userInfo.id },
   });
-  const { data: playlists = [] } = useApiQuery(getAllPlaylists, {
-    params: { userId: userInfo?.id ?? '' },
-    enabled: !!userInfo?.id && !isSharedResults,
-  });
-  const { data: allTopArtistsData } = useApiQuery(
-    getAllTopArtistsWithPopularity,
-    { enabled: !isSharedResults },
-  );
-  const topArtists = allTopArtistsData?.artists ?? [];
+  const {
+    data: { artists: topArtists },
+  } = useApiSuspenseQuery(getAllTopArtistsWithPopularity);
+
   const hasTopArtists = !!topArtists.length;
-  const { data: savedTracksData } = useApiQuery(getOneSavedTrack, {
-    enabled: !isSharedResults,
-  });
-  const hasSavedTracks = !!savedTracksData?.total;
+  const { data: savedTracksData } = useApiSuspenseQuery(getOneSavedTrack);
+  const hasSavedTracks = !!savedTracksData.total;
 
   useEffect(() => {
     if (userInfo && continents && !matchArea) {
@@ -79,88 +55,19 @@ const FestivalMatchSettingsContainer = ({
     }
   }, [userInfo, continents]);
 
-  if (!matchArea) return <div />;
-
-  const onMatchBasisChange = async (event: SelectChangeEvent) => {
-    if (!event.target.value) return;
-    const matchBasisId = event.target.value;
-    if (matchBasisId === matchBasis) return;
-    setMatchBasis(matchBasisId);
-  };
-
-  const onAreaChange = async (event: SelectChangeEvent) => {
-    if (!event.target.value) return;
-    const { name, value } = event.target;
-    const area: Area = { name, isoCode: value };
-    setMatchArea(area);
-  };
-
-  const onFromDateChange = (date: Date | null) => {
-    if (date) {
-      const isoDate = date.toISOString();
-      if (date > new Date(toDate)) {
-        setDates({ fromDate: isoDate, toDate: isoDate });
-      } else {
-        setDates({ fromDate: isoDate, toDate });
-      }
-    }
-  };
-
-  const onToDateChange = (date: Date | null) => {
-    if (date) {
-      const isoDate = date.toISOString();
-      if (date < new Date(fromDate)) {
-        setDates({ fromDate: isoDate, toDate: isoDate });
-      } else {
-        setDates({ fromDate, toDate: isoDate });
-      }
-    }
-  };
-
-  const onDateRangePreSelect = (range: 2021 | 2022 | 2023 | 'future') => {
-    if (typeof range === 'number') {
-      const from = new Date(range, 0, 1);
-      const to = new Date(range, 11, 31);
-      setDates({ fromDate: from.toISOString(), toDate: to.toISOString() });
-    } else {
-      setDates({
-        fromDate: new Date().toISOString(),
-        toDate: MATCHING_MAX_DATE.toISOString(),
-      });
-    }
-  };
-
   const onClickModalGoButton = () => setMatchBasis(TOP_ARTISTS_CHOICE);
-
-  const matchSettings = {
-    matchBasis: matchBasis ?? '',
-    area: matchArea,
-    fromDate,
-    toDate,
-    numTracks: 0,
-  };
 
   return (
     <>
       <FestivalMatchSettingsBar
-        playlists={sharedPlaylist ? [sharedPlaylist] : playlists}
+        playlists={playlists}
         hasTopArtists={hasTopArtists}
         hasSavedTracks={hasSavedTracks}
         countries={countries}
         continents={continents}
-        matchSettings={matchSettings}
-        onChangeHandlers={{
-          onMatchBasisChange,
-          onAreaChange,
-          onFromDateChange,
-          onToDateChange,
-          onDateRangePreSelect,
-        }}
-        isMatchBasisFieldDisabled={isSharedResults}
       />
       <SelectPlaylistModal
         open={!matchBasis}
-        onMatchBasisChange={onMatchBasisChange}
         onClickGoButton={onClickModalGoButton}
         playlists={playlists}
         hasTopArtists={hasTopArtists}

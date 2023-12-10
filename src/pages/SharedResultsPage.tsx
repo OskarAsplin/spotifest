@@ -7,7 +7,7 @@ import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
-import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
+import SharedMatchesSettingsContainer from '../containers/SharedMatchesSettingsContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { getAuthorizeHref } from '../oauthConfig';
@@ -65,7 +65,7 @@ const SharedResultsPage = withFallback(
     }
   }, []);
 
-  if (!loggedIn || !matchBasis) return null;
+  if (!loggedIn) return null;
 
   return (
     <StyledRootDiv>
@@ -102,7 +102,7 @@ const SharedResultsPage = withFallback(
           '@media (max-width: 799px)': { py: 1 },
         }}
       />
-      <FestivalMatchSettingsContainer sharedMatchBasis={matchBasis} />
+      <SharedMatchesSettingsContainer sharedMatchBasis={matchBasis} />
       <FestivalMatchesContainer sharedMatchBasis={matchBasis} />
     </StyledRootDiv>
   );
