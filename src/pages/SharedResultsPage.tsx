@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from '@tanstack/react-router';
-import { useApiQuery, withFallback } from '../api/api';
+import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
@@ -37,19 +37,9 @@ const SharedResultsPage = withFallback(
   const navigate = useNavigate();
 
   const matchBasis = matchBasisFromParams || getSharedMatchBasis() || undefined;
-
   const { playlistId } = getIdFromMatchBasis(matchBasis);
-  const { data: sharedPlaylist } = useApiQuery(getPlaylist, {
-    enabled: !!matchBasis && loggedIn && !!playlistId,
-    params: { id: playlistId ?? '' },
-  });
 
-  const { data: user } = useApiQuery(getUserInfo, {
-    enabled: !!sharedPlaylist?.ownerId && loggedIn,
-    params: { userId: sharedPlaylist?.ownerId ?? '' },
-  });
-
-  if (!matchBasis) throw 'Invalid match basis';
+  if (!playlistId) throw 'Invalid match basis';
 
   useEffect(() => {
     if (matchBasis && !loggedIn) {
@@ -67,6 +57,18 @@ const SharedResultsPage = withFallback(
 
   if (!loggedIn) return null;
 
+  return <SharedResultsPageInner playlistId={playlistId} />;
+});
+
+const SharedResultsPageInner = ({ playlistId }: { playlistId: string }) => {
+  const { data: sharedPlaylist } = useApiSuspenseQuery(getPlaylist, {
+    params: { id: playlistId },
+  });
+
+  const { data: user } = useApiSuspenseQuery(getUserInfo, {
+    params: { userId: sharedPlaylist.ownerId },
+  });
+
   return (
     <StyledRootDiv>
       <Box
@@ -80,12 +82,12 @@ const SharedResultsPage = withFallback(
         <Trans
           i18nKey="shared_results_page.description"
           components={{
-            PlaylistLink: <StandardLink href={sharedPlaylist?.spotifyUrl} />,
-            UserLink: <StandardLink href={user?.spotifyUrl} />,
+            PlaylistLink: <StandardLink href={sharedPlaylist.spotifyUrl} />,
+            UserLink: <StandardLink href={user.spotifyUrl} />,
           }}
           values={{
-            playlist_name: sharedPlaylist?.name,
-            user_name: user?.displayName ?? user?.id,
+            playlist_name: sharedPlaylist.name,
+            user_name: user.displayName ?? user.id,
           }}
         />
       </Typography>
@@ -102,10 +104,10 @@ const SharedResultsPage = withFallback(
           '@media (max-width: 799px)': { py: 1 },
         }}
       />
-      <SharedMatchesSettingsContainer sharedMatchBasis={matchBasis} />
-      <FestivalMatchesContainer sharedMatchBasis={matchBasis} />
+      <SharedMatchesSettingsContainer sharedMatchBasis={playlistId} />
+      <FestivalMatchesContainer sharedMatchBasis={playlistId} />
     </StyledRootDiv>
   );
-});
+};
 
 export default SharedResultsPage;

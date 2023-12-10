@@ -58,7 +58,7 @@ const FestivalPage = withFallback(
     params: { name: festivalId },
   });
 
-  const limitLineups = !mediumScreen ? 4 : undefined;
+  const limitLineups = !mediumScreen ? 4 : 7;
 
   const maxArtistsInLineupsWidth = getMaxArtistsInFullLineupWidth(
     bigScreen,
