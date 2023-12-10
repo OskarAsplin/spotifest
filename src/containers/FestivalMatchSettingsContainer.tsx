@@ -1,4 +1,3 @@
-import { SelectChangeEvent } from '@mui/material';
 import { useEffect } from 'react';
 import { useApiSuspenseQuery } from '../api/api';
 import {
@@ -11,14 +10,11 @@ import {
   getLoggedInUserInfo,
   getOneSavedTrack,
 } from '../api/spotifyApi';
-import { Area } from '../api/types';
 import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
 import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
-import { MATCHING_MAX_DATE } from '../config';
 import { getInitialContinent } from '../utils/areaUtils';
 import {
-  setDates,
   setMatchArea,
   setMatchBasis,
   useMatchingStore,
@@ -27,8 +23,6 @@ import {
 const FestivalMatchSettingsContainer = () => {
   const matchBasis = useMatchingStore((state) => state.matchBasis);
   const matchArea = useMatchingStore((state) => state.matchArea);
-  const fromDate = useMatchingStore((state) => state.fromDate);
-  const toDate = useMatchingStore((state) => state.toDate);
 
   const { data: countries } = useApiSuspenseQuery(getDjangoAvailableCountries);
   const { data: continents } = useApiSuspenseQuery(
@@ -60,6 +54,7 @@ const FestivalMatchSettingsContainer = () => {
   return (
     <>
       <FestivalMatchSettingsBar
+        matchBasis={matchBasis}
         playlists={playlists}
         hasTopArtists={hasTopArtists}
         hasSavedTracks={hasSavedTracks}

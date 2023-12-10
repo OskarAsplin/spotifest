@@ -28,6 +28,7 @@ import {
 import { MATCHING_MAX_DATE } from '../../../config';
 
 interface FestivalMatchSettingsBarProps {
+  matchBasis?: string;
   playlists: Playlist[];
   hasTopArtists?: boolean;
   hasSavedTracks?: boolean;
@@ -37,6 +38,7 @@ interface FestivalMatchSettingsBarProps {
 }
 
 const FestivalMatchSettingsBar = ({
+  matchBasis,
   playlists,
   hasTopArtists = false,
   hasSavedTracks = false,
@@ -49,7 +51,6 @@ const FestivalMatchSettingsBar = ({
   const pcScreen = useMediaQuery('(min-width:1200px)');
   const showYearPreSelect = useMediaQuery('(max-width:799px)');
 
-  const matchBasis = useMatchingStore((state) => state.matchBasis);
   const matchArea = useMatchingStore((state) => state.matchArea);
   const fromDate = useMatchingStore((state) => state.fromDate);
   const toDate = useMatchingStore((state) => state.toDate);

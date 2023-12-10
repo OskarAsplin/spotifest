@@ -40,6 +40,7 @@ const SharedMatchesSettingsContainer = ({
 
   return (
     <FestivalMatchSettingsBar
+      matchBasis={sharedMatchBasis}
       playlists={[sharedPlaylist]}
       countries={countries}
       continents={continents}
