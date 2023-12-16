@@ -3,6 +3,7 @@ import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
 import FestivalMatchCard from './FestivalMatchCard';
 import { StyledRootDiv } from '../../../layouts/StyledLayoutComponents';
 import { StyledMatchesRootBox } from '../../templates/FestivalMatches/FestivalMatches';
+import { withRouter } from '../../../utils/storyUtils';
 
 type Story = StoryObj<typeof FestivalMatchCard>;
 
@@ -37,10 +38,7 @@ const meta: Meta<typeof FestivalMatchCard> = {
     matchingArtists: Array(2).fill(artistMock),
     showMatching: true,
   },
-  argTypes: {
-    onClickTitle: { control: false },
-    onClickArtistBubble: { control: false },
-  },
+  decorators: [withRouter],
 };
 
 export default meta;

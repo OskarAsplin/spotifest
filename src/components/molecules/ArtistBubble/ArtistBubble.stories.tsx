@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ArtistBubble from './ArtistBubble';
 import { artistMock } from './ArtistBubble.fixtures';
+import { withRouter } from '../../../utils/storyUtils';
 
 type Story = StoryObj<typeof ArtistBubble>;
 
@@ -18,6 +19,7 @@ const meta: Meta<typeof ArtistBubble> = {
   args: {
     artist: artistMock,
   },
+  decorators: [withRouter],
 };
 
 export default meta;

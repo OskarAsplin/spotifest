@@ -10,31 +10,35 @@ import {
 import { blueGrey } from '@mui/material/colors';
 import { Shadows, styled } from '@mui/material/styles';
 import { Artist } from '../../../api/types';
+import { Link } from '@tanstack/react-router';
+import { artistRoute } from '../../../Routes';
+import { getArtistParam } from '../../../utils/routeUtils';
 
 interface ArtistBubbleProps {
   artist: Artist;
-  onClick: () => void;
 }
 
-const ArtistBubble = ({ artist, onClick }: ArtistBubbleProps) => (
+const ArtistBubble = ({ artist }: ArtistBubbleProps) => (
   <StyledAvatarContainerdiv>
-    <StyledIconButton
-      color="inherit"
-      disabled={!artist.spotifyId}
-      onClick={onClick}
+    <Link
+      to={artistRoute.to}
+      params={{ artistId: getArtistParam(artist.name, artist.spotifyId) }}
+      style={{ borderRadius: '50%', color: 'inherit' }}
     >
-      {artist.iconPicture ? (
-        <StyledAvatar
-          src={artist.iconPicture}
-          alt={artist.name}
-          isClickable={!!artist.spotifyId}
-        />
-      ) : (
-        <StyledAvatarDiv isClickable={!!artist.spotifyId}>
-          <MusicNote fontSize="large" />
-        </StyledAvatarDiv>
-      )}
-    </StyledIconButton>
+      <StyledIconButton color="inherit" disabled={!artist.spotifyId}>
+        {artist.iconPicture ? (
+          <StyledAvatar
+            src={artist.iconPicture}
+            alt={artist.name}
+            isClickable={!!artist.spotifyId}
+          />
+        ) : (
+          <StyledAvatarDiv isClickable={!!artist.spotifyId}>
+            <MusicNote fontSize="large" />
+          </StyledAvatarDiv>
+        )}
+      </StyledIconButton>
+    </Link>
     <Typography variant="caption">{artist.name}</Typography>
   </StyledAvatarContainerdiv>
 );

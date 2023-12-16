@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from '@tanstack/react-router';
 import CustomDrawer from '../components/organisms/CustomDrawer/CustomDrawer';
 import { setThemeMode } from '../zustand/themeStore';
+import { aboutRoute } from '../Routes';
 
 interface Props {
   open: boolean;
@@ -17,7 +18,8 @@ const AppBarMenuDrawerContainer = ({ open, onClose }: Props) => {
   const themeMode = useTheme().palette.mode;
 
   const onClickAbout = () => {
-    if (!window.location.href.endsWith('/about')) navigate({ to: '/about' });
+    if (!window.location.href.endsWith('/about'))
+      navigate({ to: aboutRoute.to });
   };
   const onClickBrightness = () =>
     setThemeMode(themeMode === 'light' ? 'dark' : 'light');

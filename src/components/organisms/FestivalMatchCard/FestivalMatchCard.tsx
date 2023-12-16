@@ -1,6 +1,7 @@
 import { Box, Collapse, Divider, Paper, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
@@ -17,14 +18,13 @@ import ArtistBubble, {
 } from '../../molecules/ArtistBubble/ArtistBubble';
 import MatchingCircleWithTooltip from '../../molecules/MatchingCircleWithTooltip/MatchingCircleWithTooltip';
 import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
+import { festivalRoute } from '../../../Routes';
 
 export interface FestivalMatchCardProps {
   festival: FestivalMatch;
   popularArtists: Artist[];
   matchingArtists?: Artist[];
   showMatching?: boolean;
-  onClickTitle: () => void;
-  onClickArtistBubble: (artistName: string, spotifyId?: string) => void;
 }
 
 const FestivalMatchCard = ({
@@ -32,8 +32,6 @@ const FestivalMatchCard = ({
   showMatching,
   popularArtists,
   matchingArtists = [],
-  onClickTitle,
-  onClickArtistBubble,
 }: FestivalMatchCardProps) => {
   const {
     name,
@@ -86,22 +84,24 @@ const FestivalMatchCard = ({
                   }),
             }}
           >
-            <StyledTitleButton
-              color="inherit"
-              variant="outlined"
-              onClick={onClickTitle}
+            <Link
+              to={festivalRoute.to}
+              params={{ festivalId: encodeURIComponent(festival.name) }}
+              style={{ color: 'inherit' }}
             >
-              <Typography
-                variant={bigScreen ? 'h3' : 'h5'}
-                sx={{
-                  wordWrap: 'break-word',
-                  textAlign: 'center',
-                  fontWeight: 700,
-                }}
-              >
-                {name}
-              </Typography>
-            </StyledTitleButton>
+              <StyledTitleButton color="inherit" variant="outlined">
+                <Typography
+                  variant={bigScreen ? 'h3' : 'h5'}
+                  sx={{
+                    wordWrap: 'break-word',
+                    textAlign: 'center',
+                    fontWeight: 700,
+                  }}
+                >
+                  {name}
+                </Typography>
+              </StyledTitleButton>
+            </Link>
             {cancelled ? (
               <Typography variant="subtitle2" color="secondary">
                 {getCancelledDateString(date, year)}
@@ -159,7 +159,6 @@ const FestivalMatchCard = ({
             <ArtistBubble
               key={`avatar_match_artist_${name}_${year}_${artist.name}`}
               artist={artist}
-              onClick={() => onClickArtistBubble(artist.name, artist.spotifyId)}
             />
           ))}
           {matchingArtists.length > 0 &&
@@ -198,9 +197,6 @@ const FestivalMatchCard = ({
                   <ArtistBubble
                     key={`avatar_pop_artist_${name}_${year}_${artist.name}`}
                     artist={artist}
-                    onClick={() =>
-                      onClickArtistBubble(artist.name, artist.spotifyId)
-                    }
                   />
                 ))}
             {popularArtists.length > 0 &&
@@ -222,9 +218,6 @@ const FestivalMatchCard = ({
                     <ArtistBubble
                       key={`avatar_pop_artist_${name}_${year}_${artist.name}`}
                       artist={artist}
-                      onClick={() =>
-                        onClickArtistBubble(artist.name, artist.spotifyId)
-                      }
                     />
                   ))}
               {popularArtists.length > 0 &&

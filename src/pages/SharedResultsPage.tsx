@@ -1,10 +1,11 @@
 import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from '@tanstack/react-router';
+import { shareMatchesRoute } from '../Routes';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
+import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
 import SharedMatchesSettingsContainer from '../containers/SharedMatchesSettingsContainer';
@@ -12,13 +13,8 @@ import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import { getAuthorizeHref } from '../oauthConfig';
 import '../styles/base.scss';
-import {
-  getSharedMatchBasis,
-  setSharedMatchBasis,
-} from '../utils/localStorageUtils';
-import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import { useIsLoggedIn } from '../zustand/authStore';
-import { shareRoute } from '../Routes';
+import { setSharedMatchBasis } from '../zustand/sharedResultsStore';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const CustomErrorFallback = () => {
@@ -30,13 +26,8 @@ const SharedResultsPage = withFallback(
   SuspenseFallback,
   CustomErrorFallback,
 )(() => {
-  const { matchBasis: matchBasisFromParams } = useParams({
-    from: shareRoute.id,
-  });
   const loggedIn = useIsLoggedIn();
-  const navigate = useNavigate();
-
-  const matchBasis = matchBasisFromParams || getSharedMatchBasis() || undefined;
+  const { matchBasis } = shareMatchesRoute.useParams();
   const { playlistId } = getIdFromMatchBasis(matchBasis);
 
   if (!playlistId) throw 'Invalid match basis';
@@ -49,9 +40,6 @@ const SharedResultsPage = withFallback(
       // This is all done because Spotify needs predefined redirect URIs, so it needs to be /share instead of dynamic.
       setSharedMatchBasis(matchBasis);
       window.open(getAuthorizeHref('/share'), '_self');
-    } else if (!matchBasisFromParams && matchBasis) {
-      // This happens on return from the Spotify login in the if statement above.
-      navigate({ to: '/share/$matchBasis', params: { matchBasis } });
     }
   }, []);
 

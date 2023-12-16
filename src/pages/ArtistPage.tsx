@@ -10,13 +10,11 @@ import {
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { useNavigate, useParams } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
-import { artistRoute } from '../Routes';
+import { artistRoute, festivalRoute } from '../Routes';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getArtistInfoFromDjangoOrSpotify } from '../api/combinedApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
 import RelatedArtistsContainer from '../containers/RelatedArtistsContainer';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
@@ -24,6 +22,8 @@ import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
 import { useIsLoggedIn } from '../zustand/authStore';
+import FestivalMatchCard from '../components/organisms/FestivalMatchCard/FestivalMatchCard';
+import { Link } from '@tanstack/react-router';
 
 const getNameOrSpotifyIdFromUrl = (artistId: string) => {
   const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
@@ -44,8 +44,7 @@ const ArtistPage = withFallback(
   ArtistPageErrorFallback,
 )(() => {
   const themeMode = useTheme().palette.mode;
-  const { artistId } = useParams({ from: artistRoute.id });
-  const navigate = useNavigate();
+  const { artistId } = artistRoute.useParams();
   const { t } = useTranslation();
 
   const { name, spotifyId: spotifyIdFromUrl } =
@@ -165,7 +164,7 @@ const ArtistPage = withFallback(
             </StyledFestivalsTypography>
             <StyledStack spacing={3}>
               {artistInfo.festivalsFuture.map((festival) => (
-                <FestivalMatchCardContainer
+                <FestivalMatchCard
                   key={'FestivalMatchCard: ' + festival.name + festival.year}
                   festival={festival}
                   popularArtists={festival.popular_artists}
@@ -182,17 +181,13 @@ const ArtistPage = withFallback(
             </StyledFestivalsTypography>
             <StyledStack spacing={2}>
               {artistInfo.festivalsPast.map((festival) => (
-                <StyledPastFestivalButton
+                <Link
                   key={'past festival: ' + festival.name + festival.year}
-                  variant="outlined"
-                  onClick={() =>
-                    navigate({
-                      to: '/festival/$festivalId',
-                      params: { festivalId: encodeURIComponent(festival.name) },
-                    })
-                  }
+                  to={festivalRoute.to}
+                  params={{ festivalId: encodeURIComponent(festival.name) }}
+                  style={{ color: 'inherit', textDecoration: 'inherit' }}
                 >
-                  <>
+                  <StyledPastFestivalButton variant="outlined">
                     <Typography
                       variant={bigScreen ? 'h3' : 'h5'}
                       sx={{
@@ -215,8 +210,8 @@ const ArtistPage = withFallback(
                     <Typography variant="subtitle1">
                       {festival.locationText}
                     </Typography>
-                  </>
-                </StyledPastFestivalButton>
+                  </StyledPastFestivalButton>
+                </Link>
               ))}
             </StyledStack>
           </StyledCenteredDiv>

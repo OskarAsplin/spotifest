@@ -15,26 +15,26 @@ import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
-import { useParams } from '@tanstack/react-router';
 import SwipeableViews from 'react-swipeable-views';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getDjangoFestival } from '../api/djangoApi';
 import CustomSwitch from '../components/atoms/CustomSwitch/CustomSwitch';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import { StyledAvatarContainerdiv } from '../components/molecules/ArtistBubble/ArtistBubble';
+import ArtistBubble, {
+  StyledAvatarContainerdiv,
+} from '../components/molecules/ArtistBubble/ArtistBubble';
 import StyledCookieConsent from '../components/molecules/CookieConsent';
 import TabPanel from '../components/molecules/TabPanel';
-import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
+import { festivalRoute } from '../Routes';
 import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
 import {
   displayedLocationName,
   getMaxArtistsInFullLineupWidth,
 } from '../utils/displayUtils';
-import { festivalRoute } from '../Routes';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const FestivalPageErrorFallback = () => {
@@ -57,7 +57,7 @@ const FestivalPage = withFallback(
 
   const { t } = useTranslation();
   const themeDirection = useTheme().direction;
-  const { festivalId } = useParams({ from: festivalRoute.id });
+  const { festivalId } = festivalRoute.useParams();
 
   const { data: festivalInfo } = useApiSuspenseQuery(getDjangoFestival, {
     params: { name: festivalId },
@@ -263,7 +263,7 @@ const FestivalPage = withFallback(
                                     : -1,
                                 )
                                 .map((artist) => (
-                                  <ArtistBubbleContainer
+                                  <ArtistBubble
                                     key={`avatar_festival_lineup_artist_${festivalInfo.name}${lineup.year}${artist.name}`}
                                     artist={artist}
                                   />

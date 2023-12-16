@@ -20,7 +20,7 @@ import FestivalMatches, {
   FestivalMatchesSkeleton,
   NoMatchResults,
 } from '../components/templates/FestivalMatches/FestivalMatches';
-import { FestivalMatchCardWithPopularArtists } from '../containers/FestivalMatchCardContainer';
+import { FestivalMatchCardWithPopularArtists } from '../containers/FestivalMatchCardWithPopularArtists';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { getAreaFilters } from '../utils/areaUtils';
 import { setPage, useMatchingStore } from '../zustand/matchingStore';

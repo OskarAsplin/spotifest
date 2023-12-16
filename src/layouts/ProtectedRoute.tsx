@@ -1,8 +1,7 @@
-import { useNavigate } from '@tanstack/react-router';
+import { Navigate } from '@tanstack/react-router';
+import { loginRoute } from '../Routes';
 import { withFallback } from '../api/api';
 import { useIsLoggedIn } from '../zustand/authStore';
-import { loginRoute } from '../Routes';
-import { useEffect } from 'react';
 
 interface Props {
   children: React.ReactNode;
@@ -10,13 +9,8 @@ interface Props {
 
 const ProtectedRoute = withFallback<Props>()(({ children }) => {
   const loggedIn = useIsLoggedIn();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!loggedIn) navigate({ to: loginRoute.to });
-  }, [loggedIn]);
-
-  if (!loggedIn) return <div />;
+  if (!loggedIn) return <Navigate to={loginRoute.to} />;
 
   return <>{children}</>;
 });

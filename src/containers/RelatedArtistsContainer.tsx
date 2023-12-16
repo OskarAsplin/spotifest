@@ -3,8 +3,9 @@ import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { useApiSuspenseQuery } from '../api/api';
 import { getArtistRelatedArtists } from '../api/spotifyApi';
-import { StyledAvatarContainerdiv } from '../components/molecules/ArtistBubble/ArtistBubble';
-import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
+import ArtistBubble, {
+  StyledAvatarContainerdiv,
+} from '../components/molecules/ArtistBubble/ArtistBubble';
 import { ArtistBox } from '../layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 import { getMaxArtistsInWidth } from '../utils/displayUtils';
@@ -38,7 +39,7 @@ const RelatedArtistsContainer = ({ spotifyId }: RelatedArtistsProps) => {
       </Divider>
       <ArtistBox>
         {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
-          <ArtistBubbleContainer
+          <ArtistBubble
             key={`avatar_rel_artist_${artist.name}`}
             artist={artist}
           />
