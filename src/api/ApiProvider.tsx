@@ -11,7 +11,6 @@ import { logOut } from '../zustand/authStore';
 const DEFAULT_QUERY_OPTIONS: QueryObserverOptions = {
   gcTime: Infinity,
   staleTime: Infinity,
-  suspense: true,
   refetchOnWindowFocus: false,
   retry: false,
 };
