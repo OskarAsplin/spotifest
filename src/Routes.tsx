@@ -1,32 +1,14 @@
 import {
-  Outlet,
   RootRoute,
   Route,
   Router,
   RouterProvider,
   lazyRouteComponent,
 } from '@tanstack/react-router';
-import React from 'react';
 import { StandardLayout } from './layouts/StandardLayout';
 import ProtectedRoute from './layouts/ProtectedRoute';
 
-const TanStackRouterDevtools =
-  import.meta.env.DEV && import.meta.env.VITE_ROUTER_DEVTOOLS === 'true'
-    ? React.lazy(() =>
-        import('@tanstack/router-devtools').then((res) => ({
-          default: res.TanStackRouterDevtools,
-        })),
-      )
-    : () => null;
-
-const rootRoute = new RootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
+const rootRoute = new RootRoute();
 
 export const loginRoute = new Route({
   getParentRoute: () => rootRoute,

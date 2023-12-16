@@ -2,7 +2,7 @@ import { Link, LinkProps } from '@mui/material';
 import { forwardRef } from 'react';
 import {
   Link as RouterLink,
-  LinkPropsOptions as RouterLinkProps,
+  LinkProps as RouterLinkProps,
   ToPathOption,
 } from '@tanstack/react-router';
 
