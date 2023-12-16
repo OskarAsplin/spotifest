@@ -23,7 +23,6 @@ import { useState } from 'react';
 import ExpandButton from '../components/atoms/ExpandButton/ExpandButton';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import TechStackContent from '../components/templates/TechStackContent/TechStackContent';
-import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
 import { Trans, useTranslation } from 'react-i18next';
@@ -31,7 +30,6 @@ import { Trans, useTranslation } from 'react-i18next';
 const AboutPage = () => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const biggerScreen = useMediaQuery('(min-width:720px)');
-  const bigPcScreen = useMediaQuery('(min-width:1300px)');
   const { t } = useTranslation();
 
   const [techExpanded, setTechExpanded] = useState(false);
@@ -42,7 +40,6 @@ const AboutPage = () => {
 
   return (
     <>
-      {bigPcScreen && <TopLeftBackButtonContainer />}
       <div className={styles.verticalSpace} />
       <div className={styles.verticalSpace} />
 

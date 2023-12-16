@@ -16,7 +16,6 @@ import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getArtistInfoFromDjangoOrSpotify } from '../api/combinedApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import RelatedArtistsContainer from '../containers/RelatedArtistsContainer';
-import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import '../styles/base.scss';
@@ -64,11 +63,9 @@ const ArtistPage = withFallback(
     artistInfo.festivalsPast.length > 0;
 
   const bigScreen = useMediaQuery('(min-width:690px)');
-  const pcScreen = useMediaQuery('(min-width:1300px)');
 
   return (
     <>
-      {pcScreen && <TopLeftBackButtonContainer />}
       <VerticalSpaceDiv />
 
       <StyledRootDiv>

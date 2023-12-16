@@ -25,7 +25,6 @@ import ArtistBubble, {
 } from '../components/molecules/ArtistBubble/ArtistBubble';
 import StyledCookieConsent from '../components/molecules/CookieConsent';
 import TabPanel from '../components/molecules/TabPanel';
-import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
 import { festivalRoute } from '../Routes';
@@ -51,7 +50,6 @@ const FestivalPage = withFallback(
   const mediumScreen = useMediaQuery('(min-width:610px)');
   const smallScreen = useMediaQuery('(max-width:440px)');
   const bigScreen = useMediaQuery('(min-width:690px)');
-  const pcScreen = useMediaQuery('(min-width:1300px)');
   const videoSizeMax = useMediaQuery('(min-width:770px)');
   const videoSizeSmall = useMediaQuery('(max-width:470px)');
 
@@ -76,7 +74,6 @@ const FestivalPage = withFallback(
 
   return (
     <>
-      {pcScreen && <TopLeftBackButtonContainer />}
       <VerticalSpaceDiv />
       <StyledCenteredColumnDiv>
         <StyledRootDiv>
