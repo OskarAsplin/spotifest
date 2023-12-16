@@ -1,12 +1,11 @@
 import { Box, Slide, useScrollTrigger } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useMatchRoute } from '@tanstack/react-router';
 import { useApiQuery } from '../api/api';
 import { getLoggedInUserInfo } from '../api/spotifyApi';
 import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
 import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
-import { isMainPage } from '../utils/routeUtils';
 import SearchFieldContainer from './SearchFieldContainer';
 import { indexRoute } from '../Routes';
 import { logOut, useIsLoggedIn } from '../zustand/authStore';
@@ -15,6 +14,7 @@ const AppBarContainer = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
+  const matchRoute = useMatchRoute();
   const loggedIn = useIsLoggedIn();
 
   const { data: userInfo } = useApiQuery(getLoggedInUserInfo, {
@@ -43,8 +43,8 @@ const AppBarContainer = () => {
     };
 
   const onClickLogo = () => {
-    const url = window.location.href;
-    if (isMainPage(url)) window.scrollTo({ top: 0, behavior: 'smooth' });
+    const isIndexRoute = !!matchRoute({ to: indexRoute.to });
+    if (isIndexRoute) window.scrollTo({ top: 0, behavior: 'smooth' });
     else navigate({ to: indexRoute.to });
   };
 

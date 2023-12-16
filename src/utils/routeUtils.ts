@@ -1,6 +1,3 @@
-export const isMainPage = (url: string) =>
-  /spotifest\.app\/?$/.test(url) || /localhost:3000\/?$/.test(url);
-
 export const getArtistPath = (artistName: string, spotifyId?: string) =>
   `/artist/${getArtistParam(artistName, spotifyId)}`;
 
