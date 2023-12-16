@@ -14,7 +14,8 @@ export const getArtistInfoFromDjangoOrSpotify = async ({
   if (spotifyId) {
     if (!isLoggedIn) return getDjangoArtistBySpotifyId({ spotifyId });
     try {
-      return getDjangoArtistBySpotifyId({ spotifyId });
+      const artistInfo = await getDjangoArtistBySpotifyId({ spotifyId });
+      return artistInfo;
     } catch {
       return getArtistInfo({ spotifyId });
     }
