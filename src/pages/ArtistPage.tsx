@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   Button,
-  Divider,
   IconButton,
   Paper,
   Stack,
@@ -11,79 +10,62 @@ import {
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from '@tanstack/react-router';
-import { useApiQuery, withFallback } from '../api/api';
-import {
-  getDjangoArtistByName,
-  getDjangoArtistBySpotifyId,
-} from '../api/djangoApi';
-import { getArtistInfo, getArtistRelatedArtists } from '../api/spotifyApi';
+import { useTranslation } from 'react-i18next';
+import { artistRoute } from '../Routes';
+import { useApiSuspenseQuery, withFallback } from '../api/api';
+import { getArtistInfoFromDjangoOrSpotify } from '../api/combinedApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import { StyledAvatarContainerdiv } from '../components/molecules/ArtistBubble/ArtistBubble';
-import ArtistBubbleContainer from '../containers/ArtistBubbleContainer';
 import FestivalMatchCardContainer from '../containers/FestivalMatchCardContainer';
+import RelatedArtistsContainer from '../containers/RelatedArtistsContainer';
 import TopLeftBackButtonContainer from '../containers/TopLeftBackButtonContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
-import { ArtistBox, StyledRootDiv } from '../layouts/StyledLayoutComponents';
+import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
-import { getMaxArtistsInWidth } from '../utils/displayUtils';
 import { useIsLoggedIn } from '../zustand/authStore';
-import { artistRoute } from '../Routes';
+
+const getNameOrSpotifyIdFromUrl = (artistId: string) => {
+  const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
+  if (!hasSpotifyId) return { name: artistId, spotifyId: undefined };
+  const spotifyId = artistId.substring('spotifyId='.length) || undefined;
+  return { spotifyId, name: undefined };
+};
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
+const ArtistPageErrorFallback = () => {
+  const { t } = useTranslation();
+
+  return <ErrorFallback fallbackText={t('error.artist_not_found')} />;
+};
 
 const ArtistPage = withFallback(
   SuspenseFallback,
-  ErrorFallback,
+  ArtistPageErrorFallback,
 )(() => {
   const themeMode = useTheme().palette.mode;
   const { artistId } = useParams({ from: artistRoute.id });
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
-  const spotifyId = hasSpotifyId && artistId?.substring('spotifyId='.length);
+  const { name, spotifyId: spotifyIdFromUrl } =
+    getNameOrSpotifyIdFromUrl(artistId);
 
-  const loggedIn = useIsLoggedIn();
+  const isLoggedIn = useIsLoggedIn();
 
-  const { data: artistBySpotifyId, isError: isArtistBySpotifyIdError } =
-    useApiQuery(getDjangoArtistBySpotifyId, {
-      params: { spotifyId: spotifyId || '' },
-      enabled: hasSpotifyId,
-    });
+  const { data: artistInfo } = useApiSuspenseQuery(
+    getArtistInfoFromDjangoOrSpotify,
+    { params: { spotifyId: spotifyIdFromUrl, name, isLoggedIn } },
+  );
 
-  const { data: artistByName } = useApiQuery(getDjangoArtistByName, {
-    params: { name: artistId ?? '' },
-    enabled: !hasSpotifyId && !!artistId,
-  });
+  const spotifyId = spotifyIdFromUrl || artistInfo.artist.spotifyId;
 
-  const { data: spotifyArtist } = useApiQuery(getArtistInfo, {
-    params: { spotifyId: spotifyId || '' },
-    enabled: loggedIn && !!isArtistBySpotifyIdError,
-  });
-
-  const spotifyIdFromDjango = artistByName?.artist.spotifyId;
-
-  const { data: relatedArtists = [] } = useApiQuery(getArtistRelatedArtists, {
-    params: { spotifyId: spotifyId || spotifyIdFromDjango || '' },
-    enabled: loggedIn && (hasSpotifyId || !!spotifyIdFromDjango),
-  });
-
-  const artistInfo = artistBySpotifyId || artistByName || spotifyArtist;
-  const isArtistInDb = !!artistBySpotifyId || !!artistByName;
+  const isArtistInDb =
+    artistInfo.festivalsFuture.length > 0 ||
+    artistInfo.festivalsPast.length > 0;
 
   const bigScreen = useMediaQuery('(min-width:690px)');
   const pcScreen = useMediaQuery('(min-width:1300px)');
-  const smallScreen = useMediaQuery('(max-width:439px)');
-  const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, smallScreen, 6);
-  const fillRelatedArtistsWidth =
-    maxArtistsInWidth - (relatedArtists.length % maxArtistsInWidth);
-
-  if (!artistId) return <ErrorFallback fallbackText={t('error.invalid_url')} />;
-  if (!artistInfo)
-    return <ErrorFallback fallbackText={t('error.artist_not_found')} />;
 
   return (
     <>
@@ -157,11 +139,11 @@ const ArtistPage = withFallback(
               ? `${t('common.genres')}: ${artistInfo.artist.genres.join(', ')}`
               : t('common.no_genres')}
           </Typography>
-          {artistInfo.artist.spotifyId && (
+          {spotifyId && (
             <IconButton
               sx={{ p: 1.5 }}
               color="inherit"
-              href={`https://open.spotify.com/artist/${artistInfo.artist.spotifyId}`}
+              href={`https://open.spotify.com/artist/${spotifyId}`}
               target="_blank"
             >
               <Avatar
@@ -171,30 +153,8 @@ const ArtistPage = withFallback(
               />
             </IconButton>
           )}
-          {relatedArtists.length > 0 && (
-            <>
-              <Divider sx={{ width: '100%' }}>
-                <Typography
-                  variant="body1"
-                  color="primary"
-                  sx={{ fontWeight: 'bold' }}
-                >
-                  {t('artist_page.related_artists')}
-                </Typography>
-              </Divider>
-              <ArtistBox>
-                {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
-                  <ArtistBubbleContainer
-                    key={`avatar_rel_artist_${artistInfo.artist.name}${artist.name}`}
-                    artist={artist}
-                  />
-                ))}
-                {relatedArtists.length > 0 &&
-                  Array.from({ length: fillRelatedArtistsWidth }, (_, i) => (
-                    <StyledAvatarContainerdiv key={i} />
-                  ))}
-              </ArtistBox>
-            </>
+          {isLoggedIn && !!spotifyId && (
+            <RelatedArtistsContainer spotifyId={spotifyId} />
           )}
         </Paper>
         {artistInfo.festivalsFuture.length !== 0 && (

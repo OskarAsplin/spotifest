@@ -37,10 +37,15 @@ import {
 import { festivalRoute } from '../Routes';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
+const FestivalPageErrorFallback = () => {
+  const { t } = useTranslation();
+
+  return <ErrorFallback fallbackText={t('error.festival_not_found')} />;
+};
 
 const FestivalPage = withFallback(
   SuspenseFallback,
-  ErrorFallback,
+  FestivalPageErrorFallback,
 )(() => {
   const boxForLineups = useMediaQuery('(min-width:1182px)');
   const mediumScreen = useMediaQuery('(min-width:610px)');
@@ -68,11 +73,6 @@ const FestivalPage = withFallback(
 
   const [selectedLineup, setSelectedLineup] = useState(0);
   const [sortAlphabetically, setSortAlphabetically] = useState(false);
-
-  if (!festivalId)
-    return <ErrorFallback fallbackText={t('error.invalid_url')} />;
-  if (!festivalInfo)
-    return <ErrorFallback fallbackText={t('error.festival_not_found')} />;
 
   return (
     <>
