@@ -24,6 +24,7 @@ const ArtistBubble = ({ artist }: ArtistBubbleProps) => (
       to={artistRoute.to}
       params={{ artistId: getArtistParam(artist.name, artist.spotifyId) }}
       style={{ borderRadius: '50%', color: 'inherit' }}
+      disabled={!artist.spotifyId}
     >
       <StyledIconButton color="inherit" disabled={!artist.spotifyId}>
         {artist.iconPicture ? (
