@@ -1,3 +1,6 @@
+import { useLayoutEffect } from '@tanstack/react-router';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
+import { useEffect, useMemo, useRef } from 'react';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
@@ -9,12 +12,14 @@ import {
   getAllPlaylistArtists,
   getAllTopArtistsWithPopularity,
 } from '../api/spotifyApi';
-import { Artist, FestivalMatch, PopularArtistsDict } from '../api/types';
+import { Artist } from '../api/types';
 import {
   SAVED_TRACKS_CHOICE,
   TOP_ARTISTS_CHOICE,
 } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import FestivalMatchCard from '../components/organisms/FestivalMatchCard/FestivalMatchCard';
+import FestivalMatchCardSkeleton from '../components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
 import FestivalMatches, {
   FestivalMatchesSkeleton,
   NoMatchResults,
@@ -23,12 +28,6 @@ import ErrorFallback from '../layouts/ErrorFallback';
 import { getAreaFilters } from '../utils/areaUtils';
 import { useMatchingStore } from '../zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
-import { useWindowVirtualizer } from '@tanstack/react-virtual';
-import { Key, memo, useEffect, useMemo, useRef } from 'react';
-import FestivalMatchCard from '../components/organisms/FestivalMatchCard/FestivalMatchCard';
-import FestivalMatchCardSkeleton from '../components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
-import { useLayoutEffect } from '@tanstack/react-router';
-import isEqual from 'lodash-es/isEqual';
 
 export const ITEMS_PER_PAGE = 15;
 
@@ -206,12 +205,6 @@ const FestivalMatchesInnerContainer = ({
     getVirtualItems(),
   ]);
 
-  const virtualItems = getVirtualItems().map(({ index, key, start }) => ({
-    index,
-    key,
-    start,
-  }));
-
   return (
     <FestivalMatches totalMatches={festivalMatches.length}>
       <div
@@ -222,7 +215,7 @@ const FestivalMatchesInnerContainer = ({
           overflowAnchor: 'none',
         }}
       >
-        {virtualItems.map((virtualItem) => {
+        {getVirtualItems().map((virtualItem) => {
           const festival = festivalMatches[virtualItem.index];
           const isLoaderRow =
             virtualItem.index > numFestivalsWithPopularArtists - 1;

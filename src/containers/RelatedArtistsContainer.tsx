@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useApiSuspenseQuery } from '../api/api';
 import { getArtistRelatedArtists } from '../api/spotifyApi';
 import ArtistBubble, {
-  StyledAvatarContainerdiv,
+  StyledAvatarContainerDiv,
 } from '../components/molecules/ArtistBubble/ArtistBubble';
 import { ArtistBox } from '../layouts/StyledLayoutComponents';
 import '../styles/base.scss';
@@ -46,7 +46,7 @@ const RelatedArtistsContainer = ({ spotifyId }: RelatedArtistsProps) => {
         ))}
         {relatedArtists.length > 0 &&
           Array.from({ length: fillRelatedArtistsWidth }, (_, i) => (
-            <StyledAvatarContainerdiv key={i} />
+            <StyledAvatarContainerDiv key={i} />
           ))}
       </ArtistBox>
     </>

@@ -10,7 +10,6 @@ const SharedResultsReturnPage = () => {
   const loggedIn = useIsLoggedIn();
   const matchBasis = useSharedMatchBasis();
   const { t } = useTranslation();
-  console.log({ loggedIn, matchBasis });
 
   if (!loggedIn || !matchBasis)
     return <ErrorFallback fallbackText={t('error.invalid_share_url')} />;

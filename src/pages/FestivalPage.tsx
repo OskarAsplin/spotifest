@@ -21,7 +21,7 @@ import { getDjangoFestival } from '../api/djangoApi';
 import CustomSwitch from '../components/atoms/CustomSwitch/CustomSwitch';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import ArtistBubble, {
-  StyledAvatarContainerdiv,
+  StyledAvatarContainerDiv,
 } from '../components/molecules/ArtistBubble/ArtistBubble';
 import StyledCookieConsent from '../components/molecules/CookieConsent';
 import TabPanel from '../components/molecules/TabPanel';
@@ -273,7 +273,7 @@ const FestivalPage = withFallback(
                                     (lineup.artists.length %
                                       maxArtistsInLineupsWidth),
                                 },
-                                (_, i) => <StyledAvatarContainerdiv key={i} />,
+                                (_, i) => <StyledAvatarContainerDiv key={i} />,
                               )}
                           </Box>
                         </StyledCenteredColumnDiv>

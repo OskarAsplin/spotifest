@@ -5,7 +5,7 @@ import { getMaxArtistsInWidth } from '../../../utils/displayUtils';
 import { MatchingCircleSizeCss } from '../../atoms/MatchingCircle/MatchingCircle';
 import {
   ArtistBubbleSkeleton,
-  StyledAvatarContainerdiv,
+  StyledAvatarContainerDiv,
 } from '../../molecules/ArtistBubble/ArtistBubble';
 import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
 import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
@@ -64,7 +64,7 @@ const FestivalMatchCardSkeleton = () => {
         ))}
         {mockMatchingArtists.length > 0 &&
           Array.from({ length: fillMatchingArtistWidth }, (_, i) => (
-            <StyledAvatarContainerdiv key={i} />
+            <StyledAvatarContainerDiv key={i} />
           ))}
       </ArtistBox>
       <Divider sx={{ width: '100%' }}>

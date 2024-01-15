@@ -14,7 +14,7 @@ import {
 } from '../../../utils/displayUtils';
 import ExpandButton from '../../atoms/ExpandButton/ExpandButton';
 import ArtistBubble, {
-  StyledAvatarContainerdiv,
+  StyledAvatarContainerDiv,
 } from '../../molecules/ArtistBubble/ArtistBubble';
 import MatchingCircleWithTooltip from '../../molecules/MatchingCircleWithTooltip/MatchingCircleWithTooltip';
 import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
@@ -167,7 +167,7 @@ const FestivalMatchCard = memo(
             ))}
             {matchingArtists.length > 0 &&
               Array.from({ length: fillMatchingArtistWidth }, (_, i) => (
-                <StyledAvatarContainerdiv key={i} />
+                <StyledAvatarContainerDiv key={i} />
               ))}
           </ArtistBox>
         )}
@@ -205,7 +205,7 @@ const FestivalMatchCard = memo(
                   ))}
               {popularArtists.length > 0 &&
                 Array.from({ length: fillPopularArtistWidth }, (_, i) => (
-                  <StyledAvatarContainerdiv key={i} />
+                  <StyledAvatarContainerDiv key={i} />
                 ))}
             </ArtistBox>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
@@ -226,7 +226,7 @@ const FestivalMatchCard = memo(
                     ))}
                 {popularArtists.length > 0 &&
                   Array.from({ length: fillPopularArtistWidth }, (_, i) => (
-                    <StyledAvatarContainerdiv key={i} />
+                    <StyledAvatarContainerDiv key={i} />
                   ))}
               </ArtistBox>
             </Collapse>

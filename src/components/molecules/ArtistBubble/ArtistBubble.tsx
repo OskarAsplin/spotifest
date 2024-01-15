@@ -19,7 +19,7 @@ interface ArtistBubbleProps {
 }
 
 const ArtistBubble = ({ artist }: ArtistBubbleProps) => (
-  <StyledAvatarContainerdiv>
+  <StyledAvatarContainerDiv>
     <Link
       to={artistRoute.to}
       params={{ artistId: getArtistParam(artist.name, artist.spotifyId) }}
@@ -41,11 +41,11 @@ const ArtistBubble = ({ artist }: ArtistBubbleProps) => (
       </StyledIconButton>
     </Link>
     <Typography variant="caption">{artist.name}</Typography>
-  </StyledAvatarContainerdiv>
+  </StyledAvatarContainerDiv>
 );
 
 export const ArtistBubbleSkeleton = () => (
-  <StyledAvatarContainerdiv>
+  <StyledAvatarContainerDiv>
     <StyledIconButton disabled>
       <Skeleton variant="circular">
         <StyledAvatar />
@@ -54,10 +54,10 @@ export const ArtistBubbleSkeleton = () => (
     <Typography variant="caption">
       <Skeleton width={60} />
     </Typography>
-  </StyledAvatarContainerdiv>
+  </StyledAvatarContainerDiv>
 );
 
-export const StyledAvatarContainerdiv = styled('div')(() => ({
+export const StyledAvatarContainerDiv = styled('div')(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
