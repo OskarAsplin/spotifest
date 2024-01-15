@@ -15,7 +15,7 @@ const throwOnError = (error: any) =>
   error.response?.status >= 500 ||
   (typeof error.status === 'number' && error.status >= 500);
 
-const getKey = <Op extends OpBaseType>(
+export const getKey = <Op extends OpBaseType>(
   operation: Op,
   params?: Params<Op>,
 ): QueryKey =>

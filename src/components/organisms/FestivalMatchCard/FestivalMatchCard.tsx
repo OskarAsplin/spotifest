@@ -2,7 +2,7 @@ import { Box, Collapse, Divider, Paper, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 import { Artist, FestivalMatch } from '../../../api/types';
@@ -19,6 +19,7 @@ import ArtistBubble, {
 import MatchingCircleWithTooltip from '../../molecules/MatchingCircleWithTooltip/MatchingCircleWithTooltip';
 import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
 import { festivalRoute } from '../../../Routes';
+import isEqual from 'lodash-es/isEqual';
 
 export interface FestivalMatchCardProps {
   festival: FestivalMatch;
@@ -27,193 +28,175 @@ export interface FestivalMatchCardProps {
   showMatching?: boolean;
 }
 
-const FestivalMatchCard = ({
-  festival,
-  showMatching,
-  popularArtists,
-  matchingArtists = [],
-}: FestivalMatchCardProps) => {
-  const {
-    name,
-    locationText,
-    country,
-    date,
-    year,
-    cancelled,
-    matching_percent_artists,
-    matching_percent_genres,
-    matching_percent_combined,
-    top_genres,
-  } = festival;
-  const themeMode = useTheme().palette.mode;
-  const { t } = useTranslation();
-  const [expanded, setExpanded] = useState(false);
+const FestivalMatchCard = memo(
+  ({
+    festival,
+    showMatching,
+    popularArtists,
+    matchingArtists = [],
+  }: FestivalMatchCardProps) => {
+    const {
+      name,
+      locationText,
+      country,
+      date,
+      year,
+      cancelled,
+      matching_percent_artists,
+      matching_percent_genres,
+      matching_percent_combined,
+      top_genres,
+    } = festival;
+    const themeMode = useTheme().palette.mode;
+    const { t } = useTranslation();
+    const [expanded, setExpanded] = useState(false);
 
-  const bigScreen = useMediaQuery('(min-width:690px)');
-  const smallScreen = useMediaQuery('(max-width:439px)');
+    const bigScreen = useMediaQuery('(min-width:690px)');
+    const smallScreen = useMediaQuery('(max-width:439px)');
 
-  const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, smallScreen, 7);
-  const fillMatchingArtistWidth =
-    maxArtistsInWidth - (matchingArtists.length % maxArtistsInWidth);
-  const fillPopularArtistWidth =
-    maxArtistsInWidth - (popularArtists.length % maxArtistsInWidth);
+    const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, smallScreen, 7);
+    const fillMatchingArtistWidth =
+      maxArtistsInWidth - (matchingArtists.length % maxArtistsInWidth);
+    const fillPopularArtistWidth =
+      maxArtistsInWidth - (popularArtists.length % maxArtistsInWidth);
 
-  const noLineupRegistered = popularArtists.length === 0;
+    const noLineupRegistered = popularArtists.length === 0;
 
-  return (
-    <Paper elevation={3} sx={{ pt: 1 }} key={name}>
-      {showMatching && <Box sx={{ pb: 1 }} />}
-      <StyledPaddedDiv>
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}
-        >
+    return (
+      <Paper elevation={3} sx={{ pt: 1, mb: 3, width: '100%' }} key={name}>
+        {showMatching && <Box sx={{ pb: 1 }} />}
+        <StyledPaddedDiv>
           <Box
             sx={{
-              ...(showMatching
-                ? {}
-                : {
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    width: '100%',
-                  }),
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
             }}
           >
-            <Link
-              to={festivalRoute.to}
-              params={{ festivalId: encodeURIComponent(festival.name) }}
-              style={{ color: 'inherit' }}
+            <Box
+              sx={{
+                ...(showMatching
+                  ? {}
+                  : {
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      width: '100%',
+                    }),
+              }}
             >
-              <StyledTitleButton color="inherit" variant="outlined">
-                <Typography
-                  variant={bigScreen ? 'h3' : 'h5'}
-                  sx={{
-                    wordWrap: 'break-word',
-                    textAlign: 'center',
-                    fontWeight: 700,
-                  }}
-                >
-                  {name}
+              <Link
+                to={festivalRoute.to}
+                params={{ festivalId: encodeURIComponent(festival.name) }}
+                style={{ color: 'inherit' }}
+              >
+                <StyledTitleButton color="inherit" variant="outlined">
+                  <Typography
+                    variant={bigScreen ? 'h3' : 'h5'}
+                    sx={{
+                      wordWrap: 'break-word',
+                      textAlign: 'center',
+                      fontWeight: 700,
+                    }}
+                  >
+                    {name}
+                  </Typography>
+                </StyledTitleButton>
+              </Link>
+              {cancelled ? (
+                <Typography variant="subtitle2" color="secondary">
+                  {getCancelledDateString(date, year)}
                 </Typography>
-              </StyledTitleButton>
-            </Link>
-            {cancelled ? (
-              <Typography variant="subtitle2" color="secondary">
-                {getCancelledDateString(date, year)}
+              ) : (
+                <Typography variant="subtitle2">
+                  {date + ', ' + year}
+                </Typography>
+              )}
+              <Typography variant="subtitle2">
+                {displayedLocationName(locationText)}
+                <ReactCountryFlag
+                  countryCode={country}
+                  svg
+                  style={{ marginLeft: '8px' }}
+                />
               </Typography>
-            ) : (
-              <Typography variant="subtitle2">{date + ', ' + year}</Typography>
-            )}
-            <Typography variant="subtitle2">
-              {displayedLocationName(locationText)}
-              <ReactCountryFlag
-                countryCode={country}
-                svg
-                style={{ marginLeft: '8px' }}
+            </Box>
+            {showMatching && (
+              <MatchingCircleWithTooltip
+                total={Math.ceil(matching_percent_combined)}
+                artists={Math.ceil(matching_percent_artists)}
+                genres={Math.ceil(matching_percent_genres)}
               />
-            </Typography>
+            )}
           </Box>
-          {showMatching && (
-            <MatchingCircleWithTooltip
-              total={Math.ceil(matching_percent_combined)}
-              artists={Math.ceil(matching_percent_artists)}
-              genres={Math.ceil(matching_percent_genres)}
-            />
-          )}
-        </Box>
-        <Typography
-          variant="subtitle2"
-          noWrap
-          sx={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            textAlign: showMatching ? undefined : 'center',
-          }}
-        >
-          {`${t('common.genres')}: ${top_genres}`}
-        </Typography>
-        {showMatching && !noLineupRegistered && (
           <Typography
-            variant="body1"
-            color={
-              matchingArtists.length > 0
-                ? 'primary'
-                : ({ palette }) => palette.text.disabled
-            }
-            sx={{ my: 1.5, fontWeight: 700 }}
+            variant="subtitle2"
+            noWrap
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              textAlign: showMatching ? undefined : 'center',
+            }}
           >
-            {matchingArtists.length > 0
-              ? t('matching.card.matching_artists')
-              : t('matching.card.no_matching_artists')}
+            {`${t('common.genres')}: ${top_genres}`}
           </Typography>
-        )}
-      </StyledPaddedDiv>
-      {showMatching && !noLineupRegistered && (
-        <ArtistBox>
-          {matchingArtists.map((artist) => (
-            <ArtistBubble
-              key={`avatar_match_artist_${name}_${year}_${artist.name}`}
-              artist={artist}
-            />
-          ))}
-          {matchingArtists.length > 0 &&
-            Array.from({ length: fillMatchingArtistWidth }, (_, i) => (
-              <StyledAvatarContainerdiv key={i} />
-            ))}
-        </ArtistBox>
-      )}
-      {noLineupRegistered ? (
-        <StyledPaddedDiv>
-          <Typography
-            variant="body1"
-            color={({ palette }) => palette.text.disabled}
-            sx={{ py: 2, fontWeight: 700 }}
-          >
-            {t('common.no_lineup')}
-          </Typography>
-        </StyledPaddedDiv>
-      ) : (
-        <>
-          <Divider sx={{ width: '100%' }}>
+          {showMatching && !noLineupRegistered && (
             <Typography
               variant="body1"
-              color="primary"
+              color={
+                matchingArtists.length > 0
+                  ? 'primary'
+                  : ({ palette }) => palette.text.disabled
+              }
               sx={{ my: 1.5, fontWeight: 700 }}
-              onClick={() => setExpanded(!expanded)}
             >
-              {t('matching.card.popular_artists')}
+              {matchingArtists.length > 0
+                ? t('matching.card.matching_artists')
+                : t('matching.card.no_matching_artists')}
             </Typography>
-          </Divider>
+          )}
+        </StyledPaddedDiv>
+        {showMatching && !noLineupRegistered && (
           <ArtistBox>
-            {popularArtists.length > 0 &&
-              popularArtists
-                .slice(0, maxArtistsInWidth)
-                .map((artist) => (
-                  <ArtistBubble
-                    key={`avatar_pop_artist_${name}_${year}_${artist.name}`}
-                    artist={artist}
-                  />
-                ))}
-            {popularArtists.length > 0 &&
-              Array.from({ length: fillPopularArtistWidth }, (_, i) => (
+            {matchingArtists.map((artist) => (
+              <ArtistBubble
+                key={`avatar_match_artist_${name}_${year}_${artist.name}`}
+                artist={artist}
+              />
+            ))}
+            {matchingArtists.length > 0 &&
+              Array.from({ length: fillMatchingArtistWidth }, (_, i) => (
                 <StyledAvatarContainerdiv key={i} />
               ))}
           </ArtistBox>
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
+        )}
+        {noLineupRegistered ? (
+          <StyledPaddedDiv>
+            <Typography
+              variant="body1"
+              color={({ palette }) => palette.text.disabled}
+              sx={{ py: 2, fontWeight: 700 }}
+            >
+              {t('common.no_lineup')}
+            </Typography>
+          </StyledPaddedDiv>
+        ) : (
+          <>
+            <Divider sx={{ width: '100%' }}>
+              <Typography
+                variant="body1"
+                color="primary"
+                sx={{ my: 1.5, fontWeight: 700 }}
+                onClick={() => setExpanded(!expanded)}
+              >
+                {t('matching.card.popular_artists')}
+              </Typography>
+            </Divider>
             <ArtistBox>
               {popularArtists.length > 0 &&
                 popularArtists
-                  .slice(
-                    maxArtistsInWidth,
-                    maxArtistsInWidth > 4
-                      ? maxArtistsInWidth * 2
-                      : maxArtistsInWidth * 3,
-                  )
+                  .slice(0, maxArtistsInWidth)
                   .map((artist) => (
                     <ArtistBubble
                       key={`avatar_pop_artist_${name}_${year}_${artist.name}`}
@@ -225,28 +208,51 @@ const FestivalMatchCard = ({
                   <StyledAvatarContainerdiv key={i} />
                 ))}
             </ArtistBox>
-          </Collapse>
-          {popularArtists.length > maxArtistsInWidth && (
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                background:
-                  themeMode === 'dark' && !expanded
-                    ? 'linear-gradient(#313131, #404040)'
-                    : undefined,
-              }}
-            >
-              <ExpandButton
-                expanded={expanded}
-                onClick={() => setExpanded(!expanded)}
-              />
-            </Box>
-          )}
-        </>
-      )}
-    </Paper>
-  );
-};
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <ArtistBox>
+                {popularArtists.length > 0 &&
+                  popularArtists
+                    .slice(
+                      maxArtistsInWidth,
+                      maxArtistsInWidth > 4
+                        ? maxArtistsInWidth * 2
+                        : maxArtistsInWidth * 3,
+                    )
+                    .map((artist) => (
+                      <ArtistBubble
+                        key={`avatar_pop_artist_${name}_${year}_${artist.name}`}
+                        artist={artist}
+                      />
+                    ))}
+                {popularArtists.length > 0 &&
+                  Array.from({ length: fillPopularArtistWidth }, (_, i) => (
+                    <StyledAvatarContainerdiv key={i} />
+                  ))}
+              </ArtistBox>
+            </Collapse>
+            {popularArtists.length > maxArtistsInWidth && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  background:
+                    themeMode === 'dark' && !expanded
+                      ? 'linear-gradient(#313131, #404040)'
+                      : undefined,
+                }}
+              >
+                <ExpandButton
+                  expanded={expanded}
+                  onClick={() => setExpanded(!expanded)}
+                />
+              </Box>
+            )}
+          </>
+        )}
+      </Paper>
+    );
+  },
+  (prevProps, nextProps) => isEqual(prevProps, nextProps),
+);
 
 export default FestivalMatchCard;

@@ -1,7 +1,7 @@
 import { Box, Paper, ThemeProvider, Typography } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { escapeRegExp } from 'lodash-es';
+import escapeRegExp from 'lodash-es/escapeRegExp';
 import { SearchResponse } from '../../../api/types';
 import { getMainTheme } from '../../../theme/theme.styles';
 import { getArtistPath, getFestivalPath } from '../../../utils/routeUtils';

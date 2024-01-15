@@ -1,4 +1,5 @@
-import { fetchGet, fetchPost, getApiBaseUrl } from './restUtils';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { fetchGet, fetchPost } from './restUtils';
 import {
   Area,
   ArtistInfo,
@@ -8,45 +9,47 @@ import {
   PopularArtistsDict,
   SearchResponse,
 } from './types';
+import { getKey } from './api';
+import { ITEMS_PER_PAGE } from '../containers/FestivalMatchesContainer';
 
-const getOntourBase = () => `${getApiBaseUrl()}/onTour`;
+const ontourBaseUrl = `${import.meta.env.VITE_BACKEND_URL}/onTour`;
 
 export function getDjangoArtistBySpotifyId({
   spotifyId,
 }: {
   spotifyId: string;
 }) {
-  const url = `${getOntourBase()}/artistInfo/?spotifyId=${spotifyId}`;
+  const url = `${ontourBaseUrl}/artistInfo/?spotifyId=${spotifyId}`;
   return fetchGet<ArtistInfo>(url);
 }
 
 export function getDjangoArtistByName({ name }: { name: string }) {
-  const url = `${getOntourBase()}/artistInfo/?q=${encodeURIComponent(name)}`;
+  const url = `${ontourBaseUrl}/artistInfo/?q=${encodeURIComponent(name)}`;
   return fetchGet<ArtistInfo>(url);
 }
 
 export function getDjangoFestival({ name }: { name: string }) {
-  const url = `${getOntourBase()}/festivalInfo/?q=${encodeURIComponent(name)}`;
+  const url = `${ontourBaseUrl}/festivalInfo/?q=${encodeURIComponent(name)}`;
   return fetchGet<FestivalInfo>(url);
 }
 
 export function getDjangoSearchResults({ search }: { search: string }) {
-  const url = `${getOntourBase()}/search/?q=${encodeURIComponent(search)}`;
+  const url = `${ontourBaseUrl}/search/?q=${encodeURIComponent(search)}`;
   return fetchGet<SearchResponse>(url);
 }
 
 export function getDjangoAvailableCountries() {
-  const url = `${getOntourBase()}/availableCountries`;
+  const url = `${ontourBaseUrl}/availableCountries`;
   return fetchGet<Area[]>(url);
 }
 
 export function getDjangoAvailableContinents() {
-  const url = `${getOntourBase()}/availableContinents`;
+  const url = `${ontourBaseUrl}/availableContinents`;
   return fetchGet<Area[]>(url);
 }
 
 export function postDjangoFestivalMatches(matchRequest: MatchRequest) {
-  const url = `${getOntourBase()}/festivalMatches`;
+  const url = `${ontourBaseUrl}/festivalMatches`;
   return fetchPost<FestivalMatch[]>(url, JSON.stringify(matchRequest));
 }
 
@@ -55,6 +58,32 @@ export function postDjangoPopularArtistsInLineups({
 }: {
   lineups: string[];
 }) {
-  const url = `${getOntourBase()}/popularArtistsInLineups`;
+  const url = `${ontourBaseUrl}/popularArtistsInLineups`;
   return fetchPost<PopularArtistsDict>(url, JSON.stringify(lineups));
 }
+
+export const useDjangoPopularArtistsInLineupsInfiniteQuery = ({
+  allLineups,
+}: {
+  allLineups: string[];
+}) =>
+  useInfiniteQuery({
+    queryKey: getKey(getDjangoPopularArtistsInfiniteQuery, { allLineups }),
+    queryFn: getDjangoPopularArtistsInfiniteQuery({ allLineups }),
+    getNextPageParam: (_lastPage, pages) =>
+      pages.length * ITEMS_PER_PAGE < allLineups.length
+        ? pages.length + 1
+        : undefined,
+    initialPageParam: 1,
+  });
+
+const getDjangoPopularArtistsInfiniteQuery =
+  ({ allLineups }: { allLineups: string[] }) =>
+  ({ pageParam }: { pageParam: number }) => {
+    const lineups = allLineups.slice(
+      (pageParam - 1) * ITEMS_PER_PAGE,
+      Math.min(pageParam * ITEMS_PER_PAGE, allLineups.length),
+    );
+
+    return postDjangoPopularArtistsInLineups({ lineups });
+  };

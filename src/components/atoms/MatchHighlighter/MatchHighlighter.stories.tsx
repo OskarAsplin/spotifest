@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { escapeRegExp } from 'lodash-es';
+import escapeRegExp from 'lodash-es/escapeRegExp';
 import MatchHighlighter from './MatchHighlighter';
 
 type Story = StoryObj<typeof MatchHighlighter>;

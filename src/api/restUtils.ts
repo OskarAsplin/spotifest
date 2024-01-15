@@ -1,5 +1,3 @@
-export const getApiBaseUrl = () => import.meta.env.VITE_BACKEND_URL;
-
 enum RequestMethod {
   GET = 'GET',
   POST = 'POST',

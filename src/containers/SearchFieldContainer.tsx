@@ -1,6 +1,6 @@
 import { Box, ClickAwayListener, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import { debounce } from 'lodash-es';
+import debounce from 'lodash-es/debounce';
 import { ChangeEvent, startTransition, useState } from 'react';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getDjangoSearchResults } from '../api/djangoApi';

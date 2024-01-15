@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
 import FestivalMatchCard from './FestivalMatchCard';
 import { StyledRootDiv } from '../../../layouts/StyledLayoutComponents';
-import { StyledMatchesRootBox } from '../../templates/FestivalMatches/FestivalMatches';
+import { StyledMatchesRootDiv } from '../../templates/FestivalMatches/FestivalMatches';
 import { withRouter } from '../../../utils/storyUtils';
 
 type Story = StoryObj<typeof FestivalMatchCard>;
@@ -45,9 +45,9 @@ export default meta;
 
 const Template: Story['render'] = (args) => (
   <StyledRootDiv>
-    <StyledMatchesRootBox>
+    <StyledMatchesRootDiv>
       <FestivalMatchCard {...args} />
-    </StyledMatchesRootBox>
+    </StyledMatchesRootDiv>
   </StyledRootDiv>
 );
 

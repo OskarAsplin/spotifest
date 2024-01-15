@@ -22,7 +22,7 @@ const FestivalMatchCardSkeleton = () => {
     maxArtistsInWidth - (mockMatchingArtists.length % maxArtistsInWidth);
 
   return (
-    <Paper elevation={3} sx={{ py: 2 }}>
+    <Paper elevation={3} sx={{ py: 2, mb: 3 }}>
       <StyledPaddedDiv>
         <Box
           sx={{

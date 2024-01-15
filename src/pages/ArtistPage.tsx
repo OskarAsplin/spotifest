@@ -159,7 +159,7 @@ const ArtistPage = withFallback(
             <StyledFestivalsTypography variant={bigScreen ? 'h4' : 'h5'}>
               {t('artist_page.future_festivals')}
             </StyledFestivalsTypography>
-            <StyledStack spacing={3}>
+            <StyledStack>
               {artistInfo.festivalsFuture.map((festival) => (
                 <FestivalMatchCard
                   key={'FestivalMatchCard: ' + festival.name + festival.year}

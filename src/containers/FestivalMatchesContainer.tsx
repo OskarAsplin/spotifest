@@ -1,16 +1,15 @@
-import { PaginationProps } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
   postDjangoFestivalMatches,
+  useDjangoPopularArtistsInLineupsInfiniteQuery,
 } from '../api/djangoApi';
 import {
   getAllArtistsFromSavedTracks,
   getAllPlaylistArtists,
   getAllTopArtistsWithPopularity,
 } from '../api/spotifyApi';
-import { Artist } from '../api/types';
+import { Artist, FestivalMatch, PopularArtistsDict } from '../api/types';
 import {
   SAVED_TRACKS_CHOICE,
   TOP_ARTISTS_CHOICE,
@@ -20,13 +19,18 @@ import FestivalMatches, {
   FestivalMatchesSkeleton,
   NoMatchResults,
 } from '../components/templates/FestivalMatches/FestivalMatches';
-import { FestivalMatchCardWithPopularArtists } from '../containers/FestivalMatchCardWithPopularArtists';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { getAreaFilters } from '../utils/areaUtils';
-import { setPage, useMatchingStore } from '../zustand/matchingStore';
+import { useMatchingStore } from '../zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
+import { Key, memo, useEffect, useMemo, useRef } from 'react';
+import FestivalMatchCard from '../components/organisms/FestivalMatchCard/FestivalMatchCard';
+import FestivalMatchCardSkeleton from '../components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
+import { useLayoutEffect } from '@tanstack/react-router';
+import isEqual from 'lodash-es/isEqual';
 
-const ITEMS_PER_PAGE = 15;
+export const ITEMS_PER_PAGE = 15;
 
 interface FestivalMatchesContainerProps {
   sharedMatchBasis?: string;
@@ -109,9 +113,6 @@ const FestivalMatchesInnerContainer = ({
   weight,
   isTopArtists,
 }: FestivalMatchesInnerContainerProps) => {
-  const mediumOrBigScreen = useMediaQuery('(min-width:400px)');
-
-  const page = useMatchingStore((state) => state.page);
   const matchArea = useMatchingStore((state) => state.matchArea);
   const fromDate = useMatchingStore((state) => state.fromDate);
   const toDate = useMatchingStore((state) => state.toDate);
@@ -141,59 +142,133 @@ const FestivalMatchesInnerContainer = ({
     { params: matchRequest },
   );
 
-  const numPages = Math.ceil(festivalMatches.length / ITEMS_PER_PAGE);
-
-  const onPageChange = (
-    _event: React.ChangeEvent<unknown>,
-    value: number,
-    isBottomPagination: boolean,
-  ) => {
-    if (page !== value) {
-      setPage(value);
-      if (isBottomPagination) {
-        setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 30);
-      }
-    }
-  };
-
-  const displayedMatches = festivalMatches.slice(
-    (page - 1) * ITEMS_PER_PAGE,
-    Math.min(page * ITEMS_PER_PAGE, festivalMatches.length),
+  const allLineups = useMemo(
+    () => festivalMatches.map((match) => match.lineup_id),
+    [festivalMatches],
   );
 
-  const pageLineups = displayedMatches.map((match) => match.lineup_id);
+  const {
+    data: popularArtistsData,
+    hasNextPage,
+    fetchNextPage,
+    isFetchingNextPage,
+  } = useDjangoPopularArtistsInLineupsInfiniteQuery({
+    allLineups,
+  });
 
-  const paginationProps: PaginationProps = {
-    count: numPages,
-    page: page,
-    size: mediumOrBigScreen ? 'medium' : 'small',
-    onChange: (event: React.ChangeEvent<unknown>, value: number) =>
-      onPageChange(event, value, true),
-  };
+  const allPopularArtists = useMemo(
+    () => (popularArtistsData ? popularArtistsData.pages.map((d) => d) : []),
+    [popularArtistsData],
+  );
+
+  const numFestivalsWithPopularArtists = popularArtistsData
+    ? popularArtistsData.pages.reduce(
+        (acc, dict) => acc + Object.keys(dict).length,
+        0,
+      )
+    : 0;
+
+  const parentRef = useRef<HTMLDivElement | null>(null);
+
+  const parentOffsetRef = useRef(0);
+
+  useLayoutEffect(() => {
+    parentOffsetRef.current = parentRef.current?.offsetTop ?? 0;
+  }, []);
+
+  const scrollMargin = parentOffsetRef.current;
+
+  const { getVirtualItems, getTotalSize, measureElement } =
+    useWindowVirtualizer({
+      count: festivalMatches.length,
+      estimateSize: () => 700,
+      overscan: 3,
+      scrollMargin,
+    });
+
+  useEffect(() => {
+    const [lastItem] = [...getVirtualItems()].reverse();
+
+    if (!lastItem) return;
+
+    if (
+      lastItem.index >= numFestivalsWithPopularArtists - 1 &&
+      hasNextPage &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
+    }
+  }, [
+    hasNextPage,
+    fetchNextPage,
+    festivalMatches.length,
+    isFetchingNextPage,
+    getVirtualItems(),
+  ]);
+
+  const virtualItems = getVirtualItems().map(({ index, key, start }) => ({
+    index,
+    key,
+    start,
+  }));
 
   return (
-    <FestivalMatches
-      totalMatches={festivalMatches.length}
-      paginationProps={paginationProps}
-    >
-      {displayedMatches.map((festival) => {
-        const matchingArtists = artists
-          .filter(
-            (artist) =>
-              artist.spotifyId &&
-              festival.matching_artists.includes(artist.spotifyId),
-          )
-          .sort((a, b) => (a.userPopularity! < b.userPopularity! ? 1 : -1));
-        return (
-          <FestivalMatchCardWithPopularArtists
-            festival={festival}
-            pageLineups={pageLineups}
-            matchingArtists={matchingArtists}
-            key={'FestivalMatchCard: ' + festival.name + festival.year}
-            showMatching
-          />
-        );
-      })}
+    <FestivalMatches totalMatches={festivalMatches.length}>
+      <div
+        ref={parentRef}
+        style={{
+          height: `${getTotalSize()}px`,
+          position: 'relative',
+          overflowAnchor: 'none',
+        }}
+      >
+        {virtualItems.map((virtualItem) => {
+          const festival = festivalMatches[virtualItem.index];
+          const isLoaderRow =
+            virtualItem.index > numFestivalsWithPopularArtists - 1;
+
+          if (isLoaderRow) {
+            return <FestivalMatchCardSkeleton key={festival.name} />;
+          }
+
+          const popularArtists =
+            allPopularArtists[Math.floor(virtualItem.index / ITEMS_PER_PAGE)][
+              festival.lineup_id
+            ];
+
+          const matchingArtists = artists
+            .filter(
+              (artist) =>
+                artist.spotifyId &&
+                festival.matching_artists.includes(artist.spotifyId),
+            )
+            .sort((a, b) => (a.userPopularity! < b.userPopularity! ? 1 : -1));
+
+          return (
+            <div
+              key={virtualItem.key}
+              ref={measureElement}
+              data-index={virtualItem.index}
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                transform: `translateY(${virtualItem.start - scrollMargin}px)`,
+                display: 'flex',
+                width: '100%',
+              }}
+            >
+              <FestivalMatchCard
+                key={'FestivalMatchCard: ' + festival.name + festival.year}
+                festival={festival}
+                matchingArtists={matchingArtists}
+                showMatching
+                popularArtists={popularArtists}
+              />
+            </div>
+          );
+        })}
+      </div>
     </FestivalMatches>
   );
 };
