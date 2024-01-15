@@ -1,8 +1,7 @@
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { Box, Fab } from '@mui/material';
+import { Box } from '@mui/material';
 import { withFallback } from '../api/api';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import ScrollToTop from '../components/atoms/ScrollToTop/ScrollToTop';
+import ScrollToTopButton from '../components/atoms/ScrollToTopButton/ScrollToTopButton';
 import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
 import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
 import SocialMediaButtonsContainer from '../containers/SocialMediaButtonsContainer';
@@ -27,11 +26,7 @@ const MainPage = withFallback(
     <FestivalMatchSettingsContainer />
     <SocialMediaButtonsContainer />
     <FestivalMatchesContainer />
-    <ScrollToTop>
-      <Fab size="small" aria-label="scroll back to top">
-        <KeyboardArrowUpIcon />
-      </Fab>
-    </ScrollToTop>
+    <ScrollToTopButton />
   </StyledRootDiv>
 ));
 

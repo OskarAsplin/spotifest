@@ -24,4 +24,5 @@ const ScrollToTop = ({ children }: ScrollToTopProps) => {
     </Fade>
   );
 };
+
 export default ScrollToTop;

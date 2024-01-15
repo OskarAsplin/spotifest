@@ -5,6 +5,7 @@ import { shareMatchesRoute } from '../Routes';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
+import ScrollToTopButton from '../components/atoms/ScrollToTopButton/ScrollToTopButton';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
@@ -94,6 +95,7 @@ const SharedResultsPageInner = ({ playlistId }: { playlistId: string }) => {
       />
       <SharedMatchesSettingsContainer sharedMatchBasis={playlistId} />
       <FestivalMatchesContainer sharedMatchBasis={playlistId} />
+      <ScrollToTopButton />
     </StyledRootDiv>
   );
 };
