@@ -1,28 +1,28 @@
 import {
   NotFoundRoute,
-  RootRoute,
-  Route,
-  Router,
   RouterProvider,
+  createRootRoute,
+  createRoute,
+  createRouter,
   lazyRouteComponent,
 } from '@tanstack/react-router';
-import { StandardLayout } from './layouts/StandardLayout';
 import ProtectedRoute from './layouts/ProtectedRoute';
+import { StandardLayout } from './layouts/StandardLayout';
 import PageNotFound from './pages/PageNotFound';
 
-const rootRoute = new RootRoute();
+const rootRoute = createRootRoute();
 
-export const loginRoute = new Route({
+export const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: 'login',
   component: lazyRouteComponent(() => import('./pages/LoginPage')),
 });
-const withLayoutRoute = new Route({
+const withLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: 'withLayoutRoute',
   component: () => <StandardLayout />,
 });
-const withProtectedAndLayoutRoute = new Route({
+const withProtectedAndLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: 'withProtectedAndLayoutRoute',
   component: () => (
@@ -31,35 +31,35 @@ const withProtectedAndLayoutRoute = new Route({
     </ProtectedRoute>
   ),
 });
-export const indexRoute = new Route({
+export const indexRoute = createRoute({
   getParentRoute: () => withProtectedAndLayoutRoute,
   path: '/',
   component: lazyRouteComponent(() => import('./pages/MainPage')),
 });
-export const artistRoute = new Route({
+export const artistRoute = createRoute({
   getParentRoute: () => withLayoutRoute,
   path: 'artist/$artistId',
   component: lazyRouteComponent(() => import('./pages/ArtistPage')),
 });
-export const festivalRoute = new Route({
+export const festivalRoute = createRoute({
   getParentRoute: () => withLayoutRoute,
   path: 'festival/$festivalId',
   component: lazyRouteComponent(() => import('./pages/FestivalPage')),
 });
-export const shareMatchesRoute = new Route({
+export const shareMatchesRoute = createRoute({
   getParentRoute: () => withLayoutRoute,
   path: 'share/$matchBasis',
   component: lazyRouteComponent(() => import('./pages/SharedResultsPage')),
 });
 // When returning from Spotify login without matchBasis in path
-export const shareMatchesReturnRoute = new Route({
+export const shareMatchesReturnRoute = createRoute({
   getParentRoute: () => withLayoutRoute,
   path: 'share',
   component: lazyRouteComponent(
     () => import('./pages/SharedResultsReturnPage'),
   ),
 });
-export const aboutRoute = new Route({
+export const aboutRoute = createRoute({
   getParentRoute: () => withLayoutRoute,
   path: 'about',
   component: lazyRouteComponent(() => import('./pages/AboutPage')),
@@ -81,7 +81,7 @@ const routeTree = rootRoute.addChildren([
   ]),
 ]);
 
-const router = new Router({ routeTree, notFoundRoute });
+const router = createRouter({ routeTree, notFoundRoute });
 
 // Register your router for maximum type safety
 declare module '@tanstack/react-router' {

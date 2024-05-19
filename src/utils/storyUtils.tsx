@@ -17,5 +17,5 @@ export const withRouter = (Story: StoryFn) => {
     routeTree: rootRoute.addChildren([catchAllRoute]),
   });
 
-  return <RouterProvider router={router} />;
+  return <RouterProvider router={router as any} />;
 };
