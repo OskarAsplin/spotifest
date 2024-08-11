@@ -3,11 +3,12 @@ import { styled } from '@mui/material/styles';
 import { forwardRef } from 'react';
 
 const HtmlTooltip = forwardRef<HTMLDivElement, TooltipProps>(
+  // eslint-disable-next-line react/prop-types
   ({ children, ...props }, ref) => (
     <StyledTooltip ref={ref} {...props}>
       <span>{children}</span>
     </StyledTooltip>
-  )
+  ),
 );
 
 export const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
