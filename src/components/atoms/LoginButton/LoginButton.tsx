@@ -1,6 +1,11 @@
-import { Box, Button, buttonClasses, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  buttonClasses,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 
 interface LoginButtonProps {

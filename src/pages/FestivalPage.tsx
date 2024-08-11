@@ -8,9 +8,9 @@ import {
   tabClasses,
   Tabs,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';

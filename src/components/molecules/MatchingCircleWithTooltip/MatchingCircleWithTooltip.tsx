@@ -1,5 +1,4 @@
-import { Typography } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { Typography, useMediaQuery } from '@mui/material';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';

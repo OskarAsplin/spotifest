@@ -1,5 +1,4 @@
-import { Divider, Typography } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import { Divider, Typography, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useApiSuspenseQuery } from '../api/api';
 import { getArtistRelatedArtists } from '../api/spotifyApi';

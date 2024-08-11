@@ -15,9 +15,9 @@ import {
   ListItemText,
   Paper,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import clsx from 'clsx';
 import { useState } from 'react';
 import ExpandButton from '../components/atoms/ExpandButton/ExpandButton';

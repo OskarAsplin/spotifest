@@ -1,6 +1,12 @@
-import { Box, Collapse, Divider, Paper, Typography } from '@mui/material';
+import {
+  Box,
+  Collapse,
+  Divider,
+  Paper,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { Link } from '@tanstack/react-router';
 import { memo, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';

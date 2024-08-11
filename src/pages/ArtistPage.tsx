@@ -7,9 +7,9 @@ import {
   Paper,
   Stack,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useTranslation } from 'react-i18next';
 import { artistRoute, festivalRoute } from '../Routes';
 import { useApiSuspenseQuery, withFallback } from '../api/api';

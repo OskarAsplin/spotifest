@@ -8,10 +8,10 @@ import {
   Paper,
   SelectChangeEvent,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { indigo } from '@mui/material/colors';
 import { styled, useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Area, MatchSettings, Playlist } from '../../../api/types';

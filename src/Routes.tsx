@@ -1,16 +1,15 @@
 import {
-  NotFoundRoute,
-  RouterProvider,
   createRootRoute,
   createRoute,
   createRouter,
   lazyRouteComponent,
+  RouterProvider,
 } from '@tanstack/react-router';
 import ProtectedRoute from './layouts/ProtectedRoute';
 import { StandardLayout } from './layouts/StandardLayout';
 import PageNotFound from './pages/PageNotFound';
 
-const rootRoute = createRootRoute();
+const rootRoute = createRootRoute({ notFoundComponent: PageNotFound });
 
 export const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -64,10 +63,6 @@ export const aboutRoute = createRoute({
   path: 'about',
   component: lazyRouteComponent(() => import('./pages/AboutPage')),
 });
-const notFoundRoute = new NotFoundRoute({
-  getParentRoute: () => rootRoute,
-  component: PageNotFound,
-});
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
@@ -81,7 +76,7 @@ const routeTree = rootRoute.addChildren([
   ]),
 ]);
 
-const router = createRouter({ routeTree, notFoundRoute });
+const router = createRouter({ routeTree });
 
 // Register your router for maximum type safety
 declare module '@tanstack/react-router' {

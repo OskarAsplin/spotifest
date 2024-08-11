@@ -10,9 +10,9 @@ import {
   Toolbar,
   toolbarClasses,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useState } from 'react';
 import { SearchFieldContainerProps } from '../../../containers/SearchFieldContainer';
 import { useTranslation } from 'react-i18next';
@@ -113,7 +113,7 @@ const PositionSearchFieldSmallScreen = styled('div')(
       '@media (max-width: 589px)': { marginRight: '36px' },
     },
     '@media (max-width: 439px)': { marginRight: '28px' },
-  })
+  }),
 );
 
 const StyledToolbar = styled(Toolbar)(({ theme: { spacing } }) => ({

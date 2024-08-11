@@ -1,6 +1,10 @@
-import { Box, Typography, typographyClasses } from '@mui/material';
+import {
+  Box,
+  Typography,
+  typographyClasses,
+  useMediaQuery,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import LoginButton from '../components/atoms/LoginButton/LoginButton';

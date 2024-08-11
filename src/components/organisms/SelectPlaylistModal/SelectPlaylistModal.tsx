@@ -8,9 +8,9 @@ import {
   Paper,
   SelectChangeEvent,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 import { Trans, useTranslation } from 'react-i18next';
 import { Playlist } from '../../../api/types';
 import StandardLink from '../../atoms/StandardLink/StandardLink';

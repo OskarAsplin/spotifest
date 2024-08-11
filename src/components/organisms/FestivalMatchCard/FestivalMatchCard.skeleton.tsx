@@ -1,5 +1,11 @@
-import { Box, Divider, Paper, Skeleton, Typography } from '@mui/material';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
+import {
+  Box,
+  Divider,
+  Paper,
+  Skeleton,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { ArtistBox } from '../../../layouts/StyledLayoutComponents';
 import { getMaxArtistsInWidth } from '../../../utils/displayUtils';
 import { MatchingCircleSizeCss } from '../../atoms/MatchingCircle/MatchingCircle';

@@ -4,10 +4,10 @@ import {
   InputAdornment,
   TextField,
   TextFieldProps,
+  useMediaQuery,
 } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery/useMediaQuery';
 
 const SearchField = (props: TextFieldProps) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
