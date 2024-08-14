@@ -21,12 +21,12 @@ const meta: Meta<typeof CopyToClipboard> = {
 
 export default meta;
 
-const copiedText = 'This text will be copied';
+const textToCopy = 'This text will be copied';
 
 const Template: Story['render'] = () => (
   <CopyToClipboard>
     {({ copy }) => (
-      <button onClick={() => copy(copiedText)}>{copiedText}</button>
+      <button onClick={() => copy(textToCopy)}>{textToCopy}</button>
     )}
   </CopyToClipboard>
 );

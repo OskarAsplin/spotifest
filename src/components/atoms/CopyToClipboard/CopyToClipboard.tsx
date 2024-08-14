@@ -1,5 +1,4 @@
 import { Tooltip } from '@mui/material';
-import copy from 'copy-to-clipboard';
 import { useState } from 'react';
 
 interface CopyToClipboardProps {
@@ -10,7 +9,7 @@ const CopyToClipboard = ({ children }: CopyToClipboardProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const onCopy = (content: string) => {
-    copy(content);
+    navigator.clipboard.writeText(content);
     setShowTooltip(true);
     setTimeout(() => setShowTooltip(false), 1500);
   };
