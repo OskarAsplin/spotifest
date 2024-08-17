@@ -13513,7 +13513,7 @@ __metadata:
     vite-plugin-checker: ^0.7.2
     vite-plugin-svgr: ^4.2.0
     vite-tsconfig-paths: ^5.0.1
-    zustand: ^4.5.4
+    zustand: 5.0.0-rc.0
   languageName: unknown
   linkType: soft
 
@@ -14593,15 +14593,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-sync-external-store@npm:1.2.0":
-  version: 1.2.0
-  resolution: "use-sync-external-store@npm:1.2.0"
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 5c639e0f8da3521d605f59ce5be9e094ca772bd44a4ce7322b055a6f58eeed8dda3c94cabd90c7a41fb6fa852210092008afe48f7038792fd47501f33299116a
-  languageName: node
-  linkType: hard
-
 "use-sync-external-store@npm:^1.2.2":
   version: 1.2.2
   resolution: "use-sync-external-store@npm:1.2.2"
@@ -15102,15 +15093,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zustand@npm:^4.5.4":
-  version: 4.5.4
-  resolution: "zustand@npm:4.5.4"
-  dependencies:
-    use-sync-external-store: 1.2.0
+"zustand@npm:5.0.0-rc.0":
+  version: 5.0.0-rc.0
+  resolution: "zustand@npm:5.0.0-rc.0"
   peerDependencies:
-    "@types/react": ">=16.8"
+    "@types/react": ">=18.0.0"
     immer: ">=9.0.6"
-    react: ">=16.8"
+    react: ">=18.0.0"
+    use-sync-external-store: ">=1.2.0"
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -15118,6 +15108,8 @@ __metadata:
       optional: true
     react:
       optional: true
-  checksum: 8e824aea8b5232f9a719c6d33e016272a0dae8c69a0980a3e2aefbcf2a89379b343af1f2dace340f45f788ec8d8a55a56d037c53498b3b05b91e985d26cae047
+    use-sync-external-store:
+      optional: true
+  checksum: 21428700a75393309b1a245b48c94a74649df602bb7863f1d45241e12377078895e1b7fa549cbd2f062f23289a4cc3d74926a07eca9d78c8caef52fee52441bc
   languageName: node
   linkType: hard
