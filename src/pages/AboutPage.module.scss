@@ -57,11 +57,11 @@ $fullTechView: 1040px;
 }
 
 .box {
+  max-width: 650px;
+  margin: 0 * $dis 2 * $dis 2 * $dis 2 * $dis;
   @media (max-width: 549px) {
     width: 100%;
   }
-  max-width: 650px;
-  margin: 0 * $dis 2 * $dis 2 * $dis 2 * $dis;
 }
 
 .box2 {
@@ -72,6 +72,7 @@ $fullTechView: 1040px;
 }
 
 .techBox {
+  margin: 0 * $dis 2 * $dis 2 * $dis 2 * $dis;
   @media (max-width: 549px) {
     width: 100%;
   }
@@ -81,7 +82,6 @@ $fullTechView: 1040px;
   @media (min-width: $fullTechView) {
     max-width: 1000px;
   }
-  margin: 0 * $dis 2 * $dis 2 * $dis 2 * $dis;
 }
 
 .supportExpandedBox {
