@@ -25,7 +25,7 @@ import {
   setMatchBasis,
   useMatchingStore,
 } from '../../../zustand/matchingStore';
-import { MATCHING_MAX_DATE } from '../../../config';
+import { DATE_RANGE_YEAR_OPTIONS, MATCHING_MAX_DATE } from '../../../config';
 
 interface FestivalMatchSettingsBarProps {
   matchBasis?: string;
@@ -89,7 +89,7 @@ const FestivalMatchSettingsBar = ({
     }
   };
 
-  const onDateRangePreSelect = (range: 2022 | 2023 | 2024 | 'future') => {
+  const onDateRangePreSelect = (range: number | 'future') => {
     if (typeof range === 'number') {
       const from = new Date(range, 0, 1);
       const to = new Date(range, 11, 31);
@@ -219,9 +219,11 @@ const FestivalMatchSettingsBar = ({
       )}
       {showYearPreSelect && (
         <StyledBox sx={{ justifyContent: 'center', pb: 0.5, width: '100%' }}>
-          <Button onClick={() => onDateRangePreSelect(2022)}>2022</Button>
-          <Button onClick={() => onDateRangePreSelect(2023)}>2023</Button>
-          <Button onClick={() => onDateRangePreSelect(2024)}>2024</Button>
+          {DATE_RANGE_YEAR_OPTIONS.map((year) => (
+            <Button key={year} onClick={() => onDateRangePreSelect(year)}>
+              {year}
+            </Button>
+          ))}
           <Button onClick={() => onDateRangePreSelect('future')}>
             {t('common.future')}
           </Button>

@@ -245,6 +245,7 @@ const FestivalMatchCard = memo(
                     themeMode === 'dark' && !expanded
                       ? 'linear-gradient(#313131, #404040)'
                       : undefined,
+                  borderRadius: 'inherit',
                 }}
               >
                 <ExpandButton
