@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import { shareMatchesRoute } from '../Routes';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
@@ -12,10 +11,7 @@ import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
 import SharedMatchesSettingsContainer from '../containers/SharedMatchesSettingsContainer';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
-import { getAuthorizeHref } from '../oauthConfig';
 import '../styles/base.scss';
-import { useIsLoggedIn } from '../zustand/authStore';
-import { setSharedMatchBasis } from '../zustand/sharedResultsStore';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const CustomErrorFallback = () => {
@@ -27,29 +23,11 @@ const SharedResultsPage = withFallback(
   SuspenseFallback,
   CustomErrorFallback,
 )(() => {
-  const loggedIn = useIsLoggedIn();
   const { matchBasis } = shareMatchesRoute.useParams();
   const { playlistId } = getIdFromMatchBasis(matchBasis);
 
   if (!playlistId) throw 'Invalid match basis';
 
-  useEffect(() => {
-    if (matchBasis && !loggedIn) {
-      // Set /share as redirect URI.
-      // Store the sharedMatchBasis in localStorage,
-      // so it can be used to navigate the specific share url on return from the Spotify login.
-      // This is all done because Spotify needs predefined redirect URIs, so it needs to be /share instead of dynamic.
-      setSharedMatchBasis(matchBasis);
-      window.open(getAuthorizeHref('/share'), '_self');
-    }
-  }, []);
-
-  if (!loggedIn) return null;
-
-  return <SharedResultsPageInner playlistId={playlistId} />;
-});
-
-const SharedResultsPageInner = ({ playlistId }: { playlistId: string }) => {
   const { data: sharedPlaylist } = useApiSuspenseQuery(getPlaylist, {
     params: { id: playlistId },
   });
@@ -98,6 +76,6 @@ const SharedResultsPageInner = ({ playlistId }: { playlistId: string }) => {
       <ScrollToTopButton />
     </StyledRootDiv>
   );
-};
+});
 
 export default SharedResultsPage;

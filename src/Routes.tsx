@@ -3,11 +3,29 @@ import {
   createRoute,
   createRouter,
   lazyRouteComponent,
+  redirect,
   RouterProvider,
 } from '@tanstack/react-router';
-import ProtectedRoute from './layouts/ProtectedRoute';
 import { StandardLayout } from './layouts/StandardLayout';
 import PageNotFound from './pages/PageNotFound';
+import {
+  getCodeVerifier,
+  getRefreshToken,
+  getIsLoggedIn,
+  resetAuthStore,
+} from './zustand/authStore';
+import {
+  getSpotifyAccessTokenWithCode,
+  redirectToSpotifyLogin,
+  refreshSpotifyAccessToken,
+} from './utils/spotifyAuthUtils';
+import {
+  getSharedMatchBasis,
+  setSharedMatchBasis,
+} from './zustand/sharedResultsStore';
+import ErrorFallback from './layouts/ErrorFallback';
+import { t } from 'i18next';
+import { resetMathingStore } from './zustand/matchingStore';
 
 const rootRoute = createRootRoute({ notFoundComponent: PageNotFound });
 
@@ -15,25 +33,54 @@ export const loginRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: 'login',
   component: lazyRouteComponent(() => import('./pages/LoginPage')),
+  beforeLoad: () => {
+    resetAuthStore();
+    resetMathingStore();
+  },
 });
 const withLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
   id: 'withLayoutRoute',
   component: () => <StandardLayout />,
 });
-const withProtectedAndLayoutRoute = createRoute({
+const withProtectedLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
-  id: 'withProtectedAndLayoutRoute',
-  component: () => (
-    <ProtectedRoute>
-      <StandardLayout />
-    </ProtectedRoute>
-  ),
+  id: 'withProtectedLayoutRoute',
+  component: () => <StandardLayout hideIfNotLoggedIn />,
 });
 export const indexRoute = createRoute({
-  getParentRoute: () => withProtectedAndLayoutRoute,
+  getParentRoute: () => withProtectedLayoutRoute,
   path: '/',
   component: lazyRouteComponent(() => import('./pages/MainPage')),
+  validateSearch: (search: Record<string, unknown>): { code?: string } => ({
+    code: search.code as string | undefined,
+  }),
+  beforeLoad: async ({ search: { code } }) => {
+    if (getIsLoggedIn()) return;
+
+    const codeVerifier = getCodeVerifier();
+    if (code && codeVerifier) {
+      try {
+        await getSpotifyAccessTokenWithCode(code, codeVerifier);
+      } catch {
+        throw redirect({ to: '/login' });
+      }
+      throw redirect({ to: '/' }); // To remove the code from URL params
+    }
+
+    const refreshToken = getRefreshToken();
+    if (refreshToken) {
+      try {
+        await refreshSpotifyAccessToken(refreshToken);
+
+        return;
+      } catch {
+        throw redirect({ to: '/login' });
+      }
+    }
+
+    throw redirect({ to: '/login' });
+  },
 });
 export const artistRoute = createRoute({
   getParentRoute: () => withLayoutRoute,
@@ -46,17 +93,54 @@ export const festivalRoute = createRoute({
   component: lazyRouteComponent(() => import('./pages/FestivalPage')),
 });
 export const shareMatchesRoute = createRoute({
-  getParentRoute: () => withLayoutRoute,
+  getParentRoute: () => withProtectedLayoutRoute,
   path: 'share/$matchBasis',
   component: lazyRouteComponent(() => import('./pages/SharedResultsPage')),
+  beforeLoad: async ({ params: { matchBasis } }) => {
+    if (getIsLoggedIn()) return;
+
+    const refreshToken = getRefreshToken();
+    if (refreshToken) {
+      try {
+        await refreshSpotifyAccessToken(refreshToken);
+
+        return;
+      } catch {
+        setSharedMatchBasis(matchBasis);
+        redirectToSpotifyLogin();
+
+        return;
+      }
+    }
+
+    setSharedMatchBasis(matchBasis);
+    redirectToSpotifyLogin();
+  },
 });
 // When returning from Spotify login without matchBasis in path
 export const shareMatchesReturnRoute = createRoute({
-  getParentRoute: () => withLayoutRoute,
+  getParentRoute: () => withProtectedLayoutRoute,
   path: 'share',
-  component: lazyRouteComponent(
-    () => import('./pages/SharedResultsReturnPage'),
+  component: () => (
+    <ErrorFallback fallbackText={t('error.invalid_share_url')} />
   ),
+  validateSearch: (search: Record<string, unknown>): { code?: string } => ({
+    code: search.code as string | undefined,
+  }),
+  beforeLoad: async ({ search: { code } }) => {
+    const sharedMatchBasis = getSharedMatchBasis();
+    const codeVerifier = getCodeVerifier();
+
+    if (!code || !codeVerifier || !sharedMatchBasis) {
+      throw Error('Invalid URL');
+    }
+
+    await getSpotifyAccessTokenWithCode(code, codeVerifier);
+    throw redirect({
+      to: '/share/$matchBasis',
+      params: { matchBasis: sharedMatchBasis },
+    });
+  },
 });
 export const aboutRoute = createRoute({
   getParentRoute: () => withLayoutRoute,
@@ -66,14 +150,12 @@ export const aboutRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   loginRoute,
-  withProtectedAndLayoutRoute.addChildren([indexRoute]),
-  withLayoutRoute.addChildren([
-    artistRoute,
-    festivalRoute,
+  withProtectedLayoutRoute.addChildren([
+    indexRoute,
     shareMatchesRoute,
     shareMatchesReturnRoute,
-    aboutRoute,
   ]),
+  withLayoutRoute.addChildren([artistRoute, festivalRoute, aboutRoute]),
 ]);
 
 const router = createRouter({ routeTree });

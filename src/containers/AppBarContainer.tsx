@@ -8,7 +8,7 @@ import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopove
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 import SearchFieldContainer from './SearchFieldContainer';
 import { indexRoute } from '../Routes';
-import { logOut, useIsLoggedIn } from '../zustand/authStore';
+import { resetAuthStore, useIsLoggedIn } from '../zustand/authStore';
 
 const AppBarContainer = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -68,7 +68,7 @@ const AppBarContainer = () => {
         userName={userInfo?.displayName}
         spotifyUrl={userInfo?.spotifyUrl}
         onClose={() => setAnchorEl(null)}
-        onClickLogout={logOut}
+        onClickLogout={resetAuthStore}
       />
       <AppBarMenuDrawerContainer
         open={drawerOpen}

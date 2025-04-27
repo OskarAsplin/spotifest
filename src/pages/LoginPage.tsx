@@ -5,14 +5,11 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { useEffect } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 import LoginButton from '../components/atoms/LoginButton/LoginButton';
 import StandardLink from '../components/atoms/StandardLink/StandardLink';
 import UsageThumbnailsWithGallery from '../components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
-import { getAuthorizeHref } from '../oauthConfig';
-import { logOut } from '../zustand/authStore';
-import { resetMathingStore } from '../zustand/matchingStore';
+import { redirectToSpotifyLogin } from '../utils/spotifyAuthUtils';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');
@@ -21,13 +18,6 @@ const LoginPage = () => {
   const verySmallScreen = useMediaQuery('(max-width:330px)');
 
   const { t } = useTranslation();
-
-  useEffect(() => {
-    logOut();
-    resetMathingStore();
-  }, []);
-
-  const onClickLoginButton = () => window.open(getAuthorizeHref(), '_self');
 
   return (
     <StyledBackgroundDiv>
@@ -63,7 +53,7 @@ const LoginPage = () => {
           px: 1,
         }}
       >
-        <LoginButton onClick={onClickLoginButton} />
+        <LoginButton onClick={redirectToSpotifyLogin} />
       </Box>
       <StyledFooterDiv>
         <UsageThumbnailsWithGallery />

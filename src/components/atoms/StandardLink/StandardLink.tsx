@@ -23,6 +23,7 @@ const StandardLink = ({ to, ...restProps }: StandardLinkProps) =>
       target="_blank"
       rel="noopener noreferrer"
       underline="hover"
+      sx={{ ...restProps.sx, '&:hover': { cursor: 'pointer' } }}
     />
   );
 

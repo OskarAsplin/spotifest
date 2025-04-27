@@ -9,8 +9,8 @@ const useSharedResultsStore = create<Store>()(
   persist(() => INITIAL_STORE, { name: 'shared-results-storage' }),
 );
 
-export const useSharedMatchBasis = () =>
-  useSharedResultsStore((state) => state.matchBasis);
+export const getSharedMatchBasis = () =>
+  useSharedResultsStore.getState().matchBasis;
 
 export const setSharedMatchBasis = (matchBasis: string) =>
   useSharedResultsStore.setState({ matchBasis });

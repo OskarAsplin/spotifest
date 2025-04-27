@@ -8,6 +8,7 @@ import {
   mapToUserInfo,
 } from './mappers';
 import { Artist, MatchOption, Playlist } from './types';
+import { getAccessToken } from '../zustand/authStore';
 
 const spotifyApi = new SpotifyWebApi();
 
@@ -17,6 +18,12 @@ const throwError = (error: any) => {
 
 export const setSpotifyToken = (token: string) =>
   spotifyApi.setAccessToken(token);
+
+// Set token from store when initializing file.
+// If token is set only from useEffect in React component we could potentially have race conditions
+// with the first Spotify requests being made from other components in the app.
+const accessToken = getAccessToken();
+if (accessToken) setSpotifyToken(accessToken);
 
 export const getLoggedInUserInfo = () =>
   spotifyApi.getMe().then(mapToUserInfo, throwError);

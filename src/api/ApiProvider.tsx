@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactNode } from 'react';
-import { logOut } from '../zustand/authStore';
+import { resetAuthStore } from '../zustand/authStore';
 
 const DEFAULT_QUERY_OPTIONS: DefaultOptions['queries'] = {
   gcTime: Infinity,
@@ -18,7 +18,7 @@ const DEFAULT_QUERY_OPTIONS: DefaultOptions['queries'] = {
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
     onError: (error: any) => {
-      if (error.status === 401) logOut();
+      if (error.status === 401) resetAuthStore();
     },
   }),
 });
