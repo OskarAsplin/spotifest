@@ -7,7 +7,7 @@ import {
 import { styled } from '@mui/material/styles';
 import { Trans, useTranslation } from 'react-i18next';
 import LoginButton from '../components/atoms/LoginButton/LoginButton';
-import StandardLink from '../components/atoms/StandardLink/StandardLink';
+import { StandardLink } from '../components/atoms/StandardLink/StandardLink';
 import UsageThumbnailsWithGallery from '../components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
 import { redirectToSpotifyLogin } from '../utils/spotifyAuthUtils';
 

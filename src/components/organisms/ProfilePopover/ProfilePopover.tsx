@@ -1,6 +1,6 @@
 import { Box, Popover, PopoverProps, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import StandardLink from '../../atoms/StandardLink/StandardLink';
+import { StandardLink } from '../../atoms/StandardLink/StandardLink';
 import { Trans, useTranslation } from 'react-i18next';
 import { redirectToSpotifyLogin } from '../../../utils/spotifyAuthUtils';
 

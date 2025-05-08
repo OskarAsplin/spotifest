@@ -21,7 +21,7 @@ import { useTheme } from '@mui/material/styles';
 import clsx from 'clsx';
 import { useState } from 'react';
 import ExpandButton from '../components/atoms/ExpandButton/ExpandButton';
-import StandardLink from '../components/atoms/StandardLink/StandardLink';
+import { StandardLink } from '../components/atoms/StandardLink/StandardLink';
 import TechStackContent from '../components/templates/TechStackContent/TechStackContent';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';

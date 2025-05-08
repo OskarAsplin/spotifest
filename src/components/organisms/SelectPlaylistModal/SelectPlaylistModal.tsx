@@ -13,7 +13,7 @@ import {
 import { styled } from '@mui/material/styles';
 import { Trans, useTranslation } from 'react-i18next';
 import { Playlist } from '../../../api/types';
-import StandardLink from '../../atoms/StandardLink/StandardLink';
+import { StandardLink } from '../../atoms/StandardLink/StandardLink';
 import MatchCriteriaSelect, {
   TOP_ARTISTS_CHOICE,
 } from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';

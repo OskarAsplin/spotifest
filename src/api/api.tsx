@@ -1,5 +1,5 @@
 import { QueryKey, useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { ComponentType, forwardRef, Suspense } from 'react';
+import { ComponentType, Suspense } from 'react';
 import { ErrorBoundary, FallbackProps } from 'react-error-boundary';
 import { uniqueFunctionId } from './uniqueFunctionId';
 import {
@@ -64,14 +64,13 @@ export const withFallback = <Props extends object>(
   SuspenseFallback?: ComponentType<Props>,
   ErrorFallback: ComponentType<FallbackProps> = () => null,
 ) => {
-  return (Component: ComponentType<Props>) =>
-    forwardRef((props: Props, ref) => (
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <Suspense
-          fallback={SuspenseFallback ? <SuspenseFallback {...props} /> : false}
-        >
-          <Component ref={ref} {...props} />
-        </Suspense>
-      </ErrorBoundary>
-    ));
+  return (Component: ComponentType<Props>) => (props: Props) => (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Suspense
+        fallback={SuspenseFallback ? <SuspenseFallback {...props} /> : false}
+      >
+        <Component {...props} />
+      </Suspense>
+    </ErrorBoundary>
+  );
 };

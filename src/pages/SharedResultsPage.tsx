@@ -5,7 +5,10 @@ import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
 import ScrollToTopButton from '../components/atoms/ScrollToTopButton/ScrollToTopButton';
-import StandardLink from '../components/atoms/StandardLink/StandardLink';
+import {
+  StandardLink,
+  StandardRouterLink,
+} from '../components/atoms/StandardLink/StandardLink';
 import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
 import SharedMatchesSettingsContainer from '../containers/SharedMatchesSettingsContainer';
@@ -61,7 +64,9 @@ const SharedResultsPage = withFallback(
       <Typography variant="subtitle1">
         <Trans
           i18nKey="shared_results_page.test_yourself"
-          components={{ Link: <StandardLink /> }}
+          // @ts-ignore
+          components={{ Link: <StandardRouterLink /> }}
+          // components={{ Link: ({to}:{to:any})=> <StandardRouterLink to={to} /> }}
         />
       </Typography>
       <Box

@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { Fragment } from 'react';
 import aboutPageStyles from '../../../pages/AboutPage.module.scss';
 import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
-import StandardLink from '../../atoms/StandardLink/StandardLink';
+import { StandardLink } from '../../atoms/StandardLink/StandardLink';
 import styles from './TechStackContent.module.scss';
 import { Trans, useTranslation } from 'react-i18next';
 

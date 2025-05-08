@@ -1,15 +1,13 @@
 import { Box, Paper, ThemeProvider, Typography } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
 import escapeRegExp from 'lodash-es/escapeRegExp';
+import { useTranslation } from 'react-i18next';
 import { SearchResponse } from '../../../api/types';
 import { getMainTheme } from '../../../theme/theme.styles';
 import { getArtistPath, getFestivalPath } from '../../../utils/routeUtils';
 import MatchHighlighter from '../../atoms/MatchHighlighter/MatchHighlighter';
-import StandardLink, {
-  StandardLinkProps,
-} from '../../atoms/StandardLink/StandardLink';
 import { SEARCH_FIELD_WIDTH_BIG_SCREEN } from '../../molecules/SearchField/SearchField';
+import { StandardRouterLink } from '../../atoms/StandardLink/StandardLink';
 
 interface SearchResultsProps {
   searchResults: SearchResponse;
@@ -25,7 +23,7 @@ const SearchResults = ({
   const { t } = useTranslation();
   const lightTheme = createTheme(getMainTheme('light'));
 
-  const standardLinkProps: StandardLinkProps = {
+  const standardLinkProps = {
     color: 'textSecondary',
     onClick: resetSearchFieldState,
     sx: { mb: 1 },
@@ -48,7 +46,7 @@ const SearchResults = ({
             </Typography>
           )}
           {searchResults.festivals.slice(0, 5).map((festival) => (
-            <StandardLink
+            <StandardRouterLink
               key={'searchResult festival: ' + festival.name}
               to={getFestivalPath(festival.name)}
               {...standardLinkProps}
@@ -57,7 +55,7 @@ const SearchResults = ({
                 text={`${festival.name}: ${festival.location}`}
                 regex={new RegExp(`(${escapeRegExp(inputText)})`, 'ig')}
               />
-            </StandardLink>
+            </StandardRouterLink>
           ))}
           {searchResults.festivals.length > 5 && (
             <Typography
@@ -76,7 +74,7 @@ const SearchResults = ({
             </Typography>
           )}
           {searchResults.artists.slice(0, 5).map((artist) => (
-            <StandardLink
+            <StandardRouterLink
               key={'searchResult artist: ' + artist.name}
               to={getArtistPath(artist.name, artist.spotifyId)}
               {...standardLinkProps}
@@ -85,7 +83,7 @@ const SearchResults = ({
                 text={artist.name}
                 regex={new RegExp(`(${escapeRegExp(inputText)})`, 'ig')}
               />
-            </StandardLink>
+            </StandardRouterLink>
           ))}
           {searchResults.artists.length > 5 && (
             <Typography
