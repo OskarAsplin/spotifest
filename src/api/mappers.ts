@@ -9,7 +9,7 @@ import {
 } from './types';
 
 export const mapToArtistInfo = (
-  response: SpotifyApi.SingleArtistResponse | SpotifyApi.ArtistObjectFull
+  response: SpotifyApi.SingleArtistResponse | SpotifyApi.ArtistObjectFull,
 ): ArtistInfo => ({
   artist: mapToArtist(response),
   festivalsFuture: [],
@@ -17,7 +17,7 @@ export const mapToArtistInfo = (
 });
 
 export const mapToArtist = (
-  response: SpotifyApi.SingleArtistResponse | SpotifyApi.ArtistObjectFull
+  response: SpotifyApi.SingleArtistResponse | SpotifyApi.ArtistObjectFull,
 ): Artist => ({
   name: response.name,
   spotifyId: response.id,
@@ -29,7 +29,7 @@ export const mapToArtist = (
 
 export const mapToArtistWithPopularity = (
   artist: SpotifyApi.ArtistObjectFull,
-  userPopularity: number
+  userPopularity: number,
 ): Artist => ({
   name: artist.name,
   spotifyId: artist.id,
@@ -46,11 +46,12 @@ export const mapToArtistMinimal = (artist: Artist): ArtistMinimal => ({
 });
 
 export const mapToPlaylist = (
-  playlist: SpotifyApi.PlaylistObjectSimplified
+  playlist: SpotifyApi.PlaylistObjectSimplified,
 ): Playlist => ({
   name: playlist.name,
   id: playlist.id,
-  images: playlist.images.map((image) => image.url),
+  // images type says it should be defined, but two users have reported that it is `null`
+  images: playlist.images?.map((image) => image.url) ?? [],
   ownerId: playlist.owner.id,
   numTracks: playlist.tracks.total,
   spotifyUrl: playlist.external_urls.spotify,
@@ -58,7 +59,7 @@ export const mapToPlaylist = (
 });
 
 export const mapToUserInfo = (
-  user: SpotifyApi.CurrentUsersProfileResponse
+  user: SpotifyApi.CurrentUsersProfileResponse,
 ): UserInfo => ({
   country: user.country,
   displayName: user.display_name,
@@ -72,7 +73,7 @@ export const mapToUserInfo = (
 });
 
 export const mapToMinimalUserInfo = (
-  user: SpotifyApi.UserProfileResponse
+  user: SpotifyApi.UserProfileResponse,
 ): MinimalUserInfo => ({
   displayName: user.display_name,
   profilePictureUrl: user.images
