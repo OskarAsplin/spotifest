@@ -6,7 +6,6 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
-    'storybook-react-i18next',
     {
       name: '@storybook/addon-styling',
       options: {},
