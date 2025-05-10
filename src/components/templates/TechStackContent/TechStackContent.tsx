@@ -229,14 +229,14 @@ const TechInfoRow = ({ text, icons }: TechInfoRowProps) => {
   const pcScreen = useMediaQuery(PC_SCREEN_MIN_WIDTH);
   return (
     <Fragment key={'techRow:' + text}>
-      <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
+      <Grid size={pcScreen ? 6 : 12}>
         <div className={styles.techInfoText}>
           <Typography variant="body1" className={styles.textAlign}>
             {text}
           </Typography>
         </div>
       </Grid>
-      <Grid item xs={pcScreen ? 6 : 12} zeroMinWidth>
+      <Grid size={pcScreen ? 6 : 12}>
         <div className={styles.iconsContainer}>
           {icons.map((icon) => (
             <img

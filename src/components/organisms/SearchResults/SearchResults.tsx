@@ -36,7 +36,7 @@ const SearchResults = ({
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           {searchResults.festivals.length === 0 &&
             searchResults.artists.length === 0 && (
-              <Typography color={({ palette }) => palette.text.disabled}>
+              <Typography color="textDisabled">
                 {t('common.no_results')}
               </Typography>
             )}

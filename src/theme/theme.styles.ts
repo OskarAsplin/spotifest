@@ -2,11 +2,6 @@ import { PaletteMode } from '@mui/material';
 import { deepOrange, lightBlue, pink } from '@mui/material/colors';
 import { ThemeOptions } from '@mui/material/styles';
 import { PaletteOptions } from '@mui/material/styles/createPalette';
-import { TypographyOptions } from '@mui/material/styles/createTypography';
-
-const typography: TypographyOptions = {
-  fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
-};
 
 const mainThemePaletteOptions: PaletteOptions = {
   primary: {
@@ -27,7 +22,9 @@ const mainThemePaletteOptions: PaletteOptions = {
 };
 
 export const getMainTheme = (mode: PaletteMode): ThemeOptions => ({
-  typography,
+  typography: {
+    fontFamily: `'Lato', 'Roboto', 'Helvetica', 'Arial', sans- serif`,
+  },
   palette: {
     ...mainThemePaletteOptions,
     mode,

@@ -11,6 +11,7 @@ export const withRouter = (Story: StoryFn) => {
   const catchAllRoute = new Route({
     getParentRoute: () => rootRoute,
     path: '*',
+    // @ts-ignore
     component: () => <Story />,
   });
   const router = new Router({

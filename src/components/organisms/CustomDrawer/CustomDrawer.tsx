@@ -2,7 +2,7 @@ import {
   Box,
   Drawer,
   List,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
@@ -23,10 +23,10 @@ const CustomDrawer = ({ open, onClose, items }: CustomDrawerProps) => (
     >
       <List>
         {items.map(({ Icon, label, onClick }) => (
-          <ListItem button key={label} onClick={onClick}>
+          <ListItemButton key={label} onClick={onClick}>
             <ListItemIcon>{Icon}</ListItemIcon>
             <ListItemText primary={label} />
-          </ListItem>
+          </ListItemButton>
         ))}
       </List>
     </Box>

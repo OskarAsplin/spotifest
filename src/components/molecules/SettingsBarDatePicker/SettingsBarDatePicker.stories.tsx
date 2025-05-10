@@ -2,6 +2,7 @@ import { Grid } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
 import SettingsBarDatePicker from './SettingsBarDatePicker';
 import { useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 
 type Story = StoryObj<typeof SettingsBarDatePicker>;
 
@@ -24,8 +25,8 @@ const meta: Meta<typeof SettingsBarDatePicker> = {
 export default meta;
 
 const Template: Story['render'] = (args) => {
-  const [date, setDate] = useState(new Date(2023, 0, 1));
-  const onChange = (date: Date | null) => {
+  const [date, setDate] = useState(dayjs('2023-01-01'));
+  const onChange = (date: Dayjs | null) => {
     if (date) setDate(date);
   };
   return (

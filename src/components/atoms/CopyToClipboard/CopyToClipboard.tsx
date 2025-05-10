@@ -2,7 +2,7 @@ import { Tooltip } from '@mui/material';
 import { useState } from 'react';
 
 interface CopyToClipboardProps {
-  children: (props: { copy: (content: string) => void }) => JSX.Element;
+  children: (props: { copy: (content: string) => void }) => React.ReactElement;
 }
 
 const CopyToClipboard = ({ children }: CopyToClipboardProps) => {

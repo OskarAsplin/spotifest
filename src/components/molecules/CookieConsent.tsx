@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontWeight: 700,
       padding: theme.spacing(1.5, 3, 1.5, 3) + '!important',
     },
-  })
+  }),
 );
 
 interface CookieConsentProps {
@@ -33,6 +33,7 @@ const StyledCookieConsent = ({ children }: CookieConsentProps) => {
   const classes = useStyles();
 
   return (
+    // @ts-ignore
     <CookieConsent
       location="bottom"
       buttonText="Got it!"

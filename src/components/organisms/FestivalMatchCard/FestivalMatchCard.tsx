@@ -150,11 +150,7 @@ const FestivalMatchCard = memo(
           {showMatching && !noLineupRegistered && (
             <Typography
               variant="body1"
-              color={
-                matchingArtists.length > 0
-                  ? 'primary'
-                  : ({ palette }) => palette.text.disabled
-              }
+              color={matchingArtists.length > 0 ? 'primary' : 'textDisabled'}
               sx={{ my: 1.5, fontWeight: 700 }}
             >
               {matchingArtists.length > 0
@@ -181,7 +177,7 @@ const FestivalMatchCard = memo(
           <StyledPaddedDiv>
             <Typography
               variant="body1"
-              color={({ palette }) => palette.text.disabled}
+              color="textDisabled"
               sx={{ py: 2, fontWeight: 700 }}
             >
               {t('common.no_lineup')}

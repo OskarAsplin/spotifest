@@ -228,7 +228,7 @@ const AboutPage = () => {
 
 interface CustomListItemProps {
   text: string | React.ReactNode;
-  Icon: JSX.Element;
+  Icon: React.ReactElement;
 }
 
 const CustomListItem = ({ text, Icon }: CustomListItemProps) => (

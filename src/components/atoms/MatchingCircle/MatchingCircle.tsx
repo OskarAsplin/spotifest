@@ -18,6 +18,7 @@ const MatchingCircle = ({ matchingPercent }: Props) => {
 
   return (
     <StyledMatchCircleDiv>
+      {/*@ts-ignore*/}
       <CircularProgressbar
         value={matchingPercent}
         text={`${matchingPercent}%`}

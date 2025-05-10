@@ -26,6 +26,7 @@ import {
   useMatchingStore,
 } from '../../../zustand/matchingStore';
 import { DATE_RANGE_YEAR_OPTIONS, MATCHING_MAX_DATE } from '../../../config';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface FestivalMatchSettingsBarProps {
   matchBasis?: string;
@@ -67,10 +68,10 @@ const FestivalMatchSettingsBar = ({
     setMatchArea(area);
   };
 
-  const onFromDateChange = (date: Date | null) => {
+  const onFromDateChange = (date: Dayjs | null) => {
     if (date) {
       const isoDate = date.toISOString();
-      if (date > new Date(toDate)) {
+      if (date > dayjs(toDate)) {
         setDates({ fromDate: isoDate, toDate: isoDate });
       } else {
         setDates({ fromDate: isoDate, toDate });
@@ -78,10 +79,10 @@ const FestivalMatchSettingsBar = ({
     }
   };
 
-  const onToDateChange = (date: Date | null) => {
+  const onToDateChange = (date: Dayjs | null) => {
     if (date) {
       const isoDate = date.toISOString();
-      if (date < new Date(fromDate)) {
+      if (date < dayjs(fromDate)) {
         setDates({ fromDate: isoDate, toDate: isoDate });
       } else {
         setDates({ fromDate, toDate: isoDate });
@@ -183,14 +184,14 @@ const FestivalMatchSettingsBar = ({
         <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
           <SettingsBarDatePicker
             label={t('matching.date_select_from.label')}
-            value={new Date(matchSettings.fromDate)}
+            value={dayjs(matchSettings.fromDate)}
             onChange={onFromDateChange}
           />
         </Grid>
         <Grid container justifyContent="space-around" sx={{ mb: 0.5 }}>
           <SettingsBarDatePicker
             label={t('matching.date_select_to.label')}
-            value={new Date(matchSettings.toDate)}
+            value={dayjs(matchSettings.toDate)}
             onChange={onToDateChange}
           />
         </Grid>

@@ -18,7 +18,9 @@ import { SearchFieldContainerProps } from '../../../containers/SearchFieldContai
 import { useTranslation } from 'react-i18next';
 
 interface CustomAppBarProps {
-  SearchFieldComponent: (props: SearchFieldContainerProps) => JSX.Element;
+  SearchFieldComponent: (
+    props: SearchFieldContainerProps,
+  ) => React.ReactElement;
   onClickLogo: () => void;
   onClickProfilePicture: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onClickMenu: (event: React.KeyboardEvent | React.MouseEvent) => void;
