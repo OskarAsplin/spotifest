@@ -27,6 +27,8 @@ const SettingsBarDatePicker = ({ value, onChange, label }: Props) => {
           '@media (max-width: 799px)': { mx: 1 },
           [`& .${outlinedInputClasses.input}`]: { cursor: 'pointer' },
         }}
+        slotProps={{ input: { readOnly: true } }}
+        onMouseDown={(e) => e.preventDefault()}
         onClick={() => setOpen(true)}
       />
       {open && (
@@ -90,6 +92,7 @@ const DatePickerModal = ({
           views={['month', 'year']}
           onAccept={setValueAndClose}
           onYearChange={setValueAndClose}
+          onClose={setValueAndClose}
           sx={{
             backgroundColor: ({ palette }) =>
               palette.mode === 'dark' ? grey[800] : grey[100],
