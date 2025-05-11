@@ -1,11 +1,10 @@
-import { Theme } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 import CookieConsent from 'react-cookie-consent';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     cookiesContainer: {
-      boxShadow: theme.shadows[3],
+      boxShadow: '0px -5px 5px rgba(0, 0, 0, 0.25)',
       color: 'rgb(64, 64, 64) !important',
       backgroundColor: 'rgb(200, 200, 200) !important',
       fontSize: '16px !important',
@@ -20,7 +19,8 @@ const useStyles = makeStyles((theme: Theme) =>
       borderRadius: '5px !important',
       topMargin: '0px !important',
       fontWeight: 700,
-      padding: theme.spacing(1.5, 3, 1.5, 3) + '!important',
+      padding: '12px 24px 12px 24px !important',
+      margin: '8px 12px !important',
     },
   }),
 );
