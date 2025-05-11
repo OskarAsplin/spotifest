@@ -10,7 +10,8 @@ import {
   SearchResponse,
 } from './types';
 import { getKey } from './api';
-import { ITEMS_PER_PAGE } from '../containers/FestivalMatchesContainer';
+
+export const ITEMS_PER_PAGE = 15;
 
 const ontourBaseUrl = `${import.meta.env.VITE_BACKEND_URL}/onTour`;
 

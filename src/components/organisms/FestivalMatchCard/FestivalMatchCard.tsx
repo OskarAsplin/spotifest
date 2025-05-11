@@ -24,7 +24,6 @@ import ArtistBubble, {
 } from '../../molecules/ArtistBubble/ArtistBubble';
 import MatchingCircleWithTooltip from '../../molecules/MatchingCircleWithTooltip/MatchingCircleWithTooltip';
 import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
-import { festivalRoute } from '../../../Routes';
 import isEqual from 'lodash-es/isEqual';
 
 export interface FestivalMatchCardProps {
@@ -93,7 +92,7 @@ const FestivalMatchCard = memo(
               }}
             >
               <Link
-                to={festivalRoute.to}
+                to="/festival/$festivalId"
                 params={{ festivalId: encodeURIComponent(festival.name) }}
                 style={{ color: 'inherit' }}
               >

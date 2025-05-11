@@ -10,6 +10,7 @@ import {
 import { refreshSpotifyAccessToken } from '../utils/spotifyAuthUtils';
 
 const FIVE_MINUTES_IN_MS = 5 * 60 * 1000;
+const FIVE_SECONDS_IN_MS = 5 * 1000;
 
 export const StandardLayout = ({
   hideIfNotLoggedIn,
@@ -25,9 +26,16 @@ export const StandardLayout = ({
     if (refreshToken && unixExpiryTime) {
       const unixTimeNow = new Date().getTime(); // Unix time in milliseconds
       const timeLeftMs = unixExpiryTime - unixTimeNow;
-      timeoutId = setTimeout(() => {
-        refreshSpotifyAccessToken(refreshToken);
-      }, timeLeftMs - FIVE_MINUTES_IN_MS);
+      timeoutId = setTimeout(
+        () => {
+          refreshSpotifyAccessToken(refreshToken);
+          // Fetch new token if it's less than 5 minutes until the old one expires.
+          // Set a 5 seconds minimum timeout to not trigger double refresh logic,
+          // since we also have a check in the `beforeLoad` of several routes
+          // that are loaded inside the StandardLayout
+        },
+        Math.max(timeLeftMs - FIVE_MINUTES_IN_MS, FIVE_SECONDS_IN_MS),
+      );
     }
 
     return () => clearTimeout(timeoutId);

@@ -7,7 +7,6 @@ import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
 import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopover';
 import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
 import SearchFieldContainer from './SearchFieldContainer';
-import { indexRoute } from '../Routes';
 import { resetAuthStore, useIsLoggedIn } from '../zustand/authStore';
 
 const AppBarContainer = () => {
@@ -43,9 +42,9 @@ const AppBarContainer = () => {
     };
 
   const onClickLogo = () => {
-    const isIndexRoute = !!matchRoute({ to: indexRoute.to });
+    const isIndexRoute = !!matchRoute({ to: '/' });
     if (isIndexRoute) window.scrollTo({ top: 0, behavior: 'smooth' });
-    else navigate({ to: indexRoute.to });
+    else navigate({ to: '/' });
   };
 
   return (

@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { artistRoute, festivalRoute } from '../Routes';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getArtistInfoFromDjangoOrSpotify } from '../api/combinedApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
@@ -22,7 +21,7 @@ import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
 import { useIsLoggedIn } from '../zustand/authStore';
 import FestivalMatchCard from '../components/organisms/FestivalMatchCard/FestivalMatchCard';
-import { Link } from '@tanstack/react-router';
+import { getRouteApi, Link } from '@tanstack/react-router';
 
 const getNameOrSpotifyIdFromUrl = (artistId: string) => {
   const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
@@ -38,12 +37,14 @@ const ArtistPageErrorFallback = () => {
   return <ErrorFallback fallbackText={t('error.artist_not_found')} />;
 };
 
+const route = getRouteApi('/_withLayout/artist/$artistId');
+
 const ArtistPage = withFallback(
   SuspenseFallback,
   ArtistPageErrorFallback,
 )(() => {
   const themeMode = useTheme().palette.mode;
-  const { artistId } = artistRoute.useParams();
+  const { artistId } = route.useParams();
   const { t } = useTranslation();
 
   const { name, spotifyId: spotifyIdFromUrl } =
@@ -180,7 +181,7 @@ const ArtistPage = withFallback(
               {artistInfo.festivalsPast.map((festival) => (
                 <Link
                   key={'past festival: ' + festival.name + festival.year}
-                  to={festivalRoute.to}
+                  to="/festival/$festivalId"
                   params={{ festivalId: encodeURIComponent(festival.name) }}
                   style={{ color: 'inherit', textDecoration: 'inherit' }}
                 >

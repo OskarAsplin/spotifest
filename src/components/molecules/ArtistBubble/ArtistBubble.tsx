@@ -11,7 +11,6 @@ import { blueGrey } from '@mui/material/colors';
 import { Shadows, styled } from '@mui/material/styles';
 import { Artist } from '../../../api/types';
 import { Link } from '@tanstack/react-router';
-import { artistRoute } from '../../../Routes';
 import { getArtistParam } from '../../../utils/routeUtils';
 
 interface ArtistBubbleProps {
@@ -21,7 +20,7 @@ interface ArtistBubbleProps {
 const ArtistBubble = ({ artist }: ArtistBubbleProps) => (
   <StyledAvatarContainerDiv>
     <Link
-      to={artistRoute.to}
+      to="/artist/$artistId"
       params={{ artistId: getArtistParam(artist.name, artist.spotifyId) }}
       style={{ borderRadius: '50%', color: 'inherit' }}
       disabled={!artist.spotifyId}

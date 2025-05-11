@@ -27,13 +27,13 @@ import StyledCookieConsent from '../components/molecules/CookieConsent';
 import TabPanel from '../components/molecules/TabPanel';
 import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
-import { festivalRoute } from '../Routes';
 import '../styles/base.scss';
 import { getCancelledDateString } from '../utils/dateUtils';
 import {
   displayedLocationName,
   getMaxArtistsInFullLineupWidth,
 } from '../utils/displayUtils';
+import { getRouteApi } from '@tanstack/react-router';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const FestivalPageErrorFallback = () => {
@@ -41,6 +41,8 @@ const FestivalPageErrorFallback = () => {
 
   return <ErrorFallback fallbackText={t('error.festival_not_found')} />;
 };
+
+const route = getRouteApi('/_withLayout/festival/$festivalId');
 
 const FestivalPage = withFallback(
   SuspenseFallback,
@@ -55,7 +57,7 @@ const FestivalPage = withFallback(
 
   const { t } = useTranslation();
   const themeDirection = useTheme().direction;
-  const { festivalId } = festivalRoute.useParams();
+  const { festivalId } = route.useParams();
 
   const { data: festivalInfo } = useApiSuspenseQuery(getDjangoFestival, {
     params: { name: festivalId },

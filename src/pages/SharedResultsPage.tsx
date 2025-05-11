@@ -1,6 +1,5 @@
 import { Box, Typography } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
-import { shareMatchesRoute } from '../Routes';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import { getPlaylist, getUserInfo } from '../api/spotifyApi';
 import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
@@ -15,6 +14,7 @@ import SharedMatchesSettingsContainer from '../containers/SharedMatchesSettingsC
 import ErrorFallback from '../layouts/ErrorFallback';
 import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
 import '../styles/base.scss';
+import { getRouteApi } from '@tanstack/react-router';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const CustomErrorFallback = () => {
@@ -22,11 +22,13 @@ const CustomErrorFallback = () => {
   return <ErrorFallback fallbackText={t('error.invalid_share_url')} />;
 };
 
+const route = getRouteApi('/_withProtectedLayout/share/$matchBasis');
+
 const SharedResultsPage = withFallback(
   SuspenseFallback,
   CustomErrorFallback,
 )(() => {
-  const { matchBasis } = shareMatchesRoute.useParams();
+  const { matchBasis } = route.useParams();
   const { playlistId } = getIdFromMatchBasis(matchBasis);
 
   if (!playlistId) throw 'Invalid match basis';

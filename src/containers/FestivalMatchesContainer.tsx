@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useApiSuspenseQuery, withFallback } from '../api/api';
 import {
   getDjangoAvailableContinents,
+  ITEMS_PER_PAGE,
   postDjangoFestivalMatches,
   useDjangoPopularArtistsInLineupsInfiniteQuery,
 } from '../api/djangoApi';
@@ -28,8 +29,6 @@ import ErrorFallback from '../layouts/ErrorFallback';
 import { getAreaFilters } from '../utils/areaUtils';
 import { useMatchingStore } from '../zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
-
-export const ITEMS_PER_PAGE = 15;
 
 interface FestivalMatchesContainerProps {
   sharedMatchBasis?: string;

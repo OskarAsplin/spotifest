@@ -49,7 +49,7 @@
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "find-circular-dependencies": "madge --circular ./src/index.tsx",
+    "find-circular-dependencies": "madge --circular ./src/main.tsx",
     "find-unused-exports": "ts-prune",
     "find-dead-code": "ts-prune | grep -v \"(used in module)\" || true"
   },
@@ -100,6 +100,7 @@
     "@storybook/react": "^8.6.12",
     "@storybook/react-vite": "^8.6.12",
     "@tanstack/router-devtools": "^1.120.3",
+    "@tanstack/router-plugin": "^1.120.3",
     "@types/node": "^22.15.17",
     "@typescript-eslint/eslint-plugin": "^8.32.0",
     "@typescript-eslint/parser": "^8.32.0",
