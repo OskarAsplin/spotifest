@@ -16,7 +16,7 @@ import {
 import { artistMock } from '@src/components/molecules/ArtistBubble/ArtistBubble.fixtures';
 import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
 
-const FestivalMatchCardSkeleton = () => {
+export const FestivalMatchCardSkeleton = () => {
   const bigScreen = useMediaQuery('(min-width:690px)');
   const smallScreen = useMediaQuery('(max-width:439px)');
 
@@ -88,5 +88,3 @@ const FestivalMatchCardSkeleton = () => {
     </Paper>
   );
 };
-
-export default FestivalMatchCardSkeleton;

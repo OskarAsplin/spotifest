@@ -6,12 +6,12 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Trans, useTranslation } from 'react-i18next';
-import LoginButton from '@src/components/atoms/LoginButton/LoginButton';
+import { LoginButton } from '@src/components/atoms/LoginButton/LoginButton';
 import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
-import UsageThumbnailsWithGallery from '@src/components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
+import { UsageThumbnailsWithGallery } from '@src/components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
 import { redirectToSpotifyLogin } from '@src/utils/spotifyAuthUtils';
 
-const LoginPage = () => {
+export const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');
   const bigHeight = useMediaQuery('(min-height:610px)');
   const bigScreen = bigWidth && bigHeight;
@@ -131,5 +131,3 @@ const StyledFooterText = styled('div')(() => ({
   backgroundColor: 'rgba(0, 0, 0, 0.6)',
   boxShadow: '0 0 50px 50px rgba(0, 0, 0, 0.6)',
 }));
-
-export default LoginPage;

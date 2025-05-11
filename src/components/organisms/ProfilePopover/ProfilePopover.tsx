@@ -10,7 +10,7 @@ interface ProfilePopoverProps extends PopoverProps {
   onClickLogout: () => void;
 }
 
-const ProfilePopover = ({
+export const ProfilePopover = ({
   userName,
   spotifyUrl,
   onClickLogout,
@@ -66,5 +66,3 @@ const StyledPopoverDiv = styled('div')(({ theme: { spacing } }) => ({
   flexDirection: 'column',
   alignItems: 'center',
 }));
-
-export default ProfilePopover;

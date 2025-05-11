@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import MatchCriteriaSelect from './MatchCriteriaSelect';
+import { MatchCriteriaSelect } from './MatchCriteriaSelect';
 import {
   playlistMock,
   playlistMock2,

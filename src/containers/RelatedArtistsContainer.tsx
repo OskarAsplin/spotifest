@@ -2,7 +2,8 @@ import { Divider, Typography, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { useApiSuspenseQuery } from '@src/api/api';
 import { getArtistRelatedArtists } from '@src/api/spotifyApi';
-import ArtistBubble, {
+import {
+  ArtistBubble,
   StyledAvatarContainerDiv,
 } from '@src/components/molecules/ArtistBubble/ArtistBubble';
 import { ArtistBox } from '@src/layouts/StyledLayoutComponents';
@@ -13,7 +14,7 @@ interface RelatedArtistsProps {
   spotifyId: string;
 }
 
-const RelatedArtistsContainer = ({ spotifyId }: RelatedArtistsProps) => {
+export const RelatedArtistsContainer = ({ spotifyId }: RelatedArtistsProps) => {
   const { t } = useTranslation();
 
   const { data: relatedArtists } = useApiSuspenseQuery(
@@ -51,5 +52,3 @@ const RelatedArtistsContainer = ({ spotifyId }: RelatedArtistsProps) => {
     </>
   );
 };
-
-export default RelatedArtistsContainer;

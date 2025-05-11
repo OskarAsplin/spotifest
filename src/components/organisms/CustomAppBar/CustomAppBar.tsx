@@ -27,7 +27,7 @@ interface CustomAppBarProps {
   profilePictureUrl?: string;
 }
 
-const CustomAppBar = ({
+export const CustomAppBar = ({
   SearchFieldComponent,
   onClickLogo,
   onClickProfilePicture,
@@ -124,5 +124,3 @@ const StyledToolbar = styled(Toolbar)(({ theme: { spacing } }) => ({
     '@media (max-width: 439px)': { padding: spacing(0, 1) },
   },
 }));
-
-export default CustomAppBar;

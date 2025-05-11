@@ -12,7 +12,7 @@ interface AreaSelectProps<T = string> extends Omit<SelectProps<T>, 'children'> {
   countries: Area[];
 }
 
-const AreaSelect = ({
+export const AreaSelect = ({
   continents,
   countries,
   ...selectProps
@@ -75,5 +75,3 @@ const AreaSelect = ({
     </Select>
   );
 };
-
-export default AreaSelect;

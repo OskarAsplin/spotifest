@@ -12,7 +12,7 @@ interface MatchCriteriaSelectProps<T = string>
   hasSavedTracks: boolean;
 }
 
-const MatchCriteriaSelect = ({
+export const MatchCriteriaSelect = ({
   playlists,
   hasTopArtists,
   hasSavedTracks,
@@ -49,5 +49,3 @@ const MatchCriteriaSelect = ({
     </Select>
   );
 };
-
-export default MatchCriteriaSelect;

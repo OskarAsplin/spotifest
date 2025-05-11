@@ -13,7 +13,7 @@ interface CustomDrawerProps {
   items: { Icon: React.ReactNode; label: string; onClick: () => void }[];
 }
 
-const CustomDrawer = ({ open, onClose, items }: CustomDrawerProps) => (
+export const CustomDrawer = ({ open, onClose, items }: CustomDrawerProps) => (
   <Drawer anchor="right" open={open} onClose={onClose}>
     <Box
       sx={{ width: 250 }}
@@ -32,5 +32,3 @@ const CustomDrawer = ({ open, onClose, items }: CustomDrawerProps) => (
     </Box>
   </Drawer>
 );
-
-export default CustomDrawer;

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import MatchingCircleWithTooltip from './MatchingCircleWithTooltip';
+import { MatchingCircleWithTooltip } from './MatchingCircleWithTooltip';
 
 type Story = StoryObj<typeof MatchingCircleWithTooltip>;
 

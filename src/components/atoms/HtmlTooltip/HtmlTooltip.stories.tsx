@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react';
-import HtmlTooltip from './HtmlTooltip';
+import { HtmlTooltip } from './HtmlTooltip';
 
 type Story = StoryObj<typeof HtmlTooltip>;
 

@@ -5,7 +5,7 @@ interface CopyToClipboardProps {
   children: (props: { copy: (content: string) => void }) => React.ReactElement;
 }
 
-const CopyToClipboard = ({ children }: CopyToClipboardProps) => {
+export const CopyToClipboard = ({ children }: CopyToClipboardProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const onCopy = (content: string) => {
@@ -20,5 +20,3 @@ const CopyToClipboard = ({ children }: CopyToClipboardProps) => {
     </Tooltip>
   );
 };
-
-export default CopyToClipboard;

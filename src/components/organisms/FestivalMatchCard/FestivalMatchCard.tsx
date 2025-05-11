@@ -18,13 +18,14 @@ import {
   displayedLocationName,
   getMaxArtistsInWidth,
 } from '@src/utils/displayUtils';
-import ExpandButton from '@src/components/atoms/ExpandButton/ExpandButton';
-import ArtistBubble, {
+import { ExpandButton } from '@src/components/atoms/ExpandButton/ExpandButton';
+import {
+  ArtistBubble,
   StyledAvatarContainerDiv,
 } from '@src/components/molecules/ArtistBubble/ArtistBubble';
-import MatchingCircleWithTooltip from '@src/components/molecules/MatchingCircleWithTooltip/MatchingCircleWithTooltip';
+import { MatchingCircleWithTooltip } from '@src/components/molecules/MatchingCircleWithTooltip/MatchingCircleWithTooltip';
 import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
-import isEqual from 'lodash-es/isEqual';
+import { isEqual } from 'lodash-es';
 
 export interface FestivalMatchCardProps {
   festival: FestivalMatch;
@@ -33,7 +34,7 @@ export interface FestivalMatchCardProps {
   showMatching?: boolean;
 }
 
-const FestivalMatchCard = memo(
+export const FestivalMatchCard = memo(
   ({
     festival,
     showMatching,
@@ -256,5 +257,3 @@ const FestivalMatchCard = memo(
   },
   (prevProps, nextProps) => isEqual(prevProps, nextProps),
 );
-
-export default FestivalMatchCard;

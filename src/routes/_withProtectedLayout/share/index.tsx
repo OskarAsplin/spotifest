@@ -1,6 +1,6 @@
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { t } from 'i18next';
-import ErrorFallback from '@src/layouts/ErrorFallback';
+import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { getSharedMatchBasis } from '@src/zustand/sharedResultsStore';
 import { getCodeVerifier } from '@src/zustand/authStore';
 import { getSpotifyAccessTokenWithCode } from '@src/utils/spotifyAuthUtils';

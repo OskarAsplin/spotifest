@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import CopyToClipboardButton from './CopyToClipboardButton';
+import { CopyToClipboardButton } from './CopyToClipboardButton';
 
 type Story = StoryObj<typeof CopyToClipboardButton>;
 

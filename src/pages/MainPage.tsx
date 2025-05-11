@@ -1,17 +1,17 @@
 import { Box } from '@mui/material';
 import { withFallback } from '@src/api/api';
 import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/LoadingSpinner';
-import ScrollToTopButton from '@src/components/atoms/ScrollToTopButton/ScrollToTopButton';
-import FestivalMatchSettingsContainer from '@src/containers/FestivalMatchSettingsContainer';
-import FestivalMatchesContainer from '@src/containers/FestivalMatchesContainer';
-import SocialMediaButtonsContainer from '@src/containers/SocialMediaButtonsContainer';
-import ErrorFallback from '@src/layouts/ErrorFallback';
+import { ScrollToTopButton } from '@src/components/atoms/ScrollToTopButton/ScrollToTopButton';
+import { FestivalMatchSettingsContainer } from '@src/containers/FestivalMatchSettingsContainer';
+import { FestivalMatchesContainer } from '@src/containers/FestivalMatchesContainer';
+import { SocialMediaButtonsContainer } from '@src/containers/SocialMediaButtonsContainer';
+import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 
-const MainPage = withFallback(
+export const MainPage = withFallback(
   SuspenseFallback,
   ErrorFallback,
 )(() => (
@@ -29,5 +29,3 @@ const MainPage = withFallback(
     <ScrollToTopButton />
   </StyledRootDiv>
 ));
-
-export default MainPage;

@@ -7,7 +7,7 @@ interface Props {
   matchingPercent: number;
 }
 
-const MatchingCircle = ({ matchingPercent }: Props) => {
+export const MatchingCircle = ({ matchingPercent }: Props) => {
   const themeMode = useTheme().palette.mode;
   const smallScreen = useMediaQuery('(max-width:439px)');
 
@@ -47,5 +47,3 @@ const StyledMatchCircleDiv = styled('div')(({ theme: { spacing } }) => ({
   userSelect: 'none',
   ...MatchingCircleSizeCss,
 }));
-
-export default MatchingCircle;

@@ -1,4 +1,4 @@
-import PageNotFound from '@src/pages/PageNotFound';
+import { PageNotFound } from '@src/pages/PageNotFound';
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { CssBaseline } from '@mui/material';
@@ -10,7 +10,7 @@ import {
 import { useMemo } from 'react';
 import { useThemeModeStore } from '@src/zustand/themeStore';
 import { getMainTheme } from '@src/theme/theme.styles';
-import ApiProvider from '@src/api/ApiProvider';
+import { ApiProvider } from '@src/api/ApiProvider';
 
 const App = () => {
   const themeMode = useThemeModeStore((state) => state.mode);

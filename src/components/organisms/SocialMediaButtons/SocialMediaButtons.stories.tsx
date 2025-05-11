@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import SocialMediaButtons from './SocialMediaButtons';
+import { SocialMediaButtons } from './SocialMediaButtons';
 
 type Story = StoryObj<typeof SocialMediaButtons>;
 

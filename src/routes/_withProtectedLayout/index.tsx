@@ -1,4 +1,4 @@
-import MainPage from '@src/pages/MainPage';
+import { MainPage } from '@src/pages/MainPage';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import {
   getCodeVerifier,

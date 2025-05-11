@@ -1,13 +1,13 @@
 import { Box, ClickAwayListener, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import debounce from 'lodash-es/debounce';
+import { debounce } from 'lodash-es';
 import { ChangeEvent, startTransition, useState } from 'react';
 import { useApiSuspenseQuery, withFallback } from '@src/api/api';
 import { getDjangoSearchResults } from '@src/api/djangoApi';
-import SearchField from '@src/components/molecules/SearchField/SearchField';
-import SearchResults from '@src/components/organisms/SearchResults/SearchResults';
+import { SearchField } from '@src/components/molecules/SearchField/SearchField';
+import { SearchResults } from '@src/components/organisms/SearchResults/SearchResults';
 import { getMainTheme } from '@src/theme/theme.styles';
-import ErrorFallback from '@src/layouts/ErrorFallback';
+import { ErrorFallback } from '@src/layouts/ErrorFallback';
 
 export interface SearchFieldContainerProps {
   hideSearchFieldSmallScreen?: () => void;
@@ -15,7 +15,7 @@ export interface SearchFieldContainerProps {
 
 const DEBOUNCE_WAIT = 500;
 
-const SearchFieldContainer = ({
+export const SearchFieldContainer = ({
   hideSearchFieldSmallScreen,
 }: SearchFieldContainerProps) => {
   const darkTheme = createTheme(getMainTheme('dark'));
@@ -75,5 +75,3 @@ const SearchResultsContainer = withFallback<SearchResultsContainerProps>(
     </div>
   );
 });
-
-export default SearchFieldContainer;

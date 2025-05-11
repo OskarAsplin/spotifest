@@ -9,7 +9,7 @@ interface CustomSwitchProps {
   rightOptionText: string;
 }
 
-const CustomSwitch = ({
+export const CustomSwitch = ({
   checked,
   setChecked,
   leftOptionText,
@@ -53,5 +53,3 @@ const StyledButton = styled(Button)(() => ({
   fontSize: '18px',
   '&:hover': { backgroundColor: 'transparent' },
 }));
-
-export default CustomSwitch;

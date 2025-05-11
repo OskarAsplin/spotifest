@@ -19,13 +19,14 @@ import {
   TOP_ARTISTS_CHOICE,
 } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdFromMatchBasis } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import FestivalMatchCard from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard';
-import FestivalMatchCardSkeleton from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
-import FestivalMatches, {
+import { FestivalMatchCard } from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard';
+import { FestivalMatchCardSkeleton } from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
+import {
+  FestivalMatches,
   FestivalMatchesSkeleton,
   NoMatchResults,
 } from '@src/components/templates/FestivalMatches/FestivalMatches';
-import ErrorFallback from '@src/layouts/ErrorFallback';
+import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { getAreaFilters } from '@src/utils/areaUtils';
 import { useMatchingStore } from '@src/zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
@@ -34,27 +35,28 @@ interface FestivalMatchesContainerProps {
   sharedMatchBasis?: string;
 }
 
-const FestivalMatchesContainer = withFallback<FestivalMatchesContainerProps>(
-  FestivalMatchesSkeleton,
-  ErrorFallback,
-)(({ sharedMatchBasis }) => {
-  const matchBasis =
-    sharedMatchBasis ?? useMatchingStore((state) => state.matchBasis);
+export const FestivalMatchesContainer =
+  withFallback<FestivalMatchesContainerProps>(
+    FestivalMatchesSkeleton,
+    ErrorFallback,
+  )(({ sharedMatchBasis }) => {
+    const matchBasis =
+      sharedMatchBasis ?? useMatchingStore((state) => state.matchBasis);
 
-  if (!matchBasis) return null;
+    if (!matchBasis) return null;
 
-  const isTopArtists = matchBasis === TOP_ARTISTS_CHOICE;
-  const isSavedTracks = matchBasis === SAVED_TRACKS_CHOICE;
+    const isTopArtists = matchBasis === TOP_ARTISTS_CHOICE;
+    const isSavedTracks = matchBasis === SAVED_TRACKS_CHOICE;
 
-  if (isTopArtists) return <FestivalMatchesWithTopArtists />;
-  if (isSavedTracks) return <FestivalMatchesWithSavedTracks />;
+    if (isTopArtists) return <FestivalMatchesWithTopArtists />;
+    if (isSavedTracks) return <FestivalMatchesWithSavedTracks />;
 
-  const { playlistId } = getIdFromMatchBasis(matchBasis);
+    const { playlistId } = getIdFromMatchBasis(matchBasis);
 
-  if (!playlistId) return null;
+    if (!playlistId) return null;
 
-  return <FestivalMatchesWithPlaylistArtists playlistId={playlistId} />;
-});
+    return <FestivalMatchesWithPlaylistArtists playlistId={playlistId} />;
+  });
 
 const FestivalMatchesWithTopArtists = () => {
   const {
@@ -264,5 +266,3 @@ const FestivalMatchesInnerContainer = ({
     </FestivalMatches>
   );
 };
-
-export default FestivalMatchesContainer;

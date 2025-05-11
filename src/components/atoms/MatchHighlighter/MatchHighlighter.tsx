@@ -11,7 +11,7 @@ interface MatchHighlighterProps {
  * Make sure to capture all groups in () and use 'g' search.
  * Regex example: /(test)/g
  */
-const MatchHighlighter = ({ text, regex }: MatchHighlighterProps) => {
+export const MatchHighlighter = ({ text, regex }: MatchHighlighterProps) => {
   if (!regex) return <>{text}</>;
   return (
     <>
@@ -22,7 +22,7 @@ const MatchHighlighter = ({ text, regex }: MatchHighlighterProps) => {
             <StyledMark key={index}>{substring}</StyledMark>
           ) : (
             <Fragment key={index}>{substring}</Fragment>
-          )
+          ),
         )}
     </>
   );
@@ -32,5 +32,3 @@ const StyledMark = styled('mark')(({ theme: { palette } }) => ({
   color: palette.primary.main,
   backgroundColor: 'inherit',
 }));
-
-export default MatchHighlighter;

@@ -9,7 +9,7 @@ import {
 import { blueGrey } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 
-const SearchField = (props: TextFieldProps) => {
+export const SearchField = (props: TextFieldProps) => {
   const bigScreen = useMediaQuery('(min-width:610px)');
 
   return (
@@ -42,5 +42,3 @@ const StyledTextField = styled(TextField)(({ theme: { palette } }) => ({
     backgroundColor: palette.mode === 'dark' ? blueGrey[900] : blueGrey[500],
   },
 }));
-
-export default SearchField;

@@ -14,13 +14,13 @@ import { useTranslation } from 'react-i18next';
 import { useApiSuspenseQuery, withFallback } from '@src/api/api';
 import { getArtistInfoFromDjangoOrSpotify } from '@src/api/combinedApi';
 import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/LoadingSpinner';
-import RelatedArtistsContainer from '@src/containers/RelatedArtistsContainer';
-import ErrorFallback from '@src/layouts/ErrorFallback';
+import { RelatedArtistsContainer } from '@src/containers/RelatedArtistsContainer';
+import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 import { getCancelledDateString } from '@src/utils/dateUtils';
 import { useIsLoggedIn } from '@src/zustand/authStore';
-import FestivalMatchCard from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard';
+import { FestivalMatchCard } from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard';
 import { getRouteApi, Link } from '@tanstack/react-router';
 
 const getNameOrSpotifyIdFromUrl = (artistId: string) => {
@@ -39,7 +39,7 @@ const ArtistPageErrorFallback = () => {
 
 const route = getRouteApi('/_withLayout/artist/$artistId');
 
-const ArtistPage = withFallback(
+export const ArtistPage = withFallback(
   SuspenseFallback,
   ArtistPageErrorFallback,
 )(() => {
@@ -269,5 +269,3 @@ const StyledPastFestivalButton = styled(Button)(({ theme: { spacing } }) => ({
   '@media (min-width: 690px)': { padding: spacing(2) },
   '@media (max-width: 689px)': { padding: spacing(1) },
 }));
-
-export default ArtistPage;

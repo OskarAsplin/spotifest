@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import ProfilePopover from './ProfilePopover';
+import { ProfilePopover } from './ProfilePopover';
 
 type Story = StoryObj<typeof ProfilePopover>;
 

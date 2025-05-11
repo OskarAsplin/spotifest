@@ -12,7 +12,7 @@ type Props = {
   label: string;
 };
 
-const SettingsBarDatePicker = ({ value, onChange, label }: Props) => {
+export const SettingsBarDatePicker = ({ value, onChange, label }: Props) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -103,5 +103,3 @@ const DatePickerModal = ({
     </Modal>
   );
 };
-
-export default SettingsBarDatePicker;

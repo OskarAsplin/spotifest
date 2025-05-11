@@ -4,7 +4,7 @@ type ScrollToTopProps = {
   children: React.ReactNode;
 };
 
-const ScrollToTop = ({ children }: ScrollToTopProps) => {
+export const ScrollToTop = ({ children }: ScrollToTopProps) => {
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 1500,
@@ -24,5 +24,3 @@ const ScrollToTop = ({ children }: ScrollToTopProps) => {
     </Fade>
   );
 };
-
-export default ScrollToTop;

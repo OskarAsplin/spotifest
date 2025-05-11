@@ -1,11 +1,11 @@
 import { Box, Paper, ThemeProvider, Typography } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import escapeRegExp from 'lodash-es/escapeRegExp';
+import { escapeRegExp } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
 import { SearchResponse } from '@src/api/types';
 import { getMainTheme } from '@src/theme/theme.styles';
 import { getArtistPath, getFestivalPath } from '@src/utils/routeUtils';
-import MatchHighlighter from '@src/components/atoms/MatchHighlighter/MatchHighlighter';
+import { MatchHighlighter } from '@src/components/atoms/MatchHighlighter/MatchHighlighter';
 import { SEARCH_FIELD_WIDTH_BIG_SCREEN } from '@src/components/molecules/SearchField/SearchField';
 import { StandardRouterLink } from '@src/components/atoms/StandardLink/StandardLink';
 
@@ -15,7 +15,7 @@ interface SearchResultsProps {
   resetSearchFieldState: () => void;
 }
 
-const SearchResults = ({
+export const SearchResults = ({
   searchResults,
   inputText,
   resetSearchFieldState,
@@ -99,5 +99,3 @@ const SearchResults = ({
     </ThemeProvider>
   );
 };
-
-export default SearchResults;

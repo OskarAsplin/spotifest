@@ -1,7 +1,7 @@
 import { Box, Skeleton, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import FestivalMatchCardSkeleton from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
+import { FestivalMatchCardSkeleton } from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
 
 export const FestivalMatchesSkeleton = () => (
   <StyledMatchesRootDiv>
@@ -28,7 +28,10 @@ interface FestivalMatchesProps {
   children: React.ReactNode;
 }
 
-const FestivalMatches = ({ totalMatches, children }: FestivalMatchesProps) => (
+export const FestivalMatches = ({
+  totalMatches,
+  children,
+}: FestivalMatchesProps) => (
   <StyledMatchesRootDiv>
     {totalMatches > 0 && (
       <Box
@@ -68,5 +71,3 @@ export const StyledMatchesRootDiv = styled('div')(({ theme: { spacing } }) => ({
   maxWidth: '764px',
   marginTop: spacing(1),
 }));
-
-export default FestivalMatches;

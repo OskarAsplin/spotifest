@@ -31,7 +31,7 @@ interface ApiProviderProps {
   children?: ReactNode;
 }
 
-const ApiProvider = ({ children }: ApiProviderProps) => (
+export const ApiProvider = ({ children }: ApiProviderProps) => (
   <QueryClientProvider client={queryClient}>
     {children}
     {import.meta.env.VITE_REACT_QUERY_DEVTOOLS === 'true' && (
@@ -39,5 +39,3 @@ const ApiProvider = ({ children }: ApiProviderProps) => (
     )}
   </QueryClientProvider>
 );
-
-export default ApiProvider;

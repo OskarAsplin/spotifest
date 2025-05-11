@@ -3,7 +3,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from '@tanstack/react-router';
-import CustomDrawer from '@src/components/organisms/CustomDrawer/CustomDrawer';
+import { CustomDrawer } from '@src/components/organisms/CustomDrawer/CustomDrawer';
 import { setThemeMode } from '@src/zustand/themeStore';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
   onClose: (event: React.KeyboardEvent | React.MouseEvent) => void;
 }
 
-const AppBarMenuDrawerContainer = ({ open, onClose }: Props) => {
+export const AppBarMenuDrawerContainer = ({ open, onClose }: Props) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const themeMode = useTheme().palette.mode;
@@ -33,5 +33,3 @@ const AppBarMenuDrawerContainer = ({ open, onClose }: Props) => {
 
   return <CustomDrawer open={open} onClose={onClose} items={items} />;
 };
-
-export default AppBarMenuDrawerContainer;

@@ -11,8 +11,8 @@ import {
   getOneSavedTrack,
 } from '@src/api/spotifyApi';
 import { TOP_ARTISTS_CHOICE } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import FestivalMatchSettingsBar from '@src/components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
-import SelectPlaylistModal from '@src/components/organisms/SelectPlaylistModal/SelectPlaylistModal';
+import { FestivalMatchSettingsBar } from '@src/components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
+import { SelectPlaylistModal } from '@src/components/organisms/SelectPlaylistModal/SelectPlaylistModal';
 import { getInitialContinent } from '@src/utils/areaUtils';
 import {
   setMatchArea,
@@ -20,7 +20,7 @@ import {
   useMatchingStore,
 } from '@src/zustand/matchingStore';
 
-const FestivalMatchSettingsContainer = () => {
+export const FestivalMatchSettingsContainer = () => {
   const matchBasis = useMatchingStore((state) => state.matchBasis);
   const matchArea = useMatchingStore((state) => state.matchArea);
 
@@ -72,5 +72,3 @@ const FestivalMatchSettingsContainer = () => {
     </>
   );
 };
-
-export default FestivalMatchSettingsContainer;

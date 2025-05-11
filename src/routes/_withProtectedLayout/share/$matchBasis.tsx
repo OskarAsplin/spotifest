@@ -1,5 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
-import SharedResultsPage from '@src/pages/SharedResultsPage';
+import { SharedResultsPage } from '@src/pages/SharedResultsPage';
 import { getIsLoggedIn, getRefreshToken } from '@src/zustand/authStore';
 import {
   redirectToSpotifyLogin,

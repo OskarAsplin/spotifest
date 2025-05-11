@@ -13,10 +13,8 @@ const divStyle: React.CSSProperties = {
   alignItems: 'center',
 };
 
-const PageNotFound = () => (
+export const PageNotFound = () => (
   <div style={divStyle}>
     <img src="page_not_found.svg" alt="" style={imgStyle} />
   </div>
 );
-
-export default PageNotFound;

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import CustomSwitch from './CustomSwitch';
+import { CustomSwitch } from './CustomSwitch';
 
 type Story = StoryObj<typeof CustomSwitch>;
 

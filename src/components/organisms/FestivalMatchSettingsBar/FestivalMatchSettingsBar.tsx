@@ -15,10 +15,10 @@ import { styled, useTheme } from '@mui/material/styles';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Area, MatchSettings, Playlist } from '@src/api/types';
-import HtmlTooltip from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
-import AreaSelect from '@src/components/molecules/AreaSelect/AreaSelect';
-import MatchCriteriaSelect from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import SettingsBarDatePicker from '@src/components/molecules/SettingsBarDatePicker/SettingsBarDatePicker';
+import { HtmlTooltip } from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
+import { AreaSelect } from '@src/components/molecules/AreaSelect/AreaSelect';
+import { MatchCriteriaSelect } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import { SettingsBarDatePicker } from '@src/components/molecules/SettingsBarDatePicker/SettingsBarDatePicker';
 import {
   setDates,
   setMatchArea,
@@ -38,7 +38,7 @@ interface FestivalMatchSettingsBarProps {
   isMatchBasisFieldDisabled?: boolean;
 }
 
-const FestivalMatchSettingsBar = ({
+export const FestivalMatchSettingsBar = ({
   matchBasis,
   playlists,
   hasTopArtists = false,
@@ -239,5 +239,3 @@ const StyledBox = styled(Box)(() => ({
   alignItems: 'center',
   '@media (max-width: 799px)': { width: '100%' },
 }));
-
-export default FestivalMatchSettingsBar;

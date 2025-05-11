@@ -14,7 +14,8 @@ import { styled } from '@mui/material/styles';
 import { Trans, useTranslation } from 'react-i18next';
 import { Playlist } from '@src/api/types';
 import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
-import MatchCriteriaSelect, {
+import {
+  MatchCriteriaSelect,
   TOP_ARTISTS_CHOICE,
 } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { setMatchBasis } from '@src/zustand/matchingStore';
@@ -28,7 +29,7 @@ interface SelectPlaylistModalProps {
   userSpotifyUrl?: string;
 }
 
-const SelectPlaylistModal = ({
+export const SelectPlaylistModal = ({
   open,
   onClickGoButton,
   playlists,
@@ -132,5 +133,3 @@ const StyledBox = styled(Box)(() => ({
   alignItems: 'center',
   '@media (max-width: 799px)': { width: '100%' },
 }));
-
-export default SelectPlaylistModal;

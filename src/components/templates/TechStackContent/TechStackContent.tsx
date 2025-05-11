@@ -4,14 +4,14 @@ import { useTheme } from '@mui/material/styles';
 import clsx from 'clsx';
 import { Fragment } from 'react';
 import aboutPageStyles from '@src/pages/AboutPage.module.scss';
-import HtmlTooltip from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
+import { HtmlTooltip } from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
 import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
 import styles from './TechStackContent.module.scss';
 import { Trans, useTranslation } from 'react-i18next';
 
 const PC_SCREEN_MIN_WIDTH = '(min-width:1040px)';
 
-const TechStackContent = () => {
+export const TechStackContent = () => {
   const isLightMode = useTheme().palette.mode === 'light';
   const pcScreen = useMediaQuery(PC_SCREEN_MIN_WIDTH);
   const { t } = useTranslation();
@@ -251,5 +251,3 @@ const TechInfoRow = ({ text, icons }: TechInfoRowProps) => {
     </Fragment>
   );
 };
-
-export default TechStackContent;

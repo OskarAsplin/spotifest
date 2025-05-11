@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { FormControl, InputLabel } from '@mui/material';
-import AreaSelect from './AreaSelect';
+import { AreaSelect } from './AreaSelect';
 import { continentsMock, countriesMock } from './AreaSelect.fixtures';
 
 type Story = StoryObj<typeof AreaSelect>;

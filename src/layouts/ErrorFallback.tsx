@@ -9,7 +9,7 @@ interface ErrorFallbackProps extends Partial<FallbackProps> {
   fallbackText?: string;
 }
 
-const ErrorFallback = ({ fallbackText, error }: ErrorFallbackProps) => {
+export const ErrorFallback = ({ fallbackText, error }: ErrorFallbackProps) => {
   const { t } = useTranslation();
   const errorMessage =
     error?.message && error.message !== noConnectionMessage
@@ -40,5 +40,3 @@ const StyledCenteredDiv = styled('div')(() => ({
   alignItems: 'center',
   width: '100%',
 }));
-
-export default ErrorFallback;

@@ -18,16 +18,16 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useState } from 'react';
-import ExpandButton from '@src/components/atoms/ExpandButton/ExpandButton';
+import { ExpandButton } from '@src/components/atoms/ExpandButton/ExpandButton';
 import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
-import TechStackContent from '@src/components/templates/TechStackContent/TechStackContent';
+import { TechStackContent } from '@src/components/templates/TechStackContent/TechStackContent';
 import '../styles/base.scss';
 import styles from './AboutPage.module.scss';
 import { Trans, useTranslation } from 'react-i18next';
 
-const AboutPage = () => {
+export const AboutPage = () => {
   const bigScreen = useMediaQuery('(min-width:610px)');
   const biggerScreen = useMediaQuery('(min-width:720px)');
   const { t } = useTranslation();
@@ -274,5 +274,3 @@ const LinkedInIcon = () => (
     />
   </Box>
 );
-
-export default AboutPage;

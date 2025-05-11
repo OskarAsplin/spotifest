@@ -3,15 +3,15 @@ import { Trans, useTranslation } from 'react-i18next';
 import { useApiSuspenseQuery, withFallback } from '@src/api/api';
 import { getPlaylist, getUserInfo } from '@src/api/spotifyApi';
 import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/LoadingSpinner';
-import ScrollToTopButton from '@src/components/atoms/ScrollToTopButton/ScrollToTopButton';
+import { ScrollToTopButton } from '@src/components/atoms/ScrollToTopButton/ScrollToTopButton';
 import {
   StandardLink,
   StandardRouterLink,
 } from '@src/components/atoms/StandardLink/StandardLink';
 import { getIdFromMatchBasis } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import FestivalMatchesContainer from '@src/containers/FestivalMatchesContainer';
-import SharedMatchesSettingsContainer from '@src/containers/SharedMatchesSettingsContainer';
-import ErrorFallback from '@src/layouts/ErrorFallback';
+import { FestivalMatchesContainer } from '@src/containers/FestivalMatchesContainer';
+import { SharedMatchesSettingsContainer } from '@src/containers/SharedMatchesSettingsContainer';
+import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 import { getRouteApi } from '@tanstack/react-router';
@@ -24,7 +24,7 @@ const CustomErrorFallback = () => {
 
 const route = getRouteApi('/_withProtectedLayout/share/$matchBasis');
 
-const SharedResultsPage = withFallback(
+export const SharedResultsPage = withFallback(
   SuspenseFallback,
   CustomErrorFallback,
 )(() => {
@@ -84,5 +84,3 @@ const SharedResultsPage = withFallback(
     </StyledRootDiv>
   );
 });
-
-export default SharedResultsPage;

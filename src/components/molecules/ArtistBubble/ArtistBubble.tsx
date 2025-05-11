@@ -17,7 +17,7 @@ interface ArtistBubbleProps {
   artist: Artist;
 }
 
-const ArtistBubble = ({ artist }: ArtistBubbleProps) => (
+export const ArtistBubble = ({ artist }: ArtistBubbleProps) => (
   <StyledAvatarContainerDiv>
     <Link
       to="/artist/$artistId"
@@ -107,5 +107,3 @@ const StyledAvatarDiv = styled('div', {
     background: blueGrey[palette.mode === 'light' ? 300 : 700],
   }),
 );
-
-export default ArtistBubble;

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import ArtistBubble from './ArtistBubble';
+import { ArtistBubble } from './ArtistBubble';
 import { artistMock } from './ArtistBubble.fixtures';
 import { withRouter } from '@src/utils/storyUtils';
 

@@ -9,7 +9,7 @@ interface TabPanelProps {
 /**
  * For SwipeableViews
  */
-const TabPanel = (props: TabPanelProps) => {
+export const TabPanel = (props: TabPanelProps) => {
   const { children, value, index } = props;
 
   return (
@@ -33,5 +33,3 @@ const TabPanel = (props: TabPanelProps) => {
     </Typography>
   );
 };
-
-export default TabPanel;

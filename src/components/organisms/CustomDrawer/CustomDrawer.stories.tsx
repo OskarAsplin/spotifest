@@ -2,7 +2,7 @@ import { Brightness2 } from '@mui/icons-material';
 import InfoIcon from '@mui/icons-material/Info';
 import { action } from '@storybook/addon-actions';
 import type { Meta, StoryObj } from '@storybook/react';
-import CustomDrawer from './CustomDrawer';
+import { CustomDrawer } from './CustomDrawer';
 
 type Story = StoryObj<typeof CustomDrawer>;
 

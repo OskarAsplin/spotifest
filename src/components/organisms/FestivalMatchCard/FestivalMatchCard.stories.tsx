@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { artistMock } from '@src/components/molecules/ArtistBubble/ArtistBubble.fixtures';
-import FestivalMatchCard from './FestivalMatchCard';
+import { FestivalMatchCard } from './FestivalMatchCard';
 import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
 import { StyledMatchesRootDiv } from '@src/components/templates/FestivalMatches/FestivalMatches';
 import { withRouter } from '@src/utils/storyUtils';

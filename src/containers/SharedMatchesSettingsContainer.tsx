@@ -6,7 +6,7 @@ import {
 } from '@src/api/djangoApi';
 import { getLoggedInUserInfo, getPlaylist } from '@src/api/spotifyApi';
 import { getIdFromMatchBasis } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import FestivalMatchSettingsBar from '@src/components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
+import { FestivalMatchSettingsBar } from '@src/components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
 import { getInitialContinent } from '@src/utils/areaUtils';
 import { setMatchArea, useMatchingStore } from '@src/zustand/matchingStore';
 
@@ -14,7 +14,7 @@ interface SharedMatchesSettingsContainerProps {
   sharedMatchBasis: string;
 }
 
-const SharedMatchesSettingsContainer = ({
+export const SharedMatchesSettingsContainer = ({
   sharedMatchBasis,
 }: SharedMatchesSettingsContainerProps) => {
   const matchArea = useMatchingStore((state) => state.matchArea);
@@ -48,5 +48,3 @@ const SharedMatchesSettingsContainer = ({
     />
   );
 };
-
-export default SharedMatchesSettingsContainer;

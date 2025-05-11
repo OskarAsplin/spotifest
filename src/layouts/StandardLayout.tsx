@@ -1,7 +1,7 @@
 import { Suspense, useEffect } from 'react';
 import { Outlet } from '@tanstack/react-router';
 import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/LoadingSpinner';
-import AppBarContainer from '@src/containers/AppBarContainer';
+import { AppBarContainer } from '@src/containers/AppBarContainer';
 import {
   useIsLoggedIn,
   useRefreshToken,

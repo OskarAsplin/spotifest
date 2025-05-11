@@ -6,7 +6,7 @@ interface ExpandButtonProps extends IconButtonProps {
   expanded?: boolean;
 }
 
-const ExpandButton = (props: ExpandButtonProps) => (
+export const ExpandButton = (props: ExpandButtonProps) => (
   <StyledIconButton {...props}>
     <ExpandMoreIcon />
   </StyledIconButton>
@@ -20,5 +20,3 @@ const StyledIconButton = styled(IconButton, {
   }),
   transform: expanded ? 'rotate(180deg)' : undefined,
 }));
-
-export default ExpandButton;

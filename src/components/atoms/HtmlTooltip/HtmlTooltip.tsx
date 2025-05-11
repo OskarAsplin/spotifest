@@ -1,7 +1,7 @@
 import { Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const HtmlTooltip = ({ children, ...props }: TooltipProps) => (
+export const HtmlTooltip = ({ children, ...props }: TooltipProps) => (
   <StyledTooltip {...props}>
     <span>{children}</span>
   </StyledTooltip>
@@ -18,5 +18,3 @@ export const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
     border: '1px solid #dadde9',
   },
 }));
-
-export default HtmlTooltip;

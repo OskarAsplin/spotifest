@@ -5,7 +5,7 @@ import {
   TOP_ARTISTS_CHOICE,
 } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdFromMatchBasis } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import SocialMediaButtons from '@src/components/organisms/SocialMediaButtons/SocialMediaButtons';
+import { SocialMediaButtons } from '@src/components/organisms/SocialMediaButtons/SocialMediaButtons';
 import {
   getShareMessage,
   getShareUrl,
@@ -13,7 +13,7 @@ import {
 } from './SocialMediaButtonsContainer.utils';
 import { useMatchingStore } from '@src/zustand/matchingStore';
 
-const SocialMediaButtonsContainer = () => {
+export const SocialMediaButtonsContainer = () => {
   const matchBasis = useMatchingStore((state) => state.matchBasis);
 
   const { data: userInfo } = useApiSuspenseQuery(getLoggedInUserInfo);
@@ -43,5 +43,3 @@ const SocialMediaButtonsContainer = () => {
     />
   );
 };
-
-export default SocialMediaButtonsContainer;

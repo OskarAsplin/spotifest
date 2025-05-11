@@ -1,5 +1,5 @@
 import { createStyles, makeStyles } from '@mui/styles';
-import CookieConsent from 'react-cookie-consent';
+import { CookieConsent } from 'react-cookie-consent';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -29,7 +29,7 @@ interface CookieConsentProps {
   children: React.ReactNode;
 }
 
-const StyledCookieConsent = ({ children }: CookieConsentProps) => {
+export const StyledCookieConsent = ({ children }: CookieConsentProps) => {
   const classes = useStyles();
 
   return (
@@ -44,5 +44,3 @@ const StyledCookieConsent = ({ children }: CookieConsentProps) => {
     </CookieConsent>
   );
 };
-
-export default StyledCookieConsent;

@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { useNavigate, useMatchRoute } from '@tanstack/react-router';
 import { useApiQuery } from '@src/api/api';
 import { getLoggedInUserInfo } from '@src/api/spotifyApi';
-import CustomAppBar from '@src/components/organisms/CustomAppBar/CustomAppBar';
-import ProfilePopover from '@src/components/organisms/ProfilePopover/ProfilePopover';
-import AppBarMenuDrawerContainer from '@src/containers/AppBarMenuDrawerContainer';
-import SearchFieldContainer from './SearchFieldContainer';
+import { CustomAppBar } from '@src/components/organisms/CustomAppBar/CustomAppBar';
+import { ProfilePopover } from '@src/components/organisms/ProfilePopover/ProfilePopover';
+import { AppBarMenuDrawerContainer } from '@src/containers/AppBarMenuDrawerContainer';
+import { SearchFieldContainer } from './SearchFieldContainer';
 import { resetAuthStore, useIsLoggedIn } from '@src/zustand/authStore';
 
-const AppBarContainer = () => {
+export const AppBarContainer = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
@@ -76,5 +76,3 @@ const AppBarContainer = () => {
     </Box>
   );
 };
-
-export default AppBarContainer;

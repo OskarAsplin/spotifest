@@ -12,7 +12,7 @@ interface LoginButtonProps {
   onClick: () => void;
 }
 
-const LoginButton = ({ onClick }: LoginButtonProps) => {
+export const LoginButton = ({ onClick }: LoginButtonProps) => {
   const bigWidth = useMediaQuery('(min-width:610px)');
   const bigHeight = useMediaQuery('(min-height:610px)');
   const bigScreen = bigWidth && bigHeight;
@@ -59,5 +59,3 @@ const StyledLoginButton = styled(Button, {
     },
   };
 });
-
-export default LoginButton;

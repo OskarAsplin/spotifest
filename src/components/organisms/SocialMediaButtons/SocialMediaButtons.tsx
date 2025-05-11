@@ -9,7 +9,7 @@ import {
   WhatsappShareButton,
 } from 'react-share';
 import { StyledTooltip } from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
-import CopyToClipboardButton from '@src/components/molecules/CopyToClipboardButton/CopyToClipboardButton';
+import { CopyToClipboardButton } from '@src/components/molecules/CopyToClipboardButton/CopyToClipboardButton';
 
 const BUTTON_SIZE = 32;
 
@@ -26,7 +26,7 @@ interface SocialMediaButtonsProps {
   isDisabled: boolean;
 }
 
-const SocialMediaButtons = ({
+export const SocialMediaButtons = ({
   message,
   shareUrl,
   tooltipText,
@@ -82,5 +82,3 @@ const ButtonWrapper = ({ tooltipText, children }: ButtonWrapperProps) => (
     <Box sx={{ mr: 2 }}>{children}</Box>
   </StyledTooltip>
 );
-
-export default SocialMediaButtons;

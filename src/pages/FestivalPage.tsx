@@ -18,14 +18,15 @@ import ReactPlayer from 'react-player';
 import SwipeableViews from 'react-swipeable-views';
 import { useApiSuspenseQuery, withFallback } from '@src/api/api';
 import { getDjangoFestival } from '@src/api/djangoApi';
-import CustomSwitch from '@src/components/atoms/CustomSwitch/CustomSwitch';
+import { CustomSwitch } from '@src/components/atoms/CustomSwitch/CustomSwitch';
 import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/LoadingSpinner';
-import ArtistBubble, {
+import {
+  ArtistBubble,
   StyledAvatarContainerDiv,
 } from '@src/components/molecules/ArtistBubble/ArtistBubble';
-import StyledCookieConsent from '@src/components/molecules/CookieConsent';
-import TabPanel from '@src/components/molecules/TabPanel';
-import ErrorFallback from '@src/layouts/ErrorFallback';
+import { StyledCookieConsent } from '@src/components/molecules/CookieConsent';
+import { TabPanel } from '@src/components/molecules/TabPanel';
+import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { StyledCenteredColumnDiv } from '@src/layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 import { getCancelledDateString } from '@src/utils/dateUtils';
@@ -44,7 +45,7 @@ const FestivalPageErrorFallback = () => {
 
 const route = getRouteApi('/_withLayout/festival/$festivalId');
 
-const FestivalPage = withFallback(
+export const FestivalPage = withFallback(
   SuspenseFallback,
   FestivalPageErrorFallback,
 )(() => {
@@ -337,5 +338,3 @@ const VerticalSpaceDiv = styled('div')(({ theme: { spacing } }) => ({
   '@media (max-width: 609px)': { padding: spacing(1) },
   width: '100%',
 }));
-
-export default FestivalPage;

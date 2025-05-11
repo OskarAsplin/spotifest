@@ -21,7 +21,7 @@ const images: ReactImageGalleryItem[] = [
   },
 ];
 
-const UsageThumbnailsWithGallery = () => {
+export const UsageThumbnailsWithGallery = () => {
   const [galleryIsOpen, setGalleryIsOpen] = useState(false);
   const [startIndex, setStartIndex] = useState(0);
 
@@ -92,5 +92,3 @@ const UsageThumbnailsWithGallery = () => {
     </>
   );
 };
-
-export default UsageThumbnailsWithGallery;

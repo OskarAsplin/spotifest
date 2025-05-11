@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
-import ExpandButton from './ExpandButton';
+import { ExpandButton } from './ExpandButton';
 
 type Story = StoryObj<typeof ExpandButton>;
 
