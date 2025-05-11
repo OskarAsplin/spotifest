@@ -1,13 +1,13 @@
 import { Suspense, useEffect } from 'react';
 import { Outlet } from '@tanstack/react-router';
-import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import AppBarContainer from '../containers/AppBarContainer';
+import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/LoadingSpinner';
+import AppBarContainer from '@src/containers/AppBarContainer';
 import {
   useIsLoggedIn,
   useRefreshToken,
   useUnixExpiryTime,
-} from '../zustand/authStore';
-import { refreshSpotifyAccessToken } from '../utils/spotifyAuthUtils';
+} from '@src/zustand/authStore';
+import { refreshSpotifyAccessToken } from '@src/utils/spotifyAuthUtils';
 
 const FIVE_MINUTES_IN_MS = 5 * 60 * 1000;
 const FIVE_SECONDS_IN_MS = 5 * 1000;

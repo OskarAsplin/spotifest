@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ReactNode } from 'react';
-import { resetAuthStore } from '../zustand/authStore';
+import { resetAuthStore } from '@src/zustand/authStore';
 
 const DEFAULT_QUERY_OPTIONS: DefaultOptions['queries'] = {
   gcTime: Infinity,

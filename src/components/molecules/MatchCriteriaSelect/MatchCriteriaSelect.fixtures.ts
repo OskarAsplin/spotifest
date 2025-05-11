@@ -1,4 +1,4 @@
-import { Playlist } from '../../../api/types';
+import { Playlist } from '@src/api/types';
 
 export const playlistMock: Playlist = {
   name: 'Funky tunes',

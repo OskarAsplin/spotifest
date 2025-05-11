@@ -1,4 +1,4 @@
-import i18n from '../translations/i18n';
+import i18n from '@src/translations/i18n';
 
 export const getLocalISODate = (date: Date) => {
   const year = date.getFullYear().toString().padStart(4, '0');

@@ -1,4 +1,4 @@
-import { SearchResponse } from '../../../api/types';
+import { SearchResponse } from '@src/api/types';
 
 export const searchResultsMock: SearchResponse = {
   festivals: [

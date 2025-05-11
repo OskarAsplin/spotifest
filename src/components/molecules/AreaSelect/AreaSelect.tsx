@@ -1,9 +1,9 @@
 import { ListSubheader, MenuItem, Select, SelectProps } from '@mui/material';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
-import { Area } from '../../../api/types';
-import { displayedLocationName } from '../../../utils/displayUtils';
-import { europeanRegions, usRegions } from '../../../utils/regionUtils';
+import { Area } from '@src/api/types';
+import { displayedLocationName } from '@src/utils/displayUtils';
+import { europeanRegions, usRegions } from '@src/utils/regionUtils';
 
 export const WORLDWIDE_AREA: Area = { name: 'Worldwide', isoCode: 'XXX' };
 

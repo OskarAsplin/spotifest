@@ -1,33 +1,33 @@
 import { useLayoutEffect } from '@tanstack/react-router';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { useEffect, useMemo, useRef } from 'react';
-import { useApiSuspenseQuery, withFallback } from '../api/api';
+import { useApiSuspenseQuery, withFallback } from '@src/api/api';
 import {
   getDjangoAvailableContinents,
   ITEMS_PER_PAGE,
   postDjangoFestivalMatches,
   useDjangoPopularArtistsInLineupsInfiniteQuery,
-} from '../api/djangoApi';
+} from '@src/api/djangoApi';
 import {
   getAllArtistsFromSavedTracks,
   getAllPlaylistArtists,
   getAllTopArtistsWithPopularity,
-} from '../api/spotifyApi';
-import { Artist } from '../api/types';
+} from '@src/api/spotifyApi';
+import { Artist } from '@src/api/types';
 import {
   SAVED_TRACKS_CHOICE,
   TOP_ARTISTS_CHOICE,
-} from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import FestivalMatchCard from '../components/organisms/FestivalMatchCard/FestivalMatchCard';
-import FestivalMatchCardSkeleton from '../components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
+} from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import { getIdFromMatchBasis } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import FestivalMatchCard from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard';
+import FestivalMatchCardSkeleton from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
 import FestivalMatches, {
   FestivalMatchesSkeleton,
   NoMatchResults,
-} from '../components/templates/FestivalMatches/FestivalMatches';
-import ErrorFallback from '../layouts/ErrorFallback';
-import { getAreaFilters } from '../utils/areaUtils';
-import { useMatchingStore } from '../zustand/matchingStore';
+} from '@src/components/templates/FestivalMatches/FestivalMatches';
+import ErrorFallback from '@src/layouts/ErrorFallback';
+import { getAreaFilters } from '@src/utils/areaUtils';
+import { useMatchingStore } from '@src/zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
 
 interface FestivalMatchesContainerProps {

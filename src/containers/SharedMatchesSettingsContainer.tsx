@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import { useApiSuspenseQuery } from '../api/api';
+import { useApiSuspenseQuery } from '@src/api/api';
 import {
   getDjangoAvailableContinents,
   getDjangoAvailableCountries,
-} from '../api/djangoApi';
-import { getLoggedInUserInfo, getPlaylist } from '../api/spotifyApi';
-import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
-import { getInitialContinent } from '../utils/areaUtils';
-import { setMatchArea, useMatchingStore } from '../zustand/matchingStore';
+} from '@src/api/djangoApi';
+import { getLoggedInUserInfo, getPlaylist } from '@src/api/spotifyApi';
+import { getIdFromMatchBasis } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import FestivalMatchSettingsBar from '@src/components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
+import { getInitialContinent } from '@src/utils/areaUtils';
+import { setMatchArea, useMatchingStore } from '@src/zustand/matchingStore';
 
 interface SharedMatchesSettingsContainerProps {
   sharedMatchBasis: string;

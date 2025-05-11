@@ -1,4 +1,4 @@
-import { setCodeVerifier } from '../zustand/authStore';
+import { setCodeVerifier } from '@src/zustand/authStore';
 
 const generateRandomString = (length: number) => {
   const possible =

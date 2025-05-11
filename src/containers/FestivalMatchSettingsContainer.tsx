@@ -1,24 +1,24 @@
 import { useEffect } from 'react';
-import { useApiSuspenseQuery } from '../api/api';
+import { useApiSuspenseQuery } from '@src/api/api';
 import {
   getDjangoAvailableContinents,
   getDjangoAvailableCountries,
-} from '../api/djangoApi';
+} from '@src/api/djangoApi';
 import {
   getAllPlaylists,
   getAllTopArtistsWithPopularity,
   getLoggedInUserInfo,
   getOneSavedTrack,
-} from '../api/spotifyApi';
-import { TOP_ARTISTS_CHOICE } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import FestivalMatchSettingsBar from '../components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
-import SelectPlaylistModal from '../components/organisms/SelectPlaylistModal/SelectPlaylistModal';
-import { getInitialContinent } from '../utils/areaUtils';
+} from '@src/api/spotifyApi';
+import { TOP_ARTISTS_CHOICE } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import FestivalMatchSettingsBar from '@src/components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
+import SelectPlaylistModal from '@src/components/organisms/SelectPlaylistModal/SelectPlaylistModal';
+import { getInitialContinent } from '@src/utils/areaUtils';
 import {
   setMatchArea,
   setMatchBasis,
   useMatchingStore,
-} from '../zustand/matchingStore';
+} from '@src/zustand/matchingStore';
 
 const FestivalMatchSettingsContainer = () => {
   const matchBasis = useMatchingStore((state) => state.matchBasis);

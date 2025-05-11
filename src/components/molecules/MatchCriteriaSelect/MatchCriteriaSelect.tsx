@@ -1,6 +1,6 @@
 import { ListSubheader, MenuItem, Select, SelectProps } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Playlist } from '../../../api/types';
+import { Playlist } from '@src/api/types';
 
 export const TOP_ARTISTS_CHOICE = '__your__top__artists__';
 export const SAVED_TRACKS_CHOICE = '__your__saved__tracks__';

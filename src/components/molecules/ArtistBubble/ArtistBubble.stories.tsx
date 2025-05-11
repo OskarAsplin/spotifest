@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import ArtistBubble from './ArtistBubble';
 import { artistMock } from './ArtistBubble.fixtures';
-import { withRouter } from '../../../utils/storyUtils';
+import { withRouter } from '@src/utils/storyUtils';
 
 type Story = StoryObj<typeof ArtistBubble>;
 

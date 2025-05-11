@@ -16,23 +16,23 @@ import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
 import SwipeableViews from 'react-swipeable-views';
-import { useApiSuspenseQuery, withFallback } from '../api/api';
-import { getDjangoFestival } from '../api/djangoApi';
-import CustomSwitch from '../components/atoms/CustomSwitch/CustomSwitch';
-import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
+import { useApiSuspenseQuery, withFallback } from '@src/api/api';
+import { getDjangoFestival } from '@src/api/djangoApi';
+import CustomSwitch from '@src/components/atoms/CustomSwitch/CustomSwitch';
+import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/LoadingSpinner';
 import ArtistBubble, {
   StyledAvatarContainerDiv,
-} from '../components/molecules/ArtistBubble/ArtistBubble';
-import StyledCookieConsent from '../components/molecules/CookieConsent';
-import TabPanel from '../components/molecules/TabPanel';
-import ErrorFallback from '../layouts/ErrorFallback';
-import { StyledCenteredColumnDiv } from '../layouts/StyledLayoutComponents';
+} from '@src/components/molecules/ArtistBubble/ArtistBubble';
+import StyledCookieConsent from '@src/components/molecules/CookieConsent';
+import TabPanel from '@src/components/molecules/TabPanel';
+import ErrorFallback from '@src/layouts/ErrorFallback';
+import { StyledCenteredColumnDiv } from '@src/layouts/StyledLayoutComponents';
 import '../styles/base.scss';
-import { getCancelledDateString } from '../utils/dateUtils';
+import { getCancelledDateString } from '@src/utils/dateUtils';
 import {
   displayedLocationName,
   getMaxArtistsInFullLineupWidth,
-} from '../utils/displayUtils';
+} from '@src/utils/displayUtils';
 import { getRouteApi } from '@tanstack/react-router';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;

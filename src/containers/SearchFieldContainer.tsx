@@ -2,12 +2,12 @@ import { Box, ClickAwayListener, ThemeProvider } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 import debounce from 'lodash-es/debounce';
 import { ChangeEvent, startTransition, useState } from 'react';
-import { useApiSuspenseQuery, withFallback } from '../api/api';
-import { getDjangoSearchResults } from '../api/djangoApi';
-import SearchField from '../components/molecules/SearchField/SearchField';
-import SearchResults from '../components/organisms/SearchResults/SearchResults';
-import { getMainTheme } from '../theme/theme.styles';
-import ErrorFallback from '../layouts/ErrorFallback';
+import { useApiSuspenseQuery, withFallback } from '@src/api/api';
+import { getDjangoSearchResults } from '@src/api/djangoApi';
+import SearchField from '@src/components/molecules/SearchField/SearchField';
+import SearchResults from '@src/components/organisms/SearchResults/SearchResults';
+import { getMainTheme } from '@src/theme/theme.styles';
+import ErrorFallback from '@src/layouts/ErrorFallback';
 
 export interface SearchFieldContainerProps {
   hideSearchFieldSmallScreen?: () => void;

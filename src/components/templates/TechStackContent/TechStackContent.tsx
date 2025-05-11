@@ -3,9 +3,9 @@ import { Box, Grid, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import clsx from 'clsx';
 import { Fragment } from 'react';
-import aboutPageStyles from '../../../pages/AboutPage.module.scss';
-import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
-import { StandardLink } from '../../atoms/StandardLink/StandardLink';
+import aboutPageStyles from '@src/pages/AboutPage.module.scss';
+import HtmlTooltip from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
+import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
 import styles from './TechStackContent.module.scss';
 import { Trans, useTranslation } from 'react-i18next';
 

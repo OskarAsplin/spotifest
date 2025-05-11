@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
+import { artistMock } from '@src/components/molecules/ArtistBubble/ArtistBubble.fixtures';
 import FestivalMatchCard from './FestivalMatchCard';
-import { StyledRootDiv } from '../../../layouts/StyledLayoutComponents';
-import { StyledMatchesRootDiv } from '../../templates/FestivalMatches/FestivalMatches';
-import { withRouter } from '../../../utils/storyUtils';
+import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
+import { StyledMatchesRootDiv } from '@src/components/templates/FestivalMatches/FestivalMatches';
+import { withRouter } from '@src/utils/storyUtils';
 
 type Story = StoryObj<typeof FestivalMatchCard>;
 

@@ -11,18 +11,18 @@ import { Link } from '@tanstack/react-router';
 import { memo, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
-import { Artist, FestivalMatch } from '../../../api/types';
-import { ArtistBox } from '../../../layouts/StyledLayoutComponents';
-import { getCancelledDateString } from '../../../utils/dateUtils';
+import { Artist, FestivalMatch } from '@src/api/types';
+import { ArtistBox } from '@src/layouts/StyledLayoutComponents';
+import { getCancelledDateString } from '@src/utils/dateUtils';
 import {
   displayedLocationName,
   getMaxArtistsInWidth,
-} from '../../../utils/displayUtils';
-import ExpandButton from '../../atoms/ExpandButton/ExpandButton';
+} from '@src/utils/displayUtils';
+import ExpandButton from '@src/components/atoms/ExpandButton/ExpandButton';
 import ArtistBubble, {
   StyledAvatarContainerDiv,
-} from '../../molecules/ArtistBubble/ArtistBubble';
-import MatchingCircleWithTooltip from '../../molecules/MatchingCircleWithTooltip/MatchingCircleWithTooltip';
+} from '@src/components/molecules/ArtistBubble/ArtistBubble';
+import MatchingCircleWithTooltip from '@src/components/molecules/MatchingCircleWithTooltip/MatchingCircleWithTooltip';
 import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
 import isEqual from 'lodash-es/isEqual';
 

@@ -3,8 +3,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from '@tanstack/react-router';
-import CustomDrawer from '../components/organisms/CustomDrawer/CustomDrawer';
-import { setThemeMode } from '../zustand/themeStore';
+import CustomDrawer from '@src/components/organisms/CustomDrawer/CustomDrawer';
+import { setThemeMode } from '@src/zustand/themeStore';
 
 interface Props {
   open: boolean;

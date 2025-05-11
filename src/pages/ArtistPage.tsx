@@ -11,16 +11,16 @@ import {
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import { useApiSuspenseQuery, withFallback } from '../api/api';
-import { getArtistInfoFromDjangoOrSpotify } from '../api/combinedApi';
-import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import RelatedArtistsContainer from '../containers/RelatedArtistsContainer';
-import ErrorFallback from '../layouts/ErrorFallback';
-import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
+import { useApiSuspenseQuery, withFallback } from '@src/api/api';
+import { getArtistInfoFromDjangoOrSpotify } from '@src/api/combinedApi';
+import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/LoadingSpinner';
+import RelatedArtistsContainer from '@src/containers/RelatedArtistsContainer';
+import ErrorFallback from '@src/layouts/ErrorFallback';
+import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
 import '../styles/base.scss';
-import { getCancelledDateString } from '../utils/dateUtils';
-import { useIsLoggedIn } from '../zustand/authStore';
-import FestivalMatchCard from '../components/organisms/FestivalMatchCard/FestivalMatchCard';
+import { getCancelledDateString } from '@src/utils/dateUtils';
+import { useIsLoggedIn } from '@src/zustand/authStore';
+import FestivalMatchCard from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard';
 import { getRouteApi, Link } from '@tanstack/react-router';
 
 const getNameOrSpotifyIdFromUrl = (artistId: string) => {

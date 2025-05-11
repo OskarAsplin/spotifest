@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import SearchResults from './SearchResults';
 import { searchResultsMock } from './SearchResults.fixtures';
-import { withRouter } from '../../../utils/storyUtils';
+import { withRouter } from '@src/utils/storyUtils';
 
 type Story = StoryObj<typeof SearchResults>;
 

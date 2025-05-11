@@ -6,14 +6,14 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { ArtistBox } from '../../../layouts/StyledLayoutComponents';
-import { getMaxArtistsInWidth } from '../../../utils/displayUtils';
-import { MatchingCircleSizeCss } from '../../atoms/MatchingCircle/MatchingCircle';
+import { ArtistBox } from '@src/layouts/StyledLayoutComponents';
+import { getMaxArtistsInWidth } from '@src/utils/displayUtils';
+import { MatchingCircleSizeCss } from '@src/components/atoms/MatchingCircle/MatchingCircle';
 import {
   ArtistBubbleSkeleton,
   StyledAvatarContainerDiv,
-} from '../../molecules/ArtistBubble/ArtistBubble';
-import { artistMock } from '../../molecules/ArtistBubble/ArtistBubble.fixtures';
+} from '@src/components/molecules/ArtistBubble/ArtistBubble';
+import { artistMock } from '@src/components/molecules/ArtistBubble/ArtistBubble.fixtures';
 import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
 
 const FestivalMatchCardSkeleton = () => {

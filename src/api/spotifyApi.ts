@@ -8,7 +8,7 @@ import {
   mapToUserInfo,
 } from './mappers';
 import { Artist, MatchOption, Playlist } from './types';
-import { getAccessToken } from '../zustand/authStore';
+import { getAccessToken } from '@src/zustand/authStore';
 
 const spotifyApi = new SpotifyWebApi();
 

@@ -9,9 +9,9 @@ import {
 } from '@mui/material';
 import { blueGrey } from '@mui/material/colors';
 import { Shadows, styled } from '@mui/material/styles';
-import { Artist } from '../../../api/types';
+import { Artist } from '@src/api/types';
 import { Link } from '@tanstack/react-router';
-import { getArtistParam } from '../../../utils/routeUtils';
+import { getArtistParam } from '@src/utils/routeUtils';
 
 interface ArtistBubbleProps {
   artist: Artist;

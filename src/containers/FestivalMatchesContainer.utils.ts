@@ -1,6 +1,6 @@
-import { mapToArtistMinimal } from '../api/mappers';
-import { MatchCriteria, MatchRequest } from '../api/types';
-import { getLocalISODate } from '../utils/dateUtils';
+import { mapToArtistMinimal } from '@src/api/mappers';
+import { MatchCriteria, MatchRequest } from '@src/api/types';
+import { getLocalISODate } from '@src/utils/dateUtils';
 
 export const createMatchRequest = ({
   artists,

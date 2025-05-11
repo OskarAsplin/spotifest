@@ -1,8 +1,8 @@
 import { Typography, useMediaQuery } from '@mui/material';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
-import MatchingCircle from '../../atoms/MatchingCircle/MatchingCircle';
+import HtmlTooltip from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
+import MatchingCircle from '@src/components/atoms/MatchingCircle/MatchingCircle';
 
 interface MatchingTooltipProps {
   total: number;

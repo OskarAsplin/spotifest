@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Area } from '../api/types';
-import { INITIAL_FROM_DATE, INITIAL_TO_DATE } from '../config';
+import { Area } from '@src/api/types';
+import { INITIAL_FROM_DATE, INITIAL_TO_DATE } from '@src/config';
 
 type Store = {
   matchBasis?: string;

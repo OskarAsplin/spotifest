@@ -6,10 +6,10 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Trans, useTranslation } from 'react-i18next';
-import LoginButton from '../components/atoms/LoginButton/LoginButton';
-import { StandardLink } from '../components/atoms/StandardLink/StandardLink';
-import UsageThumbnailsWithGallery from '../components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
-import { redirectToSpotifyLogin } from '../utils/spotifyAuthUtils';
+import LoginButton from '@src/components/atoms/LoginButton/LoginButton';
+import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
+import UsageThumbnailsWithGallery from '@src/components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
+import { redirectToSpotifyLogin } from '@src/utils/spotifyAuthUtils';
 
 const LoginPage = () => {
   const bigWidth = useMediaQuery('(min-width:610px)');

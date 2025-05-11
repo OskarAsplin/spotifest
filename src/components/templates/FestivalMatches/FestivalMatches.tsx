@@ -1,7 +1,7 @@
 import { Box, Skeleton, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useTranslation } from 'react-i18next';
-import FestivalMatchCardSkeleton from '../../organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
+import FestivalMatchCardSkeleton from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
 
 export const FestivalMatchesSkeleton = () => (
   <StyledMatchesRootDiv>

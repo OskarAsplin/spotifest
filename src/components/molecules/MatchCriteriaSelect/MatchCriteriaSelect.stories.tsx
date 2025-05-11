@@ -3,7 +3,7 @@ import MatchCriteriaSelect from './MatchCriteriaSelect';
 import {
   playlistMock,
   playlistMock2,
-} from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect.fixtures';
+} from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.fixtures';
 
 type Story = StoryObj<typeof MatchCriteriaSelect>;
 

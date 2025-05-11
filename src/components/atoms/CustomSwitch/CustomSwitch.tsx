@@ -1,6 +1,6 @@
 import { Button, Switch } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { StyledCenteredRowDiv } from '../../../layouts/StyledLayoutComponents';
+import { StyledCenteredRowDiv } from '@src/layouts/StyledLayoutComponents';
 
 interface CustomSwitchProps {
   checked: boolean;

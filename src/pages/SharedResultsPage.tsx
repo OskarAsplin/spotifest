@@ -1,18 +1,18 @@
 import { Box, Typography } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
-import { useApiSuspenseQuery, withFallback } from '../api/api';
-import { getPlaylist, getUserInfo } from '../api/spotifyApi';
-import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import ScrollToTopButton from '../components/atoms/ScrollToTopButton/ScrollToTopButton';
+import { useApiSuspenseQuery, withFallback } from '@src/api/api';
+import { getPlaylist, getUserInfo } from '@src/api/spotifyApi';
+import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/LoadingSpinner';
+import ScrollToTopButton from '@src/components/atoms/ScrollToTopButton/ScrollToTopButton';
 import {
   StandardLink,
   StandardRouterLink,
-} from '../components/atoms/StandardLink/StandardLink';
-import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
-import SharedMatchesSettingsContainer from '../containers/SharedMatchesSettingsContainer';
-import ErrorFallback from '../layouts/ErrorFallback';
-import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
+} from '@src/components/atoms/StandardLink/StandardLink';
+import { getIdFromMatchBasis } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import FestivalMatchesContainer from '@src/containers/FestivalMatchesContainer';
+import SharedMatchesSettingsContainer from '@src/containers/SharedMatchesSettingsContainer';
+import ErrorFallback from '@src/layouts/ErrorFallback';
+import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 import { getRouteApi } from '@tanstack/react-router';
 

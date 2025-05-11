@@ -1,4 +1,4 @@
-import { Area } from '../../../api/types';
+import { Area } from '@src/api/types';
 
 export const continentsMock: Area[] = [
   { name: 'Europe', isoCode: 'EU' },

@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
-import { SearchFieldContainerProps } from '../../../containers/SearchFieldContainer';
+import { SearchFieldContainerProps } from '@src/containers/SearchFieldContainer';
 import { useTranslation } from 'react-i18next';
 
 interface CustomAppBarProps {

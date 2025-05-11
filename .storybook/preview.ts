@@ -3,7 +3,7 @@ import i18n from '../src/translations/i18n';
 
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 import { withThemeFromJSXProvider } from '@storybook/addon-styling';
-import { getMainTheme } from '../src/theme/theme.styles';
+import { getMainTheme } from '@src/theme/theme.styles';
 
 export const parameters: Parameters = {
   controls: {

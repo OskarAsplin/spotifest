@@ -3,7 +3,7 @@ import { LocalizationProvider, StaticDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { Dayjs } from 'dayjs';
 import { useEffect, useState } from 'react';
-import { MATCHING_MAX_DATE, MATCHING_MIN_DATE } from '../../../config';
+import { MATCHING_MAX_DATE, MATCHING_MIN_DATE } from '@src/config';
 import { grey } from '@mui/material/colors';
 
 type Props = {

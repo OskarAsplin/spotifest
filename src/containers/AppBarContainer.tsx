@@ -1,13 +1,13 @@
 import { Box, Slide, useScrollTrigger } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate, useMatchRoute } from '@tanstack/react-router';
-import { useApiQuery } from '../api/api';
-import { getLoggedInUserInfo } from '../api/spotifyApi';
-import CustomAppBar from '../components/organisms/CustomAppBar/CustomAppBar';
-import ProfilePopover from '../components/organisms/ProfilePopover/ProfilePopover';
-import AppBarMenuDrawerContainer from '../containers/AppBarMenuDrawerContainer';
+import { useApiQuery } from '@src/api/api';
+import { getLoggedInUserInfo } from '@src/api/spotifyApi';
+import CustomAppBar from '@src/components/organisms/CustomAppBar/CustomAppBar';
+import ProfilePopover from '@src/components/organisms/ProfilePopover/ProfilePopover';
+import AppBarMenuDrawerContainer from '@src/containers/AppBarMenuDrawerContainer';
 import SearchFieldContainer from './SearchFieldContainer';
-import { resetAuthStore, useIsLoggedIn } from '../zustand/authStore';
+import { resetAuthStore, useIsLoggedIn } from '@src/zustand/authStore';
 
 const AppBarContainer = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);

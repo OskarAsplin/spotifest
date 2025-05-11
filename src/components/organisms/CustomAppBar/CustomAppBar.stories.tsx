@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import CustomAppBar from './CustomAppBar';
-import SearchField from '../../molecules/SearchField/SearchField';
-import Stromae_Spotify_Img from '../../../storyAssets/stromae_spotify.jpeg';
+import SearchField from '@src/components/molecules/SearchField/SearchField';
+import Stromae_Spotify_Img from '@src/storyAssets/stromae_spotify.jpeg';
 
 type Story = StoryObj<typeof CustomAppBar>;
 

@@ -1,17 +1,17 @@
-import { useApiSuspenseQuery } from '../api/api';
-import { getAllPlaylists, getLoggedInUserInfo } from '../api/spotifyApi';
+import { useApiSuspenseQuery } from '@src/api/api';
+import { getAllPlaylists, getLoggedInUserInfo } from '@src/api/spotifyApi';
 import {
   SAVED_TRACKS_CHOICE,
   TOP_ARTISTS_CHOICE,
-} from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import { getIdFromMatchBasis } from '../components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
-import SocialMediaButtons from '../components/organisms/SocialMediaButtons/SocialMediaButtons';
+} from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import { getIdFromMatchBasis } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
+import SocialMediaButtons from '@src/components/organisms/SocialMediaButtons/SocialMediaButtons';
 import {
   getShareMessage,
   getShareUrl,
   getTooltipText,
 } from './SocialMediaButtonsContainer.utils';
-import { useMatchingStore } from '../zustand/matchingStore';
+import { useMatchingStore } from '@src/zustand/matchingStore';
 
 const SocialMediaButtonsContainer = () => {
   const matchBasis = useMatchingStore((state) => state.matchBasis);

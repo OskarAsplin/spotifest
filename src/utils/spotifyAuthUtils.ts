@@ -4,8 +4,8 @@ import {
   authScopes,
 } from './spotifyAuth.constants';
 import { TokenResponse } from './spotifyAuth.types';
-import { resetAuthStore, setToken } from '../zustand/authStore';
-import { setSpotifyToken } from '../api/spotifyApi';
+import { resetAuthStore, setToken } from '@src/zustand/authStore';
+import { setSpotifyToken } from '@src/api/spotifyApi';
 import { generateCodeChallenge } from './codeChallengeUtils';
 
 const generateLoginUrl = async (path?: string) => {

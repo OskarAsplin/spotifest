@@ -1,6 +1,6 @@
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { Fab } from '@mui/material';
-import ScrollToTop from '../ScrollToTop/ScrollToTop';
+import ScrollToTop from '@src/components/atoms/ScrollToTop/ScrollToTop';
 
 const ScrollToTopButton = () => (
   <ScrollToTop>

@@ -8,8 +8,8 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
-import { StyledTooltip } from '../../atoms/HtmlTooltip/HtmlTooltip';
-import CopyToClipboardButton from '../../molecules/CopyToClipboardButton/CopyToClipboardButton';
+import { StyledTooltip } from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
+import CopyToClipboardButton from '@src/components/molecules/CopyToClipboardButton/CopyToClipboardButton';
 
 const BUTTON_SIZE = 32;
 

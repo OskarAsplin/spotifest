@@ -1,13 +1,13 @@
 import { Divider, Typography, useMediaQuery } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useApiSuspenseQuery } from '../api/api';
-import { getArtistRelatedArtists } from '../api/spotifyApi';
+import { useApiSuspenseQuery } from '@src/api/api';
+import { getArtistRelatedArtists } from '@src/api/spotifyApi';
 import ArtistBubble, {
   StyledAvatarContainerDiv,
-} from '../components/molecules/ArtistBubble/ArtistBubble';
-import { ArtistBox } from '../layouts/StyledLayoutComponents';
+} from '@src/components/molecules/ArtistBubble/ArtistBubble';
+import { ArtistBox } from '@src/layouts/StyledLayoutComponents';
 import '../styles/base.scss';
-import { getMaxArtistsInWidth } from '../utils/displayUtils';
+import { getMaxArtistsInWidth } from '@src/utils/displayUtils';
 
 interface RelatedArtistsProps {
   spotifyId: string;

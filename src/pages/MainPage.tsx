@@ -1,12 +1,12 @@
 import { Box } from '@mui/material';
-import { withFallback } from '../api/api';
-import { CenteredLoadingSpinner } from '../components/atoms/LoadingSpinner/LoadingSpinner';
-import ScrollToTopButton from '../components/atoms/ScrollToTopButton/ScrollToTopButton';
-import FestivalMatchSettingsContainer from '../containers/FestivalMatchSettingsContainer';
-import FestivalMatchesContainer from '../containers/FestivalMatchesContainer';
-import SocialMediaButtonsContainer from '../containers/SocialMediaButtonsContainer';
-import ErrorFallback from '../layouts/ErrorFallback';
-import { StyledRootDiv } from '../layouts/StyledLayoutComponents';
+import { withFallback } from '@src/api/api';
+import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/LoadingSpinner';
+import ScrollToTopButton from '@src/components/atoms/ScrollToTopButton/ScrollToTopButton';
+import FestivalMatchSettingsContainer from '@src/containers/FestivalMatchSettingsContainer';
+import FestivalMatchesContainer from '@src/containers/FestivalMatchesContainer';
+import SocialMediaButtonsContainer from '@src/containers/SocialMediaButtonsContainer';
+import ErrorFallback from '@src/layouts/ErrorFallback';
+import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
 import '../styles/base.scss';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;

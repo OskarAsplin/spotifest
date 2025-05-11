@@ -12,12 +12,12 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Trans, useTranslation } from 'react-i18next';
-import { Playlist } from '../../../api/types';
-import { StandardLink } from '../../atoms/StandardLink/StandardLink';
+import { Playlist } from '@src/api/types';
+import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
 import MatchCriteriaSelect, {
   TOP_ARTISTS_CHOICE,
-} from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import { setMatchBasis } from '../../../zustand/matchingStore';
+} from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import { setMatchBasis } from '@src/zustand/matchingStore';
 
 interface SelectPlaylistModalProps {
   open: boolean;

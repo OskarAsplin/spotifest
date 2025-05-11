@@ -14,18 +14,18 @@ import { indigo } from '@mui/material/colors';
 import { styled, useTheme } from '@mui/material/styles';
 import { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Area, MatchSettings, Playlist } from '../../../api/types';
-import HtmlTooltip from '../../atoms/HtmlTooltip/HtmlTooltip';
-import AreaSelect from '../../molecules/AreaSelect/AreaSelect';
-import MatchCriteriaSelect from '../../molecules/MatchCriteriaSelect/MatchCriteriaSelect';
-import SettingsBarDatePicker from '../../molecules/SettingsBarDatePicker/SettingsBarDatePicker';
+import { Area, MatchSettings, Playlist } from '@src/api/types';
+import HtmlTooltip from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
+import AreaSelect from '@src/components/molecules/AreaSelect/AreaSelect';
+import MatchCriteriaSelect from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
+import SettingsBarDatePicker from '@src/components/molecules/SettingsBarDatePicker/SettingsBarDatePicker';
 import {
   setDates,
   setMatchArea,
   setMatchBasis,
   useMatchingStore,
-} from '../../../zustand/matchingStore';
-import { DATE_RANGE_YEAR_OPTIONS, MATCHING_MAX_DATE } from '../../../config';
+} from '@src/zustand/matchingStore';
+import { DATE_RANGE_YEAR_OPTIONS, MATCHING_MAX_DATE } from '@src/config';
 import dayjs, { Dayjs } from 'dayjs';
 
 interface FestivalMatchSettingsBarProps {
