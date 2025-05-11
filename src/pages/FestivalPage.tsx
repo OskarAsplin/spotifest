@@ -183,7 +183,7 @@ const FestivalPage = withFallback(
                 value={selectedLineup}
                 indicatorColor="primary"
                 textColor="primary"
-                onChange={(event: React.ChangeEvent<{}>, newValue: number) =>
+                onChange={(_event: React.ChangeEvent<{}>, newValue: number) =>
                   setSelectedLineup(newValue)
                 }
                 aria-label="lineups"

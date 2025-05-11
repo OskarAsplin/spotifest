@@ -1,7 +1,6 @@
-import { PaletteMode } from '@mui/material';
+import { PaletteMode, ThemeOptions } from '@mui/material';
 import { deepOrange, lightBlue, pink } from '@mui/material/colors';
-import { ThemeOptions } from '@mui/material/styles';
-import { PaletteOptions } from '@mui/material/styles/createPalette';
+import { PaletteOptions } from '@mui/material/styles';
 
 const mainThemePaletteOptions: PaletteOptions = {
   primary: {

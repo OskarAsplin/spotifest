@@ -3,19 +3,12 @@ import {
   PaletteOptions as MuiPaletteOptions,
 } from '@mui/material/styles/createPalette';
 
-declare module '@mui/material/styles/createPalette' {
+declare module '@mui/material/styles' {
   interface Palette extends MuiPalette {
-    tertiary?: {
-      dark: string;
-      main: string;
-      light: string;
-    };
+    tertiary: Palette['primary'];
   }
+
   interface PaletteOptions extends MuiPaletteOptions {
-    tertiary?: {
-      dark: string;
-      main: string;
-      light: string;
-    };
+    tertiary?: PaletteOptions['primary'];
   }
 }
