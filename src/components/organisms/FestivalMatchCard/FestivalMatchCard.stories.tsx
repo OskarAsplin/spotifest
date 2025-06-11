@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { artistMock } from '@src/components/molecules/ArtistBubble/ArtistBubble.fixtures';
 import { FestivalMatchCard } from './FestivalMatchCard';
 import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';

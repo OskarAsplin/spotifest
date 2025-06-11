@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FormControl, InputLabel } from '@mui/material';
 import { AreaSelect } from './AreaSelect';
 import { continentsMock, countriesMock } from './AreaSelect.fixtures';

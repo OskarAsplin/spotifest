@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { HtmlTooltip } from './HtmlTooltip';
 
 type Story = StoryObj<typeof HtmlTooltip>;

@@ -1,8 +1,8 @@
-import { Parameters } from '@storybook/react';
+import { Parameters } from '@storybook/react-vite';
 import i18n from '../src/translations/i18n';
 
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
-import { withThemeFromJSXProvider } from '@storybook/addon-styling';
+import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 import { getMainTheme } from '../src/theme/theme.styles';
 
 export const parameters: Parameters = {

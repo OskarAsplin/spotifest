@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SearchResults } from './SearchResults';
 import { searchResultsMock } from './SearchResults.fixtures';
 import { withRouter } from '@src/utils/storyUtils';

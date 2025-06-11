@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SettingsBarDatePicker } from './SettingsBarDatePicker';
 import { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';

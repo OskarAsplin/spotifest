@@ -22,7 +22,7 @@ export const StandardLayout = ({
   const unixExpiryTime = useUnixExpiryTime();
 
   useEffect(() => {
-    let timeoutId: number | undefined;
+    let timeoutId: NodeJS.Timeout | undefined;
     if (refreshToken && unixExpiryTime) {
       const unixTimeNow = new Date().getTime(); // Unix time in milliseconds
       const timeLeftMs = unixExpiryTime - unixTimeNow;

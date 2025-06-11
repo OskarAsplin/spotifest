@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ArtistBubble } from './ArtistBubble';
 import { artistMock } from './ArtistBubble.fixtures';
 import { withRouter } from '@src/utils/storyUtils';

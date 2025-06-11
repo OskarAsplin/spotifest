@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CustomAppBar } from './CustomAppBar';
 import { SearchField } from '@src/components/molecules/SearchField/SearchField';
 import Stromae_Spotify_Img from '@src/storyAssets/stromae_spotify.jpeg';

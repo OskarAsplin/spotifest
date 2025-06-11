@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { LoginButton } from './LoginButton';
 
 type Story = StoryObj<typeof LoginButton>;
