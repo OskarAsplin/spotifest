@@ -8,179 +8,65 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as WithProtectedLayoutRouteImport } from './routes/_withProtectedLayout'
+import { Route as WithLayoutRouteImport } from './routes/_withLayout'
+import { Route as WithProtectedLayoutIndexRouteImport } from './routes/_withProtectedLayout/index'
+import { Route as WithProtectedLayoutShareIndexRouteImport } from './routes/_withProtectedLayout/share/index'
+import { Route as WithLayoutAboutIndexRouteImport } from './routes/_withLayout/about/index'
+import { Route as WithProtectedLayoutShareMatchBasisRouteImport } from './routes/_withProtectedLayout/share/$matchBasis'
+import { Route as WithLayoutFestivalFestivalIdRouteImport } from './routes/_withLayout/festival/$festivalId'
+import { Route as WithLayoutArtistArtistIdRouteImport } from './routes/_withLayout/artist/$artistId'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as LoginImport } from './routes/login'
-import { Route as WithProtectedLayoutImport } from './routes/_withProtectedLayout'
-import { Route as WithLayoutImport } from './routes/_withLayout'
-import { Route as WithProtectedLayoutIndexImport } from './routes/_withProtectedLayout/index'
-import { Route as WithProtectedLayoutShareIndexImport } from './routes/_withProtectedLayout/share/index'
-import { Route as WithLayoutAboutIndexImport } from './routes/_withLayout/about/index'
-import { Route as WithProtectedLayoutShareMatchBasisImport } from './routes/_withProtectedLayout/share/$matchBasis'
-import { Route as WithLayoutFestivalFestivalIdImport } from './routes/_withLayout/festival/$festivalId'
-import { Route as WithLayoutArtistArtistIdImport } from './routes/_withLayout/artist/$artistId'
-
-// Create/Update Routes
-
-const LoginRoute = LoginImport.update({
+const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const WithProtectedLayoutRoute = WithProtectedLayoutImport.update({
+const WithProtectedLayoutRoute = WithProtectedLayoutRouteImport.update({
   id: '/_withProtectedLayout',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const WithLayoutRoute = WithLayoutImport.update({
+const WithLayoutRoute = WithLayoutRouteImport.update({
   id: '/_withLayout',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const WithProtectedLayoutIndexRoute = WithProtectedLayoutIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => WithProtectedLayoutRoute,
-} as any)
-
+const WithProtectedLayoutIndexRoute =
+  WithProtectedLayoutIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => WithProtectedLayoutRoute,
+  } as any)
 const WithProtectedLayoutShareIndexRoute =
-  WithProtectedLayoutShareIndexImport.update({
+  WithProtectedLayoutShareIndexRouteImport.update({
     id: '/share/',
     path: '/share/',
     getParentRoute: () => WithProtectedLayoutRoute,
   } as any)
-
-const WithLayoutAboutIndexRoute = WithLayoutAboutIndexImport.update({
+const WithLayoutAboutIndexRoute = WithLayoutAboutIndexRouteImport.update({
   id: '/about/',
   path: '/about/',
   getParentRoute: () => WithLayoutRoute,
 } as any)
-
 const WithProtectedLayoutShareMatchBasisRoute =
-  WithProtectedLayoutShareMatchBasisImport.update({
+  WithProtectedLayoutShareMatchBasisRouteImport.update({
     id: '/share/$matchBasis',
     path: '/share/$matchBasis',
     getParentRoute: () => WithProtectedLayoutRoute,
   } as any)
-
 const WithLayoutFestivalFestivalIdRoute =
-  WithLayoutFestivalFestivalIdImport.update({
+  WithLayoutFestivalFestivalIdRouteImport.update({
     id: '/festival/$festivalId',
     path: '/festival/$festivalId',
     getParentRoute: () => WithLayoutRoute,
   } as any)
-
-const WithLayoutArtistArtistIdRoute = WithLayoutArtistArtistIdImport.update({
-  id: '/artist/$artistId',
-  path: '/artist/$artistId',
-  getParentRoute: () => WithLayoutRoute,
-} as any)
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/_withLayout': {
-      id: '/_withLayout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof WithLayoutImport
-      parentRoute: typeof rootRoute
-    }
-    '/_withProtectedLayout': {
-      id: '/_withProtectedLayout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof WithProtectedLayoutImport
-      parentRoute: typeof rootRoute
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
-      parentRoute: typeof rootRoute
-    }
-    '/_withProtectedLayout/': {
-      id: '/_withProtectedLayout/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof WithProtectedLayoutIndexImport
-      parentRoute: typeof WithProtectedLayoutImport
-    }
-    '/_withLayout/artist/$artistId': {
-      id: '/_withLayout/artist/$artistId'
-      path: '/artist/$artistId'
-      fullPath: '/artist/$artistId'
-      preLoaderRoute: typeof WithLayoutArtistArtistIdImport
-      parentRoute: typeof WithLayoutImport
-    }
-    '/_withLayout/festival/$festivalId': {
-      id: '/_withLayout/festival/$festivalId'
-      path: '/festival/$festivalId'
-      fullPath: '/festival/$festivalId'
-      preLoaderRoute: typeof WithLayoutFestivalFestivalIdImport
-      parentRoute: typeof WithLayoutImport
-    }
-    '/_withProtectedLayout/share/$matchBasis': {
-      id: '/_withProtectedLayout/share/$matchBasis'
-      path: '/share/$matchBasis'
-      fullPath: '/share/$matchBasis'
-      preLoaderRoute: typeof WithProtectedLayoutShareMatchBasisImport
-      parentRoute: typeof WithProtectedLayoutImport
-    }
-    '/_withLayout/about/': {
-      id: '/_withLayout/about/'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof WithLayoutAboutIndexImport
-      parentRoute: typeof WithLayoutImport
-    }
-    '/_withProtectedLayout/share/': {
-      id: '/_withProtectedLayout/share/'
-      path: '/share'
-      fullPath: '/share'
-      preLoaderRoute: typeof WithProtectedLayoutShareIndexImport
-      parentRoute: typeof WithProtectedLayoutImport
-    }
-  }
-}
-
-// Create and export the route tree
-
-interface WithLayoutRouteChildren {
-  WithLayoutArtistArtistIdRoute: typeof WithLayoutArtistArtistIdRoute
-  WithLayoutFestivalFestivalIdRoute: typeof WithLayoutFestivalFestivalIdRoute
-  WithLayoutAboutIndexRoute: typeof WithLayoutAboutIndexRoute
-}
-
-const WithLayoutRouteChildren: WithLayoutRouteChildren = {
-  WithLayoutArtistArtistIdRoute: WithLayoutArtistArtistIdRoute,
-  WithLayoutFestivalFestivalIdRoute: WithLayoutFestivalFestivalIdRoute,
-  WithLayoutAboutIndexRoute: WithLayoutAboutIndexRoute,
-}
-
-const WithLayoutRouteWithChildren = WithLayoutRoute._addFileChildren(
-  WithLayoutRouteChildren,
-)
-
-interface WithProtectedLayoutRouteChildren {
-  WithProtectedLayoutIndexRoute: typeof WithProtectedLayoutIndexRoute
-  WithProtectedLayoutShareMatchBasisRoute: typeof WithProtectedLayoutShareMatchBasisRoute
-  WithProtectedLayoutShareIndexRoute: typeof WithProtectedLayoutShareIndexRoute
-}
-
-const WithProtectedLayoutRouteChildren: WithProtectedLayoutRouteChildren = {
-  WithProtectedLayoutIndexRoute: WithProtectedLayoutIndexRoute,
-  WithProtectedLayoutShareMatchBasisRoute:
-    WithProtectedLayoutShareMatchBasisRoute,
-  WithProtectedLayoutShareIndexRoute: WithProtectedLayoutShareIndexRoute,
-}
-
-const WithProtectedLayoutRouteWithChildren =
-  WithProtectedLayoutRoute._addFileChildren(WithProtectedLayoutRouteChildren)
+const WithLayoutArtistArtistIdRoute =
+  WithLayoutArtistArtistIdRouteImport.update({
+    id: '/artist/$artistId',
+    path: '/artist/$artistId',
+    getParentRoute: () => WithLayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '': typeof WithProtectedLayoutRouteWithChildren
@@ -192,7 +78,6 @@ export interface FileRoutesByFullPath {
   '/about': typeof WithLayoutAboutIndexRoute
   '/share': typeof WithProtectedLayoutShareIndexRoute
 }
-
 export interface FileRoutesByTo {
   '': typeof WithLayoutRouteWithChildren
   '/login': typeof LoginRoute
@@ -203,9 +88,8 @@ export interface FileRoutesByTo {
   '/about': typeof WithLayoutAboutIndexRoute
   '/share': typeof WithProtectedLayoutShareIndexRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute
+  __root__: typeof rootRouteImport
   '/_withLayout': typeof WithLayoutRouteWithChildren
   '/_withProtectedLayout': typeof WithProtectedLayoutRouteWithChildren
   '/login': typeof LoginRoute
@@ -216,7 +100,6 @@ export interface FileRoutesById {
   '/_withLayout/about/': typeof WithLayoutAboutIndexRoute
   '/_withProtectedLayout/share/': typeof WithProtectedLayoutShareIndexRoute
 }
-
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
@@ -251,77 +134,117 @@ export interface FileRouteTypes {
     | '/_withProtectedLayout/share/'
   fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
   WithLayoutRoute: typeof WithLayoutRouteWithChildren
   WithProtectedLayoutRoute: typeof WithProtectedLayoutRouteWithChildren
   LoginRoute: typeof LoginRoute
 }
 
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_withProtectedLayout': {
+      id: '/_withProtectedLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof WithProtectedLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_withLayout': {
+      id: '/_withLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof WithLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_withProtectedLayout/': {
+      id: '/_withProtectedLayout/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof WithProtectedLayoutIndexRouteImport
+      parentRoute: typeof WithProtectedLayoutRoute
+    }
+    '/_withProtectedLayout/share/': {
+      id: '/_withProtectedLayout/share/'
+      path: '/share'
+      fullPath: '/share'
+      preLoaderRoute: typeof WithProtectedLayoutShareIndexRouteImport
+      parentRoute: typeof WithProtectedLayoutRoute
+    }
+    '/_withLayout/about/': {
+      id: '/_withLayout/about/'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof WithLayoutAboutIndexRouteImport
+      parentRoute: typeof WithLayoutRoute
+    }
+    '/_withProtectedLayout/share/$matchBasis': {
+      id: '/_withProtectedLayout/share/$matchBasis'
+      path: '/share/$matchBasis'
+      fullPath: '/share/$matchBasis'
+      preLoaderRoute: typeof WithProtectedLayoutShareMatchBasisRouteImport
+      parentRoute: typeof WithProtectedLayoutRoute
+    }
+    '/_withLayout/festival/$festivalId': {
+      id: '/_withLayout/festival/$festivalId'
+      path: '/festival/$festivalId'
+      fullPath: '/festival/$festivalId'
+      preLoaderRoute: typeof WithLayoutFestivalFestivalIdRouteImport
+      parentRoute: typeof WithLayoutRoute
+    }
+    '/_withLayout/artist/$artistId': {
+      id: '/_withLayout/artist/$artistId'
+      path: '/artist/$artistId'
+      fullPath: '/artist/$artistId'
+      preLoaderRoute: typeof WithLayoutArtistArtistIdRouteImport
+      parentRoute: typeof WithLayoutRoute
+    }
+  }
+}
+
+interface WithLayoutRouteChildren {
+  WithLayoutArtistArtistIdRoute: typeof WithLayoutArtistArtistIdRoute
+  WithLayoutFestivalFestivalIdRoute: typeof WithLayoutFestivalFestivalIdRoute
+  WithLayoutAboutIndexRoute: typeof WithLayoutAboutIndexRoute
+}
+
+const WithLayoutRouteChildren: WithLayoutRouteChildren = {
+  WithLayoutArtistArtistIdRoute: WithLayoutArtistArtistIdRoute,
+  WithLayoutFestivalFestivalIdRoute: WithLayoutFestivalFestivalIdRoute,
+  WithLayoutAboutIndexRoute: WithLayoutAboutIndexRoute,
+}
+
+const WithLayoutRouteWithChildren = WithLayoutRoute._addFileChildren(
+  WithLayoutRouteChildren,
+)
+
+interface WithProtectedLayoutRouteChildren {
+  WithProtectedLayoutIndexRoute: typeof WithProtectedLayoutIndexRoute
+  WithProtectedLayoutShareMatchBasisRoute: typeof WithProtectedLayoutShareMatchBasisRoute
+  WithProtectedLayoutShareIndexRoute: typeof WithProtectedLayoutShareIndexRoute
+}
+
+const WithProtectedLayoutRouteChildren: WithProtectedLayoutRouteChildren = {
+  WithProtectedLayoutIndexRoute: WithProtectedLayoutIndexRoute,
+  WithProtectedLayoutShareMatchBasisRoute:
+    WithProtectedLayoutShareMatchBasisRoute,
+  WithProtectedLayoutShareIndexRoute: WithProtectedLayoutShareIndexRoute,
+}
+
+const WithProtectedLayoutRouteWithChildren =
+  WithProtectedLayoutRoute._addFileChildren(WithProtectedLayoutRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   WithLayoutRoute: WithLayoutRouteWithChildren,
   WithProtectedLayoutRoute: WithProtectedLayoutRouteWithChildren,
   LoginRoute: LoginRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/_withLayout",
-        "/_withProtectedLayout",
-        "/login"
-      ]
-    },
-    "/_withLayout": {
-      "filePath": "_withLayout.tsx",
-      "children": [
-        "/_withLayout/artist/$artistId",
-        "/_withLayout/festival/$festivalId",
-        "/_withLayout/about/"
-      ]
-    },
-    "/_withProtectedLayout": {
-      "filePath": "_withProtectedLayout.tsx",
-      "children": [
-        "/_withProtectedLayout/",
-        "/_withProtectedLayout/share/$matchBasis",
-        "/_withProtectedLayout/share/"
-      ]
-    },
-    "/login": {
-      "filePath": "login.tsx"
-    },
-    "/_withProtectedLayout/": {
-      "filePath": "_withProtectedLayout/index.tsx",
-      "parent": "/_withProtectedLayout"
-    },
-    "/_withLayout/artist/$artistId": {
-      "filePath": "_withLayout/artist/$artistId.tsx",
-      "parent": "/_withLayout"
-    },
-    "/_withLayout/festival/$festivalId": {
-      "filePath": "_withLayout/festival/$festivalId.tsx",
-      "parent": "/_withLayout"
-    },
-    "/_withProtectedLayout/share/$matchBasis": {
-      "filePath": "_withProtectedLayout/share/$matchBasis.tsx",
-      "parent": "/_withProtectedLayout"
-    },
-    "/_withLayout/about/": {
-      "filePath": "_withLayout/about/index.tsx",
-      "parent": "/_withLayout"
-    },
-    "/_withProtectedLayout/share/": {
-      "filePath": "_withProtectedLayout/share/index.tsx",
-      "parent": "/_withProtectedLayout"
-    }
-  }
-}
-ROUTE_MANIFEST_END */

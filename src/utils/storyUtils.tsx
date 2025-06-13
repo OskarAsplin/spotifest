@@ -1,22 +1,46 @@
-import type { StoryFn } from '@storybook/react-vite';
 import {
-  RootRoute,
-  Route,
-  Router,
+  createMemoryHistory,
+  createRootRoute,
+  createRoute,
+  createRouter,
   RouterProvider,
 } from '@tanstack/react-router';
+import { StoryContext, StoryFn } from '@storybook/react-vite';
 
-export const withRouter = (Story: StoryFn) => {
-  const rootRoute = new RootRoute();
-  const catchAllRoute = new Route({
-    getParentRoute: () => rootRoute,
-    path: '*',
-    // @ts-ignore
-    component: () => <Story />,
-  });
-  const router = new Router({
-    routeTree: rootRoute.addChildren([catchAllRoute]),
+export const withRouter = (Story: StoryFn, { parameters }: StoryContext) => {
+  const {
+    initialEntries = ['/'],
+    initialIndex,
+    routes = ['/'],
+  } = parameters?.router || {};
+
+  const rootRoute = createRootRoute();
+
+  const children = routes.map((path) =>
+    createRoute({
+      path,
+      getParentRoute: () => rootRoute,
+      // @ts-ignore
+      component: Story,
+    }),
+  );
+
+  rootRoute.addChildren(children);
+
+  const router = createRouter({
+    history: createMemoryHistory({ initialEntries, initialIndex }),
+    routeTree: rootRoute,
   });
 
-  return <RouterProvider router={router as any} />;
+  return <RouterProvider router={router} />;
 };
+
+declare module '@storybook/react-vite' {
+  interface Parameters {
+    router?: {
+      initialEntries?: string[];
+      initialIndex?: number;
+      routes?: string[];
+    };
+  }
+}
