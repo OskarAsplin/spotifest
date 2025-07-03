@@ -1,4 +1,7 @@
-import { useLayoutEffect } from '@tanstack/react-router';
+import {
+  useElementScrollRestoration,
+  useLayoutEffect,
+} from '@tanstack/react-router';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { useEffect, useMemo, useRef } from 'react';
 import { useApiSuspenseQuery, withFallback } from '@src/api/api';
@@ -168,6 +171,10 @@ const FestivalMatchesInnerContainer = ({
       )
     : 0;
 
+  const scrollEntry = useElementScrollRestoration({
+    getElement: () => window,
+  });
+
   const parentRef = useRef<HTMLDivElement | null>(null);
 
   const parentOffsetRef = useRef(0);
@@ -184,6 +191,7 @@ const FestivalMatchesInnerContainer = ({
       estimateSize: () => 700,
       overscan: 3,
       scrollMargin,
+      initialOffset: scrollEntry?.scrollY,
     });
 
   useEffect(() => {

@@ -151,7 +151,7 @@ export const FestivalPage = withFallback(
             <Box sx={{ mb: 2 }}>
               <StyledVideoPaper elevation={3}>
                 <ReactPlayer
-                  url={festivalInfo.video}
+                  src={festivalInfo.video}
                   controls
                   data-cookiescript="accepted"
                   data-cookiecategory="functionality"

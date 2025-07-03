@@ -69,7 +69,6 @@ const WithLayoutArtistArtistIdRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '': typeof WithProtectedLayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/': typeof WithProtectedLayoutIndexRoute
   '/artist/$artistId': typeof WithLayoutArtistArtistIdRoute
@@ -79,7 +78,6 @@ export interface FileRoutesByFullPath {
   '/share': typeof WithProtectedLayoutShareIndexRoute
 }
 export interface FileRoutesByTo {
-  '': typeof WithLayoutRouteWithChildren
   '/login': typeof LoginRoute
   '/': typeof WithProtectedLayoutIndexRoute
   '/artist/$artistId': typeof WithLayoutArtistArtistIdRoute
@@ -103,7 +101,6 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | ''
     | '/login'
     | '/'
     | '/artist/$artistId'
@@ -113,7 +110,6 @@ export interface FileRouteTypes {
     | '/share'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | ''
     | '/login'
     | '/'
     | '/artist/$artistId'
