@@ -6,11 +6,11 @@ export const displayedLocationName = (location: string): string =>
 export const getMaxArtistsInWidth = (
   bigScreen: boolean,
   smallScreen: boolean,
-  maxBigScreen: number
+  maxBigScreen: number,
 ) => {
   const vw = Math.min(
     document.documentElement.clientWidth || 0,
-    window.innerWidth || 0
+    window.innerWidth || 0,
   );
   const outerMargin = smallScreen ? 32 : 64;
   return bigScreen
@@ -21,11 +21,11 @@ export const getMaxArtistsInWidth = (
 export const getMaxArtistsInFullLineupWidth = (
   bigScreen: boolean,
   smallScreen: boolean,
-  maxBigScreen: number
+  maxBigScreen: number,
 ) => {
   const vw = Math.min(
     document.documentElement.clientWidth || 0,
-    window.innerWidth || 0
+    window.innerWidth || 0,
   );
   const outerMargin = smallScreen ? 16 : 32;
   return bigScreen

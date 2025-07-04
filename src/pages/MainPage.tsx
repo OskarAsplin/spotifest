@@ -7,7 +7,6 @@ import { FestivalMatchesContainer } from '@src/containers/FestivalMatchesContain
 import { SocialMediaButtonsContainer } from '@src/containers/SocialMediaButtonsContainer';
 import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
-import '../styles/base.scss';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 

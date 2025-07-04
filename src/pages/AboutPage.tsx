@@ -6,7 +6,6 @@ import Groups2TwoToneIcon from '@mui/icons-material/Groups2TwoTone';
 import LibraryMusicTwoToneIcon from '@mui/icons-material/LibraryMusicTwoTone';
 import StarRateTwoToneIcon from '@mui/icons-material/StarRateTwoTone';
 import {
-  Box,
   Collapse,
   IconButton,
   List,
@@ -23,35 +22,26 @@ import { useState } from 'react';
 import { ExpandButton } from '@src/components/atoms/ExpandButton/ExpandButton';
 import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
 import { TechStackContent } from '@src/components/templates/TechStackContent/TechStackContent';
-import '../styles/base.scss';
-import styles from './AboutPage.module.scss';
 import { Trans, useTranslation } from 'react-i18next';
 
 export const AboutPage = () => {
-  const bigScreen = useMediaQuery('(min-width:610px)');
-  const biggerScreen = useMediaQuery('(min-width:720px)');
+  const bigScreen = useMediaQuery('(min-width:640px)'); // sm breakpoint
   const { t } = useTranslation();
-
-  const [techExpanded, setTechExpanded] = useState(false);
-  const [supportExpanded, setSupportExpanded] = useState(false);
-  const [disclaimerExpanded, setDisclaimerExpanded] = useState(false);
 
   const isLightMode = useTheme().palette.mode === 'light';
 
   return (
     <>
-      <div className={styles.verticalSpace} />
-      <div className={styles.verticalSpace} />
-
-      <div className={styles.root}>
-        <Box className={styles.box}>
+      <div className="mt-2" />
+      <div className="flex w-full flex-col items-center justify-center max-sm:p-0 sm:p-0 sm:pb-2">
+        <div className="mx-4 mb-4 max-w-160">
           <Typography
             variant={bigScreen ? 'h4' : 'h5'}
             sx={{ textAlign: 'center', my: 2 }}
           >
             {t('about_page.features.title')}
           </Typography>
-          <div className={styles.verticalSpace} />
+          <div className="mt-2" />
           <List sx={{ p: 0 }}>
             <CustomListItem
               text={t('about_page.features.matching')}
@@ -84,127 +74,67 @@ export const AboutPage = () => {
               Icon={<EngineeringTwoToneIcon fontSize="large" color="warning" />}
             />
           </List>
-        </Box>
-        <Box className={styles.techBox}>
+        </div>
+        <CollapsibleCard title={t('about_page.tech_stack.title')}>
+          <TechStackContent />
+        </CollapsibleCard>
+        <CollapsibleCard title={t('about_page.support.title')}>
+          <div className="flex w-full max-w-120 flex-col items-center justify-center py-2">
+            <List sx={{ p: 0 }}>
+              <CustomListItem
+                text={<ListItemText primary={t('about_page.support.share')} />}
+                Icon={<CampaignTwoToneIcon fontSize="large" color="primary" />}
+              />
+              <CustomListItem
+                text={
+                  <ListItemText>
+                    <Trans
+                      i18nKey="about_page.support.code"
+                      components={{
+                        StarIcon: <StarRateTwoToneIcon sx={{ my: -0.5 }} />,
+                        Link: <StandardLink />,
+                      }}
+                    />
+                  </ListItemText>
+                }
+                Icon={<StarRateTwoToneIcon fontSize="large" />}
+              />
+            </List>
+          </div>
+        </CollapsibleCard>
+        <CollapsibleCard title={t('about_page.disclaimer.title')}>
+          <div className="flex w-full max-w-120 flex-col items-center justify-center py-2">
+            <Typography variant="body1" sx={{ textAlign: 'center' }}>
+              {t('about_page.disclaimer.text')}
+            </Typography>
+          </div>
+        </CollapsibleCard>
+        <div className="mt-6 max-lg:w-100 max-sm:w-full sm:mb-2 lg:w-full lg:max-w-100">
           <Paper
             elevation={3}
-            className={clsx(styles.paper, styles.minWidth400)}
+            className="flex w-full max-w-150 flex-col items-center justify-center px-0 py-2 max-sm:max-w-full"
+            square={!bigScreen}
           >
-            <div
-              className={styles.rowFlexCenterSpaceApart}
-              onClick={() => setTechExpanded(!techExpanded)}
-            >
-              <ExpandButton expanded={techExpanded} />
-              <Typography variant="h5" sx={{ cursor: 'pointer' }}>
-                {t('about_page.tech_stack.title')}
-              </Typography>
-              <ExpandButton expanded={techExpanded} />
-            </div>
-            <Collapse in={techExpanded} timeout="auto" unmountOnExit>
-              <TechStackContent />
-            </Collapse>
-          </Paper>
-        </Box>
-        <Box
-          className={
-            biggerScreen && supportExpanded
-              ? styles.supportExpandedBox
-              : styles.box
-          }
-        >
-          <Paper
-            elevation={3}
-            className={clsx(styles.paper, styles.minWidth400)}
-          >
-            <div
-              className={styles.rowFlexCenterSpaceApart}
-              onClick={() => setSupportExpanded(!supportExpanded)}
-            >
-              <ExpandButton expanded={supportExpanded} />
-              <Typography variant="h5" sx={{ cursor: 'pointer' }}>
-                {t('about_page.support.title')}
-              </Typography>
-              <ExpandButton expanded={supportExpanded} />
-            </div>
-            <Collapse in={supportExpanded} timeout="auto" unmountOnExit>
-              <div className={styles.expandedDiv}>
-                <List className={styles.noPadding}>
-                  <CustomListItem
-                    text={
-                      <ListItemText primary={t('about_page.support.share')} />
-                    }
-                    Icon={
-                      <CampaignTwoToneIcon fontSize="large" color="primary" />
-                    }
-                  />
-                  <CustomListItem
-                    text={
-                      <ListItemText>
-                        <Trans
-                          i18nKey="about_page.support.code"
-                          components={{
-                            StarIcon: <StarRateTwoToneIcon sx={{ my: -0.5 }} />,
-                            Link: <StandardLink />,
-                          }}
-                        />
-                      </ListItemText>
-                    }
-                    Icon={<StarRateTwoToneIcon fontSize="large" />}
-                  />
-                </List>
-              </div>
-            </Collapse>
-          </Paper>
-        </Box>
-        <Box className={styles.box}>
-          <Paper
-            elevation={3}
-            className={clsx(styles.paper, styles.minWidth400)}
-          >
-            <div
-              className={styles.rowFlexCenterSpaceApart}
-              onClick={() => setDisclaimerExpanded(!disclaimerExpanded)}
-            >
-              <ExpandButton expanded={disclaimerExpanded} />
-              <Typography variant="h5" sx={{ cursor: 'pointer' }}>
-                {t('about_page.disclaimer.title')}
-              </Typography>
-              <ExpandButton expanded={disclaimerExpanded} />
-            </div>
-            <Collapse in={disclaimerExpanded} timeout="auto" unmountOnExit>
-              <div className={styles.expandedDiv}>
-                <Typography variant="body1" sx={{ textAlign: 'center' }}>
-                  {t('about_page.disclaimer.text')}
-                </Typography>
-              </div>
-            </Collapse>
-          </Paper>
-        </Box>
-        <Box className={styles.box2}>
-          <Paper
-            elevation={3}
-            className={clsx(styles.creatorPaper, styles.maxWidth400)}
-          >
-            <div className={styles.flexColumn}>
+            <div className="flex w-full flex-col items-center justify-center">
               <Typography variant="h5" sx={{ textAlign: 'center' }}>
                 {t('about_page.creator.title')}
               </Typography>
-              <Box
+              <div
                 className={clsx(
-                  styles.creatorImgBox,
-                  isLightMode ? styles.roundedCorners : styles.darkerBackground,
+                  'mx-0 my-2 flex w-full flex-col items-center justify-center',
+                  isLightMode ? 'rounded-sm' : 'bg-darker',
                 )}
               >
                 <img
                   src="/creator_image_cropped.jpg"
-                  className={styles.creatorImage}
+                  className="w-3/4 max-w-[300px]"
                   alt="Creator"
                 />
-              </Box>
+              </div>
               <Typography variant="h6" sx={{ textAlign: 'center' }}>
                 {t('about_page.creator.text')}
               </Typography>
-              <div className={styles.rowFlexCenter}>
+              <div>
                 <IconButton
                   href="https://www.linkedin.com/in/oskar-asplin-22796314a"
                   target="_blank"
@@ -220,9 +150,44 @@ export const AboutPage = () => {
               </div>
             </div>
           </Paper>
-        </Box>
+        </div>
       </div>
     </>
+  );
+};
+
+const CollapsibleCard = ({
+  title,
+  children,
+}: {
+  title: React.ReactNode;
+  children: React.ReactNode;
+}) => {
+  const [expanded, setExpanded] = useState(false);
+  const bigScreen = useMediaQuery('(min-width:640px)'); // sm breakpoint
+
+  return (
+    <div className="mx-4 mb-4 max-lg:max-w-650 max-sm:w-full lg:max-w-250">
+      <Paper
+        elevation={3}
+        className="flex flex-col items-center justify-center py-1 max-sm:w-full max-sm:px-4 sm:min-w-100 sm:px-6"
+        square={!bigScreen}
+      >
+        <div
+          onClick={() => setExpanded(!expanded)}
+          className="flex w-full max-w-[330px] cursor-pointer flex-row items-center justify-between"
+        >
+          <ExpandButton expanded={expanded} />
+          <Typography variant="h5" sx={{ cursor: 'pointer' }}>
+            {title}
+          </Typography>
+          <ExpandButton expanded={expanded} />
+        </div>
+        <Collapse in={expanded} timeout="auto" unmountOnExit>
+          {children}
+        </Collapse>
+      </Paper>
+    </div>
   );
 };
 
@@ -242,35 +207,20 @@ const GithubIcon = () => {
   const isLightMode = useTheme().palette.mode === 'light';
 
   return (
-    <Box
-      component="img"
+    <img
       src={`/techIcons/GitHub-Mark${isLightMode ? '-white' : ''}.png`}
       alt="GitHub"
-      sx={{
-        width: ({ spacing }) => spacing(5),
-        height: ({ spacing }) => spacing(5),
-      }}
+      className="h-10 w-10"
     />
   );
 };
 
 const LinkedInIcon = () => (
-  <Box
-    sx={{
-      width: ({ spacing }) => spacing(5),
-      height: ({ spacing }) => spacing(5),
-      borderRadius: '50%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#2867b2',
-    }}
-  >
-    <Box
-      component="img"
+  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#2867b2]">
+    <img
       src="/techIcons/LinkedIn-Bug.png"
       alt="LinkedIn"
-      sx={{ mb: 0.25, ml: 0.25, width: '18px', height: '18px' }}
+      className="mb-0.5 ml-0.5 h-4.5 w-4.5"
     />
-  </Box>
+  </div>
 );

@@ -7,7 +7,6 @@ import {
   StyledAvatarContainerDiv,
 } from '@src/components/molecules/ArtistBubble/ArtistBubble';
 import { ArtistBox } from '@src/layouts/StyledLayoutComponents';
-import '../styles/base.scss';
 import { getMaxArtistsInWidth } from '@src/utils/displayUtils';
 
 interface RelatedArtistsProps {

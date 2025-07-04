@@ -13,7 +13,6 @@ import { FestivalMatchesContainer } from '@src/containers/FestivalMatchesContain
 import { SharedMatchesSettingsContainer } from '@src/containers/SharedMatchesSettingsContainer';
 import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
-import '../styles/base.scss';
 import { getRouteApi } from '@tanstack/react-router';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;

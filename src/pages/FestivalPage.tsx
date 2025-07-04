@@ -28,7 +28,6 @@ import { StyledCookieConsent } from '@src/components/molecules/CookieConsent';
 import { TabPanel } from '@src/components/molecules/TabPanel';
 import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { StyledCenteredColumnDiv } from '@src/layouts/StyledLayoutComponents';
-import '../styles/base.scss';
 import { getCancelledDateString } from '@src/utils/dateUtils';
 import {
   displayedLocationName,

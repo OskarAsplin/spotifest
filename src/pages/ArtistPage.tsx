@@ -17,7 +17,6 @@ import { CenteredLoadingSpinner } from '@src/components/atoms/LoadingSpinner/Loa
 import { RelatedArtistsContainer } from '@src/containers/RelatedArtistsContainer';
 import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { StyledRootDiv } from '@src/layouts/StyledLayoutComponents';
-import '../styles/base.scss';
 import { getCancelledDateString } from '@src/utils/dateUtils';
 import { useIsLoggedIn } from '@src/zustand/authStore';
 import { FestivalMatchCard } from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard';
