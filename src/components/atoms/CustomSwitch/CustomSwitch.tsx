@@ -3,7 +3,7 @@ import { Badge } from '@src/components/ui/badge';
 
 interface CustomSwitchProps {
   checked: boolean;
-  setChecked: React.Dispatch<React.SetStateAction<boolean>>;
+  setChecked: (value: boolean) => void;
   leftOptionText: string;
   rightOptionText: string;
 }

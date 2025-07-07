@@ -57,6 +57,7 @@ export const FestivalPage = withFallback(
   const limitLineups = bigScreen ? 7 : 4;
 
   const [selectedLineup, setSelectedLineup] = useState(0);
+  const [sortAlphabetically, setSortAlphabetically] = useState(false);
   const [ref, { width }] = useMeasure();
 
   return (
@@ -166,7 +167,12 @@ export const FestivalPage = withFallback(
                           </h3>
                         </div>
                       ) : (
-                        <LineupArtists lineup={lineup} width={width} />
+                        <LineupArtists
+                          lineup={lineup}
+                          width={width}
+                          sortAlphabetically={sortAlphabetically}
+                          setSortAlphabetically={setSortAlphabetically}
+                        />
                       )}
                     </TabsContent>
                   ))}
@@ -189,16 +195,19 @@ export const FestivalPage = withFallback(
 const LineupArtists = ({
   lineup,
   width,
+  sortAlphabetically,
+  setSortAlphabetically,
 }: {
   lineup: Lineup;
   width: number;
+  sortAlphabetically: boolean;
+  setSortAlphabetically: (value: boolean) => void;
 }) => {
   const { t } = useTranslation();
   const bigScreen = useMediaQuery('(min-width:640px)');
   const maxArtistsInWidth = getMaxArtistsInWidth(width, bigScreen);
   const fillArtistWidth =
     maxArtistsInWidth - (lineup.artists.length % maxArtistsInWidth);
-  const [sortAlphabetically, setSortAlphabetically] = useState(false);
 
   return (
     <div className="flex w-full flex-col items-center justify-center">
@@ -222,7 +231,9 @@ const LineupArtists = ({
               (
                 sortAlphabetically
                   ? a.name > b.name
-                  : a.popularity < b.popularity
+                  : a.popularity === b.popularity
+                    ? a.name > b.name
+                    : a.popularity < b.popularity
               )
                 ? 1
                 : -1,
