@@ -1,5 +1,3 @@
-import { useMediaQuery } from '@src/hooks/useMediaQuery';
-import { getMaxArtistsInWidth, useMeasure } from '@src/utils/displayUtils';
 import {
   ArtistBubbleSkeleton,
   StyledAvatarContainerDiv,
@@ -9,13 +7,16 @@ import { Skeleton } from '@src/components/ui/skeleton';
 import { Separator } from '@src/components/ui/separator';
 import { ArtistBox } from './FestivalMatchCard';
 
-export const FestivalMatchCardSkeleton = () => {
+interface FestivalMatchCardSkeletonProps {
+  maxArtistsInWidth: number;
+}
+
+export const FestivalMatchCardSkeleton = ({
+  maxArtistsInWidth,
+}: FestivalMatchCardSkeletonProps) => {
   const mockPopularArtists = Array(7).fill(null);
   const mockMatchingArtists = Array(3).fill(null);
 
-  const bigScreen = useMediaQuery('(min-width:640px)');
-  const [ref, { width }] = useMeasure();
-  const maxArtistsInWidth = getMaxArtistsInWidth(width, bigScreen);
   const fillMatchingArtistWidth =
     maxArtistsInWidth - (mockMatchingArtists.length % maxArtistsInWidth);
   const fillPopularArtistWidth =
@@ -39,7 +40,7 @@ export const FestivalMatchCardSkeleton = () => {
           </div>
           <Skeleton className="mt-6 mb-2 h-4 w-32" />
         </div>
-        <ArtistBox ref={ref}>
+        <ArtistBox>
           {mockMatchingArtists.map((_, i) => (
             <ArtistBubbleSkeleton key={`avatar_match_artist_skeleton_${i}`} />
           ))}

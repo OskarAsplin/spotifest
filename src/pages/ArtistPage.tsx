@@ -13,6 +13,11 @@ import { getCancelledDateString } from '@src/utils/dateUtils';
 import { useIsLoggedIn } from '@src/zustand/authStore';
 import { FestivalMatchCard } from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard';
 import { getRouteApi, Link } from '@tanstack/react-router';
+import {
+  getMaxArtistsInFestivalMatchesWidth,
+  useMeasure,
+} from '@src/utils/displayUtils';
+import { useMediaQuery } from '@src/hooks/useMediaQuery';
 
 const getNameOrSpotifyIdFromUrl = (artistId: string) => {
   const hasSpotifyId = !!artistId && artistId.indexOf('spotifyId=') !== -1;
@@ -52,6 +57,13 @@ export const ArtistPage = withFallback(
   const isArtistInDb =
     artistInfo.festivalsFuture.length > 0 ||
     artistInfo.festivalsPast.length > 0;
+
+  const bigScreen = useMediaQuery('(min-width:640px)');
+  const [ref, { width }] = useMeasure();
+  const maxArtistsInWidth = getMaxArtistsInFestivalMatchesWidth(
+    width,
+    bigScreen,
+  );
 
   return (
     <>
@@ -108,7 +120,10 @@ export const ArtistPage = withFallback(
           </CardContent>
         </Card>
         {artistInfo.festivalsFuture.length !== 0 && (
-          <div className="flex w-full max-w-3xl flex-col items-center justify-center">
+          <div
+            ref={ref}
+            className="flex w-full max-w-3xl flex-col items-center justify-center"
+          >
             <h2 className="mb-2 text-xl max-sm:text-center sm:text-2xl">
               {t('artist_page.future_festivals')}
             </h2>
@@ -117,6 +132,7 @@ export const ArtistPage = withFallback(
                 key={'FestivalMatchCard: ' + festival.name + festival.year}
                 festival={festival}
                 popularArtists={festival.popular_artists}
+                maxArtistsInWidth={maxArtistsInWidth}
               />
             ))}
           </div>

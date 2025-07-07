@@ -13,25 +13,21 @@ import {
   CollapsibleTrigger,
 } from '@src/components/ui/collapsible';
 import { Separator } from '@src/components/ui/separator';
-import { useMediaQuery } from '@src/hooks/useMediaQuery';
 import { cn } from '@src/lib/utils';
 import { getCancelledDateString } from '@src/utils/dateUtils';
-import {
-  displayedLocationName,
-  getMaxArtistsInWidth,
-  useMeasure,
-} from '@src/utils/displayUtils';
+import { displayedLocationName } from '@src/utils/displayUtils';
 import { Link } from '@tanstack/react-router';
 import { isEqual } from 'lodash-es';
 import { RefObject, memo, useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 
-export interface FestivalMatchCardProps {
+interface FestivalMatchCardProps {
   festival: FestivalMatch;
   popularArtists: Artist[];
   matchingArtists?: Artist[];
   showMatching?: boolean;
+  maxArtistsInWidth: number;
 }
 
 export const FestivalMatchCard = memo(
@@ -40,6 +36,7 @@ export const FestivalMatchCard = memo(
     showMatching,
     popularArtists,
     matchingArtists = [],
+    maxArtistsInWidth,
   }: FestivalMatchCardProps) => {
     const {
       name,
@@ -56,9 +53,6 @@ export const FestivalMatchCard = memo(
     const { t } = useTranslation();
     const [expanded, setExpanded] = useState(false);
 
-    const bigScreen = useMediaQuery('(min-width:640px)');
-    const [ref, { width }] = useMeasure();
-    const maxArtistsInWidth = getMaxArtistsInWidth(width, bigScreen);
     const fillMatchingArtistWidth =
       maxArtistsInWidth - (matchingArtists.length % maxArtistsInWidth);
     const fillPopularArtistWidth =
@@ -147,7 +141,7 @@ export const FestivalMatchCard = memo(
               </p>
             )}
           </div>
-          <ArtistBox ref={ref}>
+          <ArtistBox>
             {showMatching &&
               !noLineupRegistered &&
               matchingArtists.map((artist) => (

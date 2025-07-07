@@ -34,6 +34,10 @@ import { getAreaFilters } from '@src/utils/areaUtils';
 import { useMatchingStore } from '@src/zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
 import { useMediaQuery } from '@src/hooks/useMediaQuery';
+import {
+  getMaxArtistsInFestivalMatchesWidth,
+  useMeasure,
+} from '@src/utils/displayUtils';
 
 interface FestivalMatchesContainerProps {
   sharedMatchBasis?: string;
@@ -217,8 +221,17 @@ const FestivalMatchesInnerContainer = ({
     getVirtualItems(),
   ]);
 
+  const [measureWidthRef, { width }] = useMeasure();
+  const maxArtistsInWidth = getMaxArtistsInFestivalMatchesWidth(
+    width,
+    bigScreen,
+  );
+
   return (
-    <FestivalMatches totalMatches={festivalMatches.length}>
+    <FestivalMatches
+      ref={measureWidthRef}
+      totalMatches={festivalMatches.length}
+    >
       <div
         ref={parentRef}
         style={{
@@ -233,7 +246,14 @@ const FestivalMatchesInnerContainer = ({
             virtualItem.index > numFestivalsWithPopularArtists - 1;
 
           if (isLoaderRow) {
-            return <FestivalMatchCardSkeleton key={festival.name} />;
+            return (
+              <div key={virtualItem.key} ref={measureElement}>
+                <FestivalMatchCardSkeleton
+                  key={festival.name}
+                  maxArtistsInWidth={maxArtistsInWidth}
+                />
+              </div>
+            );
           }
 
           const popularArtists =
@@ -251,7 +271,7 @@ const FestivalMatchesInnerContainer = ({
 
           return (
             <div
-              key={virtualItem.key}
+              key={`${festival.name}-${festival.year}`}
               ref={measureElement}
               data-index={virtualItem.index}
               style={{
@@ -264,11 +284,11 @@ const FestivalMatchesInnerContainer = ({
               }}
             >
               <FestivalMatchCard
-                key={'FestivalMatchCard: ' + festival.name + festival.year}
                 festival={festival}
                 matchingArtists={matchingArtists}
                 showMatching
                 popularArtists={popularArtists}
+                maxArtistsInWidth={maxArtistsInWidth}
               />
             </div>
           );

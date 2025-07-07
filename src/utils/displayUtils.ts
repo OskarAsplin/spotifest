@@ -10,6 +10,12 @@ export const getMaxArtistsInWidth = (
   bigScreen: boolean,
 ) => Math.floor(containerWidth / (bigScreen ? 100 : 75));
 
+// Subtract the padding inside the FestivalMatchCard
+export const getMaxArtistsInFestivalMatchesWidth = (
+  containerWidth: number,
+  bigScreen: boolean,
+) => getMaxArtistsInWidth(containerWidth - (bigScreen ? 16 : 8), bigScreen);
+
 export const useMeasure = (): [
   RefObject<HTMLDivElement | null>,
   { width: number; height: number },
