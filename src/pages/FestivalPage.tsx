@@ -1,21 +1,17 @@
-import LocalActivityIcon from '@mui/icons-material/LocalActivity';
-import PublicIcon from '@mui/icons-material/Public';
+import { Ticket, Globe } from 'lucide-react';
+import { useMediaQuery } from '@src/hooks/useMediaQuery';
+import { Button } from '@src/components/ui/button';
+import { Card, CardContent } from '@src/components/ui/card';
 import {
-  Box,
-  Button,
-  Paper,
-  Tab,
-  tabClasses,
   Tabs,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@src/components/ui/tabs';
 import { useState } from 'react';
 import ReactCountryFlag from 'react-country-flag';
 import { useTranslation } from 'react-i18next';
 import ReactPlayer from 'react-player';
-import SwipeableViews from 'react-swipeable-views';
 import { useApiSuspenseQuery, withFallback } from '@src/api/api';
 import { getDjangoFestival } from '@src/api/djangoApi';
 import { CustomSwitch } from '@src/components/atoms/CustomSwitch/CustomSwitch';
@@ -24,16 +20,17 @@ import {
   ArtistBubble,
   StyledAvatarContainerDiv,
 } from '@src/components/molecules/ArtistBubble/ArtistBubble';
-import { StyledCookieConsent } from '@src/components/molecules/CookieConsent';
-import { TabPanel } from '@src/components/molecules/TabPanel';
+import { CookieConsent } from '@src/components/molecules/CookieConsent';
 import { ErrorFallback } from '@src/layouts/ErrorFallback';
-import { StyledCenteredColumnDiv } from '@src/layouts/StyledLayoutComponents';
 import { getCancelledDateString } from '@src/utils/dateUtils';
 import {
   displayedLocationName,
-  getMaxArtistsInFullLineupWidth,
+  getMaxArtistsInWidth,
+  useMeasure,
 } from '@src/utils/displayUtils';
 import { getRouteApi } from '@tanstack/react-router';
+import { Lineup } from '@src/api/types';
+import { ArtistBox } from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard';
 
 const SuspenseFallback = () => <CenteredLoadingSpinner />;
 const FestivalPageErrorFallback = () => {
@@ -48,292 +45,199 @@ export const FestivalPage = withFallback(
   SuspenseFallback,
   FestivalPageErrorFallback,
 )(() => {
-  const boxForLineups = useMediaQuery('(min-width:1182px)');
-  const mediumScreen = useMediaQuery('(min-width:610px)');
-  const smallScreen = useMediaQuery('(max-width:440px)');
-  const bigScreen = useMediaQuery('(min-width:690px)');
-  const videoSizeMax = useMediaQuery('(min-width:770px)');
-  const videoSizeSmall = useMediaQuery('(max-width:470px)');
-
+  const videoSizeMax = useMediaQuery('(min-width:768px)');
+  const bigScreen = useMediaQuery('(min-width:640px)');
   const { t } = useTranslation();
-  const themeDirection = useTheme().direction;
   const { festivalId } = route.useParams();
 
   const { data: festivalInfo } = useApiSuspenseQuery(getDjangoFestival, {
     params: { name: festivalId },
   });
 
-  const limitLineups = !mediumScreen ? 4 : 7;
-
-  const maxArtistsInLineupsWidth = getMaxArtistsInFullLineupWidth(
-    bigScreen,
-    smallScreen,
-    11,
-  );
+  const limitLineups = bigScreen ? 7 : 4;
 
   const [selectedLineup, setSelectedLineup] = useState(0);
-  const [sortAlphabetically, setSortAlphabetically] = useState(false);
+  const [ref, { width }] = useMeasure();
 
   return (
     <>
-      <VerticalSpaceDiv />
-      <StyledCenteredColumnDiv>
-        <StyledRootDiv>
-          <Box sx={{ width: '100%', maxWidth: '750px', mt: 0, mb: 2, mx: 2 }}>
-            <Paper
-              elevation={3}
-              sx={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                py: 1,
-                '@media (min-width: 690px)': { px: 4 },
-                '@media (max-width: 689px)': {
-                  '@media (min-width: 440px)': { px: 2 },
-                },
-                '@media (max-width: 439px)': { px: 2 },
-              }}
-            >
-              <Typography
-                variant={bigScreen ? 'h3' : 'h4'}
-                sx={{
-                  mb: 2,
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  width: '100%',
-                }}
-              >
-                {festivalInfo.name}
-              </Typography>
-              <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
-                {displayedLocationName(festivalInfo.locationText)}
-                <ReactCountryFlag
-                  countryCode={festivalInfo.country}
-                  svg
-                  style={{ marginLeft: '8px' }}
-                />
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                sx={{ m: 1, textAlign: 'center' }}
-              >
-                {`${t('common.genres')}: ${festivalInfo.genres.join(', ')}`}
-              </Typography>
-              <div>
-                {festivalInfo.webpage && (
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    sx={{ p: 1, minWidth: 0, mx: 2, my: 1, borderRadius: 2 }}
-                    href={festivalInfo.webpage}
-                    target="_blank"
-                  >
-                    <PublicIcon />
-                  </Button>
-                )}
-                {festivalInfo.ticketWebpage && (
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    sx={{ p: 1, minWidth: 0, mx: 2, my: 1, borderRadius: 2 }}
-                    href={festivalInfo.ticketWebpage}
-                    target="_blank"
-                  >
-                    <LocalActivityIcon />
-                  </Button>
-                )}
-              </div>
-            </Paper>
-          </Box>
-          {festivalInfo.video && (
-            <Box sx={{ mb: 2 }}>
-              <StyledVideoPaper elevation={3}>
-                <ReactPlayer
-                  src={festivalInfo.video}
-                  controls
-                  data-cookiescript="accepted"
-                  data-cookiecategory="functionality"
-                  width={
-                    videoSizeMax
-                      ? undefined
-                      : mediumScreen
-                        ? 496
-                        : videoSizeSmall
-                          ? '100%'
-                          : 400
-                  }
-                  height={
-                    videoSizeMax
-                      ? undefined
-                      : mediumScreen
-                        ? 279
-                        : videoSizeSmall
-                          ? '100%'
-                          : 225
-                  }
-                />
-              </StyledVideoPaper>
-            </Box>
-          )}
-        </StyledRootDiv>
+      <div className="flex w-full flex-col items-center justify-center gap-8">
+        <div className="flex w-full flex-col items-center px-2 sm:px-4">
+          <div className="mx-2 w-full max-w-2xl">
+            <Card className="w-full shadow-lg">
+              <CardContent className="flex flex-col items-center py-2 sm:py-4">
+                <h1 className="mb-2 w-full text-center text-2xl font-bold sm:text-3xl">
+                  {festivalInfo.name}
+                </h1>
+                <p className="text-center text-lg">
+                  {displayedLocationName(festivalInfo.locationText)}
+                  <ReactCountryFlag
+                    countryCode={festivalInfo.country}
+                    svg
+                    style={{ marginLeft: '8px' }}
+                  />
+                </p>
+                <p className="m-2 text-center text-lg">
+                  {`${t('common.genres')}: ${festivalInfo.genres.join(', ')}`}
+                </p>
+                <div className="mt-2 flex gap-2">
+                  {festivalInfo.webpage && (
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-lg p-2"
+                      asChild
+                    >
+                      <a
+                        href={festivalInfo.webpage}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Globe className="h-5 w-5" />
+                      </a>
+                    </Button>
+                  )}
+                  {festivalInfo.ticketWebpage && (
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="rounded-lg p-2"
+                      asChild
+                    >
+                      <a
+                        href={festivalInfo.ticketWebpage}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Ticket className="h-5 w-5" />
+                      </a>
+                    </Button>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+        {festivalInfo.video && (
+          <Card className="p-2 shadow-lg sm:p-4">
+            <ReactPlayer
+              src={festivalInfo.video}
+              controls
+              data-cookiescript="accepted"
+              data-cookiecategory="functionality"
+              width={videoSizeMax ? undefined : bigScreen ? 496 : '100%'}
+              height={videoSizeMax ? undefined : bigScreen ? 279 : '100%'}
+            />
+          </Card>
+        )}
         {festivalInfo.lineups.length !== 0 && (
-          <Box sx={{ width: '100%', maxWidth: '1150px', my: 0, mx: 2 }}>
-            <StyledLineupPaper square={!boxForLineups} elevation={3}>
+          <div className="my-0 w-full max-w-6xl lg:px-2">
+            <Card className="flex w-full flex-col items-center justify-center rounded-none px-1 pb-2 shadow-lg sm:px-2 sm:pb-4 lg:mb-2 lg:rounded-lg">
               <Tabs
-                centered
-                value={selectedLineup}
-                indicatorColor="primary"
-                textColor="primary"
-                onChange={(_event: React.ChangeEvent<{}>, newValue: number) =>
-                  setSelectedLineup(newValue)
-                }
-                aria-label="lineups"
+                value={selectedLineup.toString()}
+                onValueChange={(value) => setSelectedLineup(parseInt(value))}
+                ref={ref}
               >
+                <TabsList className="w-full justify-center bg-transparent">
+                  {festivalInfo.lineups
+                    .slice(0, limitLineups)
+                    .map((lineup, idx) => (
+                      <TabsTrigger
+                        key={'tab: ' + festivalInfo.name + lineup.year}
+                        value={idx.toString()}
+                        className="text-xl"
+                      >
+                        {lineup.year}
+                      </TabsTrigger>
+                    ))}
+                </TabsList>
                 {festivalInfo.lineups
                   .slice(0, limitLineups)
                   .map((lineup, idx) => (
-                    <StyledTab
-                      label={
-                        <span style={{ fontSize: '20px' }}>{lineup.year}</span>
-                      }
-                      value={idx}
-                      key={'tab: ' + festivalInfo.name + lineup.year}
-                    />
-                  ))}
-              </Tabs>
-              {/* @ts-ignore */}
-              <SwipeableViews
-                axis={themeDirection === 'rtl' ? 'x-reverse' : 'x'}
-                index={selectedLineup}
-                onChangeIndex={(newValue: number) =>
-                  setSelectedLineup(newValue)
-                }
-              >
-                {festivalInfo.lineups
-                  .slice(0, limitLineups)
-                  .map((lineup, idx) => (
-                    <TabPanel
+                    <TabsContent
                       key={'tabPanel: ' + festivalInfo.name + lineup.year}
-                      value={selectedLineup}
-                      index={idx}
+                      value={idx.toString()}
+                      className="w-full"
                     >
                       {lineup.artists.length === 0 ? (
-                        <StyledCenteredColumnDiv>
-                          <Typography variant="h6">
+                        <div className="flex w-full flex-col items-center justify-center">
+                          <h3 className="text-lg font-semibold">
                             {t('common.no_lineup')}
-                          </Typography>
-                        </StyledCenteredColumnDiv>
+                          </h3>
+                        </div>
                       ) : (
-                        <StyledCenteredColumnDiv>
-                          {lineup.cancelled ? (
-                            <Typography variant="h6" color="secondary">
-                              {getCancelledDateString(lineup.date_str)}
-                            </Typography>
-                          ) : (
-                            <Typography variant="h5">
-                              {lineup.date_str}
-                            </Typography>
-                          )}
-                          <CustomSwitch
-                            checked={sortAlphabetically}
-                            setChecked={setSortAlphabetically}
-                            leftOptionText={t('common.popularity')}
-                            rightOptionText={t('common.alphabetically')}
-                          />
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row',
-                              flexWrap: 'wrap',
-                              justifyContent: 'space-between',
-                              width: '99%',
-                            }}
-                          >
-                            {lineup.artists.length > 0 &&
-                              lineup.artists
-                                .sort((a, b) =>
-                                  (
-                                    sortAlphabetically
-                                      ? a.name > b.name
-                                      : a.popularity < b.popularity
-                                  )
-                                    ? 1
-                                    : -1,
-                                )
-                                .map((artist) => (
-                                  <ArtistBubble
-                                    key={`avatar_festival_lineup_artist_${festivalInfo.name}${lineup.year}${artist.name}`}
-                                    artist={artist}
-                                  />
-                                ))}
-                            {lineup.artists.length > 0 &&
-                              Array.from(
-                                {
-                                  length:
-                                    maxArtistsInLineupsWidth -
-                                    (lineup.artists.length %
-                                      maxArtistsInLineupsWidth),
-                                },
-                                (_, i) => <StyledAvatarContainerDiv key={i} />,
-                              )}
-                          </Box>
-                        </StyledCenteredColumnDiv>
+                        <LineupArtists lineup={lineup} width={width} />
                       )}
-                    </TabPanel>
+                    </TabsContent>
                   ))}
-              </SwipeableViews>
-            </StyledLineupPaper>
-          </Box>
+              </Tabs>
+            </Card>
+          </div>
         )}
-      </StyledCenteredColumnDiv>
+      </div>
       {festivalInfo.video && (
-        <StyledCookieConsent>{t('cookies.youtube')}</StyledCookieConsent>
+        <CookieConsent
+          variant="mini"
+          hideDecline
+          description={t('cookies.youtube')}
+        />
       )}
     </>
   );
 });
 
-const StyledRootDiv = styled('div')(({ theme: { spacing } }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  width: '100%',
-  '@media (min-width: 440px)': { padding: spacing(0, 2) },
-  '@media (max-width: 439px)': { padding: spacing(0, 1) },
-}));
+const LineupArtists = ({
+  lineup,
+  width,
+}: {
+  lineup: Lineup;
+  width: number;
+}) => {
+  const { t } = useTranslation();
+  const bigScreen = useMediaQuery('(min-width:640px)');
+  const maxArtistsInWidth = getMaxArtistsInWidth(width, bigScreen);
+  const fillArtistWidth =
+    maxArtistsInWidth - (lineup.artists.length % maxArtistsInWidth);
+  const [sortAlphabetically, setSortAlphabetically] = useState(false);
 
-const StyledLineupPaper = styled(Paper)(({ theme: { spacing } }) => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100%',
-  '@media (min-width: 1182px)': { marginBottom: spacing(2) },
-  '@media (min-width: 440px)': { padding: spacing(0, 2) },
-  '@media (max-width: 439px)': { padding: spacing(0, 1) },
-}));
-
-const StyledVideoPaper = styled(Paper)(({ theme: { spacing } }) => ({
-  '@media (min-width: 610px)': { padding: spacing(2, 4) },
-  '@media (max-width: 609px)': {
-    '@media (min-width: 349px)': { padding: spacing(1, 2) },
-  },
-  '@media (max-width: 348px)': { padding: spacing(1) },
-}));
-
-const StyledTab = styled(Tab)(() => ({
-  [`&.${tabClasses.root}`]: {
-    '@media (min-width: 900px)': { minWidth: '160px' },
-    '@media (min-width: 610px)': {
-      '@media (max-width: 899px)': { minWidth: '100px' },
-    },
-    '@media (max-width: 609px)': { minWidth: '72px' },
-  },
-}));
-
-const VerticalSpaceDiv = styled('div')(({ theme: { spacing } }) => ({
-  '@media (min-width: 610px)': { padding: spacing(2) },
-  '@media (max-width: 609px)': { padding: spacing(1) },
-  width: '100%',
-}));
+  return (
+    <div className="flex w-full flex-col items-center justify-center">
+      {lineup.cancelled ? (
+        <h3 className="text-destructive text-lg font-semibold">
+          {getCancelledDateString(lineup.date_str)}
+        </h3>
+      ) : (
+        <h2 className="text-xl font-bold">{lineup.date_str}</h2>
+      )}
+      <CustomSwitch
+        checked={sortAlphabetically}
+        setChecked={setSortAlphabetically}
+        leftOptionText={t('common.popularity')}
+        rightOptionText={t('common.alphabetically')}
+      />
+      <ArtistBox>
+        {lineup.artists.length > 0 &&
+          lineup.artists
+            .sort((a, b) =>
+              (
+                sortAlphabetically
+                  ? a.name > b.name
+                  : a.popularity < b.popularity
+              )
+                ? 1
+                : -1,
+            )
+            .map((artist) => (
+              <ArtistBubble
+                key={`avatar_festival_lineup_artist_${lineup.year}${artist.name}`}
+                artist={artist}
+              />
+            ))}
+        {lineup.artists.length > 0 &&
+          Array.from({ length: fillArtistWidth }, (_, i) => (
+            <StyledAvatarContainerDiv key={i} />
+          ))}
+      </ArtistBox>
+    </div>
+  );
+};

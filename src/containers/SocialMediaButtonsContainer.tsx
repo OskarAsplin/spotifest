@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useApiSuspenseQuery } from '@src/api/api';
 import { getAllPlaylists, getLoggedInUserInfo } from '@src/api/spotifyApi';
 import {
@@ -6,14 +7,10 @@ import {
 } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { getIdFromMatchBasis } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect.utils';
 import { SocialMediaButtons } from '@src/components/organisms/SocialMediaButtons/SocialMediaButtons';
-import {
-  getShareMessage,
-  getShareUrl,
-  getTooltipText,
-} from './SocialMediaButtonsContainer.utils';
 import { useMatchingStore } from '@src/zustand/matchingStore';
 
 export const SocialMediaButtonsContainer = () => {
+  const { t } = useTranslation();
   const matchBasis = useMatchingStore((state) => state.matchBasis);
 
   const { data: userInfo } = useApiSuspenseQuery(getLoggedInUserInfo);
@@ -30,9 +27,13 @@ export const SocialMediaButtonsContainer = () => {
     matchBasis === TOP_ARTISTS_CHOICE ||
     matchBasis === SAVED_TRACKS_CHOICE;
 
-  const shareMessage = getShareMessage(isOwnPlaylist, playlist?.name);
-  const shareUrl = getShareUrl(matchBasis);
-  const tooltipText = getTooltipText(isDisabled);
+  const shareMessage = isOwnPlaylist
+    ? t('social_media_buttons.message_my_playlist')
+    : t('social_media_buttons.message_other_playlist');
+  const shareUrl = `${import.meta.env.VITE_REDIRECT_URI}/share/${matchBasis}`;
+  const tooltipText = isDisabled
+    ? t('social_media_buttons.tooltip_disabled')
+    : t('social_media_buttons.tooltip');
 
   return (
     <SocialMediaButtons

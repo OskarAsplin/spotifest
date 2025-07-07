@@ -1,14 +1,8 @@
-import MusicNote from '@mui/icons-material/MusicNote';
-import {
-  Avatar,
-  avatarClasses,
-  IconButton,
-  iconButtonClasses,
-  Skeleton,
-  Typography,
-} from '@mui/material';
-import { blueGrey } from '@mui/material/colors';
-import { Shadows, styled } from '@mui/material/styles';
+import { Music } from 'lucide-react';
+import { Avatar, AvatarImage } from '@src/components/ui/avatar';
+import { Button } from '@src/components/ui/button';
+import { Skeleton } from '@src/components/ui/skeleton';
+import { cn } from '@src/lib/utils';
 import { Artist } from '@src/api/types';
 import { Link } from '@tanstack/react-router';
 import { getArtistParam } from '@src/utils/routeUtils';
@@ -22,88 +16,64 @@ export const ArtistBubble = ({ artist }: ArtistBubbleProps) => (
     <Link
       to="/artist/$artistId"
       params={{ artistId: getArtistParam(artist.name, artist.spotifyId) }}
-      style={{ borderRadius: '50%', color: 'inherit' }}
+      className="rounded-full"
       disabled={!artist.spotifyId}
     >
-      <StyledIconButton color="inherit" disabled={!artist.spotifyId}>
+      <Button
+        variant="ghost"
+        className="h-[75px] w-[75px] rounded-full p-0 text-center max-sm:p-1.5 sm:h-[104px] sm:w-[104px] sm:p-3"
+        disabled={!artist.spotifyId}
+      >
         {artist.iconPicture ? (
-          <StyledAvatar
-            src={artist.iconPicture}
-            alt={artist.name}
-            isClickable={!!artist.spotifyId}
-          />
+          <Avatar
+            className={cn(
+              'h-15 w-15 sm:h-20 sm:w-20',
+              artist.spotifyId && 'shadow-md',
+            )}
+          >
+            <AvatarImage src={artist.iconPicture} alt={artist.name} />
+          </Avatar>
         ) : (
-          <StyledAvatarDiv isClickable={!!artist.spotifyId}>
-            <MusicNote fontSize="large" />
-          </StyledAvatarDiv>
+          <div
+            className={cn(
+              'bg-blue-gray-300 dark:bg-accent flex h-15 w-15 items-center justify-center rounded-full sm:h-20 sm:w-20',
+              artist.spotifyId && 'shadow-md',
+            )}
+          >
+            <Music className="h-6 w-6" />
+          </div>
         )}
-      </StyledIconButton>
+      </Button>
     </Link>
-    <Typography variant="caption">{artist.name}</Typography>
+    <span className="text-xs">{artist.name}</span>
   </StyledAvatarContainerDiv>
 );
 
 export const ArtistBubbleSkeleton = () => (
   <StyledAvatarContainerDiv>
-    <StyledIconButton disabled>
-      <Skeleton variant="circular">
-        <StyledAvatar />
-      </Skeleton>
-    </StyledIconButton>
-    <Typography variant="caption">
-      <Skeleton width={60} />
-    </Typography>
+    <Button
+      variant="ghost"
+      className="h-[75px] w-[75px] text-center max-sm:p-1.5 sm:h-[104px] sm:w-[104px] sm:p-3"
+      disabled
+    >
+      <Skeleton className="h-15 w-15 rounded-full sm:h-20 sm:w-20" />
+    </Button>
+    <Skeleton className="h-4 w-15" />
   </StyledAvatarContainerDiv>
 );
 
-export const StyledAvatarContainerDiv = styled('div')(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  textAlign: 'center',
-  '@media (min-width: 690px)': { width: '100px' },
-  '@media (max-width: 689px)': { width: '75px', marginBottom: '6px' },
-}));
-
-const StyledIconButton = styled(IconButton)(() => ({
-  [`&.${iconButtonClasses.root}`]: {
-    textAlign: 'center',
-    '@media (min-width: 690px)': {
-      width: '104px',
-      height: '104px',
-      padding: '12px',
-    },
-    '@media (max-width: 689px)': {
-      width: '75px',
-      height: '75px',
-      padding: '6px',
-    },
-  },
-}));
-
-const sharedAvatarStyle = (isClickable: boolean, shadows: Shadows) => ({
-  '@media (min-width: 690px)': { height: 80, width: 80 },
-  '@media (max-width: 689px)': { height: 60, width: 60 },
-  boxShadow: isClickable ? shadows[3] : undefined,
-});
-
-const StyledAvatar = styled(Avatar, {
-  shouldForwardProp: (prop) => prop !== 'isClickable',
-})<{ isClickable?: boolean }>(
-  ({ theme: { shadows }, isClickable = false }) => ({
-    [`&.${avatarClasses.root}`]: sharedAvatarStyle(isClickable, shadows),
-  }),
-);
-
-const StyledAvatarDiv = styled('div', {
-  shouldForwardProp: (prop) => prop !== 'isClickable',
-})<{ isClickable: boolean }>(
-  ({ theme: { shadows, palette }, isClickable }) => ({
-    ...sharedAvatarStyle(isClickable, shadows),
-    borderRadius: '50%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: blueGrey[palette.mode === 'light' ? 300 : 700],
-  }),
+export const StyledAvatarContainerDiv = ({
+  children,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    className={cn(
+      'flex w-[75px] flex-col items-center text-center max-sm:mb-1.5 sm:w-[100px]',
+      className,
+    )}
+    {...props}
+  >
+    {children}
+  </div>
 );

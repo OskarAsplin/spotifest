@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  buttonClasses,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Button } from '@src/components/ui/button';
 import { useTranslation } from 'react-i18next';
 
 interface LoginButtonProps {
@@ -13,49 +6,21 @@ interface LoginButtonProps {
 }
 
 export const LoginButton = ({ onClick }: LoginButtonProps) => {
-  const bigWidth = useMediaQuery('(min-width:610px)');
-  const bigHeight = useMediaQuery('(min-height:610px)');
-  const bigScreen = bigWidth && bigHeight;
   const { t } = useTranslation();
 
   return (
-    <StyledLoginButton
-      variant="contained"
-      bigScreen={bigScreen}
+    <Button
+      className="flex h-auto w-auto flex-row items-center rounded-full bg-[#1DB954] px-2 py-2 text-white shadow-md hover:bg-[#13af4a] sm:px-3 sm:py-2.5"
       onClick={onClick}
     >
-      <Box
-        component="img"
+      <img
         src="/techIcons/Spotify-Mark-white.png"
         alt="Spotify-icon"
-        sx={{
-          height: bigScreen ? '50px' : '35px',
-          mr: bigScreen ? 2 : 1.5,
-        }}
+        className="h-[35px] sm:h-[55px]"
       />
-      <Typography variant={bigScreen ? 'h4' : 'h6'} color="textPrimary">
+      <span className="mr-2 ml-1 text-xl font-normal text-white sm:ml-2 sm:text-3xl">
         {t('login_page.button')}
-      </Typography>
-    </StyledLoginButton>
+      </span>
+    </Button>
   );
 };
-
-const StyledLoginButton = styled(Button, {
-  shouldForwardProp: (prop) => prop !== 'bigScreen',
-})<{ bigScreen: boolean }>(({ theme: { spacing, shadows }, bigScreen }) => {
-  return {
-    [`&.${buttonClasses.root}`]: {
-      display: 'flex',
-      flexDirection: 'row',
-      textTransform: 'none',
-      alignItems: 'center',
-      boxShadow: shadows[3],
-      padding: bigScreen ? spacing(2, 5, 2, 5) : spacing(1, 2.5, 1, 1.5),
-      borderRadius: bigScreen ? 15 : 25,
-      backgroundColor: '#1DB954',
-      '&:hover': {
-        backgroundColor: 'rgb(19, 175, 74)',
-      },
-    },
-  };
-});

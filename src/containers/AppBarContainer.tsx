@@ -1,17 +1,14 @@
-import { Box, Slide, useScrollTrigger } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { cn } from '@src/lib/utils';
 import { useNavigate, useMatchRoute } from '@tanstack/react-router';
 import { useApiQuery } from '@src/api/api';
 import { getLoggedInUserInfo } from '@src/api/spotifyApi';
 import { CustomAppBar } from '@src/components/organisms/CustomAppBar/CustomAppBar';
-import { ProfilePopover } from '@src/components/organisms/ProfilePopover/ProfilePopover';
-import { AppBarMenuDrawerContainer } from '@src/containers/AppBarMenuDrawerContainer';
 import { SearchFieldContainer } from './SearchFieldContainer';
-import { resetAuthStore, useIsLoggedIn } from '@src/zustand/authStore';
+import { useIsLoggedIn } from '@src/zustand/authStore';
+import { setThemeMode, useThemeMode } from '@src/zustand/themeStore';
 
 export const AppBarContainer = () => {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
   const matchRoute = useMatchRoute();
   const loggedIn = useIsLoggedIn();
@@ -20,26 +17,16 @@ export const AppBarContainer = () => {
     enabled: loggedIn,
   });
 
-  const trigger = useScrollTrigger({ threshold: 30 });
+  const [isHidden, setIsHidden] = useState(false);
 
-  const onClickProfilePicture = (event: React.MouseEvent<HTMLButtonElement>) =>
-    setAnchorEl(event.currentTarget);
-
-  const popoverOpen = Boolean(anchorEl);
-  const popoverId = popoverOpen ? 'simple-popover' : undefined;
-
-  const toggleDrawer =
-    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
-      ) {
-        return;
-      }
-
-      setDrawerOpen(open);
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsHidden(window.pageYOffset > 30);
     };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const onClickLogo = () => {
     const isIndexRoute = !!matchRoute({ to: '/' });
@@ -47,32 +34,30 @@ export const AppBarContainer = () => {
     else navigate({ to: '/' });
   };
 
+  const themeMode = useThemeMode();
+
+  const onClickAbout = () => {
+    if (!window.location.href.endsWith('/about')) navigate({ to: '/about' });
+  };
+  const onClickBrightness = () =>
+    setThemeMode(themeMode === 'light' ? 'dark' : 'light');
+
   return (
-    <Box sx={{ pb: 6 }}>
-      <Slide appear={false} direction="down" in={!trigger}>
-        <div>
-          <CustomAppBar
-            SearchFieldComponent={SearchFieldContainer}
-            onClickLogo={onClickLogo}
-            onClickProfilePicture={onClickProfilePicture}
-            onClickMenu={toggleDrawer(true)}
-            profilePictureUrl={userInfo?.profilePictureUrl}
-          />
-        </div>
-      </Slide>
-      <ProfilePopover
-        id={popoverId}
-        anchorEl={anchorEl}
-        open={popoverOpen}
-        userName={userInfo?.displayName}
-        spotifyUrl={userInfo?.spotifyUrl}
-        onClose={() => setAnchorEl(null)}
-        onClickLogout={resetAuthStore}
-      />
-      <AppBarMenuDrawerContainer
-        open={drawerOpen}
-        onClose={toggleDrawer(false)}
-      />
-    </Box>
+    <div className="pb-4 sm:pb-6">
+      <div
+        className={cn(
+          'transition-transform duration-300 ease-in-out',
+          isHidden ? '-translate-y-full' : 'translate-y-0',
+        )}
+      >
+        <CustomAppBar
+          SearchFieldComponent={SearchFieldContainer}
+          onClickLogo={onClickLogo}
+          onClickAbout={onClickAbout}
+          onClickBrightness={onClickBrightness}
+          userInfo={userInfo}
+        />
+      </div>
+    </div>
   );
 };

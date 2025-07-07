@@ -1,36 +1,39 @@
-import { Fragment } from 'react';
-import { CircularProgress } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { cn } from '@src/lib/utils';
 
 const CIRCLE_RADIUS = 20;
 
 export const LoadingSpinner = () => (
-  <Fragment>
-    <svg width={0} height={0}>
-      <defs>
-        <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#e01cd5" />
-          <stop offset="100%" stopColor="#1CB5E0" />
-        </linearGradient>
-      </defs>
-    </svg>
-    <CircularProgress
-      size={CIRCLE_RADIUS * 2}
-      sx={{ 'svg circle': { stroke: 'url(#my_gradient)' } }}
+  <svg
+    width={CIRCLE_RADIUS * 2}
+    height={CIRCLE_RADIUS * 2}
+    viewBox="0 0 40 40"
+    className="animate-spin"
+  >
+    <defs>
+      <linearGradient id="my_gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stopColor="#e01cd5" />
+        <stop offset="100%" stopColor="#1CB5E0" />
+      </linearGradient>
+    </defs>
+    <circle
+      cx="20"
+      cy="20"
+      r="18"
+      fill="none"
+      stroke="url(#my_gradient)"
+      strokeWidth="4"
+      strokeDasharray="90 30"
+      strokeLinecap="round"
     />
-  </Fragment>
+  </svg>
 );
 
 export const CenteredLoadingSpinner = () => (
-  <StyledDiv>
+  <div
+    className={cn(
+      'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform',
+    )}
+  >
     <LoadingSpinner />
-  </StyledDiv>
+  </div>
 );
-
-const StyledDiv = styled('div')(() => ({
-  position: 'fixed',
-  top: '50%',
-  left: '50%',
-  marginTop: `-${CIRCLE_RADIUS}px`,
-  marginLeft: `-${CIRCLE_RADIUS}px`,
-}));

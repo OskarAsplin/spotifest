@@ -1,11 +1,5 @@
-import {
-  Box,
-  Drawer,
-  List,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
+import { Sheet, SheetContent } from '@src/components/ui/sheet';
+import { Button } from '@src/components/ui/button';
 
 interface CustomDrawerProps {
   open: boolean;
@@ -14,21 +8,24 @@ interface CustomDrawerProps {
 }
 
 export const CustomDrawer = ({ open, onClose, items }: CustomDrawerProps) => (
-  <Drawer anchor="right" open={open} onClose={onClose}>
-    <Box
-      sx={{ width: 250 }}
-      role="presentation"
-      onClick={onClose}
-      onKeyDown={onClose}
-    >
-      <List>
+  <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose({} as any)}>
+    <SheetContent side="right" className="w-[250px]">
+      <nav className="mt-4 flex flex-col space-y-2">
         {items.map(({ Icon, label, onClick }) => (
-          <ListItemButton key={label} onClick={onClick}>
-            <ListItemIcon>{Icon}</ListItemIcon>
-            <ListItemText primary={label} />
-          </ListItemButton>
+          <Button
+            key={label}
+            variant="ghost"
+            className="h-auto justify-start px-4 py-3"
+            onClick={() => {
+              onClick();
+              onClose({} as any);
+            }}
+          >
+            <span className="mr-3 flex-shrink-0">{Icon}</span>
+            <span>{label}</span>
+          </Button>
         ))}
-      </List>
-    </Box>
-  </Drawer>
+      </nav>
+    </SheetContent>
+  </Sheet>
 );

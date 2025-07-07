@@ -5,7 +5,7 @@
       "title": "Created by"
     },
     "disclaimer": {
-      "text": "The creator of $t(common.app_title) takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages collect cookies.",
+      "text": "The creator of $t(common.app_title) takes no responsibility for any inaccuracies in the information on the site, as this is purely a hobby project at this point. No personal data is collected by this site, but youtube videos showed on the festival pages might collect cookies.",
       "title": "Disclaimer"
     },
     "features": {
@@ -24,14 +24,14 @@
     "tech_stack": {
       "backend_code": "Backend written in Python with Django and SQLite as database",
       "backend_container": "Backend server environment contained with Docker",
-      "backend_host": "Backend hosted on DigitalOcean running Ubuntu 20.04",
+      "backend_host": "Backend hosted on DigitalOcean running Ubuntu 24.04",
       "backend_server": "Django server set up with Gunicorn and Nginx",
       "domain": "Domain bought on NameCheap",
       "festival_info": "Lineup and festival information from Music Festival Wizard",
       "frontend_code": "Frontend made with React, Typescript, React Query and Zustand",
       "frontend_host": "Frontend hosted on Netlify",
       "frontend_storybook": "Components developed and documented with <Link href=\"https://master--638b82b31acca1e593c75c8d.chromatic.com\">Storybook</Link>",
-      "frontend_ui": "UI based on Material-UI",
+      "frontend_ui": "Components and styling with Shadcn (Radix UI) and Tailwind CSS",
       "music_info": "Playlists and artists from Spotify using OAuth 2.0 authorization",
       "title": "Technology stack",
       "version_control": "Code version control on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>"
@@ -68,7 +68,7 @@
     "total": "Total"
   },
   "cookies": {
-    "youtube": "The youtube videos on this site use cookies."
+    "youtube": "YouTube videos on $t(common.app_title) might use cookies"
   },
   "error": {
     "artist_not_found": "Could not find artist.",
@@ -107,7 +107,8 @@
       "label": "Match with",
       "playlists_sub_header": "or choose a playlist below",
       "top_artists_option": "Your most played artists",
-      "saved_tracks_option": "Your liked songs"
+      "saved_tracks_option": "Your liked songs",
+      "click_link": "Can't change matching source on this page. Click the link above or the Spotifest logo on top to change it."
     },
     "date_select_from": {
       "label": "From"
@@ -115,10 +116,12 @@
     "date_select_to": {
       "label": "To"
     },
+    "date_range": {
+      "label": "When"
+    },
     "modal": {
-      "default_text": "Match festivals with",
-      "go_button": "Go",
-      "no_top_artists": "Choose a playlist to begin!",
+      "title": "Let’s find your perfect festival!",
+      "match_selector": "Choose your matching source",
       "no_top_artists_or_playlists": "We can't find any listening habits or playlists to use for our festival matching. Go to your <Link>Spotify profile</Link> and create or subscribe to a playlist to start your festival matching"
     },
     "no_results": "No registered festivals in the selected area in this time frame."
@@ -126,5 +129,11 @@
   "shared_results_page": {
     "description": "Festival matches for <PlaylistLink>{{playlist_name}}</PlaylistLink> by <UserLink>{{user_name}}</UserLink>",
     "test_yourself": "Test with your own playlists <Link to=\"/\">here!</Link>"
+  },
+  "social_media_buttons": {
+    "tooltip": "Share the match results for this playlist!",
+    "tooltip_disabled": "Only playlist results can be shared.\nSelect a playlist as matching shource.",
+    "message_my_playlist": "I matched my Spotify playlist \"{{playlist_name}}\" with music festivals using Spotifest. Check out the results!",
+    "message_other_playlist": "I matched the Spotify playlist \"{{playlist_name}}\" with music festivals using Spotifest. Check out the results!"
   }
 }

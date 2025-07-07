@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { FormControl, InputLabel } from '@mui/material';
 import { AreaSelect } from './AreaSelect';
 import { continentsMock, countriesMock } from './AreaSelect.fixtures';
 
@@ -20,24 +19,21 @@ const meta: Meta<typeof AreaSelect> = {
   args: {
     continents: continentsMock,
     countries: countriesMock,
-    label: 'Area',
   },
 };
 
 export default meta;
 
 const Template: Story['render'] = (args) => (
-  <FormControl
-    sx={{
-      m: 1,
-      '@media (min-width: 800px)': { minWidth: 150, maxWidth: 180 },
-      '@media (max-width: 799px)': { width: '100%' },
-    }}
-    size="small"
-  >
-    <InputLabel id="choose-countries-label">{args.label}</InputLabel>
+  <div className="w-full">
+    <label
+      htmlFor="choose-countries-label"
+      className="mb-1 block text-sm font-medium"
+    >
+      Area
+    </label>
     <AreaSelect {...args} />
-  </FormControl>
+  </div>
 );
 
 export const Primary: Story = { render: Template };

@@ -1,43 +1,38 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Button,
-  IconButton,
-  Toolbar,
-  toolbarClasses,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { User, Moon, Sun, Info, Search } from 'lucide-react';
+import { useMediaQuery } from '@src/hooks/useMediaQuery';
+import { Avatar, AvatarImage } from '@src/components/ui/avatar';
+import { Button } from '@src/components/ui/button';
+import { cn } from '@src/lib/utils';
 import { useState } from 'react';
 import { SearchFieldContainerProps } from '@src/containers/SearchFieldContainer';
 import { useTranslation } from 'react-i18next';
+import { ProfilePopover } from '../ProfilePopover/ProfilePopover';
+import { UserInfo } from '@src/api/types';
+import { resetAuthStore } from '@src/zustand/authStore';
+import { useThemeMode } from '@src/zustand/themeStore';
 
 interface CustomAppBarProps {
   SearchFieldComponent: (
     props: SearchFieldContainerProps,
   ) => React.ReactElement;
   onClickLogo: () => void;
-  onClickProfilePicture: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  onClickMenu: (event: React.KeyboardEvent | React.MouseEvent) => void;
-  profilePictureUrl?: string;
+  onClickAbout?: () => void;
+  onClickBrightness?: () => void;
+  userInfo?: UserInfo;
 }
 
 export const CustomAppBar = ({
   SearchFieldComponent,
   onClickLogo,
-  onClickProfilePicture,
-  onClickMenu,
-  profilePictureUrl,
+  onClickAbout,
+  onClickBrightness,
+  userInfo,
 }: CustomAppBarProps) => {
-  const bigScreen = useMediaQuery('(min-width:610px)');
+  const bigScreen = useMediaQuery('(min-width:640px)');
   const [showSearchFieldSmallScreen, setShowSearchFieldSmallScreen] =
     useState(false);
   const { t } = useTranslation();
+  const themeMode = useThemeMode();
 
   const onClickSearchIcon = () =>
     setShowSearchFieldSmallScreen(!showSearchFieldSmallScreen);
@@ -45,82 +40,80 @@ export const CustomAppBar = ({
   const hideSearchFieldSmallScreen = () => setShowSearchFieldSmallScreen(false);
 
   return (
-    <AppBar
-      sx={{
-        color: '#fff',
-        backgroundColor: ({ palette: { mode } }) =>
-          mode === 'dark' ? '#03293c' : '#065980',
-      }}
-    >
-      <StyledToolbar>
+    <header className="sticky top-0 z-50 h-12 bg-[#065980] text-white shadow-md dark:bg-[#03293c]">
+      <div className="flex h-full items-center gap-2 px-2 lg:px-4">
         <Button
-          sx={{ textTransform: 'none' }}
-          color="inherit"
+          variant="ghost"
+          className="ml-2 h-auto p-0 font-normal text-white hover:bg-white/10"
           onClick={onClickLogo}
         >
-          <Typography variant="h6">{t('common.app_title')}</Typography>
+          <h1 className="text-lg font-semibold">{t('common.app_title')}</h1>
         </Button>
-        <Box sx={{ flexGrow: 1 }} />
+        <div className="flex-grow" />
         {bigScreen && <SearchFieldComponent />}
         {!bigScreen && (
           <>
-            <IconButton sx={{ p: 1.5 }} onClick={onClickSearchIcon}>
-              <SearchIcon sx={{ color: '#fff' }} />
-            </IconButton>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="p-1.5 text-white hover:bg-white/10"
+              onClick={onClickSearchIcon}
+            >
+              <Search className="h-5 w-5" />
+            </Button>
             {showSearchFieldSmallScreen && (
-              <PositionSearchFieldSmallScreen>
+              <div className="bg-background fixed top-12 right-0 z-10 mr-15.5 w-[200px]">
                 <SearchFieldComponent
                   hideSearchFieldSmallScreen={hideSearchFieldSmallScreen}
+                  autoFocus
                 />
-              </PositionSearchFieldSmallScreen>
+              </div>
             )}
           </>
         )}
-        <IconButton
-          sx={{
-            p: 1.5,
-            '@media (min-width: 610px)': { ml: 2 },
-            padding: profilePictureUrl ? '10px' : undefined,
-          }}
-          color="inherit"
-          onClick={onClickProfilePicture}
+        <ProfilePopover
+          userName={userInfo?.displayName}
+          spotifyUrl={userInfo?.spotifyUrl}
+          onClickLogout={resetAuthStore}
         >
-          {profilePictureUrl ? (
-            <Avatar
-              src={profilePictureUrl}
-              alt=""
-              sx={{ height: 28, width: 28 }}
-            />
+          <Button
+            variant="ghost"
+            size="icon"
+            className={cn(
+              'p-1.5 text-white hover:bg-white/10',
+              userInfo?.profilePictureUrl && 'p-2.5',
+            )}
+          >
+            {userInfo?.profilePictureUrl ? (
+              <Avatar className="h-5 w-5">
+                <AvatarImage src={userInfo.profilePictureUrl} alt="" />
+              </Avatar>
+            ) : (
+              <User className="h-5 w-5" />
+            )}
+          </Button>
+        </ProfilePopover>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="p-1.5 text-white hover:bg-white/10"
+          onClick={onClickAbout}
+        >
+          <Info className="h-5 w-5" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="p-1.5 text-white hover:bg-white/10"
+          onClick={onClickBrightness}
+        >
+          {themeMode === 'light' ? (
+            <Moon className="h-5 w-5" />
           ) : (
-            <AccountCircleIcon />
+            <Sun className="h-5 w-5" />
           )}
-        </IconButton>
-        <IconButton sx={{ p: 1.5 }} color="inherit" onClick={onClickMenu}>
-          <MenuIcon />
-        </IconButton>
-      </StyledToolbar>
-    </AppBar>
+        </Button>
+      </div>
+    </header>
   );
 };
-
-const PositionSearchFieldSmallScreen = styled('div')(
-  ({ theme: { spacing } }) => ({
-    position: 'fixed',
-    right: 0,
-    top: spacing(6),
-    zIndex: 10,
-    width: '200px',
-    '@media (min-width: 590px)': { marginRight: '44px' },
-    '@media (min-width: 440px)': {
-      '@media (max-width: 589px)': { marginRight: '36px' },
-    },
-    '@media (max-width: 439px)': { marginRight: '28px' },
-  }),
-);
-
-const StyledToolbar = styled(Toolbar)(({ theme: { spacing } }) => ({
-  [`&.${toolbarClasses.root}`]: {
-    minHeight: spacing(4.5),
-    '@media (max-width: 439px)': { padding: spacing(0, 1) },
-  },
-}));

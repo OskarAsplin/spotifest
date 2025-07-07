@@ -1,14 +1,29 @@
-import { Link, LinkProps } from '@mui/material';
 import { createLink, LinkComponent } from '@tanstack/react-router';
+import { cn } from '@src/lib/utils';
 
-export const StandardLink = (props: Omit<LinkProps, 'variant'>) => (
-  <Link
+interface StandardLinkProps
+  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  href?: string;
+}
+
+export const StandardLink = ({
+  className,
+  href,
+  children,
+  ...props
+}: StandardLinkProps) => (
+  <a
     {...props}
+    href={href}
     target="_blank"
     rel="noopener noreferrer"
-    underline="hover"
-    sx={{ ...props.sx, '&:hover': { cursor: 'pointer' } }}
-  />
+    className={cn(
+      'cursor-pointer text-blue-400 underline-offset-4 hover:underline',
+      className,
+    )}
+  >
+    {children}
+  </a>
 );
 
 const CreatedLinkComponent = createLink(StandardLink);

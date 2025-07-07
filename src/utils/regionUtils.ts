@@ -1,16 +1,21 @@
-export const europeanRegions = [
+import { Area } from '@src/api/types';
+
+export const WORLDWIDE_AREA: Area = { name: 'Worldwide', isoCode: 'XXX' };
+
+export const europeanRegions: Area[] = [
   'Northern Europe',
   'Eastern Europe',
   'Central Europe',
   'Southern Europe',
   'British Isles',
-];
-export const usRegions = [
+].map((region) => ({ name: region, isoCode: region }));
+
+export const usRegions: Area[] = [
   'US: West',
   'US: Mid-West',
   'US: South',
   'US: North-East',
-];
+].map((region) => ({ name: region, isoCode: region }));
 
 export const regionMap: { [key: string]: string[] } = {
   'Northern Europe': ['NO', 'SE', 'FI', 'DK', 'IS', 'FO', 'AX'],

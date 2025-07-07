@@ -10,15 +10,10 @@ import {
   getLoggedInUserInfo,
   getOneSavedTrack,
 } from '@src/api/spotifyApi';
-import { TOP_ARTISTS_CHOICE } from '@src/components/molecules/MatchCriteriaSelect/MatchCriteriaSelect';
 import { FestivalMatchSettingsBar } from '@src/components/organisms/FestivalMatchSettingsBar/FestivalMatchSettingsBar';
 import { SelectPlaylistModal } from '@src/components/organisms/SelectPlaylistModal/SelectPlaylistModal';
 import { getInitialContinent } from '@src/utils/areaUtils';
-import {
-  setMatchArea,
-  setMatchBasis,
-  useMatchingStore,
-} from '@src/zustand/matchingStore';
+import { setMatchArea, useMatchingStore } from '@src/zustand/matchingStore';
 
 export const FestivalMatchSettingsContainer = () => {
   const matchBasis = useMatchingStore((state) => state.matchBasis);
@@ -49,8 +44,6 @@ export const FestivalMatchSettingsContainer = () => {
     }
   }, [userInfo, continents]);
 
-  const onClickModalGoButton = () => setMatchBasis(TOP_ARTISTS_CHOICE);
-
   return (
     <>
       <FestivalMatchSettingsBar
@@ -63,7 +56,6 @@ export const FestivalMatchSettingsContainer = () => {
       />
       <SelectPlaylistModal
         open={!matchBasis}
-        onClickGoButton={onClickModalGoButton}
         playlists={playlists}
         hasTopArtists={hasTopArtists}
         hasSavedTracks={hasSavedTracks}

@@ -1,13 +1,11 @@
-import { Box, Paper, ThemeProvider, Typography } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
 import { escapeRegExp } from 'lodash-es';
 import { useTranslation } from 'react-i18next';
 import { SearchResponse } from '@src/api/types';
-import { getMainTheme } from '@src/theme/theme.styles';
 import { getArtistPath, getFestivalPath } from '@src/utils/routeUtils';
 import { MatchHighlighter } from '@src/components/atoms/MatchHighlighter/MatchHighlighter';
-import { SEARCH_FIELD_WIDTH_BIG_SCREEN } from '@src/components/molecules/SearchField/SearchField';
 import { StandardRouterLink } from '@src/components/atoms/StandardLink/StandardLink';
+import { Card, CardContent } from '@src/components/ui/card';
+import { cn } from '@src/lib/utils';
 
 interface SearchResultsProps {
   searchResults: SearchResponse;
@@ -21,29 +19,26 @@ export const SearchResults = ({
   resetSearchFieldState,
 }: SearchResultsProps) => {
   const { t } = useTranslation();
-  const lightTheme = createTheme(getMainTheme('light'));
 
   const standardLinkProps = {
-    color: 'textSecondary',
     onClick: resetSearchFieldState,
-    sx: { mb: 1 },
-    variant: 'body2',
+    className: 'mb-2 text-sm text-muted-foreground',
   };
 
   return (
-    <ThemeProvider theme={lightTheme}>
-      <Paper elevation={10} sx={{ ...SEARCH_FIELD_WIDTH_BIG_SCREEN, p: 1 }}>
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+    <Card className={cn('p-2 shadow-lg min-[610px]:w-[200px]')}>
+      <CardContent className="p-0">
+        <div className="flex flex-col space-y-1">
           {searchResults.festivals.length === 0 &&
             searchResults.artists.length === 0 && (
-              <Typography color="textDisabled">
+              <p className="text-muted-foreground text-sm">
                 {t('common.no_results')}
-              </Typography>
+              </p>
             )}
           {searchResults.festivals.length > 0 && (
-            <Typography sx={{ mb: 1, fontWeight: 'bold' }}>
+            <h3 className="mb-1 text-sm font-semibold">
               {t('common.festivals')}:
-            </Typography>
+            </h3>
           )}
           {searchResults.festivals.slice(0, 5).map((festival) => (
             <StandardRouterLink
@@ -58,20 +53,14 @@ export const SearchResults = ({
             </StandardRouterLink>
           ))}
           {searchResults.festivals.length > 5 && (
-            <Typography
-              color="textSecondary"
-              variant="subtitle1"
-              sx={{ mt: -1 }}
-            >
-              ...
-            </Typography>
+            <p className="text-muted-foreground -mt-1 text-sm">...</p>
           )}
           {searchResults.festivals.length > 0 &&
-            searchResults.artists.length > 0 && <Box sx={{ mt: 2 }} />}
+            searchResults.artists.length > 0 && <div className="mt-2" />}
           {searchResults.artists.length > 0 && (
-            <Typography sx={{ mb: 1, fontWeight: 'bold' }}>
+            <h3 className="mb-1 text-sm font-semibold">
               {t('common.artists')}:
-            </Typography>
+            </h3>
           )}
           {searchResults.artists.slice(0, 5).map((artist) => (
             <StandardRouterLink
@@ -86,16 +75,10 @@ export const SearchResults = ({
             </StandardRouterLink>
           ))}
           {searchResults.artists.length > 5 && (
-            <Typography
-              color="textSecondary"
-              variant="subtitle1"
-              sx={{ mt: -1 }}
-            >
-              ...
-            </Typography>
+            <p className="text-muted-foreground -mt-1 text-sm">...</p>
           )}
-        </Box>
-      </Paper>
-    </ThemeProvider>
+        </div>
+      </CardContent>
+    </Card>
   );
 };

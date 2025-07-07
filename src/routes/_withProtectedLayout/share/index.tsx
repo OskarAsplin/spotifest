@@ -13,7 +13,6 @@ export const Route = createFileRoute('/_withProtectedLayout/share/')({
     code: search.code as string | undefined,
   }),
   beforeLoad: async ({ search: { code } }) => {
-    console.log(321);
     const sharedMatchBasis = getSharedMatchBasis();
     const codeVerifier = getCodeVerifier();
 

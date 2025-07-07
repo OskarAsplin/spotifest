@@ -1,5 +1,4 @@
-import { Brightness2 } from '@mui/icons-material';
-import InfoIcon from '@mui/icons-material/Info';
+import { Moon, Info } from 'lucide-react';
 import { action } from 'storybook/actions';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CustomDrawer } from './CustomDrawer';
@@ -20,9 +19,9 @@ const meta: Meta<typeof CustomDrawer> = {
   args: {
     open: true,
     items: [
-      { Icon: <InfoIcon />, label: 'About', onClick: action('onClickAbout') },
+      { Icon: <Info className="h-5 w-5" />, label: 'About', onClick: action('onClickAbout') },
       {
-        Icon: <Brightness2 />,
+        Icon: <Moon className="h-5 w-5" />,
         label: 'Brightness',
         onClick: action('onClickBrightness'),
       },

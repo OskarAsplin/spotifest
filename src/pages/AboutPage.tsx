@@ -1,59 +1,49 @@
-import CampaignTwoToneIcon from '@mui/icons-material/CampaignTwoTone';
-import CodeIcon from '@mui/icons-material/Code';
-import EngineeringTwoToneIcon from '@mui/icons-material/EngineeringTwoTone';
-import FestivalTwoToneIcon from '@mui/icons-material/FestivalTwoTone';
-import Groups2TwoToneIcon from '@mui/icons-material/Groups2TwoTone';
-import LibraryMusicTwoToneIcon from '@mui/icons-material/LibraryMusicTwoTone';
-import StarRateTwoToneIcon from '@mui/icons-material/StarRateTwoTone';
 import {
-  Collapse,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Paper,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import { clsx } from 'clsx';
+  Megaphone,
+  Code,
+  Wrench,
+  ListMusic,
+  Music,
+  Users,
+  Star,
+} from 'lucide-react';
+import { Card, CardContent } from '@src/components/ui/card';
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@src/components/ui/collapsible';
 import { useState } from 'react';
 import { ExpandButton } from '@src/components/atoms/ExpandButton/ExpandButton';
 import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
 import { TechStackContent } from '@src/components/templates/TechStackContent/TechStackContent';
 import { Trans, useTranslation } from 'react-i18next';
+import { useThemeMode } from '@src/zustand/themeStore';
+import { cn } from '@src/lib/utils';
 
 export const AboutPage = () => {
-  const bigScreen = useMediaQuery('(min-width:640px)'); // sm breakpoint
   const { t } = useTranslation();
-
-  const isLightMode = useTheme().palette.mode === 'light';
 
   return (
     <>
-      <div className="mt-2" />
       <div className="flex w-full flex-col items-center justify-center max-sm:p-0 sm:p-0 sm:pb-2">
-        <div className="mx-4 mb-4 max-w-160">
-          <Typography
-            variant={bigScreen ? 'h4' : 'h5'}
-            sx={{ textAlign: 'center', my: 2 }}
-          >
+        <div className="mx-4 mb-8 max-w-160">
+          <h2 className="my-2 text-center text-2xl font-semibold sm:text-3xl">
             {t('about_page.features.title')}
-          </Typography>
+          </h2>
           <div className="mt-2" />
-          <List sx={{ p: 0 }}>
+          <div className="space-y-2">
             <CustomListItem
               text={t('about_page.features.matching')}
-              Icon={<LibraryMusicTwoToneIcon fontSize="large" color="info" />}
+              Icon={<ListMusic className="h-8 w-8 text-blue-500" />}
             />
             <CustomListItem
               text={t('about_page.features.festivals')}
-              Icon={<FestivalTwoToneIcon fontSize="large" color="error" />}
+              Icon={<Music className="h-8 w-8 text-red-500" />}
             />
             <CustomListItem
               text={t('about_page.features.artists')}
-              Icon={<Groups2TwoToneIcon fontSize="large" color="secondary" />}
+              Icon={<Users className="h-8 w-8 text-purple-500" />}
             />
             <CustomListItem
               text={
@@ -62,7 +52,7 @@ export const AboutPage = () => {
                   components={{ Link: <StandardLink /> }}
                 />
               }
-              Icon={<CodeIcon fontSize="large" color="success" />}
+              Icon={<Code className="h-8 w-8 text-green-500" />}
             />
             <CustomListItem
               text={
@@ -71,85 +61,80 @@ export const AboutPage = () => {
                   components={{ Link: <StandardLink /> }}
                 />
               }
-              Icon={<EngineeringTwoToneIcon fontSize="large" color="warning" />}
+              Icon={<Wrench className="h-8 w-8 text-yellow-500" />}
             />
-          </List>
+          </div>
         </div>
         <CollapsibleCard title={t('about_page.tech_stack.title')}>
           <TechStackContent />
         </CollapsibleCard>
         <CollapsibleCard title={t('about_page.support.title')}>
           <div className="flex w-full max-w-120 flex-col items-center justify-center py-2">
-            <List sx={{ p: 0 }}>
+            <div className="space-y-2">
               <CustomListItem
-                text={<ListItemText primary={t('about_page.support.share')} />}
-                Icon={<CampaignTwoToneIcon fontSize="large" color="primary" />}
+                text={t('about_page.support.share')}
+                Icon={<Megaphone className="h-8 w-8 text-blue-600" />}
               />
               <CustomListItem
                 text={
-                  <ListItemText>
-                    <Trans
-                      i18nKey="about_page.support.code"
-                      components={{
-                        StarIcon: <StarRateTwoToneIcon sx={{ my: -0.5 }} />,
-                        Link: <StandardLink />,
-                      }}
-                    />
-                  </ListItemText>
+                  <Trans
+                    i18nKey="about_page.support.code"
+                    components={{
+                      StarIcon: (
+                        <Star className="inline-block h-5 w-5 align-middle" />
+                      ),
+                      Link: <StandardLink />,
+                    }}
+                  />
                 }
-                Icon={<StarRateTwoToneIcon fontSize="large" />}
+                Icon={<Star className="h-8 w-8 text-yellow-500" />}
               />
-            </List>
+            </div>
           </div>
         </CollapsibleCard>
         <CollapsibleCard title={t('about_page.disclaimer.title')}>
           <div className="flex w-full max-w-120 flex-col items-center justify-center py-2">
-            <Typography variant="body1" sx={{ textAlign: 'center' }}>
-              {t('about_page.disclaimer.text')}
-            </Typography>
+            <p className="text-center">{t('about_page.disclaimer.text')}</p>
           </div>
         </CollapsibleCard>
         <div className="mt-6 max-lg:w-100 max-sm:w-full sm:mb-2 lg:w-full lg:max-w-100">
-          <Paper
-            elevation={3}
-            className="flex w-full max-w-150 flex-col items-center justify-center px-0 py-2 max-sm:max-w-full"
-            square={!bigScreen}
-          >
-            <div className="flex w-full flex-col items-center justify-center">
-              <Typography variant="h5" sx={{ textAlign: 'center' }}>
+          <Card className="flex w-full max-w-150 flex-col items-center justify-center px-0 py-2 max-sm:max-w-full max-sm:rounded-none">
+            <CardContent className="flex w-full flex-col items-center justify-center">
+              <h3 className="text-center text-xl font-semibold">
                 {t('about_page.creator.title')}
-              </Typography>
+              </h3>
               <div
-                className={clsx(
+                className={cn(
                   'mx-0 my-2 flex w-full flex-col items-center justify-center',
-                  isLightMode ? 'rounded-sm' : 'bg-darker',
                 )}
               >
                 <img
                   src="/creator_image_cropped.jpg"
-                  className="w-3/4 max-w-[300px]"
+                  className="w-full max-w-100 px-4"
                   alt="Creator"
                 />
               </div>
-              <Typography variant="h6" sx={{ textAlign: 'center' }}>
+              <p className="text-center text-lg">
                 {t('about_page.creator.text')}
-              </Typography>
-              <div>
-                <IconButton
+              </p>
+              <div className="my-2 flex space-x-4">
+                <a
                   href="https://www.linkedin.com/in/oskar-asplin-22796314a"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <LinkedInIcon />
-                </IconButton>
-                <IconButton
+                </a>
+                <a
                   href="https://github.com/OskarAsplin"
                   target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <GithubIcon />
-                </IconButton>
+                </a>
               </div>
-            </div>
-          </Paper>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </>
@@ -164,29 +149,19 @@ const CollapsibleCard = ({
   children: React.ReactNode;
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const bigScreen = useMediaQuery('(min-width:640px)'); // sm breakpoint
 
   return (
     <div className="mx-4 mb-4 max-lg:max-w-650 max-sm:w-full lg:max-w-250">
-      <Paper
-        elevation={3}
-        className="flex flex-col items-center justify-center py-1 max-sm:w-full max-sm:px-4 sm:min-w-100 sm:px-6"
-        square={!bigScreen}
-      >
-        <div
-          onClick={() => setExpanded(!expanded)}
-          className="flex w-full max-w-[330px] cursor-pointer flex-row items-center justify-between"
-        >
-          <ExpandButton expanded={expanded} />
-          <Typography variant="h5" sx={{ cursor: 'pointer' }}>
-            {title}
-          </Typography>
-          <ExpandButton expanded={expanded} />
-        </div>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          {children}
-        </Collapse>
-      </Paper>
+      <Card className="flex flex-col items-center justify-center py-1 max-sm:w-full max-sm:rounded-none max-sm:px-4 sm:min-w-100 sm:px-6">
+        <Collapsible open={expanded} onOpenChange={setExpanded}>
+          <CollapsibleTrigger className="mx-auto flex w-80 cursor-pointer flex-row items-center justify-between p-2">
+            <ExpandButton expanded={expanded} />
+            <h3 className="text-xl font-semibold">{title}</h3>
+            <ExpandButton expanded={expanded} />
+          </CollapsibleTrigger>
+          <CollapsibleContent>{children}</CollapsibleContent>
+        </Collapsible>
+      </Card>
     </div>
   );
 };
@@ -197,14 +172,15 @@ interface CustomListItemProps {
 }
 
 const CustomListItem = ({ text, Icon }: CustomListItemProps) => (
-  <ListItem>
-    <ListItemIcon>{Icon}</ListItemIcon>
-    <ListItemText primary={text} />
-  </ListItem>
+  <div className="flex items-center space-x-6 py-2">
+    <div className="flex-shrink-0">{Icon}</div>
+    <div className="flex-1">{text}</div>
+  </div>
 );
 
 const GithubIcon = () => {
-  const isLightMode = useTheme().palette.mode === 'light';
+  const themeMode = useThemeMode();
+  const isLightMode = themeMode === 'light';
 
   return (
     <img

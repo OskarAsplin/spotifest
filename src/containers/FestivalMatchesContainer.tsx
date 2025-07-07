@@ -33,6 +33,7 @@ import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { getAreaFilters } from '@src/utils/areaUtils';
 import { useMatchingStore } from '@src/zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
+import { useMediaQuery } from '@src/hooks/useMediaQuery';
 
 interface FestivalMatchesContainerProps {
   sharedMatchBasis?: string;
@@ -185,11 +186,13 @@ const FestivalMatchesInnerContainer = ({
 
   const scrollMargin = parentOffsetRef.current;
 
+  const bigScreen = useMediaQuery('(min-width:640px)');
+
   const { getVirtualItems, getTotalSize, measureElement } =
     useWindowVirtualizer({
       count: festivalMatches.length,
-      estimateSize: () => 700,
-      overscan: 3,
+      estimateSize: () => (bigScreen ? 532 : 484),
+      overscan: 5,
       scrollMargin,
       initialOffset: scrollEntry?.scrollY,
     });

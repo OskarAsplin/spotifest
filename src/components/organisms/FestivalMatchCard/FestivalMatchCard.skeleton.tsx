@@ -1,90 +1,70 @@
-import {
-  Box,
-  Divider,
-  Paper,
-  Skeleton,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
-import { ArtistBox } from '@src/layouts/StyledLayoutComponents';
-import { getMaxArtistsInWidth } from '@src/utils/displayUtils';
-import { MatchingCircleSizeCss } from '@src/components/atoms/MatchingCircle/MatchingCircle';
+import { useMediaQuery } from '@src/hooks/useMediaQuery';
+import { getMaxArtistsInWidth, useMeasure } from '@src/utils/displayUtils';
 import {
   ArtistBubbleSkeleton,
   StyledAvatarContainerDiv,
 } from '@src/components/molecules/ArtistBubble/ArtistBubble';
-import { artistMock } from '@src/components/molecules/ArtistBubble/ArtistBubble.fixtures';
-import { StyledPaddedDiv, StyledTitleButton } from './FestivalMatchCard.styled';
+import { Card, CardContent } from '@src/components/ui/card';
+import { Skeleton } from '@src/components/ui/skeleton';
+import { Separator } from '@src/components/ui/separator';
+import { ArtistBox } from './FestivalMatchCard';
 
 export const FestivalMatchCardSkeleton = () => {
-  const bigScreen = useMediaQuery('(min-width:690px)');
-  const smallScreen = useMediaQuery('(max-width:439px)');
+  const mockPopularArtists = Array(7).fill(null);
+  const mockMatchingArtists = Array(3).fill(null);
 
-  const mockPopularArtists = Array(7).fill(artistMock);
-  const mockMatchingArtists = Array(3).fill(artistMock);
-
-  const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, smallScreen, 7);
+  const bigScreen = useMediaQuery('(min-width:640px)');
+  const [ref, { width }] = useMeasure();
+  const maxArtistsInWidth = getMaxArtistsInWidth(width, bigScreen);
   const fillMatchingArtistWidth =
     maxArtistsInWidth - (mockMatchingArtists.length % maxArtistsInWidth);
+  const fillPopularArtistWidth =
+    maxArtistsInWidth - (mockPopularArtists.length % maxArtistsInWidth);
 
   return (
-    <Paper elevation={3} sx={{ py: 2, mb: 3 }}>
-      <StyledPaddedDiv>
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Box>
-            <Skeleton>
-              <StyledTitleButton color="inherit" variant="outlined">
-                <Typography variant={bigScreen ? 'h3' : 'h5'}>
-                  Some festival 2023
-                </Typography>
-              </StyledTitleButton>
-            </Skeleton>
-            <Typography variant="subtitle2">
-              <Skeleton width={120} />
-            </Typography>
-            <Typography variant="subtitle2">
-              <Skeleton width={150} />
-            </Typography>
-            <Typography variant="subtitle2">
-              <Skeleton width={240} />
-            </Typography>
-          </Box>
-          <Skeleton variant="circular" sx={MatchingCircleSizeCss} />
-        </Box>
-        <Typography variant="body1" sx={{ my: 1.5 }}>
-          <Skeleton width={120} />
-        </Typography>
-      </StyledPaddedDiv>
-      <ArtistBox>
-        {mockMatchingArtists.map((artist, i) => (
-          <ArtistBubbleSkeleton
-            key={`avatar_match_artist_skeleton_${artist.name}_${i}`}
-          />
-        ))}
-        {mockMatchingArtists.length > 0 &&
-          Array.from({ length: fillMatchingArtistWidth }, (_, i) => (
+    <Card className="mb-4 w-full pt-2 pb-0 shadow-lg">
+      <CardContent className="px-2 sm:px-4">
+        <div className="pb-2" />
+        <div className="px-4">
+          <div className="flex w-full flex-row justify-between">
+            <div>
+              <Skeleton className="border-primary hover:bg-primary/5 mb-3.5 h-11.5 w-40 border-dotted px-2 sm:mb-3 sm:h-14 sm:w-70" />
+              <div className="space-y-1">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-4 w-32" />
+                <Skeleton className="h-4 w-40" />
+              </div>
+            </div>
+            <Skeleton className="h-12.5 w-12.5 rounded-full sm:h-20 sm:w-20" />
+          </div>
+          <Skeleton className="mt-6 mb-2 h-4 w-32" />
+        </div>
+        <ArtistBox ref={ref}>
+          {mockMatchingArtists.map((_, i) => (
+            <ArtistBubbleSkeleton key={`avatar_match_artist_skeleton_${i}`} />
+          ))}
+          {mockMatchingArtists.length > 0 &&
+            Array.from({ length: fillMatchingArtistWidth }, (_, i) => (
+              <StyledAvatarContainerDiv key={i} />
+            ))}
+        </ArtistBox>
+        <div className="mt-4 mb-2 flex w-full items-center gap-4">
+          <Separator className="mx-2 flex-1" />
+          <Skeleton className="my-1.5 h-4 w-50" />
+          <Separator className="mx-2 flex-1" />
+        </div>
+        <ArtistBox>
+          {mockPopularArtists.slice(0, maxArtistsInWidth).map((_, i) => (
+            <ArtistBubbleSkeleton key={`avatar_pop_artist_skeleton_${i}`} />
+          ))}
+          {Array.from({ length: fillPopularArtistWidth }, (_, i) => (
             <StyledAvatarContainerDiv key={i} />
           ))}
-      </ArtistBox>
-      <Divider sx={{ width: '100%' }}>
-        <Typography variant="body1" sx={{ my: 1.5 }}>
-          <Skeleton width={200} />
-        </Typography>
-      </Divider>
-      <ArtistBox>
-        {mockPopularArtists.slice(0, maxArtistsInWidth).map((artist, i) => (
-          <ArtistBubbleSkeleton
-            key={`avatar_pop_artist_skeleton_${artist.name}_${i}`}
-          />
-        ))}
-      </ArtistBox>
-    </Paper>
+        </ArtistBox>
+        <div className="flex w-full justify-center">
+          <Skeleton className="mt-1.5 mb-2 h-5 w-5" />
+        </div>
+      </CardContent>
+    </Card>
   );
 };

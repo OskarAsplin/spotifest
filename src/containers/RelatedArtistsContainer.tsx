@@ -1,13 +1,14 @@
-import { Divider, Typography, useMediaQuery } from '@mui/material';
-import { useTranslation } from 'react-i18next';
 import { useApiSuspenseQuery } from '@src/api/api';
 import { getArtistRelatedArtists } from '@src/api/spotifyApi';
 import {
   ArtistBubble,
   StyledAvatarContainerDiv,
 } from '@src/components/molecules/ArtistBubble/ArtistBubble';
-import { ArtistBox } from '@src/layouts/StyledLayoutComponents';
-import { getMaxArtistsInWidth } from '@src/utils/displayUtils';
+import { ArtistBox } from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard';
+import { Separator } from '@src/components/ui/separator';
+import { useMediaQuery } from '@src/hooks/useMediaQuery';
+import { getMaxArtistsInWidth, useMeasure } from '@src/utils/displayUtils';
+import { useTranslation } from 'react-i18next';
 
 interface RelatedArtistsProps {
   spotifyId: string;
@@ -21,9 +22,9 @@ export const RelatedArtistsContainer = ({ spotifyId }: RelatedArtistsProps) => {
     { params: { spotifyId } },
   );
 
-  const bigScreen = useMediaQuery('(min-width:690px)');
-  const smallScreen = useMediaQuery('(max-width:439px)');
-  const maxArtistsInWidth = getMaxArtistsInWidth(bigScreen, smallScreen, 6);
+  const bigScreen = useMediaQuery('(min-width:640px)');
+  const [ref, { width }] = useMeasure();
+  const maxArtistsInWidth = getMaxArtistsInWidth(width, bigScreen);
   const fillRelatedArtistsWidth =
     maxArtistsInWidth - (relatedArtists.length % maxArtistsInWidth);
 
@@ -31,12 +32,14 @@ export const RelatedArtistsContainer = ({ spotifyId }: RelatedArtistsProps) => {
 
   return (
     <>
-      <Divider sx={{ width: '100%' }}>
-        <Typography variant="body1" color="primary" sx={{ fontWeight: 'bold' }}>
+      <div className="flex w-full items-center gap-4">
+        <Separator className="flex-1" />
+        <h3 className="text-primary text-base font-bold">
           {t('artist_page.related_artists')}
-        </Typography>
-      </Divider>
-      <ArtistBox>
+        </h3>
+        <Separator className="flex-1" />
+      </div>
+      <ArtistBox ref={ref}>
         {relatedArtists.slice(0, maxArtistsInWidth).map((artist) => (
           <ArtistBubble
             key={`avatar_rel_artist_${artist.name}`}

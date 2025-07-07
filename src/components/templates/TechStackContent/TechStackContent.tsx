@@ -1,6 +1,6 @@
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { Grid, Typography, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Info } from 'lucide-react';
+import { useMediaQuery } from '@src/hooks/useMediaQuery';
+import { useThemeMode } from '@src/zustand/themeStore';
 import { Fragment } from 'react';
 import { HtmlTooltip } from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
 import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
@@ -9,7 +9,8 @@ import { Trans, useTranslation } from 'react-i18next';
 const PC_SCREEN_MIN_WIDTH = '(min-width:1024px)'; // lg breakpoint
 
 export const TechStackContent = () => {
-  const isLightMode = useTheme().palette.mode === 'light';
+  const themeMode = useThemeMode();
+  const isLightMode = themeMode === 'light';
   const pcScreen = useMediaQuery(PC_SCREEN_MIN_WIDTH);
   const { t } = useTranslation();
 
@@ -43,7 +44,11 @@ export const TechStackContent = () => {
     },
     {
       text: t('about_page.tech_stack.frontend_ui'),
-      icons: [{ path: 'MUI.svg', class: 'h-10' }],
+      icons: [
+        { path: 'Shadcn.svg', class: 'h-10' },
+        { path: 'Radix-ui.svg', class: 'h-10 sm:ml-10 max-sm:ml-6' },
+        { path: 'Tailwind.svg', class: 'h-10 sm:ml-10 max-sm:ml-6' },
+      ],
     },
     {
       text: t('about_page.tech_stack.frontend_host'),
@@ -149,66 +154,82 @@ export const TechStackContent = () => {
 
   return (
     <div className="flex flex-col items-center justify-center py-2 max-lg:max-w-120">
-      <Grid
-        container
-        spacing={pcScreen ? 3 : 1}
-        justifyContent="center"
-        alignItems="center"
+      <div
+        className={`grid grid-cols-1 lg:grid-cols-2 gap-${pcScreen ? '6' : '2'} items-center justify-center`}
       >
         {techInfoRows.map((techInfo, i) => (
           <TechInfoRow key={i} {...techInfo} />
         ))}
-      </Grid>
+      </div>
       <HtmlTooltip
-        disableFocusListener
-        enterTouchDelay={0}
         title={
           <Fragment>
             <div>
-              {' Facebook, '}
-              <StandardLink href="https://commons.wikimedia.org/wiki/File:React-icon.svg">
+              <StandardLink
+                className="text-primary-foreground"
+                href="https://commons.wikimedia.org/wiki/File:React-icon.svg"
+              >
                 React-icon
               </StandardLink>
               {' / '}
-              <StandardLink href="https://creativecommons.org/licenses/by-sa/1.0/legalcode">
+              <StandardLink
+                className="text-primary-foreground"
+                href="https://creativecommons.org/licenses/by-sa/1.0/legalcode"
+              >
                 CC BY-SA 1.0
               </StandardLink>
             </div>
             <div>
-              <StandardLink href="https://iconscout.com/icons/typescript">
+              <StandardLink
+                className="text-primary-foreground"
+                href="https://iconscout.com/icons/typescript"
+              >
                 Typescript Icon
               </StandardLink>
               {' by '}
-              <StandardLink href="https://iconscout.com/contributors/icon-mafia">
+              <StandardLink
+                className="text-primary-foreground"
+                href="https://iconscout.com/contributors/icon-mafia"
+              >
                 Icon Mafia
               </StandardLink>
             </div>
             <div>
-              <StandardLink href="https://www.python.org/community/logos/">
+              <StandardLink
+                className="text-primary-foreground"
+                href="https://www.python.org/community/logos/"
+              >
                 Python-logo
               </StandardLink>
               {' / '}
-              <StandardLink href="https://www.python.org/psf/trademarks/">
+              <StandardLink
+                className="text-primary-foreground"
+                href="https://www.python.org/psf/trademarks/"
+              >
                 PSF Trademark Usage Policy
               </StandardLink>
             </div>
             <div>
-              <StandardLink href="https://icon-icons.com/icon/file-type-django/130645">
+              <StandardLink
+                className="text-primary-foreground"
+                href="https://icon-icons.com/icon/file-type-django/130645"
+              >
                 Django Icon
               </StandardLink>
               {' / '}
-              <StandardLink href="https://creativecommons.org/licenses/by/4.0/">
+              <StandardLink
+                className="text-primary-foreground"
+                href="https://creativecommons.org/licenses/by/4.0/"
+              >
                 CC BY 4.0
               </StandardLink>
             </div>
           </Fragment>
         }
       >
-        <div className="mt-8 flex flex-row">
-          <Typography variant="body1" sx={{ mr: 1 }}>
-            Icon licenses
-          </Typography>
-          <InfoOutlinedIcon />
+        <div className="mt-8 flex flex-row items-center">
+          <p className="mr-2">Icon licenses</p>
+          <Info className="h-5 w-5" />
         </div>
       </HtmlTooltip>
     </div>
@@ -221,28 +242,24 @@ interface TechInfoRowProps {
 }
 
 const TechInfoRow = ({ text, icons }: TechInfoRowProps) => {
-  const pcScreen = useMediaQuery(PC_SCREEN_MIN_WIDTH);
   return (
-    <Fragment key={'techRow:' + text}>
-      <Grid size={pcScreen ? 6 : 12}>
-        <div className="flex max-lg:items-center max-lg:justify-center lg:flex-row-reverse">
-          <Typography variant="body1" className="max-sm:text-center">
-            {text}
-          </Typography>
-        </div>
-      </Grid>
-      <Grid size={pcScreen ? 6 : 12}>
-        <div className="flex flex-row items-center max-lg:mb-10 max-lg:justify-center lg:ml-10">
-          {icons.map((icon) => (
-            <img
-              src={'/techIcons/' + icon.path}
-              key={icon.path}
-              className={icon.class}
-              alt={icon.path}
-            />
-          ))}
-        </div>
-      </Grid>
-    </Fragment>
+    <div
+      key={'techRow:' + text}
+      className="col-span-2 grid grid-cols-1 gap-2 lg:grid-cols-2"
+    >
+      <div className="flex max-lg:items-center max-lg:justify-center lg:flex-row-reverse">
+        <p className="max-sm:text-center">{text}</p>
+      </div>
+      <div className="flex flex-row items-center max-lg:mb-10 max-lg:justify-center lg:ml-10">
+        {icons.map((icon) => (
+          <img
+            src={'/techIcons/' + icon.path}
+            key={icon.path}
+            className={icon.class}
+            alt={icon.path}
+          />
+        ))}
+      </div>
+    </div>
   );
 };

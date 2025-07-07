@@ -1,4 +1,3 @@
-import { styled } from '@mui/material/styles';
 import { Fragment } from 'react';
 
 interface MatchHighlighterProps {
@@ -19,7 +18,7 @@ export const MatchHighlighter = ({ text, regex }: MatchHighlighterProps) => {
         .split(regex)
         .map((substring, index) =>
           regex.test(substring) ? (
-            <StyledMark key={index}>{substring}</StyledMark>
+            <mark key={index} className="text-primary bg-inherit">{substring}</mark>
           ) : (
             <Fragment key={index}>{substring}</Fragment>
           ),
@@ -27,8 +26,3 @@ export const MatchHighlighter = ({ text, regex }: MatchHighlighterProps) => {
     </>
   );
 };
-
-const StyledMark = styled('mark')(({ theme: { palette } }) => ({
-  color: palette.primary.main,
-  backgroundColor: 'inherit',
-}));

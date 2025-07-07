@@ -1,10 +1,8 @@
-import { Box } from '@mui/material';
-import { Fragment } from 'react';
 import {
   TelegramIcon,
   TelegramShareButton,
-  TwitterIcon,
   TwitterShareButton,
+  XIcon,
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share';
@@ -39,10 +37,10 @@ export const SocialMediaButtons = ({
     disabledStyle,
   };
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', ml: 2 }}>
+    <div className="flex flex-row gap-4">
       <ButtonWrapper tooltipText={tooltipText}>
         <TwitterShareButton {...sharedButtonProps} hashtags={['spotifest']}>
-          <TwitterIcon size={BUTTON_SIZE} round />
+          <XIcon size={BUTTON_SIZE} round />
         </TwitterShareButton>
       </ButtonWrapper>
       <ButtonWrapper tooltipText={tooltipText}>
@@ -63,7 +61,7 @@ export const SocialMediaButtons = ({
           isDisabled={isDisabled}
         />
       </ButtonWrapper>
-    </Box>
+    </div>
   );
 };
 
@@ -73,12 +71,5 @@ interface ButtonWrapperProps
 }
 
 const ButtonWrapper = ({ tooltipText, children }: ButtonWrapperProps) => (
-  <StyledTooltip
-    disableFocusListener
-    enterTouchDelay={0}
-    leaveTouchDelay={3000}
-    title={<Fragment>{tooltipText}</Fragment>}
-  >
-    <Box sx={{ mr: 2 }}>{children}</Box>
-  </StyledTooltip>
+  <StyledTooltip title={tooltipText}>{children}</StyledTooltip>
 );

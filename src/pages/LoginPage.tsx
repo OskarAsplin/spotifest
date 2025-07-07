@@ -1,133 +1,56 @@
-import {
-  Box,
-  Typography,
-  typographyClasses,
-  useMediaQuery,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { Trans, useTranslation } from 'react-i18next';
 import { LoginButton } from '@src/components/atoms/LoginButton/LoginButton';
 import { StandardLink } from '@src/components/atoms/StandardLink/StandardLink';
 import { UsageThumbnailsWithGallery } from '@src/components/organisms/UsageThumbnailsWithGallery/UsageThumbnailsWithGallery';
+import { cn } from '@src/lib/utils';
 import { redirectToSpotifyLogin } from '@src/utils/spotifyAuthUtils';
+import { useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const LoginPage = () => {
-  const bigWidth = useMediaQuery('(min-width:610px)');
-  const bigHeight = useMediaQuery('(min-height:610px)');
-  const bigScreen = bigWidth && bigHeight;
-  const verySmallScreen = useMediaQuery('(max-width:330px)');
-
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
   const { t } = useTranslation();
 
   return (
-    <StyledBackgroundDiv>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '15%',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <StyledTitleTypography
-          variant={bigScreen ? 'h1' : verySmallScreen ? 'h4' : 'h3'}
-        >
+    <div className="h-screen bg-[url(/background_image.jpg)] bg-cover bg-center bg-no-repeat">
+      <div className="absolute top-[15%] flex w-full flex-col items-center">
+        <h1 className="rounded-[15%] bg-black/60 text-center text-6xl text-white shadow-[0_10px_20px_35px_rgba(0,0,0,0.6)] shadow-black/60 text-shadow-[1px_1px_2px_black] sm:text-8xl">
           {t('common.app_title')}
-        </StyledTitleTypography>
-        <Typography
-          variant={bigScreen ? 'h6' : 'body1'}
-          sx={{ textAlign: 'center', mt: bigScreen ? -1.5 : -0.5 }}
-        >
+        </h1>
+        <p className="text-center text-base text-white sm:text-xl">
           {t('login_page.subtitle')}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '40%',
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          px: 1,
-        }}
-      >
+        </p>
+      </div>
+      <div className="absolute top-[40%] flex w-full justify-center px-2">
         <LoginButton onClick={redirectToSpotifyLogin} />
-      </Box>
-      <StyledFooterDiv>
-        <UsageThumbnailsWithGallery />
-        <StyledFooterText>
-          <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
+      </div>
+      <div className="absolute bottom-0 mb-4 flex w-full flex-col items-center">
+        <UsageThumbnailsWithGallery
+          isGalleryOpen={isGalleryOpen}
+          setIsGalleryOpen={setIsGalleryOpen}
+        />
+        <div
+          className={cn(
+            'flex w-full flex-col items-center bg-black/60 text-center shadow-[0_0_50px_50px_rgba(0,0,0,0.6)]',
+            isGalleryOpen ? 'hidden' : '',
+          )}
+        >
+          <p className="text-sm text-white sm:text-xl">
             {t('login_page.footer.line_1')}
-          </StyledFooterTypography>
-          <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
+          </p>
+          <p className="text-sm text-white sm:text-xl">
             <Trans
               i18nKey="login_page.footer.line_2"
               components={{ Link: <StandardLink /> }}
             />
-          </StyledFooterTypography>
-          <StyledFooterTypography variant={bigScreen ? 'body1' : 'body2'}>
+          </p>
+          <p className="text-sm text-white sm:text-xl">
             <Trans
               i18nKey="login_page.footer.line_3"
               components={{ Link: <StandardLink /> }}
             />
-          </StyledFooterTypography>
-        </StyledFooterText>
-      </StyledFooterDiv>
-    </StyledBackgroundDiv>
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
-
-const StyledFooterTypography = styled(Typography)(() => ({
-  [`&.${typographyClasses.root}`]: {
-    '@media (min-width: 610px)': {
-      '@media (min-height: 610px)': {
-        fontSize: '1.25rem',
-      },
-    },
-  },
-}));
-
-const StyledTitleTypography = styled(Typography)(() => ({
-  [`&.${typographyClasses.root}`]: {
-    textAlign: 'center',
-    borderRadius: '15%',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    textShadow: '1px 1px 2px black',
-    boxShadow: '0 10px 20px 35px rgba(0, 0, 0, 0.6)',
-  },
-}));
-
-const StyledBackgroundDiv = styled('div')(() => ({
-  height: '100vh',
-  backgroundImage:
-    'url(/background_image.jpg), url(/background_image_low_res.jpg)',
-  backgroundRepeat: 'no-repeat',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center center',
-}));
-
-const StyledFooterDiv = styled('div')(({ theme: { spacing } }) => ({
-  position: 'absolute',
-  bottom: 0,
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  textAlign: 'center',
-  backgroundColor: 'rgba(0, 0, 0, 0.1)',
-  marginBottom: spacing(1),
-  padding: spacing(1, 2, 1, 2),
-  boxShadow: '0 0 20px 20px rgba(0, 0, 0, 0.1)',
-}));
-
-const StyledFooterText = styled('div')(() => ({
-  width: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  textAlign: 'center',
-  backgroundColor: 'rgba(0, 0, 0, 0.6)',
-  boxShadow: '0 0 50px 50px rgba(0, 0, 0, 0.6)',
-}));

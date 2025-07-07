@@ -1,6 +1,8 @@
-import ContentCopyOutlinedIcon from '@mui/icons-material/ContentCopyOutlined';
-import { Box, IconButton } from '@mui/material';
+import { Copy } from 'lucide-react';
+import { Button } from '@src/components/ui/button';
 import { CopyToClipboard } from '@src/components/atoms/CopyToClipboard/CopyToClipboard';
+import { cn } from '@src/lib/utils';
+import { useThemeMode } from '@src/zustand/themeStore';
 
 interface CopyToClipboardButtonProps {
   textToCopy: string;
@@ -10,30 +12,25 @@ interface CopyToClipboardButtonProps {
 export const CopyToClipboardButton = ({
   textToCopy,
   isDisabled,
-}: CopyToClipboardButtonProps) => (
-  <CopyToClipboard>
-    {({ copy }) => (
-      <IconButton
-        onClick={() => copy(textToCopy)}
-        sx={{ p: 0 }}
-        disabled={isDisabled}
-      >
-        <Box
-          sx={{
-            backgroundColor: `rgba(255, 255, 255, ${
-              isDisabled ? '0.3' : '0.5'
-            })`,
-            borderRadius: '50%',
-            width: ({ spacing }) => spacing(4),
-            height: ({ spacing }) => spacing(4),
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+}: CopyToClipboardButtonProps) => {
+  const themeMode = useThemeMode();
+  return (
+    <CopyToClipboard>
+      {({ copy }) => (
+        <Button
+          variant={themeMode === 'dark' ? 'ghost' : 'outline'}
+          size="icon"
+          onClick={() => copy(textToCopy)}
+          disabled={isDisabled}
+          className={cn(
+            'h-8 w-8 rounded-full p-0 shadow-none',
+            'bg-white/50 hover:bg-white/60',
+            isDisabled && 'bg-white/30 hover:bg-white/30',
+          )}
         >
-          <ContentCopyOutlinedIcon fontSize="small" />
-        </Box>
-      </IconButton>
-    )}
-  </CopyToClipboard>
-);
+          <Copy className="h-4 w-4" />
+        </Button>
+      )}
+    </CopyToClipboard>
+  );
+};

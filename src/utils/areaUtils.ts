@@ -1,7 +1,11 @@
 import { countries } from 'countries-list';
 import { Area } from '@src/api/types';
-import { WORLDWIDE_AREA } from '@src/components/molecules/AreaSelect/AreaSelect';
-import { europeanRegions, regionMap, usRegions } from './regionUtils';
+import {
+  europeanRegions,
+  regionMap,
+  usRegions,
+  WORLDWIDE_AREA,
+} from './regionUtils';
 
 export const getInitialContinent = (
   userCountryCode: string,
@@ -29,9 +33,11 @@ export const getAreaFilters = (continents: Area[], area?: Area) => {
   if (area.isoCode !== WORLDWIDE_AREA.isoCode) {
     if (continents.find((continent) => continent.isoCode === area.isoCode)) {
       continentFilter = [area.isoCode];
-    } else if (europeanRegions.find((region) => region === area.isoCode)) {
+    } else if (
+      europeanRegions.find((region) => region.isoCode === area.isoCode)
+    ) {
       countryFilter = regionMap[area.isoCode];
-    } else if (usRegions.find((region) => region === area.isoCode)) {
+    } else if (usRegions.find((region) => region.isoCode === area.isoCode)) {
       countryFilter = ['US'];
       stateFilter = regionMap[area.isoCode];
     } else {

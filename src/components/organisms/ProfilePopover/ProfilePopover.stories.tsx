@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { useState } from 'react';
 import { ProfilePopover } from './ProfilePopover';
 
 type Story = StoryObj<typeof ProfilePopover>;
@@ -18,6 +17,7 @@ const meta: Meta<typeof ProfilePopover> = {
   args: {
     userName: 'Mr Boombastic',
     spotifyUrl: 'https://spotify.com',
+    children: <button>Open Popover</button>,
   },
   argTypes: {
     onClickLogout: { control: false },
@@ -26,37 +26,11 @@ const meta: Meta<typeof ProfilePopover> = {
 
 export default meta;
 
-const Template: Story['render'] = (args) => {
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const popoverOpen = Boolean(anchorEl);
-  const popoverId = popoverOpen ? 'simple-popover' : undefined;
-
-  return (
-    <>
-      <button onClick={handleClick}>Open Popover</button>
-      <ProfilePopover
-        {...args}
-        id={popoverId}
-        anchorEl={anchorEl}
-        open={popoverOpen}
-        onClose={() => setAnchorEl(null)}
-      />
-    </>
-  );
-};
-
-export const Primary: Story = { render: Template };
+export const Primary: Story = {};
 export const NoUserName: Story = {
-  render: Template,
   args: { userName: undefined },
 };
 export const NoSpotifyUrl: Story = {
-  render: Template,
   args: { spotifyUrl: undefined },
   parameters: {
     docs: {

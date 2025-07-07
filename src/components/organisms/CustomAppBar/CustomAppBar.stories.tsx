@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CustomAppBar } from './CustomAppBar';
-import { SearchField } from '@src/components/molecules/SearchField/SearchField';
 import Stromae_Spotify_Img from '@src/storyAssets/stromae_spotify.jpeg';
+import { Input } from '@src/components/ui/input';
 
 type Story = StoryObj<typeof CustomAppBar>;
 
@@ -17,8 +17,14 @@ const meta: Meta<typeof CustomAppBar> = {
     layout: 'fullscreen',
   },
   args: {
-    SearchFieldComponent: () => <SearchField />,
-    profilePictureUrl: Stromae_Spotify_Img,
+    SearchFieldComponent: () => <Input placeholder="Search" />,
+    userInfo: {
+      id: '1337',
+      country: 'NO',
+      displayName: 'Stromae',
+      profilePictureUrl: Stromae_Spotify_Img,
+      spotifyUrl: 'https://open.spotify.com/artist/1337',
+    },
   },
 };
 
@@ -26,5 +32,13 @@ export default meta;
 
 export const Primary: Story = {};
 export const CustomAppBarNoProfilePicture: Story = {
-  args: { profilePictureUrl: undefined },
+  args: {
+    userInfo: {
+      id: '1337',
+      country: 'NO',
+      displayName: 'Stromae',
+      profilePictureUrl: undefined,
+      spotifyUrl: 'https://open.spotify.com/artist/1337',
+    },
+  },
 };

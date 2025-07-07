@@ -1,5 +1,10 @@
-import { Tooltip } from '@mui/material';
 import { useState } from 'react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@src/components/ui/tooltip';
 
 interface CopyToClipboardProps {
   children: (props: { copy: (content: string) => void }) => React.ReactElement;
@@ -15,8 +20,11 @@ export const CopyToClipboard = ({ children }: CopyToClipboardProps) => {
   };
 
   return (
-    <Tooltip open={showTooltip} title="Copied!" placement="right">
-      {children({ copy: onCopy })}
-    </Tooltip>
+    <TooltipProvider>
+      <Tooltip open={showTooltip}>
+        <TooltipTrigger asChild>{children({ copy: onCopy })}</TooltipTrigger>
+        <TooltipContent side="right">Copied!</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };

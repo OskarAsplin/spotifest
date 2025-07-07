@@ -1,6 +1,5 @@
-import { Button, Switch } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { StyledCenteredRowDiv } from '@src/layouts/StyledLayoutComponents';
+import { Switch } from '@src/components/ui/switch';
+import { Badge } from '@src/components/ui/badge';
 
 interface CustomSwitchProps {
   checked: boolean;
@@ -16,40 +15,26 @@ export const CustomSwitch = ({
   rightOptionText,
 }: CustomSwitchProps) => {
   return (
-    <StyledCenteredRowDiv>
-      {/* The invisible button is a quick fix for click event propagation from the grid item */}
-      <Button hidden sx={{ display: 'none' }}>
-        .
-      </Button>
-      <StyledButton
-        disableRipple
-        disableElevation
-        color={!checked ? 'primary' : 'inherit'}
+    <div className="my-2 flex items-center justify-center space-x-2">
+      <Badge
+        variant={checked ? 'secondary' : 'default'}
         onClick={() => setChecked(false)}
+        className="cursor-pointer"
       >
         {leftOptionText}
-      </StyledButton>
+      </Badge>
       <Switch
         checked={checked}
-        color="default"
-        onChange={(_, newValue) => setChecked(newValue)}
+        onCheckedChange={setChecked}
         name="CustomSwitch"
       />
-      <StyledButton
-        disableRipple
-        disableElevation
-        color={checked ? 'primary' : 'inherit'}
+      <Badge
+        variant={checked ? 'default' : 'secondary'}
         onClick={() => setChecked(true)}
+        className="cursor-pointer"
       >
         {rightOptionText}
-      </StyledButton>
-    </StyledCenteredRowDiv>
+      </Badge>
+    </div>
   );
 };
-
-const StyledButton = styled(Button)(() => ({
-  textTransform: 'none',
-  padding: 0,
-  fontSize: '18px',
-  '&:hover': { backgroundColor: 'transparent' },
-}));

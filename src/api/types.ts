@@ -76,7 +76,7 @@ export interface FestivalMatch {
   top_genres: string;
 }
 
-interface Lineup {
+export interface Lineup {
   festival: string;
   year: number;
   from_date_iso: string;

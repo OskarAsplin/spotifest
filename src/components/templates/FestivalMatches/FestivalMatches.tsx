@@ -1,26 +1,15 @@
-import { Box, Skeleton, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Skeleton } from '@src/components/ui/skeleton';
 import { useTranslation } from 'react-i18next';
 import { FestivalMatchCardSkeleton } from '@src/components/organisms/FestivalMatchCard/FestivalMatchCard.skeleton';
 
 export const FestivalMatchesSkeleton = () => (
-  <StyledMatchesRootDiv>
-    <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-        alignItems: 'center',
-        flexDirection: 'column',
-        mb: 1,
-      }}
-    >
-      <Typography variant="subtitle2" mb={1}>
-        <Skeleton width={70} />
-      </Typography>
-    </Box>
+  <div className="mt-2 w-full max-w-3xl">
+    <div className="mb-2 flex w-full flex-col items-center">
+      <Skeleton className="mb-2 h-5 w-[70px]" />
+    </div>
     <FestivalMatchCardSkeleton />
     <FestivalMatchCardSkeleton />
-  </StyledMatchesRootDiv>
+  </div>
 );
 
 interface FestivalMatchesProps {
@@ -32,42 +21,23 @@ export const FestivalMatches = ({
   totalMatches,
   children,
 }: FestivalMatchesProps) => (
-  <StyledMatchesRootDiv>
+  <div className="mt-2 w-full max-w-3xl">
     {totalMatches > 0 && (
-      <Box
-        sx={{
-          display: 'flex',
-          width: '100%',
-          alignItems: 'center',
-          flexDirection: 'column',
-          mb: 1,
-        }}
-      >
-        <Typography variant="subtitle2" mb={1}>
-          {totalMatches + ' matches'}
-        </Typography>
-      </Box>
+      <div className="mb-2 flex w-full flex-col items-center">
+        <p className="mb-2 text-sm font-medium">{totalMatches + ' matches'}</p>
+      </div>
     )}
     {children}
     {totalMatches === 0 && <NoMatchResults />}
-  </StyledMatchesRootDiv>
+  </div>
 );
 
 export const NoMatchResults = () => {
   const { t } = useTranslation();
 
   return (
-    <Typography
-      variant="subtitle1"
-      sx={{ width: '100%', textAlign: 'center', py: 2 }}
-    >
+    <p className="w-full py-4 text-center text-base">
       {t('matching.no_results')}
-    </Typography>
+    </p>
   );
 };
-
-export const StyledMatchesRootDiv = styled('div')(({ theme: { spacing } }) => ({
-  width: '100%',
-  maxWidth: '764px',
-  marginTop: spacing(1),
-}));

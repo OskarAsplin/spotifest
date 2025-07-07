@@ -1,4 +1,3 @@
-import { Grid } from '@mui/material';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SettingsBarDatePicker } from './SettingsBarDatePicker';
 import { useState } from 'react';
@@ -29,11 +28,7 @@ const Template: Story['render'] = (args) => {
   const onChange = (date: Dayjs | null) => {
     if (date) setDate(date);
   };
-  return (
-    <Grid container justifyContent="space-around">
-      <SettingsBarDatePicker {...args} value={date} onChange={onChange} />
-    </Grid>
-  );
+  return <SettingsBarDatePicker {...args} value={date} onChange={onChange} />;
 };
 
 export const Primary: Story = { render: Template };

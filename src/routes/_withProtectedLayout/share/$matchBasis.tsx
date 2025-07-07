@@ -11,7 +11,6 @@ export const Route = createFileRoute('/_withProtectedLayout/share/$matchBasis')(
   {
     component: SharedResultsPage,
     beforeLoad: async ({ params: { matchBasis } }) => {
-      console.log(123);
       if (getIsLoggedIn()) return;
 
       const refreshToken = getRefreshToken();

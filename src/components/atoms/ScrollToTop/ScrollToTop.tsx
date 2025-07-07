@@ -1,26 +1,34 @@
-import { Box, Fade, useScrollTrigger } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { cn } from '@src/lib/utils';
 
 type ScrollToTopProps = {
   children: React.ReactNode;
 };
 
 export const ScrollToTop = ({ children }: ScrollToTopProps) => {
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 1500,
-  });
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      setIsVisible(window.pageYOffset > 1500);
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
 
   const handleClick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <Fade in={trigger}>
-      <Box
-        onClick={handleClick}
-        role="presentation"
-        sx={{ position: 'fixed', bottom: 16, right: 16 }}
-      >
-        {children}
-      </Box>
-    </Fade>
+    <div
+      className={cn(
+        'fixed right-4 bottom-4 transition-opacity duration-300',
+        isVisible ? 'opacity-100' : 'pointer-events-none opacity-0',
+      )}
+      onClick={handleClick}
+      role="presentation"
+    >
+      {children}
+    </div>
   );
 };

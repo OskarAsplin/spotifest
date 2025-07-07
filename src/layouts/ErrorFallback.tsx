@@ -1,5 +1,3 @@
-import { Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import { FallbackProps } from 'react-error-boundary';
 import { useTranslation } from 'react-i18next';
 
@@ -17,26 +15,10 @@ export const ErrorFallback = ({ fallbackText, error }: ErrorFallbackProps) => {
       : t('error.generic_error');
   const displayText = fallbackText ?? errorMessage;
   return (
-    <StyledCenteredDiv>
-      <VerticalSpaceDiv />
-      <VerticalSpaceDiv />
-      <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
-        {displayText}
-      </Typography>
-    </StyledCenteredDiv>
+    <div className="flex w-full flex-col items-center justify-center">
+      <div className="w-full p-2 sm:p-4" />
+      <div className="w-full p-2 sm:p-4" />
+      <p className="text-center text-base font-medium">{displayText}</p>
+    </div>
   );
 };
-
-const VerticalSpaceDiv = styled('div')(({ theme: { spacing } }) => ({
-  '@media (min-width: 690px)': { padding: spacing(2) },
-  '@media (max-width: 689px)': { padding: spacing(1) },
-  width: '100%',
-}));
-
-const StyledCenteredDiv = styled('div')(() => ({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100%',
-}));

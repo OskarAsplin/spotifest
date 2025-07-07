@@ -1,5 +1,4 @@
-import { useMediaQuery } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { useThemeMode } from '@src/zustand/themeStore';
 import { buildStyles, CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -8,16 +7,14 @@ interface Props {
 }
 
 export const MatchingCircle = ({ matchingPercent }: Props) => {
-  const themeMode = useTheme().palette.mode;
-  const smallScreen = useMediaQuery('(max-width:439px)');
+  const themeMode = useThemeMode();
 
-  const textSize = smallScreen ? '28px' : '25px';
-  const pathColor = themeMode === 'light' ? '#3FBF3F' : '#3de53d';
-  const textColor = themeMode === 'light' ? '#3FBF3F' : '#3de53d';
+  const textSize = 'sm:25px 28px';
+  const color = themeMode === 'light' ? '#3FBF3F' : '#3de53d';
   const trailColor = themeMode === 'light' ? '#d6d6d6' : 'rgba(104, 104, 104)';
 
   return (
-    <StyledMatchCircleDiv>
+    <div className="ml-4 h-12.5 w-12.5 select-none sm:h-20 sm:w-20">
       {/*@ts-ignore*/}
       <CircularProgressbar
         value={matchingPercent}
@@ -25,25 +22,11 @@ export const MatchingCircle = ({ matchingPercent }: Props) => {
         styles={buildStyles({
           textSize: textSize,
           pathTransitionDuration: 0.5,
-          pathColor: pathColor,
-          textColor: textColor,
+          pathColor: color,
+          textColor: color,
           trailColor: trailColor,
         })}
       />
-    </StyledMatchCircleDiv>
+    </div>
   );
 };
-
-export const MatchingCircleSizeCss = {
-  '@media (min-width: 690px)': { width: '80px', height: '80px' },
-  '@media (max-width: 689px)': {
-    '@media (min-width: 440px)': { width: '60px', height: '60px' },
-  },
-  '@media (max-width: 439px)': { width: '50px', height: '50px' },
-};
-
-const StyledMatchCircleDiv = styled('div')(({ theme: { spacing } }) => ({
-  marginLeft: spacing(2),
-  userSelect: 'none',
-  ...MatchingCircleSizeCss,
-}));
