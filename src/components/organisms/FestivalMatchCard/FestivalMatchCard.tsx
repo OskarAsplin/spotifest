@@ -65,8 +65,8 @@ export const FestivalMatchCard = memo(
     return (
       <Card className="mb-4 w-full pt-2 pb-0 shadow-lg" key={name}>
         <CardContent className="px-2 sm:px-4">
-          {showMatching && <div className="pb-2" />}
-          <div className="px-4">
+          {showMatching && <div className="pb-1 sm:pb-2" />}
+          <div className="px-2 sm:px-4">
             <div className="flex w-full flex-row justify-between">
               <div
                 className={cn(
@@ -165,10 +165,10 @@ export const FestivalMatchCard = memo(
             </CardContent>
           ) : (
             <>
-              <div className="mt-4 mb-2 flex w-full items-center gap-4">
-                <Separator className="mx-2 flex-1" />
+              <div className="mt-2 mb-2 flex w-full items-center gap-3 px-2 sm:mt-4">
+                <Separator className="flex-1" />
                 {t('matching.card.popular_artists')}
-                <Separator className="mx-2 flex-1" />
+                <Separator className="flex-1" />
               </div>
               <ArtistBox
                 className={

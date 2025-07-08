@@ -23,7 +23,7 @@ export const FestivalMatchCardSkeleton = ({
     maxArtistsInWidth - (mockPopularArtists.length % maxArtistsInWidth);
 
   return (
-    <Card className="mb-4 w-full pt-2 pb-0 shadow-lg">
+    <Card className="mb-4 w-full pt-1 pb-0 shadow-lg sm:pt-2">
       <CardContent className="px-2 sm:px-4">
         <div className="pb-2" />
         <div className="px-4">
@@ -49,7 +49,7 @@ export const FestivalMatchCardSkeleton = ({
               <StyledAvatarContainerDiv key={i} />
             ))}
         </ArtistBox>
-        <div className="mt-4 mb-2 flex w-full items-center gap-4">
+        <div className="mt-2 mb-2 flex w-full items-center gap-4 sm:mt-4">
           <Separator className="mx-2 flex-1" />
           <Skeleton className="my-1.5 h-4 w-50" />
           <Separator className="mx-2 flex-1" />
