@@ -84,7 +84,7 @@ The app follows atomic design principles with a clear separation of concerns:
 - **Festival matching**: Matches user's Spotify data with festival lineups
 - **Spotify OAuth**: PKCE flow for secure authentication
 - **Social sharing**: Share festival matches on social media
-- **Responsive design**: Mobile-first approach with MUI theming
+- **Responsive design**: Mobile-first approach with shadcn theming
 - **Internationalization**: i18next setup for multiple languages
 
 ### Development Notes

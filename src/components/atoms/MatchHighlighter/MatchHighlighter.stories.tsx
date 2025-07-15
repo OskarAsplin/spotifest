@@ -12,7 +12,7 @@ const meta: Meta<typeof MatchHighlighter> = {
   parameters: {
     docs: {
       description: {
-        component: `The MatchHighlighter will higlight all regex matches in the input text. Controlling a regex arg does not work well in storybook, so we use a fixed example regex: ${regex.toString()}`,
+        component: `The MatchHighlighter will highlight all regex matches in the input text. Controlling a regex arg does not work well in storybook, so we use a fixed example regex: ${regex.toString()}`,
       },
     },
   },

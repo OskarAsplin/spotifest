@@ -1,11 +1,14 @@
 import { Parameters } from '@storybook/react-vite';
+import { withThemeByClassName } from '@storybook/addon-themes';
 import i18n from '../src/translations/i18n';
+import '../src/index.css';
 
 export const parameters: Parameters = {
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
+  backgrounds: { disable: true },
+  docs: {
+    canvas: {
+      // override the canvas background based on the theme
+      className: `!bg-background`,
     },
   },
   actions: { argTypesRegex: '^on[A-Z].*' },
@@ -16,4 +19,12 @@ export const parameters: Parameters = {
   },
 };
 
-export const decorators = [];
+export const decorators = [
+  withThemeByClassName({
+    themes: {
+      light: 'light',
+      dark: 'dark',
+    },
+    defaultTheme: 'dark',
+  }),
+];

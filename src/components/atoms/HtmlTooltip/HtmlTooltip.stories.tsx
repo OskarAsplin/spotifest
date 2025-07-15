@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button } from '@src/components/ui/button';
 import { HtmlTooltip } from './HtmlTooltip';
 
 type Story = StoryObj<typeof HtmlTooltip>;
@@ -16,7 +15,9 @@ const meta: Meta<typeof HtmlTooltip> = {
   },
   args: {
     title: 'The cake is a lie',
-    children: <Button disabled>Hover here to find the truth!</Button>,
+    children: (
+      <span className="text-foreground">Hover here to find the truth!</span>
+    ),
   },
   argTypes: {
     children: { control: false },

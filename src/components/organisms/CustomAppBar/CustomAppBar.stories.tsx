@@ -11,13 +11,17 @@ const meta: Meta<typeof CustomAppBar> = {
   parameters: {
     docs: {
       description: {
-        component: 'CustomAppBar displays a customized MUI AppBar',
+        component: 'CustomAppBar displays a customized shadcn AppBar',
       },
     },
     layout: 'fullscreen',
   },
   args: {
-    SearchFieldComponent: () => <Input placeholder="Search" />,
+    SearchFieldComponent: () => (
+      <div>
+        <Input placeholder="Search" />
+      </div>
+    ),
     userInfo: {
       id: '1337',
       country: 'NO',

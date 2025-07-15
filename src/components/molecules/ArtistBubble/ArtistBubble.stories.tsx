@@ -44,7 +44,7 @@ export const WithoutIconPicture: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Without icon picture it will display the MUI note icon',
+        story: 'Without icon picture it will display a note icon',
       },
     },
   },
