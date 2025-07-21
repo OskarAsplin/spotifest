@@ -67,7 +67,7 @@ export const FestivalMatchCard = memo(
         <CardContent className="px-2 sm:px-4">
           {showMatching && <div className="pb-1 sm:pb-2" />}
           <div className="px-2 sm:px-4">
-            <div className="flex w-full flex-row justify-between">
+            <div className="flex w-full flex-row justify-between space-x-2 sm:space-x-4">
               <div
                 className={cn(
                   showMatching ? '' : 'flex w-full flex-col items-center',
