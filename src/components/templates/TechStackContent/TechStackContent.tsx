@@ -45,8 +45,11 @@ export const TechStackContent = () => {
     {
       text: t('about_page.tech_stack.frontend_ui'),
       icons: [
-        { path: 'Shadcn.svg', class: 'h-10' },
-        { path: 'Radix-ui.svg', class: 'h-10 sm:ml-10 max-sm:ml-6' },
+        { path: isLightMode ? 'Shadcn.svg' : 'Shadcn-white.svg', class: 'h-10' },
+        {
+          path: isLightMode ? 'Radix-ui.svg' : 'Radix-ui-white.svg',
+          class: 'h-10 sm:ml-10 max-sm:ml-6',
+        },
         { path: 'Tailwind.svg', class: 'h-10 sm:ml-10 max-sm:ml-6' },
       ],
     },
