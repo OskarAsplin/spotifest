@@ -90,8 +90,9 @@ const CookieConsent = ({
           <CardContent className="space-y-2">
             <CardDescription className="text-sm">{description}</CardDescription>
             <p className="text-muted-foreground text-xs">
-              By clicking <span className="font-medium">"Accept"</span>, you
-              agree to our use of cookies.
+              By clicking{' '}
+              <span className="font-medium">&quot;Accept&quot;</span>, you agree
+              to our use of cookies.
             </p>
             <a
               href={learnMoreHref}

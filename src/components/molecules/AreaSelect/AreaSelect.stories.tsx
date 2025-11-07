@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { AreaSelect } from './AreaSelect';
 import { continentsMock, countriesMock } from './AreaSelect.fixtures';
+import React from 'react';
 
 type Story = StoryObj<typeof AreaSelect>;
 
@@ -24,7 +25,9 @@ const meta: Meta<typeof AreaSelect> = {
 
 export default meta;
 
-const Template: Story['render'] = (args) => (
+const Template: Story['render'] = (
+  args: React.ComponentProps<typeof AreaSelect>,
+) => (
   <div className="w-full">
     <label
       htmlFor="choose-countries-label"

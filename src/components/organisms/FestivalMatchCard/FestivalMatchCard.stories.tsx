@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { artistMock } from '@src/components/molecules/ArtistBubble/ArtistBubble.fixtures';
 import { FestivalMatchCard } from './FestivalMatchCard';
 import { withRouter } from '@src/utils/storyUtils';
+import React from 'react';
 
 type Story = StoryObj<typeof FestivalMatchCard>;
 
@@ -41,7 +42,9 @@ const meta: Meta<typeof FestivalMatchCard> = {
 
 export default meta;
 
-const Template: Story['render'] = (args) => (
+const Template: Story['render'] = (
+  args: React.ComponentProps<typeof FestivalMatchCard>,
+) => (
   <div className="flex w-full flex-col items-center justify-center max-[439px]:px-2 min-[440px]:px-4">
     <div className="mt-2 w-full max-w-3xl">
       <FestivalMatchCard {...args} />

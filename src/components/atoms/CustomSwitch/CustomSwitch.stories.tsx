@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 import { CustomSwitch } from './CustomSwitch';
+import React from 'react';
 
 type Story = StoryObj<typeof CustomSwitch>;
 
@@ -19,7 +20,9 @@ const meta: Meta<typeof CustomSwitch> = {
 
 export default meta;
 
-const Template: Story['render'] = (args) => {
+const Template: Story['render'] = (
+  args: React.ComponentProps<typeof CustomSwitch>,
+) => {
   const [checked, setChecked] = useState(false);
   return <CustomSwitch {...args} checked={checked} setChecked={setChecked} />;
 };

@@ -16,7 +16,7 @@ export const withRouter = (Story: StoryFn, { parameters }: StoryContext) => {
 
   const rootRoute = createRootRoute();
 
-  const children = routes.map((path) =>
+  const children = routes.map((path: string) =>
     createRoute({
       path,
       getParentRoute: () => rootRoute,
