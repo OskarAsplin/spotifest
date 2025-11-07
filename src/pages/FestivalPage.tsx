@@ -135,6 +135,7 @@ export const FestivalPage = withFallback(
           <div className="my-0 w-full max-w-6xl lg:px-2">
             <Card className="flex w-full flex-col items-center justify-center rounded-none px-1 pb-2 shadow-lg sm:px-2 sm:pb-4 lg:mb-2 lg:rounded-lg">
               <Tabs
+                className="w-full"
                 value={selectedLineup.toString()}
                 onValueChange={(value) => setSelectedLineup(parseInt(value))}
                 ref={ref}
