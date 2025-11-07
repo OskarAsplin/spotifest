@@ -4,7 +4,7 @@ import i18n from '../src/translations/i18n';
 import '../src/index.css';
 
 export const parameters: Parameters = {
-  backgrounds: { disable: true },
+  backgrounds: { disabled: true },
   docs: {
     canvas: {
       // override the canvas background based on the theme
