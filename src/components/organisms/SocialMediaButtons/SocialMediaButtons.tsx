@@ -65,8 +65,10 @@ export const SocialMediaButtons = ({
   );
 };
 
-interface ButtonWrapperProps
-  extends Pick<SocialMediaButtonsProps, 'tooltipText'> {
+interface ButtonWrapperProps extends Pick<
+  SocialMediaButtonsProps,
+  'tooltipText'
+> {
   children: React.ReactNode;
 }
 

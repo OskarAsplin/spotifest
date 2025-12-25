@@ -24,8 +24,8 @@ export interface UseApiSuspenseQueryProps<
   TError = DefaultError,
   TData = TQueryFnData,
 > extends Omit<
-    UseSuspenseQueryOptions<TQueryFnData, TError, TData>,
-    'queryKey'
-  > {
+  UseSuspenseQueryOptions<TQueryFnData, TError, TData>,
+  'queryKey'
+> {
   params?: Params<Op>;
 }

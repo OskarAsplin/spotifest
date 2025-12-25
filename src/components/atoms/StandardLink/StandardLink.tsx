@@ -1,8 +1,7 @@
 import { createLink, LinkComponent } from '@tanstack/react-router';
 import { cn } from '@src/lib/utils';
 
-interface StandardLinkProps
-  extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface StandardLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   href?: string;
 }
 

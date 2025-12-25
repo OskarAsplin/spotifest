@@ -2,8 +2,7 @@ import { ChevronDown } from 'lucide-react';
 import { Button } from '@src/components/ui/button';
 import { cn } from '@src/lib/utils';
 
-interface ExpandButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ExpandButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   expanded?: boolean;
 }
 
