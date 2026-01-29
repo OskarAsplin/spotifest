@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DateRangePicker } from './DateRangePicker';
 import { useState } from 'react';
-import { Dayjs } from 'dayjs';
-import { INITIAL_FROM_DATE, INITIAL_TO_DATE } from '@src/config';
+import dayjs, { Dayjs } from 'dayjs';
 import React from 'react';
 
 type Story = StoryObj<typeof DateRangePicker>;
@@ -29,8 +28,8 @@ export default meta;
 const Template: Story['render'] = (
   args: React.ComponentProps<typeof DateRangePicker>,
 ) => {
-  const [fromDate, setFromDate] = useState(INITIAL_FROM_DATE);
-  const [toDate, setToDate] = useState(INITIAL_TO_DATE);
+  const [fromDate, setFromDate] = useState(dayjs('2026-01-01'));
+  const [toDate, setToDate] = useState(dayjs('2026-12-31'));
   const onRangeChange = (from: Dayjs, to: Dayjs) => {
     setFromDate(from);
     setToDate(to);
