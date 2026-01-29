@@ -10,7 +10,9 @@ interface ErrorFallbackProps extends Partial<FallbackProps> {
 export const ErrorFallback = ({ fallbackText, error }: ErrorFallbackProps) => {
   const { t } = useTranslation();
   const errorMessage =
-    error?.message && error.message !== noConnectionMessage
+    error instanceof Error &&
+    error.message &&
+    error.message !== noConnectionMessage
       ? error.message
       : t('error.generic_error');
   const displayText = fallbackText ?? errorMessage;
