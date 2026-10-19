@@ -6,7 +6,7 @@ import {
   XLegacyIcon,
   XShareButton,
 } from 'react-share';
-import { StyledTooltip } from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
+import { HtmlTooltip } from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
 import { CopyToClipboardButton } from '@src/components/molecules/CopyToClipboardButton/CopyToClipboardButton';
 
 const BUTTON_SIZE = 32;
@@ -76,5 +76,5 @@ interface ButtonWrapperProps extends Pick<
 }
 
 const ButtonWrapper = ({ tooltipText, children }: ButtonWrapperProps) => (
-  <StyledTooltip title={tooltipText}>{children}</StyledTooltip>
+  <HtmlTooltip title={tooltipText}>{children}</HtmlTooltip>
 );

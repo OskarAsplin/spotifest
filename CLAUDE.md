@@ -20,8 +20,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### Testing and Analysis
 
 - `bun run find-circular-dependencies` - Check for circular dependencies using Madge
-- `bun run find-unused-exports` - Find unused exports with ts-prune
-- `bun run find-dead-code` - Find dead code (unused exports not used in modules)
+- `bun run knip` - Find unused code with knip
 
 ### Storybook
 

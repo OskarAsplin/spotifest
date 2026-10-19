@@ -78,7 +78,7 @@ export const getAllPlaylists = ({
 
 const LIMIT_ARTISTS = 50;
 
-export const getTopArtistsWithPopularity = ({
+const getTopArtistsWithPopularity = ({
   timeRange,
 }: {
   timeRange: 'long_term' | 'medium_term' | 'short_term';
@@ -117,7 +117,7 @@ export const getAllTopArtistsWithPopularity = (): Promise<MatchOption> =>
     return { artists: Object.values(tempDict), weight: countTopArtists };
   });
 
-export const getAllArtists = ({
+const getAllArtists = ({
   artistIds,
   count,
   offset = 0,
@@ -150,7 +150,7 @@ export const getAllArtists = ({
 
 const LIMIT_PLAYLIST_TRACKS = 100;
 
-export const getAllArtistIdsFromPlaylist = ({
+const getAllArtistIdsFromPlaylist = ({
   id,
   offset = 0,
   allArtistIds = [],
@@ -183,7 +183,7 @@ export const getAllArtistIdsFromPlaylist = ({
 
 const LIMIT_SAVED_TRACKS = 50;
 
-export const getAllArtistIdsFromSavedTracks = ({
+const getAllArtistIdsFromSavedTracks = ({
   offset = 0,
   allArtistIds = [],
 }: {
@@ -208,7 +208,7 @@ export const getAllArtistIdsFromSavedTracks = ({
       } else return updatedAllArtistIds;
     }, throwError);
 
-export const getArtistsFromArtistIds = async (allArtistIdsRaw: string[]) => {
+const getArtistsFromArtistIds = async (allArtistIdsRaw: string[]) => {
   const count: { [id: string]: number } = {};
   allArtistIdsRaw.forEach(
     (val: string) => (count[val] = (count[val] || 0) + 1),

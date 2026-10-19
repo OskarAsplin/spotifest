@@ -74,4 +74,3 @@ export const HtmlTooltip = ({ title, children }: HtmlTooltipProps) => {
 };
 
 // Alias for backward compatibility
-export const StyledTooltip = HtmlTooltip;

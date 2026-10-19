@@ -102,7 +102,7 @@ export const refreshSpotifyAccessToken = async (refreshToken: string) => {
   setSpotifyTokenInAuthStoreAndSpotifyApi(tokenResponse);
 };
 
-export const setSpotifyTokenInAuthStoreAndSpotifyApi = (
+const setSpotifyTokenInAuthStoreAndSpotifyApi = (
   tokenResponse: TokenResponse,
 ) => {
   const unixTimeNow = new Date().getTime(); // Unix time in milliseconds

@@ -11,7 +11,7 @@ type Store = {
 
 const INITIAL_STORE: Store = {};
 
-export const useAuthStore = create<Store>()(
+const useAuthStore = create<Store>()(
   persist(() => INITIAL_STORE, { name: 'spotify-auth-storage' }),
 );
 

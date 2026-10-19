@@ -54,7 +54,7 @@ export const postDjangoFestivalMatches = (matchRequest: MatchRequest) => {
   return fetchPost<FestivalMatch[]>(url, JSON.stringify(matchRequest));
 };
 
-export const postDjangoPopularArtistsInLineups = ({
+const postDjangoPopularArtistsInLineups = ({
   lineups,
 }: {
   lineups: string[];

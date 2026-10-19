@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Area } from '@src/api/types';
-import { INITIAL_FROM_DATE, INITIAL_TO_DATE } from '@src/config';
+import { INITIAL_FROM_DATE, MATCHING_MAX_DATE } from '@src/config';
 
 type Store = {
   matchBasis?: string;
@@ -12,7 +12,7 @@ type Store = {
 
 const INITIAL_STORE: Store = {
   fromDate: INITIAL_FROM_DATE.toISOString(),
-  toDate: INITIAL_TO_DATE.toISOString(),
+  toDate: MATCHING_MAX_DATE.toISOString(),
 };
 
 export const useMatchingStore = create<Store>()(
