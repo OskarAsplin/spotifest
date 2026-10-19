@@ -6,26 +6,26 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Build and Development
 
-- `yarn start` - Start development server on port 3000 (Vite)
-- `yarn build` - Build for production (runs TypeScript check + Vite build)
-- `yarn preview` - Preview production build on port 3000
+- `bun run start` - Start development server on port 3000 (Vite)
+- `bun run build` - Build for production (runs TypeScript check + Vite build)
+- `bun run preview` - Preview production build on port 3000
 
 ### Code Quality
 
-- `yarn lint` - Run ESLint on all source files
-- `yarn lint:fix` - Run ESLint with auto-fix
-- `yarn format` - Format code with Prettier
+- `bun run lint` - Run ESLint on all source files
+- `bun run lint:fix` - Run ESLint with auto-fix
+- `bun run format` - Format code with Prettier
 
 ### Testing and Analysis
 
-- `yarn find-circular-dependencies` - Check for circular dependencies using Madge
-- `yarn find-unused-exports` - Find unused exports with ts-prune
-- `yarn find-dead-code` - Find dead code (unused exports not used in modules)
+- `bun run find-circular-dependencies` - Check for circular dependencies using Madge
+- `bun run find-unused-exports` - Find unused exports with ts-prune
+- `bun run find-dead-code` - Find dead code (unused exports not used in modules)
 
 ### Storybook
 
-- `yarn storybook` - Start Storybook development server on port 6006
-- `yarn build-storybook` - Build Storybook for production
+- `bun run storybook` - Start Storybook development server on port 6006
+- `bun run build-storybook` - Build Storybook for production
 
 ## Architecture Overview
 
@@ -89,7 +89,7 @@ The app follows atomic design principles with a clear separation of concerns:
 
 ### Development Notes
 
-- Uses **Yarn 3.6.1** as package manager
+- Uses **Bun 1.4.0** as package manager
 - **Vite** for fast development and building
 - **TypeScript strict mode** enabled
 - **ESLint + Prettier** for code quality

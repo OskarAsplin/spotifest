@@ -9,27 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as WithProtectedLayoutRouteImport } from './routes/_withProtectedLayout'
 import { Route as WithLayoutRouteImport } from './routes/_withLayout'
+import { Route as WithProtectedLayoutRouteImport } from './routes/_withProtectedLayout'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as WithProtectedLayoutIndexRouteImport } from './routes/_withProtectedLayout/index'
-import { Route as WithProtectedLayoutShareIndexRouteImport } from './routes/_withProtectedLayout/share/index'
 import { Route as WithLayoutAboutIndexRouteImport } from './routes/_withLayout/about/index'
-import { Route as WithProtectedLayoutShareMatchBasisRouteImport } from './routes/_withProtectedLayout/share/$matchBasis'
-import { Route as WithLayoutFestivalFestivalIdRouteImport } from './routes/_withLayout/festival/$festivalId'
 import { Route as WithLayoutArtistArtistIdRouteImport } from './routes/_withLayout/artist/$artistId'
+import { Route as WithLayoutFestivalFestivalIdRouteImport } from './routes/_withLayout/festival/$festivalId'
+import { Route as WithProtectedLayoutShareIndexRouteImport } from './routes/_withProtectedLayout/share/index'
+import { Route as WithProtectedLayoutShareMatchBasisRouteImport } from './routes/_withProtectedLayout/share/$matchBasis'
 
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const WithLayoutRoute = WithLayoutRouteImport.update({
+  id: '/_withLayout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WithProtectedLayoutRoute = WithProtectedLayoutRouteImport.update({
   id: '/_withProtectedLayout',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WithLayoutRoute = WithLayoutRouteImport.update({
-  id: '/_withLayout',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WithProtectedLayoutIndexRoute =
@@ -38,22 +38,16 @@ const WithProtectedLayoutIndexRoute =
     path: '/',
     getParentRoute: () => WithProtectedLayoutRoute,
   } as any)
-const WithProtectedLayoutShareIndexRoute =
-  WithProtectedLayoutShareIndexRouteImport.update({
-    id: '/share/',
-    path: '/share/',
-    getParentRoute: () => WithProtectedLayoutRoute,
-  } as any)
 const WithLayoutAboutIndexRoute = WithLayoutAboutIndexRouteImport.update({
   id: '/about/',
   path: '/about/',
   getParentRoute: () => WithLayoutRoute,
 } as any)
-const WithProtectedLayoutShareMatchBasisRoute =
-  WithProtectedLayoutShareMatchBasisRouteImport.update({
-    id: '/share/$matchBasis',
-    path: '/share/$matchBasis',
-    getParentRoute: () => WithProtectedLayoutRoute,
+const WithLayoutArtistArtistIdRoute =
+  WithLayoutArtistArtistIdRouteImport.update({
+    id: '/artist/$artistId',
+    path: '/artist/$artistId',
+    getParentRoute: () => WithLayoutRoute,
   } as any)
 const WithLayoutFestivalFestivalIdRoute =
   WithLayoutFestivalFestivalIdRouteImport.update({
@@ -61,25 +55,31 @@ const WithLayoutFestivalFestivalIdRoute =
     path: '/festival/$festivalId',
     getParentRoute: () => WithLayoutRoute,
   } as any)
-const WithLayoutArtistArtistIdRoute =
-  WithLayoutArtistArtistIdRouteImport.update({
-    id: '/artist/$artistId',
-    path: '/artist/$artistId',
-    getParentRoute: () => WithLayoutRoute,
+const WithProtectedLayoutShareIndexRoute =
+  WithProtectedLayoutShareIndexRouteImport.update({
+    id: '/share/',
+    path: '/share/',
+    getParentRoute: () => WithProtectedLayoutRoute,
+  } as any)
+const WithProtectedLayoutShareMatchBasisRoute =
+  WithProtectedLayoutShareMatchBasisRouteImport.update({
+    id: '/share/$matchBasis',
+    path: '/share/$matchBasis',
+    getParentRoute: () => WithProtectedLayoutRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/login': typeof LoginRoute
   '/': typeof WithProtectedLayoutIndexRoute
+  '/login': typeof LoginRoute
   '/artist/$artistId': typeof WithLayoutArtistArtistIdRoute
   '/festival/$festivalId': typeof WithLayoutFestivalFestivalIdRoute
   '/share/$matchBasis': typeof WithProtectedLayoutShareMatchBasisRoute
-  '/about': typeof WithLayoutAboutIndexRoute
-  '/share': typeof WithProtectedLayoutShareIndexRoute
+  '/about/': typeof WithLayoutAboutIndexRoute
+  '/share/': typeof WithProtectedLayoutShareIndexRoute
 }
 export interface FileRoutesByTo {
-  '/login': typeof LoginRoute
   '/': typeof WithProtectedLayoutIndexRoute
+  '/login': typeof LoginRoute
   '/artist/$artistId': typeof WithLayoutArtistArtistIdRoute
   '/festival/$festivalId': typeof WithLayoutFestivalFestivalIdRoute
   '/share/$matchBasis': typeof WithProtectedLayoutShareMatchBasisRoute
@@ -101,17 +101,17 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/login'
     | '/'
+    | '/login'
     | '/artist/$artistId'
     | '/festival/$festivalId'
     | '/share/$matchBasis'
-    | '/about'
-    | '/share'
+    | '/about/'
+    | '/share/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/login'
     | '/'
+    | '/login'
     | '/artist/$artistId'
     | '/festival/$festivalId'
     | '/share/$matchBasis'
@@ -138,25 +138,25 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/_withLayout': {
+      id: '/_withLayout'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof WithLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_withProtectedLayout': {
       id: '/_withProtectedLayout'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof WithProtectedLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_withLayout': {
-      id: '/_withLayout'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof WithLayoutRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_withProtectedLayout/': {
@@ -166,32 +166,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WithProtectedLayoutIndexRouteImport
       parentRoute: typeof WithProtectedLayoutRoute
     }
-    '/_withProtectedLayout/share/': {
-      id: '/_withProtectedLayout/share/'
-      path: '/share'
-      fullPath: '/share'
-      preLoaderRoute: typeof WithProtectedLayoutShareIndexRouteImport
-      parentRoute: typeof WithProtectedLayoutRoute
-    }
     '/_withLayout/about/': {
       id: '/_withLayout/about/'
       path: '/about'
-      fullPath: '/about'
+      fullPath: '/about/'
       preLoaderRoute: typeof WithLayoutAboutIndexRouteImport
-      parentRoute: typeof WithLayoutRoute
-    }
-    '/_withProtectedLayout/share/$matchBasis': {
-      id: '/_withProtectedLayout/share/$matchBasis'
-      path: '/share/$matchBasis'
-      fullPath: '/share/$matchBasis'
-      preLoaderRoute: typeof WithProtectedLayoutShareMatchBasisRouteImport
-      parentRoute: typeof WithProtectedLayoutRoute
-    }
-    '/_withLayout/festival/$festivalId': {
-      id: '/_withLayout/festival/$festivalId'
-      path: '/festival/$festivalId'
-      fullPath: '/festival/$festivalId'
-      preLoaderRoute: typeof WithLayoutFestivalFestivalIdRouteImport
       parentRoute: typeof WithLayoutRoute
     }
     '/_withLayout/artist/$artistId': {
@@ -200,6 +179,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/artist/$artistId'
       preLoaderRoute: typeof WithLayoutArtistArtistIdRouteImport
       parentRoute: typeof WithLayoutRoute
+    }
+    '/_withLayout/festival/$festivalId': {
+      id: '/_withLayout/festival/$festivalId'
+      path: '/festival/$festivalId'
+      fullPath: '/festival/$festivalId'
+      preLoaderRoute: typeof WithLayoutFestivalFestivalIdRouteImport
+      parentRoute: typeof WithLayoutRoute
+    }
+    '/_withProtectedLayout/share/': {
+      id: '/_withProtectedLayout/share/'
+      path: '/share'
+      fullPath: '/share/'
+      preLoaderRoute: typeof WithProtectedLayoutShareIndexRouteImport
+      parentRoute: typeof WithProtectedLayoutRoute
+    }
+    '/_withProtectedLayout/share/$matchBasis': {
+      id: '/_withProtectedLayout/share/$matchBasis'
+      path: '/share/$matchBasis'
+      fullPath: '/share/$matchBasis'
+      preLoaderRoute: typeof WithProtectedLayoutShareMatchBasisRouteImport
+      parentRoute: typeof WithProtectedLayoutRoute
     }
   }
 }
