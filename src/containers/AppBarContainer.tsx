@@ -46,7 +46,7 @@ export const AppBarContainer = () => {
     <div className="pb-4 sm:pb-6">
       <div
         className={cn(
-          'transition-transform duration-300 ease-in-out',
+          'relative z-50 transition-transform duration-300 ease-in-out',
           isHidden ? '-translate-y-full' : 'translate-y-0',
         )}
       >
