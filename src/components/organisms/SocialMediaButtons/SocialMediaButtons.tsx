@@ -1,10 +1,10 @@
 import {
-  TelegramIcon,
+  TelegramLegacyIcon,
   TelegramShareButton,
-  TwitterShareButton,
-  XIcon,
-  WhatsappIcon,
+  WhatsappLegacyIcon,
   WhatsappShareButton,
+  XLegacyIcon,
+  XShareButton,
 } from 'react-share';
 import { StyledTooltip } from '@src/components/atoms/HtmlTooltip/HtmlTooltip';
 import { CopyToClipboardButton } from '@src/components/molecules/CopyToClipboardButton/CopyToClipboardButton';
@@ -32,25 +32,28 @@ export const SocialMediaButtons = ({
 }: SocialMediaButtonsProps) => {
   const sharedButtonProps = {
     url: shareUrl,
-    title: message,
     disabled: isDisabled,
     disabledStyle,
   };
   return (
     <div className="flex flex-row gap-4">
       <ButtonWrapper tooltipText={tooltipText}>
-        <TwitterShareButton {...sharedButtonProps} hashtags={['spotifest']}>
-          <XIcon size={BUTTON_SIZE} round />
-        </TwitterShareButton>
+        <XShareButton
+          {...sharedButtonProps}
+          text={message}
+          hashtags={['spotifest']}
+        >
+          <XLegacyIcon size={BUTTON_SIZE} round />
+        </XShareButton>
       </ButtonWrapper>
       <ButtonWrapper tooltipText={tooltipText}>
-        <TelegramShareButton {...sharedButtonProps}>
-          <TelegramIcon size={BUTTON_SIZE} round />
+        <TelegramShareButton {...sharedButtonProps} text={message}>
+          <TelegramLegacyIcon size={BUTTON_SIZE} round />
         </TelegramShareButton>
       </ButtonWrapper>
       <ButtonWrapper tooltipText={tooltipText}>
-        <WhatsappShareButton {...sharedButtonProps}>
-          <WhatsappIcon size={BUTTON_SIZE} round />
+        <WhatsappShareButton {...sharedButtonProps} message={message}>
+          <WhatsappLegacyIcon size={BUTTON_SIZE} round />
         </WhatsappShareButton>
       </ButtonWrapper>
       <ButtonWrapper

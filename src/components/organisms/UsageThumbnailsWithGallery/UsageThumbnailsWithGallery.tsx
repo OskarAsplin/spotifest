@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Dialog, DialogContent } from '@src/components/ui/dialog';
 import { Button } from '@src/components/ui/button';
-import ImageGallery, { ReactImageGalleryItem } from 'react-image-gallery';
-import 'react-image-gallery/styles/css/image-gallery.css';
+import ImageGallery, { type GalleryItem } from 'react-image-gallery';
+import 'react-image-gallery/styles/image-gallery.css';
 
-const images: ReactImageGalleryItem[] = [
+const images: GalleryItem[] = [
   {
     original: '/screenshots/matches.png',
     thumbnail: '/black_thumbnail.png',
