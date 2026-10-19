@@ -31,13 +31,14 @@ export const AppBarContainer = () => {
   const onClickLogo = () => {
     const isIndexRoute = !!matchRoute({ to: '/' });
     if (isIndexRoute) window.scrollTo({ top: 0, behavior: 'smooth' });
-    else navigate({ to: '/' });
+    else void navigate({ to: '/' });
   };
 
   const themeMode = useThemeMode();
 
   const onClickAbout = () => {
-    if (!window.location.href.endsWith('/about')) navigate({ to: '/about' });
+    if (!window.location.href.endsWith('/about'))
+      void navigate({ to: '/about' });
   };
   const onClickBrightness = () =>
     setThemeMode(themeMode === 'light' ? 'dark' : 'light');

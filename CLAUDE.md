@@ -12,9 +12,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Code Quality
 
-- `bun run lint` - Run ESLint on all source files
-- `bun run lint:fix` - Run ESLint with auto-fix
-- `bun run format` - Format code with Prettier
+- `bun run lint` - Run oxlint (type-aware via oxlint-tsgolint)
+- `bun run lint:fix` - Run oxlint with auto-fix
+- `bun run format` - Format code with oxfmt
+- `bun run format:check` - Check formatting with oxfmt
 
 ### Testing and Analysis
 
@@ -92,6 +93,7 @@ The app follows atomic design principles with a clear separation of concerns:
 - Uses **Bun 1.4.0** as package manager
 - **Vite** for fast development and building
 - **TypeScript strict mode** enabled
-- **ESLint + Prettier** for code quality
+- **oxlint + oxfmt** for code quality
+- **React Compiler** via `oxc-transform-react` (custom Vite plugin in `vite.config.ts`)
 - **Storybook** for component development and documentation
 - **Madge** for dependency analysis

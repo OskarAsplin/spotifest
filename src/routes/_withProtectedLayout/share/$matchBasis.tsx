@@ -21,14 +21,14 @@ export const Route = createFileRoute('/_withProtectedLayout/share/$matchBasis')(
           return;
         } catch {
           setSharedMatchBasis(matchBasis);
-          redirectToSpotifyLogin();
+          void redirectToSpotifyLogin();
 
           return;
         }
       }
 
       setSharedMatchBasis(matchBasis);
-      redirectToSpotifyLogin();
+      void redirectToSpotifyLogin();
     },
   },
 );

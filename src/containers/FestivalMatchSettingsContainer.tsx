@@ -42,7 +42,7 @@ export const FestivalMatchSettingsContainer = () => {
       const initialArea = getInitialContinent(userInfo.country, continents);
       setMatchArea(initialArea);
     }
-  }, [userInfo, continents]);
+  }, [userInfo, continents, matchArea]);
 
   return (
     <>

@@ -249,10 +249,7 @@ interface TechInfoRowProps {
 
 const TechInfoRow = ({ text, icons }: TechInfoRowProps) => {
   return (
-    <div
-      key={'techRow:' + text}
-      className="col-span-2 grid grid-cols-1 gap-2 lg:grid-cols-2"
-    >
+    <div className="col-span-2 grid grid-cols-1 gap-2 lg:grid-cols-2">
       <div className="flex max-lg:items-center max-lg:justify-center lg:flex-row-reverse">
         <p className="max-sm:text-center">{text}</p>
       </div>

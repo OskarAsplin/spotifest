@@ -14,7 +14,7 @@ export const CopyToClipboard = ({ children }: CopyToClipboardProps) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const onCopy = (content: string) => {
-    navigator.clipboard.writeText(content);
+    void navigator.clipboard.writeText(content);
     setShowTooltip(true);
     setTimeout(() => setShowTooltip(false), 1500);
   };

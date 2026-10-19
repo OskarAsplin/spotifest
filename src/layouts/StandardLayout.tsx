@@ -28,7 +28,7 @@ export const StandardLayout = ({
       const timeLeftMs = unixExpiryTime - unixTimeNow;
       timeoutId = setTimeout(
         () => {
-          refreshSpotifyAccessToken(refreshToken);
+          void refreshSpotifyAccessToken(refreshToken);
           // Fetch new token if it's less than 5 minutes until the old one expires.
           // Set a 5 seconds minimum timeout to not trigger double refresh logic,
           // since we also have a check in the `beforeLoad` of several routes

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useEffectEvent } from 'react';
 import { debounce } from 'lodash-es';
 import { ChangeEvent, startTransition, useState } from 'react';
 import { useApiSuspenseQuery, withFallback } from '@src/api/api';
@@ -32,16 +32,16 @@ export const SearchFieldContainer = ({
     hideSearchFieldSmallScreen?.();
   };
 
-  useEffect(() => {
-    const handleClickAway = (event: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        resetSearchFieldState();
-      }
-    };
+  const handleClickAway = useEffectEvent((event: MouseEvent) => {
+    if (
+      containerRef.current &&
+      !containerRef.current.contains(event.target as Node)
+    ) {
+      resetSearchFieldState();
+    }
+  });
 
+  useEffect(() => {
     document.addEventListener('mousedown', handleClickAway);
     return () => document.removeEventListener('mousedown', handleClickAway);
   }, []);

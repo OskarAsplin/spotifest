@@ -1,5 +1,5 @@
 import { Dayjs } from 'dayjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useEffectEvent, useState } from 'react';
 import { MonthRangePicker } from '@src/components/ui/monthrangepicker';
 import { Dialog, DialogContent } from '@src/components/ui/dialog';
 import { Input } from '@src/components/ui/input';
@@ -61,16 +61,16 @@ const DateRangePickerModal = ({
   onRangeChange,
   onClose,
 }: DateRangePickerModalProps) => {
-  const onKeyDown = (event: KeyboardEvent) => {
+  const onKeyDown = useEffectEvent((event: KeyboardEvent) => {
     if (event.key === 'Escape') onClose();
-  };
+  });
 
   useEffect(() => {
     document.addEventListener('keydown', onKeyDown);
     return () => {
       document.removeEventListener('keydown', onKeyDown);
     };
-  }, [onKeyDown]);
+  }, []);
 
   const handleRangeSelect = ({ start, end }: { start: Date; end: Date }) => {
     const fromDayjs = dayjs(start);

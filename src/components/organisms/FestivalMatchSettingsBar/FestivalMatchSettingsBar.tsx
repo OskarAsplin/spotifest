@@ -52,7 +52,7 @@ export const FestivalMatchSettingsBar = ({
       setDates({ fromDate: from.toISOString(), toDate: to.toISOString() });
     } else {
       setDates({
-        fromDate: new Date().toISOString(),
+        fromDate: dayjs().toISOString(),
         toDate: MATCHING_MAX_DATE.toISOString(),
       });
     }

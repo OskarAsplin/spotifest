@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useEffectEvent, useState } from 'react';
 import { Dialog, DialogContent } from '@src/components/ui/dialog';
 import { Button } from '@src/components/ui/button';
 import ImageGallery, { type GalleryItem } from 'react-image-gallery';
@@ -38,9 +38,9 @@ export const UsageThumbnailsWithGallery = ({
     setStartIndex(index);
   };
 
-  const escFunction = (event: KeyboardEvent) => {
+  const escFunction = useEffectEvent((event: KeyboardEvent) => {
     if (event.key === 'Escape') setIsGalleryOpen(false);
-  };
+  });
 
   useEffect(() => {
     document.addEventListener('keydown', escFunction, true);

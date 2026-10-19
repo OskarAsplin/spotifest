@@ -36,7 +36,7 @@ export const SharedMatchesSettingsContainer = ({
       const initialArea = getInitialContinent(userInfo.country, continents);
       setMatchArea(initialArea);
     }
-  }, [userInfo, continents]);
+  }, [userInfo, continents, matchArea]);
 
   return (
     <FestivalMatchSettingsBar

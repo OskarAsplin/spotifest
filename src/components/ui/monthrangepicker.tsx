@@ -176,16 +176,17 @@ function MonthRangeCal({
   onYearForward,
 }: MonthRangeCalProps) {
   const [startYear, setStartYear] = React.useState<number>(
-    selectedMonthRange?.start.getFullYear() ?? new Date().getFullYear(),
+    () => selectedMonthRange?.start.getFullYear() ?? new Date().getFullYear(),
   );
   const [startMonth, setStartMonth] = React.useState<number>(
-    selectedMonthRange?.start?.getMonth() ?? new Date().getMonth(),
+    () => selectedMonthRange?.start?.getMonth() ?? new Date().getMonth(),
   );
   const [endYear, setEndYear] = React.useState<number>(
-    selectedMonthRange?.end?.getFullYear() ?? new Date().getFullYear() + 1,
+    () =>
+      selectedMonthRange?.end?.getFullYear() ?? new Date().getFullYear() + 1,
   );
   const [endMonth, setEndMonth] = React.useState<number>(
-    selectedMonthRange?.end?.getMonth() ?? new Date().getMonth(),
+    () => selectedMonthRange?.end?.getMonth() ?? new Date().getMonth(),
   );
   const [rangePending, setRangePending] = React.useState<boolean>(false);
   const [endLocked, setEndLocked] = React.useState<boolean>(true);

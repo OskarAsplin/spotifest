@@ -21,6 +21,15 @@ interface CookieConsentProps {
   hideDecline?: boolean;
 }
 
+const hasGivenCookieConsent = () => {
+  try {
+    return document.cookie.includes('cookieConsent=true');
+  } catch (error) {
+    console.warn('Cookie consent error:', error);
+    return false;
+  }
+};
+
 const CookieConsent = ({
   variant = 'default',
   onAcceptCallback,
@@ -31,7 +40,7 @@ const CookieConsent = ({
   hideDecline,
 }: CookieConsentProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [hide, setHide] = useState(false);
+  const [hide, setHide] = useState(hasGivenCookieConsent);
 
   const handleAccept = useCallback(() => {
     setIsOpen(false);
@@ -52,19 +61,10 @@ const CookieConsent = ({
   }, [onDeclineCallback]);
 
   useEffect(() => {
-    try {
-      if (document.cookie.includes('cookieConsent=true')) {
-        setIsOpen(false);
-        setTimeout(() => {
-          setHide(true);
-        }, 700);
-      } else {
-        setIsOpen(true);
-      }
-    } catch (error) {
-      console.warn('Cookie consent error:', error);
-    }
-  }, []);
+    if (hide) return;
+    const frameId = requestAnimationFrame(() => setIsOpen(true));
+    return () => cancelAnimationFrame(frameId);
+  }, [hide]);
 
   if (hide) return null;
 

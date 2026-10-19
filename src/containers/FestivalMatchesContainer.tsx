@@ -193,6 +193,7 @@ const FestivalMatchesInnerContainer = ({
   const bigScreen = useMediaQuery('(min-width:640px)');
 
   const { getVirtualItems, getTotalSize, measureElement } =
+    // oxlint-disable-next-line react/incompatible-library
     useWindowVirtualizer({
       count: festivalMatches.length,
       estimateSize: () => (bigScreen ? 532 : 484),
@@ -201,8 +202,10 @@ const FestivalMatchesInnerContainer = ({
       initialOffset: scrollEntry?.scrollY,
     });
 
+  const virtualItems = getVirtualItems();
+
   useEffect(() => {
-    const [lastItem] = [...getVirtualItems()].reverse();
+    const [lastItem] = [...virtualItems].reverse();
 
     if (!lastItem) return;
 
@@ -211,14 +214,15 @@ const FestivalMatchesInnerContainer = ({
       hasNextPage &&
       !isFetchingNextPage
     ) {
-      fetchNextPage();
+      void fetchNextPage();
     }
   }, [
     hasNextPage,
     fetchNextPage,
     festivalMatches.length,
     isFetchingNextPage,
-    getVirtualItems(),
+    numFestivalsWithPopularArtists,
+    virtualItems,
   ]);
 
   const [measureWidthRef, { width }] = useMeasure();
@@ -240,7 +244,7 @@ const FestivalMatchesInnerContainer = ({
           overflowAnchor: 'none',
         }}
       >
-        {getVirtualItems().map((virtualItem) => {
+        {virtualItems.map((virtualItem) => {
           const festival = festivalMatches[virtualItem.index];
           const isLoaderRow =
             virtualItem.index > numFestivalsWithPopularArtists - 1;
