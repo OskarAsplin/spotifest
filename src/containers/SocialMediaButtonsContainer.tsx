@@ -28,8 +28,12 @@ export const SocialMediaButtonsContainer = () => {
     matchBasis === SAVED_TRACKS_CHOICE;
 
   const shareMessage = isOwnPlaylist
-    ? t('social_media_buttons.message_my_playlist')
-    : t('social_media_buttons.message_other_playlist');
+    ? t('social_media_buttons.message_my_playlist', {
+        playlist_name: playlist?.name,
+      })
+    : t('social_media_buttons.message_other_playlist', {
+        playlist_name: playlist?.name,
+      });
   const shareUrl = `${import.meta.env.VITE_REDIRECT_URI}/share/${matchBasis}`;
   const tooltipText = isDisabled
     ? t('social_media_buttons.tooltip_disabled')
