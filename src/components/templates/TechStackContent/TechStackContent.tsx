@@ -60,7 +60,7 @@ export const TechStackContent = () => {
       text: t('about_page.tech_stack.frontend_host'),
       icons: [
         {
-          path: isLightMode ? 'Netlify.svg' : 'Netlify-white.svg',
+          path: isLightMode ? 'Cloudflare.svg' : 'Cloudflare-white.svg',
           class: 'h-10',
         },
       ],
