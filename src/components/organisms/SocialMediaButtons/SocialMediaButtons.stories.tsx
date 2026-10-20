@@ -18,7 +18,7 @@ const meta: Meta<typeof SocialMediaButtons> = {
     message:
       'I matched the Spotify playlist "Your Top Songs 2022" with music festivals using Spotifest. Check out the results!',
     shareUrl:
-      'https://www.spotifest.app/share/spotify__PID__37i9dQZF1F0sijgNaJdgit',
+      'https://spotifest.app/share/spotify__PID__37i9dQZF1F0sijgNaJdgit',
     tooltipText: 'Share the match results for this playlist!',
     isDisabled: false,
   },
