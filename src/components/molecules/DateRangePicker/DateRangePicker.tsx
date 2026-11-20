@@ -81,7 +81,10 @@ const DateRangePickerModal = ({
 
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="w-auto max-w-[95vw] p-0 md:max-w-none md:min-w-[424px] [&>button]:hidden">
+      <DialogContent
+        showCloseButton={false}
+        className="w-auto max-w-[95vw] p-0 md:max-w-none md:min-w-[424px]"
+      >
         <MonthRangePicker
           selectedMonthRange={{
             start: fromValue.toDate(),

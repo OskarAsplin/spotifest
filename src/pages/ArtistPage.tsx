@@ -100,18 +100,19 @@ export const ArtistPage = withFallback(
               <Button
                 variant="ghost"
                 size="icon"
-                className="mb-2 p-1.5"
-                asChild
+                className="mb-2 rounded-full p-1.5"
+                nativeButton={false}
+                render={
+                  <a
+                    href={`https://open.spotify.com/artist/${spotifyId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  />
+                }
               >
-                <a
-                  href={`https://open.spotify.com/artist/${spotifyId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Avatar className="h-7 w-7">
-                    <AvatarImage src="/techIcons/Spotify-Mark.png" alt="" />
-                  </Avatar>
-                </a>
+                <Avatar className="h-7 w-7">
+                  <AvatarImage src="/techIcons/Spotify-Mark.png" alt="" />
+                </Avatar>
               </Button>
             )}
             {isLoggedIn && !!spotifyId && (

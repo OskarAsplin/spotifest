@@ -11,12 +11,13 @@ const meta: Meta<typeof CopyToClipboardButton> = {
       description: {
         component:
           'CopyToClipboardButton takes a textToCopy which will be copied to clipboard when the user clicks the button. \
-          A tooltip will be displayed which confirms that the text was copied. It uses the CopyToClipboard component under the hood',
+          The tooltip shows tooltipText on hover and confirms that the text was copied after a click.',
       },
     },
   },
   args: {
     textToCopy: 'This text will be copied',
+    tooltipText: 'Copy link and message',
     isDisabled: false,
   },
 };

@@ -42,11 +42,24 @@ export const MatchCriteriaSelect = ({
 }: MatchCriteriaSelectProps) => {
   const { t } = useTranslation();
 
+  const items = {
+    [TOP_ARTISTS_CHOICE]: t('matching.criteria_select.top_artists_option'),
+    [SAVED_TRACKS_CHOICE]: t('matching.criteria_select.saved_tracks_option'),
+    ...Object.fromEntries(
+      playlists.map((playlist) => [playlist.id, playlist.name]),
+    ),
+  };
+
   return (
     <HtmlTooltip
       title={disabled ? t('matching.criteria_select.click_link') : undefined}
     >
-      <Select value={value} onValueChange={onValueChange} disabled={disabled}>
+      <Select
+        items={items}
+        value={value ?? null}
+        onValueChange={(newValue) => newValue && onValueChange(newValue)}
+        disabled={disabled}
+      >
         <SelectTrigger
           className={cn('w-full max-w-[400px] min-w-[200px]', className)}
           size={size}

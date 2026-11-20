@@ -81,7 +81,7 @@ export const FestivalMatchCard = memo(
                   <Button
                     variant="outline"
                     className={
-                      'border-primary hover:bg-primary/5 mb-3 h-auto min-h-0 border-dotted px-2 text-left whitespace-normal'
+                      'border-primary hover:bg-primary/5 mb-3 h-auto min-h-0 border-dotted px-2 py-2 text-left whitespace-normal'
                     }
                   >
                     <h2
@@ -213,10 +213,11 @@ export const FestivalMatchCard = memo(
                   </ArtistBox>
                 </CollapsibleContent>
                 {hasTwoRowsOfPopularArtists && (
-                  <CollapsibleTrigger asChild>
-                    <div className="flex justify-center">
-                      <ExpandButton expanded={expanded} />
-                    </div>
+                  <CollapsibleTrigger
+                    nativeButton={false}
+                    render={<div className="flex justify-center" />}
+                  >
+                    <ExpandButton expanded={expanded} />
                   </CollapsibleTrigger>
                 )}
               </Collapsible>

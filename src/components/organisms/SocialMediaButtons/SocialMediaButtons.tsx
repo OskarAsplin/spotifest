@@ -56,14 +56,11 @@ export const SocialMediaButtons = ({
           <WhatsappLegacyIcon size={BUTTON_SIZE} round />
         </WhatsappShareButton>
       </ButtonWrapper>
-      <ButtonWrapper
+      <CopyToClipboardButton
+        textToCopy={`${message} ${shareUrl}`}
         tooltipText={isDisabled ? tooltipText : 'Copy link and message'}
-      >
-        <CopyToClipboardButton
-          textToCopy={`${message} ${shareUrl}`}
-          isDisabled={isDisabled}
-        />
-      </ButtonWrapper>
+        isDisabled={isDisabled}
+      />
     </div>
   );
 };

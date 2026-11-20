@@ -44,7 +44,20 @@ export const AreaSelect = ({
     [continents, countries],
   );
 
-  const handleValueChange = (newValue: string) => {
+  const items = useMemo(
+    () =>
+      allAreas.map((area) => ({
+        value: area.isoCode,
+        label: countries.includes(area) ? (
+          <CountryLabel country={area} />
+        ) : (
+          area.name
+        ),
+      })),
+    [allAreas, countries],
+  );
+
+  const handleValueChange = (newValue: string | null) => {
     const area = allAreas.find((area) => area.isoCode === newValue);
     if (area) {
       onValueChange(area);
@@ -52,7 +65,11 @@ export const AreaSelect = ({
   };
   const { t } = useTranslation();
   return (
-    <Select value={value} onValueChange={handleValueChange}>
+    <Select
+      items={items}
+      value={value ?? null}
+      onValueChange={handleValueChange}
+    >
       <SelectTrigger className="w-full max-w-[400px] min-w-[200px]">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
@@ -102,14 +119,7 @@ export const AreaSelect = ({
             .sort((a, b) => (a.name > b.name ? 1 : -1))
             .map((country) => (
               <SelectItem key={country.isoCode} value={country.isoCode}>
-                <div className="flex items-center">
-                  <ReactCountryFlag
-                    countryCode={country.isoCode}
-                    svg
-                    className="mr-2 h-4 w-6"
-                  />
-                  {displayedLocationName(country.name)}
-                </div>
+                <CountryLabel country={country} />
               </SelectItem>
             ))}
         </SelectGroup>
@@ -117,3 +127,14 @@ export const AreaSelect = ({
     </Select>
   );
 };
+
+const CountryLabel = ({ country }: { country: Area }) => (
+  <div className="flex items-center">
+    <ReactCountryFlag
+      countryCode={country.isoCode}
+      svg
+      className="mr-2 h-4 w-6"
+    />
+    {displayedLocationName(country.name)}
+  </div>
+);

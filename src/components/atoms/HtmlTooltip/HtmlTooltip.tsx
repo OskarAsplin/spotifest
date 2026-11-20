@@ -9,9 +9,14 @@ import { ReactNode, useState, useRef, useCallback, useEffect } from 'react';
 interface HtmlTooltipProps {
   title: ReactNode;
   children: ReactNode;
+  forceOpen?: boolean;
 }
 
-export const HtmlTooltip = ({ title, children }: HtmlTooltipProps) => {
+export const HtmlTooltip = ({
+  title,
+  children,
+  forceOpen,
+}: HtmlTooltipProps) => {
   const [open, setOpen] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout>(null);
 
@@ -51,17 +56,19 @@ export const HtmlTooltip = ({ title, children }: HtmlTooltipProps) => {
 
   return title ? (
     <TooltipProvider>
-      <Tooltip open={open} onOpenChange={handleOpenChange}>
-        <TooltipTrigger asChild>
-          <span
-            className="h-full"
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            onTouchCancel={handleTouchCancel}
-            onTouchMove={handleTouchCancel}
-          >
-            {children}
-          </span>
+      <Tooltip open={forceOpen || open} onOpenChange={handleOpenChange}>
+        <TooltipTrigger
+          render={
+            <span
+              className="h-full"
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              onTouchCancel={handleTouchCancel}
+              onTouchMove={handleTouchCancel}
+            />
+          }
+        >
+          {children}
         </TooltipTrigger>
         <TooltipContent className="max-w-80 whitespace-pre-line" side="top">
           {title}

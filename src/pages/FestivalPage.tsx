@@ -87,15 +87,16 @@ export const FestivalPage = withFallback(
                       variant="outline"
                       size="icon"
                       className="rounded-lg p-2"
-                      asChild
+                      nativeButton={false}
+                      render={
+                        <a
+                          href={festivalInfo.webpage}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        />
+                      }
                     >
-                      <a
-                        href={festivalInfo.webpage}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Globe className="h-5 w-5" />
-                      </a>
+                      <Globe className="h-5 w-5" />
                     </Button>
                   )}
                   {festivalInfo.ticketWebpage && (
@@ -103,15 +104,16 @@ export const FestivalPage = withFallback(
                       variant="outline"
                       size="icon"
                       className="rounded-lg p-2"
-                      asChild
+                      nativeButton={false}
+                      render={
+                        <a
+                          href={festivalInfo.ticketWebpage}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        />
+                      }
                     >
-                      <a
-                        href={festivalInfo.ticketWebpage}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Ticket className="h-5 w-5" />
-                      </a>
+                      <Ticket className="h-5 w-5" />
                     </Button>
                   )}
                 </div>

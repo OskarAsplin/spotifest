@@ -81,7 +81,7 @@ export const UsageThumbnailsWithGallery = ({
       <Dialog open={isGalleryOpen}>
         <DialogContent
           showCloseButton={false}
-          className="m-0 max-w-none border-none bg-transparent p-0 sm:max-w-none"
+          className="m-0 max-w-none bg-transparent p-0 ring-0 sm:max-w-none"
         >
           {/* @ts-ignore */}
           <ImageGallery

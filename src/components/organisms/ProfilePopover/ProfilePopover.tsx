@@ -12,7 +12,7 @@ interface ProfilePopoverProps {
   userName?: string;
   spotifyUrl?: string;
   onClickLogout: () => void;
-  children: React.ReactNode;
+  children: React.ReactElement;
 }
 
 export const ProfilePopover = ({
@@ -24,7 +24,7 @@ export const ProfilePopover = ({
   const { t } = useTranslation();
   return (
     <Popover>
-      <PopoverTrigger asChild>{children}</PopoverTrigger>
+      <PopoverTrigger render={children} />
       <PopoverContent className="w-50 p-2">
         <div className="flex flex-col items-center text-center">
           {userName && spotifyUrl && <p className="mb-2 text-lg">{userName}</p>}
