@@ -10,7 +10,7 @@ export const LoginButton = ({ onClick }: LoginButtonProps) => {
 
   return (
     <Button
-      className="flex h-auto w-auto flex-row items-center rounded-full bg-[#1DB954] px-2 py-2 text-white shadow-md hover:bg-[#13af4a] sm:px-3 sm:py-2.5"
+      className="flex h-auto w-auto flex-row items-center rounded-full border-0 bg-[#1DB954] px-2 py-2 text-white shadow-md hover:bg-[#13af4a] sm:px-3 sm:py-2.5"
       onClick={onClick}
     >
       <img
