@@ -24,14 +24,14 @@
     "tech_stack": {
       "backend_code": "Backend written in Python with Django and SQLite as database",
       "backend_container": "Backend server environment contained with Docker",
-      "backend_host": "Backend hosted on DigitalOcean running Ubuntu 24.04",
-      "backend_server": "Django server set up with Gunicorn and Nginx",
+      "backend_host": "Backend hosted on DigitalOcean running Ubuntu 26.04",
+      "backend_server": "Django server set up with Gunicorn and NGINX",
       "domain": "Domain bought on NameCheap",
       "festival_info": "Lineup and festival information from Music Festival Wizard",
       "frontend_code": "Frontend made with React, Typescript, React Query and Zustand",
       "frontend_host": "Frontend hosted on Cloudflare Workers",
       "frontend_storybook": "Components developed and documented with <Link href=\"https://master--638b82b31acca1e593c75c8d.chromatic.com\">Storybook</Link>",
-      "frontend_ui": "Components and styling with Shadcn (Radix UI) and Tailwind CSS",
+      "frontend_ui": "Components and styling with Shadcn (Base UI) and Tailwind CSS",
       "music_info": "Playlists and artists from Spotify using OAuth 2.0 authorization",
       "title": "Technology stack",
       "version_control": "Code version control on <Link href=\"https://github.com/OskarAsplin/spotifest\">GitHub</Link>"

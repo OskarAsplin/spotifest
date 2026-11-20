@@ -35,7 +35,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **TanStack Router** for file-based routing with type safety
 - **TanStack Query** for server state management
 - **Zustand** for client state management
-- **shadcn/ui** for component library (built on Radix UI)
+- **shadcn/ui** for component library (built on Base UI)
 - **Tailwind CSS** for styling
 
 ### Project Structure

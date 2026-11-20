@@ -50,7 +50,7 @@ export const TechStackContent = () => {
           class: 'h-10',
         },
         {
-          path: isLightMode ? 'Radix-ui.svg' : 'Radix-ui-white.svg',
+          path: isLightMode ? 'Base-ui.svg' : 'Base-ui-white.svg',
           class: 'h-10 sm:ml-10 max-sm:ml-6',
         },
         { path: 'Tailwind.svg', class: 'h-10 sm:ml-10 max-sm:ml-6' },
