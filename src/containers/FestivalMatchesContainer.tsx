@@ -252,11 +252,24 @@ const FestivalMatchesInnerContainer = ({
           const isLoaderRow =
             virtualItem.index > numFestivalsWithPopularArtists - 1;
 
+          const rowStyle = {
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            transform: `translateY(${virtualItem.start - scrollMargin}px)`,
+            display: 'flex',
+            width: '100%',
+          } as const;
+
           if (isLoaderRow) {
             return (
-              <div key={virtualItem.key} ref={measureElement}>
+              <div
+                key={virtualItem.key}
+                ref={measureElement}
+                data-index={virtualItem.index}
+                style={rowStyle}
+              >
                 <FestivalMatchCardSkeleton
-                  key={festival.name}
                   maxArtistsInWidth={maxArtistsInWidth}
                 />
               </div>
@@ -281,14 +294,7 @@ const FestivalMatchesInnerContainer = ({
               key={`${festival.name}-${festival.year}`}
               ref={measureElement}
               data-index={virtualItem.index}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                transform: `translateY(${virtualItem.start - scrollMargin}px)`,
-                display: 'flex',
-                width: '100%',
-              }}
+              style={rowStyle}
             >
               <FestivalMatchCard
                 festival={festival}
