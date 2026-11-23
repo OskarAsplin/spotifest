@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchGet, fetchPost } from './restUtils';
+import { fetchGet, fetchPost, HttpError } from './restUtils';
 import {
   Area,
   ArtistInfo,
@@ -76,15 +76,29 @@ export const useDjangoPopularArtistsInLineupsInfiniteQuery = ({
         ? pages.length + 1
         : undefined,
     initialPageParam: 1,
+    retry: (failureCount, error) =>
+      error instanceof HttpError && error.status === 429 && failureCount < 3,
+    retryDelay: (attempt) => 2000 * 2 ** attempt,
   });
+
+const POPULAR_ARTISTS_MIN_INTERVAL_MS = 500;
+let lastPopularArtistsRequestAt = 0;
+
+const waitForPopularArtistsThrottle = async () => {
+  const wait =
+    lastPopularArtistsRequestAt + POPULAR_ARTISTS_MIN_INTERVAL_MS - Date.now();
+  lastPopularArtistsRequestAt = Date.now() + Math.max(wait, 0);
+  if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
+};
 
 const getDjangoPopularArtistsInfiniteQuery =
   ({ allLineups }: { allLineups: string[] }) =>
-  ({ pageParam }: { pageParam: number }) => {
+  async ({ pageParam }: { pageParam: number }) => {
     const lineups = allLineups.slice(
       (pageParam - 1) * ITEMS_PER_PAGE,
       Math.min(pageParam * ITEMS_PER_PAGE, allLineups.length),
     );
 
+    await waitForPopularArtistsThrottle();
     return postDjangoPopularArtistsInLineups({ lineups });
   };

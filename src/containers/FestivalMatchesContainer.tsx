@@ -160,6 +160,7 @@ const FestivalMatchesInnerContainer = ({
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
+    isFetchNextPageError,
   } = useDjangoPopularArtistsInLineupsInfiniteQuery({
     allLineups,
   });
@@ -212,7 +213,8 @@ const FestivalMatchesInnerContainer = ({
     if (
       lastItem.index >= numFestivalsWithPopularArtists - 1 &&
       hasNextPage &&
-      !isFetchingNextPage
+      !isFetchingNextPage &&
+      !isFetchNextPageError
     ) {
       void fetchNextPage();
     }
@@ -221,6 +223,7 @@ const FestivalMatchesInnerContainer = ({
     fetchNextPage,
     festivalMatches.length,
     isFetchingNextPage,
+    isFetchNextPageError,
     numFestivalsWithPopularArtists,
     virtualItems,
   ]);

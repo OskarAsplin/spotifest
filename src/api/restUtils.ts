@@ -22,8 +22,15 @@ const fetchRequest = async <T>(
     body: body || null,
   };
   const res = await fetch(path, OPTIONS);
+  if (res.status === 429 || res.status >= 500) throw new HttpError(res.status);
   return await res.json();
 };
+
+export class HttpError extends Error {
+  constructor(public status: number) {
+    super(`Request failed with status ${status}`);
+  }
+}
 
 export const fetchGet = <T>(path: string) =>
   fetchRequest<T>(RequestMethod.GET, path);
