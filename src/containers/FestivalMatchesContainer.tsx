@@ -2,14 +2,14 @@ import {
   useElementScrollRestoration,
   useLayoutEffect,
 } from '@tanstack/react-router';
+import { useQueries, useQueryClient } from '@tanstack/react-query';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { useEffect, useMemo, useRef } from 'react';
 import { useApiSuspenseQuery, withFallback } from '@src/api/api';
 import {
   getDjangoAvailableContinents,
-  ITEMS_PER_PAGE,
+  popularArtistsQueryOptions,
   postDjangoFestivalMatches,
-  useDjangoPopularArtistsInLineupsInfiniteQuery,
 } from '@src/api/djangoApi';
 import {
   getAllArtistsFromSavedTracks,
@@ -33,11 +33,15 @@ import { ErrorFallback } from '@src/layouts/ErrorFallback';
 import { getAreaFilters } from '@src/utils/areaUtils';
 import { useMatchingStore } from '@src/zustand/matchingStore';
 import { createMatchRequest } from './FestivalMatchesContainer.utils';
+import { useDebouncedValue } from '@src/hooks/useDebouncedValue';
 import { useMediaQuery } from '@src/hooks/useMediaQuery';
 import {
   getMaxArtistsInFestivalMatchesWidth,
   useMeasure,
 } from '@src/utils/displayUtils';
+
+const POPULAR_ARTISTS_PREFETCH_COUNT = 15;
+const SETTLED_RANGE_DELAY_MS = 150;
 
 interface FestivalMatchesContainerProps {
   sharedMatchBasis?: string;
@@ -155,28 +159,6 @@ const FestivalMatchesInnerContainer = ({
     [festivalMatches],
   );
 
-  const {
-    data: popularArtistsData,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-    isFetchNextPageError,
-  } = useDjangoPopularArtistsInLineupsInfiniteQuery({
-    allLineups,
-  });
-
-  const allPopularArtists = useMemo(
-    () => (popularArtistsData ? popularArtistsData.pages.map((d) => d) : []),
-    [popularArtistsData],
-  );
-
-  const numFestivalsWithPopularArtists = popularArtistsData
-    ? popularArtistsData.pages.reduce(
-        (acc, dict) => acc + Object.keys(dict).length,
-        0,
-      )
-    : 0;
-
   const scrollEntry = useElementScrollRestoration({
     getElement: () => window,
   });
@@ -205,28 +187,65 @@ const FestivalMatchesInnerContainer = ({
 
   const virtualItems = getVirtualItems();
 
+  const visiblePopularArtists = useQueries({
+    queries: virtualItems.map((virtualItem) => ({
+      ...popularArtistsQueryOptions(
+        festivalMatches[virtualItem.index].lineup_id,
+      ),
+      enabled: false,
+    })),
+  });
+
+  const firstVisibleIndex = virtualItems[0]?.index ?? 0;
+  const lastVisibleIndex = virtualItems.at(-1)?.index ?? -1;
+  const settledRange = useDebouncedValue(
+    `${firstVisibleIndex}:${lastVisibleIndex}`,
+    SETTLED_RANGE_DELAY_MS,
+  );
+
+  const queryClient = useQueryClient();
+  const previousSettledStartRef = useRef<number | null>(null);
+
   useEffect(() => {
-    const [lastItem] = [...virtualItems].reverse();
+    const [start, end] = settledRange.split(':').map(Number);
+    if (end < start) return;
 
-    if (!lastItem) return;
+    const isScrollingUp =
+      previousSettledStartRef.current !== null &&
+      start < previousSettledStartRef.current;
+    previousSettledStartRef.current = start;
 
-    if (
-      lastItem.index >= numFestivalsWithPopularArtists - 1 &&
-      hasNextPage &&
-      !isFetchingNextPage &&
-      !isFetchNextPageError
-    ) {
-      void fetchNextPage();
-    }
-  }, [
-    hasNextPage,
-    fetchNextPage,
-    festivalMatches.length,
-    isFetchingNextPage,
-    isFetchNextPageError,
-    numFestivalsWithPopularArtists,
-    virtualItems,
-  ]);
+    const isCached = (lineupId: string) =>
+      queryClient.getQueryData(
+        popularArtistsQueryOptions(lineupId).queryKey,
+      ) !== undefined;
+
+    const uncachedVisibleIndices = allLineups
+      .slice(start, end + 1)
+      .flatMap((lineupId, i) => (isCached(lineupId) ? [] : [start + i]));
+
+    if (!uncachedVisibleIndices.length) return;
+
+    const prefetchStart = isScrollingUp
+      ? Math.max(
+          0,
+          uncachedVisibleIndices.at(-1)! - POPULAR_ARTISTS_PREFETCH_COUNT + 1,
+        )
+      : uncachedVisibleIndices[0];
+
+    const lineupsToFetch = new Set([
+      ...uncachedVisibleIndices.map((index) => allLineups[index]),
+      ...allLineups.slice(
+        prefetchStart,
+        prefetchStart + POPULAR_ARTISTS_PREFETCH_COUNT,
+      ),
+    ]);
+
+    lineupsToFetch.forEach(
+      (lineupId) =>
+        void queryClient.prefetchQuery(popularArtistsQueryOptions(lineupId)),
+    );
+  }, [allLineups, queryClient, settledRange]);
 
   const [measureWidthRef, { width }] = useMeasure();
   const maxArtistsInWidth = getMaxArtistsInFestivalMatchesWidth(
@@ -247,10 +266,9 @@ const FestivalMatchesInnerContainer = ({
           overflowAnchor: 'none',
         }}
       >
-        {virtualItems.map((virtualItem) => {
+        {virtualItems.map((virtualItem, i) => {
           const festival = festivalMatches[virtualItem.index];
-          const isLoaderRow =
-            virtualItem.index > numFestivalsWithPopularArtists - 1;
+          const popularArtists = visiblePopularArtists[i].data;
 
           const rowStyle = {
             position: 'absolute',
@@ -261,7 +279,7 @@ const FestivalMatchesInnerContainer = ({
             width: '100%',
           } as const;
 
-          if (isLoaderRow) {
+          if (!popularArtists) {
             return (
               <div
                 key={virtualItem.key}
@@ -276,11 +294,6 @@ const FestivalMatchesInnerContainer = ({
             );
           }
 
-          const popularArtists =
-            allPopularArtists[Math.floor(virtualItem.index / ITEMS_PER_PAGE)][
-              festival.lineup_id
-            ];
-
           const matchingArtists = artists
             .filter(
               (artist) =>
@@ -291,7 +304,7 @@ const FestivalMatchesInnerContainer = ({
 
           return (
             <div
-              key={`${festival.name}-${festival.year}`}
+              key={virtualItem.key}
               ref={measureElement}
               data-index={virtualItem.index}
               style={rowStyle}

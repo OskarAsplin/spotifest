@@ -1,7 +1,8 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { queryOptions } from '@tanstack/react-query';
 import { fetchGet, fetchPost, HttpError } from './restUtils';
 import {
   Area,
+  Artist,
   ArtistInfo,
   FestivalInfo,
   FestivalMatch,
@@ -10,8 +11,6 @@ import {
   SearchResponse,
 } from './types';
 import { getKey } from './api';
-
-export const ITEMS_PER_PAGE = 15;
 
 const ontourBaseUrl = `${import.meta.env.VITE_BACKEND_URL}/onTour`;
 
@@ -63,25 +62,8 @@ const postDjangoPopularArtistsInLineups = ({
   return fetchPost<PopularArtistsDict>(url, JSON.stringify(lineups));
 };
 
-export const useDjangoPopularArtistsInLineupsInfiniteQuery = ({
-  allLineups,
-}: {
-  allLineups: string[];
-}) =>
-  useInfiniteQuery({
-    queryKey: getKey(getDjangoPopularArtistsInfiniteQuery, { allLineups }),
-    queryFn: getDjangoPopularArtistsInfiniteQuery({ allLineups }),
-    getNextPageParam: (_lastPage, pages) =>
-      pages.length * ITEMS_PER_PAGE < allLineups.length
-        ? pages.length + 1
-        : undefined,
-    initialPageParam: 1,
-    retry: (failureCount, error) =>
-      error instanceof HttpError && error.status === 429 && failureCount < 3,
-    retryDelay: (attempt) => 2000 * 2 ** attempt,
-  });
-
 const POPULAR_ARTISTS_MIN_INTERVAL_MS = 500;
+const POPULAR_ARTISTS_MAX_BATCH_SIZE = 30;
 let lastPopularArtistsRequestAt = 0;
 
 const waitForPopularArtistsThrottle = async () => {
@@ -91,14 +73,63 @@ const waitForPopularArtistsThrottle = async () => {
   if (wait > 0) await new Promise((resolve) => setTimeout(resolve, wait));
 };
 
-const getDjangoPopularArtistsInfiniteQuery =
-  ({ allLineups }: { allLineups: string[] }) =>
-  async ({ pageParam }: { pageParam: number }) => {
-    const lineups = allLineups.slice(
-      (pageParam - 1) * ITEMS_PER_PAGE,
-      Math.min(pageParam * ITEMS_PER_PAGE, allLineups.length),
-    );
+interface PendingPopularArtistsRequest {
+  resolve: (artists: Artist[]) => void;
+  reject: (error: unknown) => void;
+}
 
-    await waitForPopularArtistsThrottle();
-    return postDjangoPopularArtistsInLineups({ lineups });
-  };
+let pendingPopularArtists = new Map<string, PendingPopularArtistsRequest[]>();
+let isPopularArtistsFlushScheduled = false;
+
+const sendPopularArtistsBatch = async (
+  batch: Map<string, PendingPopularArtistsRequest[]>,
+  lineups: string[],
+) => {
+  await waitForPopularArtistsThrottle();
+  try {
+    const popularArtists = await postDjangoPopularArtistsInLineups({ lineups });
+    lineups.forEach((lineupId) =>
+      batch
+        .get(lineupId)
+        ?.forEach(({ resolve }) => resolve(popularArtists[lineupId] ?? [])),
+    );
+  } catch (error) {
+    lineups.forEach((lineupId) =>
+      batch.get(lineupId)?.forEach(({ reject }) => reject(error)),
+    );
+  }
+};
+
+const flushPopularArtists = async () => {
+  isPopularArtistsFlushScheduled = false;
+  const batch = pendingPopularArtists;
+  pendingPopularArtists = new Map();
+
+  const lineupIds = [...batch.keys()];
+  for (let i = 0; i < lineupIds.length; i += POPULAR_ARTISTS_MAX_BATCH_SIZE) {
+    await sendPopularArtistsBatch(
+      batch,
+      lineupIds.slice(i, i + POPULAR_ARTISTS_MAX_BATCH_SIZE),
+    );
+  }
+};
+
+const loadPopularArtists = ({ lineupId }: { lineupId: string }) =>
+  new Promise<Artist[]>((resolve, reject) => {
+    const pending = pendingPopularArtists.get(lineupId) ?? [];
+    pendingPopularArtists.set(lineupId, [...pending, { resolve, reject }]);
+
+    if (!isPopularArtistsFlushScheduled) {
+      isPopularArtistsFlushScheduled = true;
+      setTimeout(() => void flushPopularArtists(), 0);
+    }
+  });
+
+export const popularArtistsQueryOptions = (lineupId: string) =>
+  queryOptions({
+    queryKey: getKey(loadPopularArtists, { lineupId }),
+    queryFn: () => loadPopularArtists({ lineupId }),
+    retry: (failureCount, error) =>
+      error instanceof HttpError && error.status === 429 && failureCount < 3,
+    retryDelay: (attempt) => 2000 * 2 ** attempt,
+  });
