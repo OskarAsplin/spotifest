@@ -17,7 +17,7 @@ export const ScrollToTop = ({ children }: ScrollToTopProps) => {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  const handleClick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+  const handleClick = () => window.scrollTo({ top: 0 });
 
   return (
     <div

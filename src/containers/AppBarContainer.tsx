@@ -30,7 +30,7 @@ export const AppBarContainer = () => {
 
   const onClickLogo = () => {
     const isIndexRoute = !!matchRoute({ to: '/' });
-    if (isIndexRoute) window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (isIndexRoute) window.scrollTo({ top: 0 });
     else void navigate({ to: '/' });
   };
 
